@@ -7,12 +7,26 @@ import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.main.chat.ChatFragment
 import com.example.myapplication.main.favorite.FavoriteFragment
 import com.example.myapplication.main.home.HomeFragment
+import com.example.myapplication.main.home.SliderAdapter
 import com.example.myapplication.main.location.LocationFragment
 import com.example.myapplication.main.profile.ProfileFragment
+import com.smarteist.autoimageslider.SliderView
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+    lateinit var imageUrl: ArrayList<String>
+
+    // on below line we are creating
+    // a variable for our slider view.
+    lateinit var sliderView: SliderView
+
+    // on below line we are creating
+    // a variable for our slider adapter.
+    lateinit var sliderAdapter: SliderAdapter
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +50,8 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-    }
 
+    }
 
 
     private fun replaceFragment(fragment: Fragment){
@@ -47,4 +61,6 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.frame_layout,fragment)
         fragmentTransaction.commit()
     }
+
+
 }
