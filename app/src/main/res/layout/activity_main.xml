@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SecondActivity">
+    tools:context=".MainActivity">
 
     <FrameLayout
         android:id="@+id/frame_layout"
@@ -27,7 +27,6 @@
         app:menu="@menu/bottom_nav">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
