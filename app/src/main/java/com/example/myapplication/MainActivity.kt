@@ -26,14 +26,11 @@ class MainActivity : AppCompatActivity() {
     lateinit var sliderAdapter: SliderAdapter
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         replaceFragment(HomeFragment())
-
 
         //fragment(5)
         binding.bottomNavigationView.setOnItemSelectedListener{
@@ -53,7 +50,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     private fun replaceFragment(fragment: Fragment){
 
         val fragmentManager=supportFragmentManager
@@ -61,6 +57,4 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.frame_layout,fragment)
         fragmentTransaction.commit()
     }
-
-
 }
