@@ -1,21 +1,13 @@
-package com.example.myapplication.main.home
+package com.example.myapplication.ui.main.chat
 
-import android.widget.Button
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.smarteist.autoimageslider.SliderView
 
-class HomeViewModel : ViewModel() {
-
-
-
+class ChatViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+        value = "This is chat Fragment"
     }
     val text: LiveData<String> = _text
-
-
 }
-

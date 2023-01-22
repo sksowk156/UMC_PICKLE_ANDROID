@@ -1,4 +1,4 @@
-package com.example.myapplication.main.chat
+package com.example.myapplication.ui.main.favorite
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import com.example.myapplication.databinding.FragmentChatBinding
+import com.example.myapplication.databinding.FragmentFavoriteBinding
 
 
-class ChatFragment : Fragment() {
-    private var _binding: FragmentChatBinding? = null
+
+class FavoriteFragment : Fragment() {
+
+    private var _binding: FragmentFavoriteBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,16 +24,12 @@ class ChatFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val chatViewModel =
-            ViewModelProvider(this).get(ChatViewModel::class.java)
+        val favoriteViewModel =
+            ViewModelProvider(this).get(FavoriteViewModel::class.java)
 
-        _binding = FragmentChatBinding.inflate(inflater, container, false)
+        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textChat
-        chatViewModel.text.observe(viewLifecycleOwner) {
-           textView.text = it
-        }
         return root
     }
 

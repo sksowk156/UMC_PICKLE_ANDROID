@@ -1,4 +1,4 @@
-package com.example.myapplication.main.favorite
+package com.example.myapplication.ui.main.profile
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,13 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import com.example.myapplication.databinding.FragmentFavoriteBinding
+import com.example.myapplication.R
+import com.example.myapplication.databinding.FragmentLocationBinding
+import com.example.myapplication.databinding.FragmentProfileBinding
+import com.example.myapplication.ui.main.location.LocationViewModel
 
+class ProfileFragment : Fragment() {
 
-
-class FavoriteFragment : Fragment() {
-
-    private var _binding: FragmentFavoriteBinding? = null
+    private var _binding: FragmentProfileBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -24,16 +25,12 @@ class FavoriteFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val favoriteViewModel =
-            ViewModelProvider(this).get(FavoriteViewModel::class.java)
+        val profileViewModel =
+            ViewModelProvider(this).get(ProfileViewModel::class.java)
 
-        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textFavorite
-        favoriteViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-       }
         return root
     }
 
@@ -41,4 +38,6 @@ class FavoriteFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
 }

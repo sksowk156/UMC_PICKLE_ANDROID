@@ -1,4 +1,4 @@
-package com.example.myapplication.main.location
+package com.example.myapplication.ui.main.location
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

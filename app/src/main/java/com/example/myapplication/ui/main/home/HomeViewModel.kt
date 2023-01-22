@@ -1,15 +1,21 @@
-package com.example.myapplication.main.profile
+package com.example.myapplication.ui.main.home
 
+import android.widget.Button
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.smarteist.autoimageslider.SliderView
 
-class ProfileViewModel : ViewModel() {
+class HomeViewModel : ViewModel() {
+
+
+
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is profile Fragment"
+        value = "This is home Fragment"
     }
     val text: LiveData<String> = _text
 
 
 }
+
