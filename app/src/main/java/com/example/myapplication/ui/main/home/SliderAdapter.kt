@@ -1,4 +1,4 @@
-package com.example.myapplication.main.home
+package com.example.myapplication.ui.main.home
 
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +25,7 @@ class SliderAdapter(imageUrl: ArrayList<String>) :
     }
 
     // on below line we are calling on create view holder method.
-    override fun onCreateViewHolder(parent: ViewGroup?): SliderAdapter.SliderViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup?): SliderViewHolder {
         // inside this method we are inflating our layout file for our slider view.
         val inflate: View =
             LayoutInflater.from(parent!!.context).inflate(R.layout.slider_item, null)
@@ -36,7 +36,7 @@ class SliderAdapter(imageUrl: ArrayList<String>) :
     }
 
     // on below line we are calling on bind view holder method to set the data to our image view.
-    override fun onBindViewHolder(viewHolder: SliderAdapter.SliderViewHolder?, position: Int) {
+    override fun onBindViewHolder(viewHolder: SliderViewHolder?, position: Int) {
 
         // on below line we are checking if the view holder is null or not.
         if (viewHolder != null) {

@@ -1,4 +1,4 @@
-package com.example.myapplication.main.favorite
+package com.example.myapplication.ui.main.favorite
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -30,10 +30,6 @@ class FavoriteFragment : Fragment() {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textFavorite
-        favoriteViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-       }
         return root
     }
 

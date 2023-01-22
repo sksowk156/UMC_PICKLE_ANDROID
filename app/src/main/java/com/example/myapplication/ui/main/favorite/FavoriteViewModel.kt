@@ -1,4 +1,4 @@
-package com.example.myapplication.main.favorite
+package com.example.myapplication.ui.main.favorite
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -1,4 +1,4 @@
-package com.example.myapplication.main.chat
+package com.example.myapplication.ui.main.chat
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

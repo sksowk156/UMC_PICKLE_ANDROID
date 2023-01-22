@@ -1,4 +1,4 @@
-package com.example.myapplication.main.home
+package com.example.myapplication.ui.main.home
 
 import android.widget.Button
 import androidx.lifecycle.LiveData

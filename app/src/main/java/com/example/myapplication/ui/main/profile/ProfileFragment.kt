@@ -1,4 +1,4 @@
-package com.example.myapplication.main.profile
+package com.example.myapplication.ui.main.profile
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentLocationBinding
 import com.example.myapplication.databinding.FragmentProfileBinding
-import com.example.myapplication.main.location.LocationViewModel
+import com.example.myapplication.ui.main.location.LocationViewModel
 
 class ProfileFragment : Fragment() {
 
@@ -31,10 +31,6 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textProfile
-        profileViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
     }
 

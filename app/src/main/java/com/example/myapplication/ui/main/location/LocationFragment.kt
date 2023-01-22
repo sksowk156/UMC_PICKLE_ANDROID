@@ -1,45 +1,56 @@
-package com.example.myapplication.main.location
+package com.example.myapplication.ui.main.location
 
 import android.os.Bundle
+import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toolbar
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.databinding.FragmentLocationBinding
-import com.example.myapplication.main.home.HomeViewModel
+import com.example.myapplication.ui.MainActivity
+import com.example.myapplication.ui.main.BaseFragment
+import com.example.myapplication.ui.main.home.HomeViewModel
 
 
-class LocationFragment : Fragment() {
-    private var _binding: FragmentLocationBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val locationViewModel =
-            ViewModelProvider(this).get(LocationViewModel::class.java)
-
-        _binding = FragmentLocationBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textLocation
-        locationViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        return root
+class LocationFragment : BaseFragment<FragmentLocationBinding>(R.layout.fragment_location) {
+    override fun init() {
+        initAppBar()
+        childFragmentManager
+            .beginTransaction()
+            .replace(R.id.location_layout, MapFragment())
+            .addToBackStack(null)
+            .commitAllowingStateLoss()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    // Appbar 초기화
+    private fun initAppBar() {
+        val toolbar: androidx.appcompat.widget.Toolbar
+        binding.apply {
+            toolbar = locationToolbar.toolbar
+            // 툴바 이름정하기
+            toolbar.setTitle("주변매장")
+//            // 툴바 뒤로가기 버튼 아이콘 정하기
+//            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_new_24)
+//            // 툴바 뒤로가기 버튼 클릭 이벤트
+//            toolbar.setNavigationOnClickListener {  }
+            // 툴바 메뉴 넣기
+            toolbar.inflateMenu(R.menu.menu_appbar)
+            // 툴바 클릭 이벤트
+            toolbar.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.search -> {
+                    }
+                    R.id.notification -> {
+                    }
+                }
+                true
+            }
+        }
     }
 }

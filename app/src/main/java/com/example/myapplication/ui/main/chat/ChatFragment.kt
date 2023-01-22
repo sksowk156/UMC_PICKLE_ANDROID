@@ -1,4 +1,4 @@
-package com.example.myapplication.main.chat
+package com.example.myapplication.ui.main.chat
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -28,10 +28,6 @@ class ChatFragment : Fragment() {
         _binding = FragmentChatBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textChat
-        chatViewModel.text.observe(viewLifecycleOwner) {
-           textView.text = it
-        }
         return root
     }
 

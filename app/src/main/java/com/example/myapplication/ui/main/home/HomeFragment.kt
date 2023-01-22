@@ -1,58 +1,58 @@
-package com.example.myapplication.main.home
+package com.example.myapplication.ui.main.home
 
 import android.os.Bundle
+import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
+import com.example.myapplication.ui.MainActivity
+import com.example.myapplication.ui.main.BaseFragment
 import com.smarteist.autoimageslider.SliderView
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
-    private var _binding: FragmentHomeBinding? = null
-
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-
-    ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
-
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        //val textView: TextView = binding.textHome
-      //  homeViewModel.text.observe(viewLifecycleOwner) {
-       //     textView.text = it
-       // }
-
-
-        return root
+    override fun init() {
+        initAppbar()
+        initSlide()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun initAppbar() {
+        val toolbar: androidx.appcompat.widget.Toolbar
+        binding.apply {
+            toolbar = homeToolbar.toolbar
+            // 툴바 이름정하기
+            toolbar.setTitle("홈")
+//            // 툴바 뒤로가기 버튼 아이콘 정하기
+//            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_new_24)
+//            // 툴바 뒤로가기 버튼 클릭 이벤트
+//            toolbar.setNavigationOnClickListener {  }
+            // 툴바 메뉴 넣기
+            toolbar.inflateMenu(R.menu.menu_appbar)
+            // 툴바 클릭 이벤트
+            toolbar.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.search -> {
+                    }
+                    R.id.notification -> {
+                    }
+                }
+                true
+            }
+        }
+    }
 
-
+    private fun initSlide(){
+        lateinit var imageUrl: ArrayList<String>
         // on below line we are creating a variable
         // for our array list for storing our images.
-        lateinit var imageUrl: ArrayList<String>
-
         imageUrl = ArrayList()
 
         // on below line we are adding data to our image url array list.
@@ -93,22 +93,5 @@ class HomeFragment : Fragment() {
         // on below line we are calling start
         // auto cycle to start our cycle.
         sliderView.startAutoCycle()
-
-
-
-
-
     }
-
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-
-
-
-
 }
