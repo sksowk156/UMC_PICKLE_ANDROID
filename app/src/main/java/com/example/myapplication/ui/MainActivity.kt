@@ -2,9 +2,6 @@ package com.example.myapplication.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -83,5 +80,6 @@ class MainActivity : AppCompatActivity() {
         // currentFragmenttag에 '현재 fragment Tag' "first"를 저장한다.
         currentFragmenttag = tag
     }
+
 
 }

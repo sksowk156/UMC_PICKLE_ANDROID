@@ -5,16 +5,21 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.ui.MainActivity
 import com.example.myapplication.ui.main.BaseFragment
 import com.smarteist.autoimageslider.SliderView
+import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
@@ -22,6 +27,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     override fun init() {
         initAppbar()
         initSlide()
+        rcView()
     }
 
     private fun initAppbar() {
@@ -50,6 +56,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private fun initSlide(){
+
         lateinit var imageUrl: ArrayList<String>
         // on below line we are creating a variable
         // for our array list for storing our images.
@@ -93,5 +100,41 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         // on below line we are calling start
         // auto cycle to start our cycle.
         sliderView.startAutoCycle()
+    }
+
+
+
+    private val dataSet: ArrayList<List<String>> = arrayListOf<List<String>>()
+
+
+
+    private fun rcView(){
+        addData()
+
+
+
+
+
+
+       /* binding.apply {
+            recyclerView.apply{
+               LinearLayoutManager(this@HomeFragment.context,LinearLayoutManager.VERTICAL,false)
+                RecyclerViewAdapter(dataSet)
+                addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
+            }
+        }*/
+        binding.apply{
+            recyclerView.layoutManager=LinearLayoutManager(this@HomeFragment.context,LinearLayoutManager.VERTICAL,false)
+            recyclerView.adapter=RecyclerViewAdapter(dataSet)
+            recyclerView.addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
+
+        }
+
+    }
+
+    private fun addData(){
+        for(i in 0 .. 9){
+            dataSet.add(listOf("$i th main","$i th sub"))
+        }
     }
 }
