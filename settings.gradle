@@ -10,12 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         jcenter()
-        maven{
-
-            url "https://jitpack.io"
-        }
-
+        maven { url "https://naver.jfrog.io/artifactory/maven/" }
+        maven { url "https://jitpack.io" }
     }
 }
-rootProject.name = "My Application"
+rootProject.name = "PICKLE"
 include ':app'

@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         // 앱을 켰을 때 첫 fragment
         if (savedInstanceState == null) {
             supportFragmentManager
