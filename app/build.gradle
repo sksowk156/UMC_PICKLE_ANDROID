@@ -60,17 +60,17 @@ dependencies {
     // dependency for loading image from url
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
-            << << << < HEAD
+
     //dependency for recyclerView
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
-            === === =
+
             // naver map api
             implementation 'com.naver.maps:map-sdk:3.16.1'
     implementation 'com.google.android.gms:play-services-location:20.0.0'
 
     // circleimageview
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-            >>> >>> > 9 bc1f52e1943d3c0d30a8770264c124301729f9e
+      
 
 }
