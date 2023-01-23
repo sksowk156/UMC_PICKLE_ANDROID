@@ -16,7 +16,7 @@
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="b2kjcldcq0" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.store.StoreActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,6 +38,15 @@
                     android:host="oauth"
                     android:scheme="kakaoe9c2a8bf10ae12652fdc9ee9059ac02f" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.store.PickupActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".ui.store.ClothActivity"
+            android:exported="false">
         </activity>
     </application>
 

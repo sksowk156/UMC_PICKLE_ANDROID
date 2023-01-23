@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_cloth_image1"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/lightgrey"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_store_name1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="매장명"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_cloth_name1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="옷 이름"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_cloth_price1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="50,000원"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
