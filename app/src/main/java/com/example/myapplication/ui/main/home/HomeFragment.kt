@@ -1,16 +1,19 @@
 package com.example.myapplication.ui.main.home
 
+
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.ui.main.BaseFragment
 import com.smarteist.autoimageslider.SliderView
+import kotlinx.android.synthetic.main.fragment_home.*
 
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),ClothesClickListener {
 
     override fun init() {
         initAppbar()
         initSlide()
+        rcView()
     }
 
     private fun initAppbar() {
@@ -39,6 +42,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private fun initSlide(){
+
         lateinit var imageUrl: ArrayList<String>
         // on below line we are creating a variable
         // for our array list for storing our images.
@@ -83,4 +87,80 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         // auto cycle to start our cycle.
         sliderView.startAutoCycle()
     }
+
+
+
+    private val dataSet: ArrayList<List<String>> = arrayListOf<List<String>>()
+
+    private fun addClothes(){
+
+        val clothes1=Clothes(
+            R.drawable.one,
+            "store1",
+            "옷1",
+            30000
+        )
+        clothesList.add(clothes1)
+
+        val clothes2=Clothes(
+            R.drawable.two,
+            "store2",
+            "옷2",
+            30000
+        )
+        clothesList.add(clothes2)
+
+        val clothes3=Clothes(
+            R.drawable.two,
+            "store1",
+            "옷3",
+            30000
+        )
+        clothesList.add(clothes3)
+
+        val clothes4=Clothes(
+            R.drawable.one,
+            "store1",
+            "옷4",
+            30000
+        )
+        clothesList.add(clothes4)
+
+        val clothes5=Clothes(
+            R.drawable.two,
+            "store1",
+            "옷5",
+            30000
+        )
+        clothesList.add(clothes5)
+
+    }
+
+
+
+    private fun rcView(){
+        addClothes()
+
+
+        binding.recyclerView.apply {
+
+            layoutManager=LinearLayoutManager(this@HomeFragment.context,LinearLayoutManager.HORIZONTAL,false)
+            adapter=CardViewAdapter(clothesList, this@HomeFragment)
+
+        }
+
+    }
+
+    override fun onClick(clothes: Clothes) {
+        val intent= Intent(this@HomeFragment.context,javaClass)
+        intent.putExtra(CLOTHES_ID_EXTRA,clothes.id)
+    }
+
+  /*  private fun addData(){
+        for(i in 0 .. 9){
+            dataSet.add(listOf("$i th main","$i th sub"))
+        }
+    }*/
+
+
 }

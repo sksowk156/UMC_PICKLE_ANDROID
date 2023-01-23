@@ -2,4 +2,18 @@
     <string name="app_name">PICKLE</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="store">store</string>
+    <string name="cloth">cloth</string>
+    <string name="price">price</string>
+
+    <string-array name="spinner_color">
+        <item>흰색</item>
+        <item>검정</item>
+    </string-array>
+
+    <string-array name="spinner_size">
+        <item>S</item>
+        <item>M</item>
+        <item>L</item>
+    </string-array>
 </resources>

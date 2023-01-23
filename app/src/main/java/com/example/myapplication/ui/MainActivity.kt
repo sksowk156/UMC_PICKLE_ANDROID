@@ -2,6 +2,7 @@ package com.example.myapplication.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMainBinding
@@ -76,5 +77,6 @@ class MainActivity : AppCompatActivity() {
         // currentFragmenttag에 '현재 fragment Tag' "first"를 저장한다.
         currentFragmenttag = tag
     }
+
 
 }

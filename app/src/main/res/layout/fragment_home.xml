@@ -10,6 +10,7 @@
         android:background="@color/white"
         android:clickable="true"
         tools:context=".ui.main.home.HomeFragment">
+
         <include
             android:id="@+id/home_toolbar"
             layout="@layout/toolbar" />
@@ -56,7 +57,19 @@
             app:sliderIndicatorRadius="2dp"
             app:sliderIndicatorSelectedColor="#5A5A5A"
             app:sliderIndicatorUnselectedColor="#FFF"
-            app:sliderScrollTimeInSec="1" />
+            app:sliderScrollTimeInSec="1" >
+
+        </com.smarteist.autoimageslider.SliderView>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/slider" >
+
+        </androidx.recyclerview.widget.RecyclerView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
