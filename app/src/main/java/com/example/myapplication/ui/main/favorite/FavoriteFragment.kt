@@ -14,8 +14,6 @@ import com.example.myapplication.ui.main.BaseFragment
 
 class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(R.layout.fragment_favorite) {
 
-
     override fun init() {
-        TODO("Not yet implemented")
     }
 }
