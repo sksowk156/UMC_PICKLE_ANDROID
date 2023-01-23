@@ -16,7 +16,7 @@
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="b2kjcldcq0" />
         <activity
-            android:name=".ui.store.StoreActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,6 +40,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.store.StoreActivity"
+            android:exported="false">
+        </activity>
         <activity
             android:name=".ui.store.PickupActivity"
             android:exported="false">
