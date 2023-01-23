@@ -1,18 +1,7 @@
 package com.example.myapplication.ui.main.home
 
-import android.os.Bundle
-import android.util.Log
-import android.view.*
-import androidx.fragment.app.Fragment
-import android.widget.Button
-import android.widget.TextView
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
-import com.example.myapplication.ui.MainActivity
 import com.example.myapplication.ui.main.BaseFragment
 import com.smarteist.autoimageslider.SliderView
 

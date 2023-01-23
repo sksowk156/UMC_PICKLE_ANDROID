@@ -1,21 +1,9 @@
 package com.example.myapplication.ui.main.location
 
-import android.os.Bundle
-import android.util.Log
-import android.view.*
-import androidx.fragment.app.Fragment
-import android.widget.TextView
-import android.widget.Toolbar
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
-import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.databinding.FragmentLocationBinding
-import com.example.myapplication.ui.MainActivity
 import com.example.myapplication.ui.main.BaseFragment
-import com.example.myapplication.ui.main.home.HomeViewModel
+import com.example.myapplication.ui.main.location.map.MapFragment
 
 
 class LocationFragment : BaseFragment<FragmentLocationBinding>(R.layout.fragment_location) {
