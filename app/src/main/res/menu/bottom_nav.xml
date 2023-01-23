@@ -27,7 +27,7 @@
         android:title="Chat"/>
 
     <item
-        android:id="@+id/menu_profile"
+        android:id="@+id/menu_profileblank"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_person_24"
         android:title="Profile"/>

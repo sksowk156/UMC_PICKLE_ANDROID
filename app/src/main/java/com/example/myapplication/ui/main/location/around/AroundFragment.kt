@@ -1,15 +1,11 @@
-package com.example.myapplication.ui.main.location
+package com.example.myapplication.ui.main.location.around
 
-import android.os.Bundle
-import android.util.Log
-import android.view.*
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentAroundBinding
 import com.example.myapplication.ui.main.BaseFragment
+import com.example.myapplication.ui.main.location.MapAroundData
 
 
 class AroundFragment : BaseFragment<FragmentAroundBinding>(R.layout.fragment_around) {

@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:clickable="true"
-        tools:context=".ui.main.location.MapFragment">
+        tools:context=".ui.main.location.map.MapFragment">
 
         <FrameLayout
             android:id="@+id/map"

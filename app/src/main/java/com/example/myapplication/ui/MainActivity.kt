@@ -2,19 +2,15 @@ package com.example.myapplication.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
-import androidx.core.view.MenuProvider
+
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.ui.main.chat.ChatFragment
 import com.example.myapplication.ui.main.favorite.FavoriteFragment
 import com.example.myapplication.ui.main.home.HomeFragment
-import com.example.myapplication.ui.main.home.SliderAdapter
 import com.example.myapplication.ui.main.location.LocationFragment
-import com.example.myapplication.ui.main.profile.ProfileFragment
-import com.smarteist.autoimageslider.SliderView
+import com.example.myapplication.ui.main.profile.ProfileBlankFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,8 +48,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_chat -> { // 세 번째 fragment
                     changeFragment("chat", ChatFragment())
                 }
-                R.id.menu_profile -> {
-                    changeFragment("profile", ProfileFragment())
+                R.id.menu_profileblank -> {
+                    changeFragment("profileblank", ProfileBlankFragment())
                 }
             }
             true
