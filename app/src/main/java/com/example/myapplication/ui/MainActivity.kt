@@ -1,82 +1,102 @@
 package com.example.myapplication.ui
 
+import android.content.ContentValues.TAG
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
-import androidx.fragment.app.Fragment
-import com.example.myapplication.R
+import android.util.Log
+import android.widget.Toast
 import com.example.myapplication.databinding.ActivityMainBinding
-import com.example.myapplication.ui.main.chat.ChatFragment
-import com.example.myapplication.ui.main.favorite.FavoriteFragment
-import com.example.myapplication.ui.main.home.HomeFragment
-import com.example.myapplication.ui.main.location.LocationFragment
-import com.example.myapplication.ui.main.profile.ProfileBlankFragment
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.model.AuthErrorCause
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.common.util.Utility
+import com.kakao.sdk.user.UserApiClient
+
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var currentFragmenttag: String // fragment의 Tag를 저장하기 위해
-
+    lateinit var viewbinding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        viewbinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(viewbinding.root)
 
+        KakaoSdk.init(this, "e9c2a8bf10ae12652fdc9ee9059ac02f")
 
-        // 앱을 켰을 때 첫 fragment
-        if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .add(binding.mainFramelayout.id, HomeFragment(), "home")
-                .commitAllowingStateLoss()
-            currentFragmenttag = "home" // 현재 보고 있는 fragmet의 Tag
+        viewbinding.button.setOnClickListener{
+            // 카카오톡 설치 확인
+            if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+                // 카카오톡 로그인
+                UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
+                    // 로그인 실패 부분
+                    if (error != null) {
+                        Log.e(TAG, "로그인 실패 $error")
+                        // 사용자가 취소
+                        if (error is ClientError && error.reason == ClientErrorCause.Cancelled ) {
+                            return@loginWithKakaoTalk
+                        }
+                        // 다른 오류
+                        else {
+                            UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
+                        }
+                    }
+                    // 로그인 성공 부분
+                    else if (token != null) {
+                        Log.e(TAG, "로그인 성공 ${token.accessToken}")
+                        UserApiClient.instance.me { user, error ->
+                        Toast.makeText(this, "${user?.kakaoAccount?.profile?.nickname}님 반갑습니다.", Toast.LENGTH_SHORT).show()
+                        }
+                        val intent = Intent(this, SecondActivity::class.java)
+                        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
+                    }
+                }
+            } else {
+                UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
+            }
         }
 
+    }
 
-        // 네비게이션 버튼 클릭시 프래그먼트 전환
-        binding.mainBottomNavigationView.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.menu_home -> { // 첫 번째 fragment
-                    changeFragment("home", HomeFragment())
+    private val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+        if (error != null) {
+            when {
+                error.toString() == AuthErrorCause.AccessDenied.toString() -> {
+                    Toast.makeText(this, "접근이 거부 됨(동의 취소)", Toast.LENGTH_SHORT).show()
                 }
-                R.id.menu_favorite -> { // 두 번째 fragment
-                    changeFragment("favorite", FavoriteFragment())
+                error.toString() == AuthErrorCause.InvalidClient.toString() -> {
+                    Toast.makeText(this, "유효하지 않은 앱", Toast.LENGTH_SHORT).show()
                 }
-                R.id.menu_map -> { // 세 번째 fragment
-                    changeFragment("location", LocationFragment())
+                error.toString() == AuthErrorCause.InvalidGrant.toString() -> {
+                    Toast.makeText(this, "인증 수단이 유효하지 않아 인증할 수 없는 상태", Toast.LENGTH_SHORT).show()
                 }
-                R.id.menu_chat -> { // 세 번째 fragment
-                    changeFragment("chat", ChatFragment())
+                error.toString() == AuthErrorCause.InvalidRequest.toString() -> {
+                    Toast.makeText(this, "요청 파라미터 오류", Toast.LENGTH_SHORT).show()
                 }
-                R.id.menu_profileblank -> {
-                    changeFragment("profileblank", ProfileBlankFragment())
+                error.toString() == AuthErrorCause.InvalidScope.toString() -> {
+                    Toast.makeText(this, "유효하지 않은 scope ID", Toast.LENGTH_SHORT).show()
+                }
+                error.toString() == AuthErrorCause.Misconfigured.toString() -> {
+                    Toast.makeText(this, "설정이 올바르지 않음(android key hash)", Toast.LENGTH_SHORT).show()
+                }
+                error.toString() == AuthErrorCause.ServerError.toString() -> {
+                    Toast.makeText(this, "서버 내부 에러", Toast.LENGTH_SHORT).show()
+                }
+                error.toString() == AuthErrorCause.Unauthorized.toString() -> {
+                    Toast.makeText(this, "앱이 요청 권한이 없음", Toast.LENGTH_SHORT).show()
+                }
+                else -> { // Unknown
+                    Toast.makeText(this, "기타 에러", Toast.LENGTH_SHORT).show()
                 }
             }
-            true
         }
-
-    }
-
-    private fun changeFragment(tag: String, fragment: Fragment) {
-        // supportFragmentManager에 "first"라는 Tag로 저장된 fragment 있는지 확인
-        if (supportFragmentManager.findFragmentByTag(tag) == null) { // Tag가 없을 때 -> 없을 리가 없다.
-            supportFragmentManager
-                .beginTransaction()
-                .hide(supportFragmentManager.findFragmentByTag(currentFragmenttag)!!)
-                .add(binding.mainFramelayout.id, fragment, tag)
-                .commitAllowingStateLoss()
-        } else { // Tag가 있을 때
-            // 먼저 currentFragmenttag에 저장된 '이전 fragment Tag'를 활용해 이전 fragment를 hide 시킨다.
-            // supportFragmentManager에 저장된 "first"라는 Tag를 show 시킨다.
-            supportFragmentManager
-                .beginTransaction()
-                .hide(supportFragmentManager.findFragmentByTag(currentFragmenttag)!!)
-                .show(supportFragmentManager.findFragmentByTag(tag)!!)
-                .commitAllowingStateLoss()
+        else if (token != null) {
+            Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, SecondActivity::class.java)
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            finish()
         }
-        // currentFragmenttag에 '현재 fragment Tag' "first"를 저장한다.
-        currentFragmenttag = tag
     }
-
-
 }
