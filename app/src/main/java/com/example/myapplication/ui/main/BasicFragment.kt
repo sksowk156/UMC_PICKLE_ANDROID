@@ -1,21 +1,13 @@
 package com.example.myapplication.ui.main
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.annotation.LayoutRes
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import com.example.myapplication.R
-import com.example.myapplication.ui.MainActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 abstract class BaseFragment<T: ViewDataBinding>(
@@ -47,7 +39,7 @@ abstract class BaseFragment<T: ViewDataBinding>(
 
     // 하단 바 숨길때
     protected fun hideBottomNavigation(bool : Boolean){
-        val bottom : BottomNavigationView = requireActivity().findViewById(R.id.main_bottomNavigationView)
+        val bottom : BottomNavigationView = requireActivity().findViewById(R.id.second_bottomNavigationView)
         if(bool == true){
             bottom.visibility = View.GONE
         }else{
