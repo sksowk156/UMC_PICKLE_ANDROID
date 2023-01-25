@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/inquiry_item_layout"
+    android:background="@drawable/inquiry_background"
+    android:orientation="vertical"
+    android:paddingStart="16dp"
+    android:paddingTop="14dp"
+    android:paddingEnd="14dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:orientation="horizontal"
+        android:id="@+id/inquiry_item_innerlayout1">
+
+        <TextView
+            android:id="@+id/inquiry_item_textview_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Q 질문1"
+            android:textSize="14sp"
+            android:layout_gravity="center_vertical"/>
+
+        <ImageView
+            android:id="@+id/inquiry_item_image1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/inquiry_item_innerlayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_marginBottom="14dp">
+
+        <TextView
+            android:id="@+id/inquiry_item_textview_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="질문질문질문질문질문질문질문질문질문질문질문질문질문질문질문질문질문질문질문질문질문질문질문질문질문질문질문질문" />
+    </LinearLayout>
+
+</LinearLayout>

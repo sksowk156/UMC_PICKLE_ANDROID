@@ -19,7 +19,7 @@ class WithdrawalFragment : BottomSheetDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        setStyle(STYLE_NO_TITLE, R.style.AppBottomSheetDialogTheme)
+        setStyle(STYLE_NO_TITLE, R.style.AppBottomSheetDialogTheme2)
 
         return super.onCreateDialog(savedInstanceState)
     }
