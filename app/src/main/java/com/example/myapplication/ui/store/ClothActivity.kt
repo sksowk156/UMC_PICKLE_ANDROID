@@ -10,6 +10,10 @@ class ClothActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityClothBinding
     private lateinit var viewpager: ViewPager2
 
+    private lateinit var storeName: String
+    private lateinit var clothName: String
+    private var clothPrice: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         viewBinding = ActivityClothBinding.inflate(layoutInflater)
@@ -24,10 +28,25 @@ class ClothActivity : AppCompatActivity() {
         val indicator = viewBinding.indicator
         indicator.setViewPager(viewpager)
 
+        val extras = intent.extras
+        storeName = extras!!["storeName"] as String
+        clothName = extras!!["clothName"] as String
+        clothPrice = extras!!["clothPrice"] as Int
+
+        viewBinding.tvStoreName2.text = storeName
+        viewBinding.tvClothName2.text = clothName
+        viewBinding.tvClothPrice2.text = clothPrice.toString()
+
         val btnOrder = viewBinding.btnOrder
         btnOrder.setOnClickListener {
             val bottomSheet = BottomSheetFragment(applicationContext)
             //bottomSheet.setContentView(R.layout.fragment_bottom_sheet)
+
+            var bundle = Bundle()
+            bundle.putString("storeName", storeName)
+            bundle.putString("clothName", clothName)
+            bundle.putInt("clothPrice", clothPrice)
+            bottomSheet.arguments = bundle //fragment의 arguments에 데이터를 담은 bundle을 넘겨줌
             bottomSheet.show(supportFragmentManager, bottomSheet.tag)
         }
 
@@ -37,15 +56,6 @@ class ClothActivity : AppCompatActivity() {
 //        viewBinding.tvStoreName2.text = intent.getStringExtra("storeName").toString()
 //        viewBinding.tvClothName2.text = intent.getStringExtra("clothName").toString()
 //        viewBinding.tvClothPrice2.text = intent.getStringExtra("clothPrice").toString()
-
-        val extras = intent.extras
-        val storeName = extras!!["storeName"] as String
-        val clothName = extras!!["clothName"] as String
-        val clothPrice = extras!!["clothPrice"] as String
-
-        viewBinding.tvStoreName2.text = storeName
-        viewBinding.tvClothName2.text = clothName
-        viewBinding.tvClothPrice2.text = clothPrice
     }
 
     private fun getImageList(): ArrayList<Int> {
