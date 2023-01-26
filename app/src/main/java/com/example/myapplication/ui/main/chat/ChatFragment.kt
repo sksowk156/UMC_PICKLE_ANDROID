@@ -7,32 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentChatBinding
+import com.example.myapplication.ui.main.BaseFragment
 
 
-class ChatFragment : Fragment() {
-    private var _binding: FragmentChatBinding? = null
+class ChatFragment : BaseFragment<FragmentChatBinding>(R.layout.fragment_chat) {
+    override fun init() {
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val chatViewModel =
-            ViewModelProvider(this).get(ChatViewModel::class.java)
-
-        _binding = FragmentChatBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

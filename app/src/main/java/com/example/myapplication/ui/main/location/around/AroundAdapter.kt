@@ -1,9 +1,10 @@
-package com.example.myapplication.ui.main.location
+package com.example.myapplication.ui.main.location.around
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemAroundRecyclerBinding
+import com.example.myapplication.ui.main.location.MapAroundData
 
 class AroundAdapter : RecyclerView.Adapter<AroundAdapter.ViewHolder>() {
 

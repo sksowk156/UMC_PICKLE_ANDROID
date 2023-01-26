@@ -1,27 +1,12 @@
 package com.example.myapplication.ui.main.home
 
+
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
-import android.view.*
-import androidx.fragment.app.Fragment
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
-import com.example.myapplication.ui.MainActivity
 import com.example.myapplication.ui.main.BaseFragment
 import com.smarteist.autoimageslider.SliderView
-import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),ClothesClickListener {
@@ -160,7 +145,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
 
         binding.recyclerView.apply {
 
-            layoutManager=LinearLayoutManager(this@HomeFragment.context,LinearLayoutManager.HORIZONTAL,false)
+            layoutManager=
+                LinearLayoutManager(this@HomeFragment.context,LinearLayoutManager.HORIZONTAL,false)
             adapter=CardViewAdapter(clothesList, this@HomeFragment)
 
         }

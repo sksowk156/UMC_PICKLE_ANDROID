@@ -1,16 +1,12 @@
-package com.example.myapplication.ui.main.location
+package com.example.myapplication.ui.main.location.map
 
 import android.graphics.Color
-import android.os.Bundle
-import android.text.Layout
-import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
-import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMapBinding
 import com.example.myapplication.ui.main.BaseFragment
+import com.example.myapplication.ui.main.location.around.AroundFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
@@ -20,7 +16,6 @@ import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
 import com.naver.maps.map.widget.LocationButtonView
 import com.naver.maps.map.widget.LogoView
-import kotlinx.coroutines.NonDisposableHandle.parent
 
 class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
