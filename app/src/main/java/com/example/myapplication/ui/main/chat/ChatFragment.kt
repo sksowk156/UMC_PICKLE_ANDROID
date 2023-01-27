@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.main.chat
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,5 @@ import com.example.myapplication.ui.main.BaseFragment
 
 class ChatFragment : BaseFragment<FragmentChatBinding>(R.layout.fragment_chat) {
     override fun init() {
-
     }
 }
