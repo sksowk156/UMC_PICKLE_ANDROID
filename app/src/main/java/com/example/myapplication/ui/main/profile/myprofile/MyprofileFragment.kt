@@ -35,10 +35,13 @@ class MyprofileFragment : BaseFragment<FragmentMyprofileBinding>(R.layout.fragme
 
         val cameraAddBtn = dialogLayout.findViewById<Button>(R.id.dialog_btn_camera)
         val fileAddBtn = dialogLayout.findViewById<AppCompatButton>(R.id.dialog_btn_file)
-        requestMultiplePermission.launch(arrayOf(
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.CAMERA))
+        requestMultiplePermission.launch(
+            arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA
+            )
+        )
 
         cameraAddBtn.setOnClickListener {
             // 1. TakePicture
@@ -57,31 +60,34 @@ class MyprofileFragment : BaseFragment<FragmentMyprofileBinding>(R.layout.fragme
     }
 
     // 권한을 허용하도록 요청
-    private val requestMultiplePermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
-        results.forEach {
-            if(!it.value) {
-                showToast("권한 허용 필요")
+    private val requestMultiplePermission =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
+            results.forEach {
+                if (!it.value) {
+                    showToast("권한 허용 필요")
+                }
             }
         }
-    }
 
     // 파일 불러오기
-    private val getContentImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri.let { binding.myprofileImagePhoto.setImageURI(uri) }
-    }
+    private val getContentImage =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri.let { binding.myprofileImagePhoto.setImageURI(uri) }
+        }
 
     // 카메라를 실행한 후 찍은 사진을 저장
     var pictureUri: Uri? = null
     private val getTakePicture = registerForActivityResult(ActivityResultContracts.TakePicture()) {
-        if(it) {
+        if (it) {
             pictureUri.let { binding.myprofileImagePhoto.setImageURI(pictureUri) }
         }
     }
 
     // 카메라를 실행하며 결과로 비트맵 이미지를 얻음
-    private val getTakePicturePreview = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-        bitmap.let { binding.myprofileImagePhoto.setImageBitmap(bitmap) }
-    }
+    private val getTakePicturePreview =
+        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+            bitmap.let { binding.myprofileImagePhoto.setImageBitmap(bitmap) }
+        }
 
     private fun createImageFile(): Uri? {
         val now = SimpleDateFormat("yyMMdd_HHmmss").format(Date())
@@ -89,7 +95,10 @@ class MyprofileFragment : BaseFragment<FragmentMyprofileBinding>(R.layout.fragme
             put(MediaStore.Images.Media.DISPLAY_NAME, "img_$now.jpg")
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
         }
-        return requireActivity().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, content)
+        return requireActivity().contentResolver.insert(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            content
+        )
     }
 
 }
