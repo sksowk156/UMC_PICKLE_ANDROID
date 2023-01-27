@@ -29,6 +29,7 @@ class MyprofileFragment : BaseFragment<FragmentMyprofileBinding>(R.layout.fragme
         val dialogLayout = layoutInflater.inflate(R.layout.dialog, null)
         val dialogBuild = AlertDialog.Builder(context).apply {
             setView(dialogLayout)
+
         }
         val dialog = dialogBuild.create().apply { show() }
 
