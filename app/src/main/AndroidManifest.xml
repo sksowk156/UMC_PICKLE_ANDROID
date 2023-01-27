@@ -27,7 +27,7 @@
 
         <!--  처음 시작하는 화면을 설정 -->
         <activity
-            android:name=".ui.SplashActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,8 +35,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.SecondActivity" />
+
 
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
