@@ -4,8 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.CardCellBinding
 
 class CardViewHolder(
-    private val cardCellBinding: CardCellBinding,
-    private val clickListener: ClothesClickListener
+    private val cardCellBinding: CardCellBinding
 ): RecyclerView.ViewHolder(cardCellBinding.root) {
 
     fun bindClothes(clothes: Clothes){
@@ -16,8 +15,9 @@ class CardViewHolder(
         cardCellBinding.price.text= clothes.price.toString()
 
         cardCellBinding.cardviewframe.setOnClickListener{
-            clickListener.onClick(clothes)
+            //clickListener.onClick(clothes)
         }
 
     }
 }
+

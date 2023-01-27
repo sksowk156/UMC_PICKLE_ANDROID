@@ -2,12 +2,20 @@ package com.example.myapplication.ui.main.home
 
 
 import android.content.Intent
+import androidx.activity.OnBackPressedCallback
+import androidx.databinding.DataBindingUtil.setContentView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
+import com.example.myapplication.R.layout.fragment_home_base
+import com.example.myapplication.R.layout.fragment_recent
+import com.example.myapplication.databinding.FragmentHomeBaseBinding
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.ui.main.BaseFragment
+import com.example.myapplication.ui.main.location.around.AroundFragment
 import com.smarteist.autoimageslider.SliderView
-
+import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home_base.*
+import com.example.myapplication.R.id.home_base_layout
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),ClothesClickListener {
 
@@ -15,31 +23,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
         initAppbar()
         initSlide()
         rcView()
+
+
+        binding.button.setOnClickListener {
+            parentFragmentManager
+                .beginTransaction()
+                .add(R.id.home_base_layout, RecentFragment(),"recent")
+                .addToBackStack(null)
+                .commitAllowingStateLoss()
+        }
+
+
+
+        binding.secondbutton.setOnClickListener {
+            parentFragmentManager
+                .beginTransaction()
+                .replace(R.id.home_base_layout, NewFragment(),"new")
+                .addToBackStack(null)
+                .commitAllowingStateLoss()
+        }
+
+
+
     }
 
     private fun initAppbar() {
-        val toolbar: androidx.appcompat.widget.Toolbar
-        binding.apply {
-            toolbar = homeToolbar.toolbar
-            // 툴바 이름정하기
-            toolbar.setTitle("홈")
-//            // 툴바 뒤로가기 버튼 아이콘 정하기
-//            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_new_24)
-//            // 툴바 뒤로가기 버튼 클릭 이벤트
-//            toolbar.setNavigationOnClickListener {  }
-            // 툴바 메뉴 넣기
-            toolbar.inflateMenu(R.menu.menu_appbar)
-            // 툴바 클릭 이벤트
-            toolbar.setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.search -> {
-                    }
-                    R.id.notification -> {
-                    }
-                }
-                true
-            }
-        }
     }
 
     private fun initSlide(){
@@ -91,8 +99,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
 
 
 
-    private val dataSet: ArrayList<List<String>> = arrayListOf<List<String>>()
-
     private fun addClothes(){
 
         val clothes1=Clothes(
@@ -102,6 +108,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
             30000
         )
         clothesList.add(clothes1)
+        newclothesList.add(clothes1)
 
         val clothes2=Clothes(
             R.drawable.two,
@@ -110,6 +117,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
             30000
         )
         clothesList.add(clothes2)
+        newclothesList.add(clothes1)
 
         val clothes3=Clothes(
             R.drawable.two,
@@ -118,6 +126,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
             30000
         )
         clothesList.add(clothes3)
+        newclothesList.add(clothes1)
 
         val clothes4=Clothes(
             R.drawable.one,
@@ -126,6 +135,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
             30000
         )
         clothesList.add(clothes4)
+        newclothesList.add(clothes1)
 
         val clothes5=Clothes(
             R.drawable.two,
@@ -134,6 +144,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
             30000
         )
         clothesList.add(clothes5)
+        newclothesList.add(clothes1)
 
     }
 
@@ -146,8 +157,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
         binding.recyclerView.apply {
 
             layoutManager=
-                LinearLayoutManager(this@HomeFragment.context,LinearLayoutManager.HORIZONTAL,false)
-            adapter=CardViewAdapter(clothesList, this@HomeFragment)
+                LinearLayoutManager(this.context,LinearLayoutManager.HORIZONTAL,false)
+            adapter=CardViewAdapter(clothesList)
+
+        }
+
+
+        binding.SecondRecyclerView.apply {
+
+            layoutManager=
+                LinearLayoutManager(this.context,LinearLayoutManager.HORIZONTAL,false)
+            adapter=CardViewAdapter(newclothesList)
 
         }
 

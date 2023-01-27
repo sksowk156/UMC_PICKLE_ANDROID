@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">PICKLE</string>
+    <string name="action_accept">Accept</string>
+    <string name="action_deny">Deny</string>
+    <string name="title_location_disclosures">Location Permission</string>
+    <string name="msg_explanation_location_permission">PICKLE에서 내 기기 위치에 엑세스하도록 허용하시겠습니까?</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="store">store</string>
