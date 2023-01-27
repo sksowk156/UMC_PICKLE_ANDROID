@@ -12,7 +12,6 @@ class LocationFragment : BaseFragment<FragmentLocationBinding>(R.layout.fragment
         childFragmentManager
             .beginTransaction()
             .replace(R.id.location_layout, MapFragment())
-            .addToBackStack(null)
             .commitAllowingStateLoss()
     }
 
