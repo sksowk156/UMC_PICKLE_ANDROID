@@ -11,29 +11,6 @@
         android:clickable="true"
         tools:context=".ui.main.home.HomeFragment">
 
-        <include
-            android:id="@+id/home_toolbar"
-            layout="@layout/toolbar" />
-        <TextView
-            android:id="@+id/ex"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="home"
-            app:layout_constraintTop_toBottomOf="@id/home_toolbar"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-        <TextView
-            android:id="@+id/textHome"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/slider" />
 
         <com.smarteist.autoimageslider.SliderView
             android:id="@+id/slider"
@@ -44,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/ex"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.044"
             app:sliderAnimationDuration="600"
             app:sliderAutoCycleDirection="back_and_forth"
@@ -61,15 +38,69 @@
 
         </com.smarteist.autoimageslider.SliderView>
 
+        <TextView
+            android:id="@id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/slider"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="20dp"
+            android:text="최근 본 상품"/>
+
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="210dp"
+            android:background="#00ff0000"
+            android:text="더보기>"
+            android:textColor="@color/black"
+            android:textSize="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/text"
+            app:layout_constraintTop_toBottomOf="@id/slider" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/slider" >
+            app:layout_constraintTop_toBottomOf="@+id/text" >
 
         </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@id/newtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="20dp"
+            android:text="NEW"/>
+
+
+        <Button
+            android:id="@+id/secondbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="268dp"
+            android:background="#00ff0000"
+            android:text="더보기>"
+            android:textColor="@color/black"
+            android:textSize="10dp"
+            app:layout_constraintLeft_toRightOf="@+id/newtext"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/Second_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/newtext" >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

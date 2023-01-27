@@ -12,6 +12,7 @@
         tools:context=".ui.main.profile.myprofile.MyprofileFragment">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:clickable="true"
             android:id="@+id/myprofile_image_photo"
             android:layout_width="112dp"
             android:layout_height="112dp"
@@ -29,18 +30,17 @@
             android:id="@+id/myprofile_image1"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginStart="212dp"
-            android:background="@color/white"
+            android:background="@drawable/camera_background"
             android:src="@drawable/ic_baseline_notifications_none_24"
             app:civ_border_color="@color/black"
             app:civ_border_overlay="true"
             app:civ_border_width="1dp"
-            app:layout_constraintBottom_toTopOf="@+id/myprofile_textview1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.148"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.744" />
+            app:layout_constraintBottom_toBottomOf="@+id/myprofile_image_photo"
+            app:layout_constraintEnd_toEndOf="@+id/myprofile_image_photo"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/myprofile_image_photo"
+            app:layout_constraintTop_toTopOf="@+id/myprofile_image_photo"
+            app:layout_constraintVertical_bias="0.829" />
 
         <TextView
             android:id="@+id/myprofile_textview1"

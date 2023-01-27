@@ -10,6 +10,7 @@ import com.example.myapplication.databinding.ActivityStoreBinding
 
 
 class StoreActivity : AppCompatActivity() {
+
     private lateinit var viewBinding: ActivityStoreBinding
 
     override fun onCreate(savedInstanceState: Bundle?){
@@ -46,7 +47,7 @@ class StoreActivity : AppCompatActivity() {
                 intent.putExtra("storeName", dataList[position].store)
                 Log.d("intent", dataList[position].store)
                 intent.putExtra("clothName", dataList[position].cloth)
-                intent.putExtra("clothPrice", dataList[position].price)
+                intent.putExtra("clothPrice", dataList[position].price.toInt())
                 startActivity(intent)
             }
         })

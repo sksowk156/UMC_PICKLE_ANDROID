@@ -1,13 +1,17 @@
 package com.example.myapplication.ui
 
+import android.Manifest
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySecondBinding
 import com.example.myapplication.ui.main.chat.ChatFragment
 import com.example.myapplication.ui.main.favorite.FavoriteFragment
+import com.example.myapplication.ui.main.home.HomeBaseFragment
 import com.example.myapplication.ui.main.home.HomeFragment
 import com.example.myapplication.ui.main.location.LocationFragment
 import com.example.myapplication.ui.main.profile.ProfileBlankFragment
@@ -23,11 +27,28 @@ class SecondActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
+        if (!LocationPermissionUtils.isPermissionGranted(this)) {
+            LocationPopupUtils.dialogLocationDisclosures(this,
+                title = getString(R.string.title_location_disclosures),
+                message = getString(R.string.msg_explanation_location_permission),
+                getString(R.string.action_deny),
+                getString(R.string.action_accept),
+                onClickNeg = {
+                    // Continue run app no permission.
+                },
+                onClickPos = {
+                    requestLocationPermission()
+                })
+        } else {
+            checkPermissionAndroidQ()
+        }
+
+
         // 앱을 켰을 때 첫 fragment
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .add(binding.secondFramelayout.id, HomeFragment(), "home")
+                .add(binding.secondFramelayout.id, HomeBaseFragment(), "home")
                 .commitAllowingStateLoss()
             currentFragmenttag = "home" // 현재 보고 있는 fragmet의 Tag
         }
@@ -37,7 +58,7 @@ class SecondActivity : AppCompatActivity() {
         binding.secondBottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_home -> { // 첫 번째 fragment
-                    changeFragment("home", HomeFragment())
+                    changeFragment("home", HomeBaseFragment())
                 }
                 R.id.menu_favorite -> { // 두 번째 fragment
                     changeFragment("favorite", FavoriteFragment())
@@ -77,6 +98,55 @@ class SecondActivity : AppCompatActivity() {
         // currentFragmenttag에 '현재 fragment Tag' "first"를 저장한다.
         currentFragmenttag = tag
     }
+
+    //위치 권한
+    private val requestLocationPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            var isGranted = true
+            permissions.entries.forEach {
+                if (it.value == false) {
+                    isGranted = false
+                    return@registerForActivityResult
+                }
+            }
+            if (isGranted) {
+                // Check background permission android Q
+                checkPermissionAndroidQ()
+            } else {
+                // Continue run app no permission.
+            }
+
+        }
+
+    private fun requestLocationPermission() {
+        val permissions = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+        requestLocationPermissionLauncher.launch(permissions)
+    }
+    private val requestPermissionAndroidQ =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { _: Boolean ->
+            // We just receive action when user close screen setting background mode.
+            // Continue run app flow
+        }
+    private fun checkPermissionAndroidQ() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (LocationPermissionUtils.isBackgroundLocationGranted(this)) {
+                // Continue run app flow
+            } else {
+                LocationPermissionUtils.openSettingBackgroundMode(requestPermissionAndroidQ)
+            }
+
+        } else {
+            // Continue run app flow
+        }
+    }
+
 
 
 }
