@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.SecondActivity">
 
+    <include
+        android:id="@+id/second_toolbar"
+        layout="@layout/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <FrameLayout
         android:id="@+id/second_framelayout"
         android:layout_width="match_parent"
@@ -13,7 +20,7 @@
         app:layout_constraintBottom_toTopOf="@+id/second_bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/second_toolbar">
 
     </FrameLayout>
 

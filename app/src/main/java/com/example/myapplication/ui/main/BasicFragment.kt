@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
+import com.example.myapplication.ui.SecondActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 abstract class BaseFragment<T: ViewDataBinding>(
@@ -20,6 +21,10 @@ abstract class BaseFragment<T: ViewDataBinding>(
 
     // 뒤로가기 버튼을 눌렀을 때를 위한 callback 변수
     private lateinit var callback: OnBackPressedCallback
+
+    protected lateinit var activitytoolbar: androidx.appcompat.app.ActionBar
+     var searchItem: MenuItem? = null
+     var notificationItem : MenuItem? = null
 
     // 뒤로가기 버튼을 눌렀을 때
     protected fun backpress(){
@@ -38,6 +43,24 @@ abstract class BaseFragment<T: ViewDataBinding>(
         }
     }
 
+    protected fun initAppbar(name:String, switch : Boolean){
+        (requireActivity() as SecondActivity).supportActionBar?.apply {
+            activitytoolbar = this
+        }
+        searchItem = (requireActivity() as SecondActivity).searchItem
+        notificationItem = (requireActivity() as SecondActivity).notificationItem
+        // 뒤로가기 버튼 추가
+        activitytoolbar.setDisplayHomeAsUpEnabled(switch)
+        // 툴바 제목 변경
+        activitytoolbar.setTitle(name)
+        // item 가리기
+        if (searchItem != null) {
+            searchItem?.setVisible(!switch)
+        }
+        if (notificationItem != null) {
+            notificationItem?.setVisible(!switch)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

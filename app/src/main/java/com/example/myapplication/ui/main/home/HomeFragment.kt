@@ -2,8 +2,15 @@ package com.example.myapplication.ui.main.home
 
 
 import android.content.Intent
+import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil.setContentView
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.R.layout.fragment_home_base
@@ -16,15 +23,16 @@ import com.smarteist.autoimageslider.SliderView
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home_base.*
 import com.example.myapplication.R.id.home_base_layout
+import com.example.myapplication.ui.SecondActivity
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),ClothesClickListener {
 
+    lateinit var menuHost : MenuHost
+    lateinit var menuProvider_base : MenuProvider
+
     override fun init() {
-        initAppbar()
         initSlide()
         rcView()
-
-
         binding.button.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
@@ -33,8 +41,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
                 .commitAllowingStateLoss()
         }
 
-
-
         binding.secondbutton.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
@@ -42,13 +48,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
                 .addToBackStack(null)
                 .commitAllowingStateLoss()
         }
-
-
-
     }
 
-    private fun initAppbar() {
-    }
 
     private fun initSlide(){
 
