@@ -1,7 +1,6 @@
 package com.example.myapplication.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
