@@ -12,31 +12,31 @@
     <ImageButton
         android:id="@+id/button"
         android:layout_width="328dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:src="@drawable/kakaologin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.752" />
+        app:layout_constraintVertical_bias="0.705" />
 
     <ImageButton
         android:id="@+id/button2"
         android:layout_width="328dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:src="@drawable/naverlogin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.636" />
+        app:layout_constraintVertical_bias="0.614" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="600px"
-        android:layout_height="200px"
+        android:layout_width="262dp"
+        android:layout_height="66dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
