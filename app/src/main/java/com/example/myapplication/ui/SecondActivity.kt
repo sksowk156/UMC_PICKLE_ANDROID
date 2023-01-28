@@ -8,10 +8,13 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputFilter
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
@@ -60,14 +63,6 @@ class SecondActivity : AppCompatActivity() {
 
         // 전체 Appbar 초기화
         initAppbar()
-
-        // Verify the action and get the query
-        if (Intent.ACTION_SEARCH == intent.action) {
-            intent.getStringExtra(SearchManager.QUERY)?.also { query ->
-                Log.d("whatisthis",query.toString())
-            }
-        }
-
         // 네비게이션 버튼 클릭시 프래그먼트 전환
         binding.secondBottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
@@ -128,20 +123,29 @@ class SecondActivity : AppCompatActivity() {
         addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menu.clear()
-                // Add menu items here
+                // 메뉴 추가
                 menuInflater.inflate(R.menu.menu_appbar, menu)
+                // 메뉴 버튼(검색, 알림) visible
                 searchItem = menu.findItem(R.id.search)
                 notificationItem = menu.findItem(R.id.notification)
                 searchItem?.setVisible(true)
                 notificationItem?.setVisible(true)
-                // searchView 기능
+                // searchView 선언
                 var searchView = searchItem?.actionView as SearchView
+                // searchView 힌트
+                searchView.queryHint = "검색중"
+                // searchView editText
+                var searchViewEditText = searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
+                searchViewEditText.apply {
+                    this.filters = arrayOf(InputFilter.LengthFilter(12))
+                }
+
+                // 검색 서비스
                 var searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
                 searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
                 searchView.setOnQueryTextListener(object :
                     SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        Log.d("whatisthis", "11")
                         return true
                     }
                     override fun onQueryTextChange(newText: String?): Boolean {
@@ -149,6 +153,22 @@ class SecondActivity : AppCompatActivity() {
                         return true
                     }
                 })
+                searchView.setOnQueryTextFocusChangeListener { v, hasFocus ->
+                    when(hasFocus){
+                        true ->{
+                            // 검색창 열림
+                            binding.secondSearchlayout.visibility = View.VISIBLE
+                            binding.secondBottomNavigationView.visibility = View.INVISIBLE
+                        }
+                        false ->{
+                            // 검색창 닫힘
+                            binding.secondSearchlayout.visibility = View.INVISIBLE
+                            binding.secondBottomNavigationView.visibility = View.VISIBLE
+
+                        }
+                    }
+                }
+
             }
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 // Handle the menu selection
@@ -166,6 +186,7 @@ class SecondActivity : AppCompatActivity() {
             }
         })
     }
+
     // 부분 초기화 메소드
     private fun initPartAppbar(name:String, switch : Boolean){
         // 뒤로가기 버튼 추가
