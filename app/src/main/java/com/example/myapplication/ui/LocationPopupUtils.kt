@@ -17,8 +17,6 @@ import com.example.myapplication.R
  * Created by NguyenLinh on 23,June,2022
  */
 object LocationPopupUtils {
-
-
     fun dialogLocationDisclosures(
         context: Context,
         title: String,

@@ -35,8 +35,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.SecondActivity" />
-
+        <activity android:name=".ui.SecondActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
 
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
