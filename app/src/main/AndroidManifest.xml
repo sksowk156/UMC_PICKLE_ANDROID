@@ -37,7 +37,6 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-
         <activity android:name=".ui.MainActivity" />
 
         <activity
