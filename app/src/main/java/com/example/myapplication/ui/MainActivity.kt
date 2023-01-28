@@ -1,22 +1,25 @@
 package com.example.myapplication.ui
 
+import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
-
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
+    val api = APIS.create();
     lateinit var viewbinding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,13 +47,36 @@ class MainActivity : AppCompatActivity() {
                     }
                     // 로그인 성공 부분
                     else if (token != null) {
-                        Log.e(TAG, "로그인 성공 ${token.accessToken}")
+                        Log.e(TAG, "로그인 성공! 토큰값 : ${token.accessToken}")
                         UserApiClient.instance.me { user, error ->
-                        Toast.makeText(this, "${user?.kakaoAccount?.profile?.nickname}님 반갑습니다.", Toast.LENGTH_SHORT).show()
+                            Log.e(TAG, "닉네임 ${user?.kakaoAccount?.profile?.nickname}")
+                            Log.e(TAG, "이메일 ${user?.kakaoAccount?.email}" )
                         }
-                        val intent = Intent(this, SecondActivity::class.java)
-                        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                        finish()
+
+                        UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
+                            if (token != null) {
+                                val data = PostModel(token.accessToken)
+                                api.post_users(data).enqueue(object : Callback<PostResult> {
+                                    override fun onResponse(call: Call<PostResult>, response: Response<PostResult>) {
+                                        Log.d("log", response.toString())
+                                        Log.d("log", response.body().toString())
+                                    }
+
+                                    override fun onFailure(call: Call<PostResult>, t: Throwable) {
+                                        // 실패
+                                        Log.d("log", t.message.toString())
+                                        Log.d("log", "fail")
+                                    }
+                                })
+                                Log.e(ContentValues.TAG, "토큰값 전송 완료 ${token.accessToken}")
+                                UserApiClient.instance.me { user, error ->
+                                    Toast.makeText(this, "${user?.kakaoAccount?.profile?.nickname}님 환영합니다.", Toast.LENGTH_SHORT).show()
+                                }
+                                val intent = Intent(this, SecondActivity::class.java)
+                                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                                finish()
+                            }
+                        }
                     }
                 }
             } else {
@@ -94,7 +120,7 @@ class MainActivity : AppCompatActivity() {
         }
         else if (token != null) {
             Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, SecondActivity::class.java)
+            val intent = Intent(this, AgreementActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finish()
         }

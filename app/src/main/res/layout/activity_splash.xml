@@ -13,9 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/pickle_white" />
-
-
+        app:srcCompat="@drawable/app_launcher_icon" />
 
 
 </FrameLayout>
