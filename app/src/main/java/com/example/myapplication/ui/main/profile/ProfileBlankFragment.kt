@@ -2,17 +2,22 @@ package com.example.myapplication.ui.main.profile
 
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentProfileBlankBinding
-import com.example.myapplication.ui.SecondActivity
-import com.example.myapplication.ui.main.BaseFragment
+import com.example.myapplication.ui.base.AppbarData
+import com.example.myapplication.ui.base.BaseFragment
 
 class ProfileBlankFragment :
     BaseFragment<FragmentProfileBlankBinding>(R.layout.fragment_profile_blank) {
+    lateinit var appbarData: AppbarData
 
     override fun init() {
         childFragmentManager.beginTransaction()
             .replace(R.id.profileblank_layout, ProfileFragment(), "profile")
             .commitAllowingStateLoss()
 
+        changeAppbar()
+    }
+
+    fun changeAppbar(){
         childFragmentManager.addOnBackStackChangedListener {
             when (childFragmentManager.fragments.last().tag) {
                 "myprofile" -> {

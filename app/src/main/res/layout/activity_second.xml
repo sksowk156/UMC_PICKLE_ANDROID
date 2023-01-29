@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.SecondActivity">
+    tools:context=".ui.main.SecondActivity">
 
     <include
         android:id="@+id/second_toolbar"
@@ -21,7 +21,9 @@
         app:layout_constraintBottom_toTopOf="@+id/second_bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/second_toolbar"></FrameLayout>
+        app:layout_constraintTop_toBottomOf="@id/second_toolbar">
+
+    </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/second_bottomNavigationView"
@@ -30,14 +32,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav"/>
+        app:menu="@menu/bottom_nav" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/teal_700"
-        android:clickable="true"
         android:id="@+id/second_searchlayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@android:color/white"
+        android:clickable="true"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,135 +47,28 @@
         app:layout_constraintTop_toBottomOf="@id/second_toolbar">
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/second_textview1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="17dp"
             android:layout_marginTop="20dp"
+            android:textColor="@color/lightgrey"
             android:text="최근 검색어"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-        <include
-            android:id="@+id/second_textview_searchhistory1"
-            layout="@layout/search_history"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/second_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="20dp"
-            android:layout_weight="1"
-            app:layout_constraintEnd_toStartOf="@+id/second_textview_searchhistory2"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintTop_toBottomOf="@id/second_textview1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-
-        <include
-            android:id="@+id/second_textview_searchhistory2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            layout="@layout/search_history"
-            app:layout_constraintBottom_toBottomOf="@+id/second_textview_searchhistory1"
-            app:layout_constraintEnd_toStartOf="@+id/second_textview_searchhistory3"
-            app:layout_constraintStart_toEndOf="@+id/second_textview_searchhistory1"
-            app:layout_constraintTop_toTopOf="@+id/second_textview_searchhistory1" />
-
-        <include
-            android:id="@+id/second_textview_searchhistory3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            layout="@layout/search_history"
-            app:layout_constraintBottom_toBottomOf="@+id/second_textview_searchhistory2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/second_textview_searchhistory2"
-            app:layout_constraintTop_toTopOf="@+id/second_textview_searchhistory2" />
-
-        <include
-            android:id="@+id/second_textview_searchhistory4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_weight="1"
-            layout="@layout/search_history"
-            app:layout_constraintEnd_toEndOf="@+id/second_textview_searchhistory1"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/second_textview_searchhistory1"
-            app:layout_constraintTop_toBottomOf="@+id/second_textview_searchhistory1" />
-
-        <include
-            android:id="@+id/second_textview_searchhistory5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            layout="@layout/search_history"
-            app:layout_constraintBottom_toBottomOf="@+id/second_textview_searchhistory4"
-            app:layout_constraintEnd_toStartOf="@+id/second_textview_searchhistory6"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/second_textview_searchhistory4"
-            app:layout_constraintTop_toTopOf="@+id/second_textview_searchhistory4" />
-
-        <include
-            android:id="@+id/second_textview_searchhistory6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            layout="@layout/search_history"
-            app:layout_constraintBottom_toBottomOf="@+id/second_textview_searchhistory5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/second_textview_searchhistory5"
-            app:layout_constraintTop_toTopOf="@+id/second_textview_searchhistory5" />
-
-        <include
-            android:id="@+id/second_textview_searchhistory7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_weight="1"
-            layout="@layout/search_history"
-            app:layout_constraintEnd_toEndOf="@+id/second_textview_searchhistory4"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/second_textview_searchhistory4"
-            app:layout_constraintTop_toBottomOf="@+id/second_textview_searchhistory4" />
-
-        <include
-            android:id="@+id/second_textview_searchhistory8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            layout="@layout/search_history"
-            app:layout_constraintBottom_toBottomOf="@+id/second_textview_searchhistory7"
-            app:layout_constraintEnd_toStartOf="@+id/second_textview_searchhistory9"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/second_textview_searchhistory7"
-            app:layout_constraintTop_toTopOf="@+id/second_textview_searchhistory7" />
-
-        <include
-            android:id="@+id/second_textview_searchhistory9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            layout="@layout/search_history"
-            app:layout_constraintBottom_toBottomOf="@+id/second_textview_searchhistory8"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/second_textview_searchhistory8"
-            app:layout_constraintTop_toTopOf="@+id/second_textview_searchhistory8" />
-
-        <include
-            android:id="@+id/second_textview_searchhistory10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_weight="1"
-            layout="@layout/search_history"
-            app:layout_constraintEnd_toEndOf="@+id/second_textview_searchhistory7"
-            app:layout_constraintStart_toStartOf="@+id/second_textview_searchhistory7"
-            app:layout_constraintTop_toBottomOf="@+id/second_textview_searchhistory7" />
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.main.profile.myprofile
 
-import android.Manifest
 import android.Manifest.permission.*
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
@@ -10,22 +9,15 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.widget.Button
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil.setContentView
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
-import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.databinding.FragmentMyprofileBinding
-import com.example.myapplication.ui.main.BaseFragment
+import com.example.myapplication.ui.base.BaseFragment
 import java.text.SimpleDateFormat
 import java.util.*
 

@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.main
+package com.example.myapplication.ui.base
 
 import android.os.Bundle
 import android.view.*
@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
-import com.example.myapplication.ui.SecondActivity
+import com.example.myapplication.ui.main.SecondActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 abstract class BaseFragment<T: ViewDataBinding>(
@@ -42,7 +42,7 @@ abstract class BaseFragment<T: ViewDataBinding>(
         }
     }
 
-    protected fun initAppbar(name:String, switch : Boolean){
+    protected fun initAppbar(name:String, switch : Boolean) : AppbarData{
         (requireActivity() as SecondActivity).supportActionBar?.apply {
             activitytoolbar = this
         }
@@ -59,6 +59,7 @@ abstract class BaseFragment<T: ViewDataBinding>(
         if (notificationItem != null) {
             notificationItem?.setVisible(!switch)
         }
+        return AppbarData(name, switch)
     }
 
     override fun onCreateView(

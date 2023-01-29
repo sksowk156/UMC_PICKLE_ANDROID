@@ -2,7 +2,7 @@ package com.example.myapplication.ui.main.profile
 
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentProfileBinding
-import com.example.myapplication.ui.main.BaseFragment
+import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.profile.inquiry.InquiryFragment
 import com.example.myapplication.ui.main.profile.logout.LogoutFragment
 import com.example.myapplication.ui.main.profile.myprofile.MyprofileFragment

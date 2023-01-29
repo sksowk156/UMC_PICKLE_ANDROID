@@ -3,10 +3,7 @@ package com.example.myapplication.ui.main.profile.orderstatus
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.databinding.ItemNoticeRecyclerBinding
 import com.example.myapplication.databinding.ItemOrderstatusRecyclerBinding
-import com.example.myapplication.ui.main.profile.notice.NoticeAdapter
-import com.example.myapplication.ui.main.profile.notice.NoticeData
 
 class OrderstatusAdapter : RecyclerView.Adapter<OrderstatusAdapter.ViewHolder>() {
 
