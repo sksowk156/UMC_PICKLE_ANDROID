@@ -1,18 +1,12 @@
 package com.example.myapplication.ui.main.home
 
-import android.os.Bundle
-import android.util.Log
-import android.view.*
-import androidx.fragment.app.Fragment
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentRecentBinding
-import com.example.myapplication.ui.SecondActivity
-import com.example.myapplication.ui.main.BaseFragment
+import com.example.myapplication.ui.base.BaseFragment
 
 class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent) {
     // 뒤로가기 버튼을 눌렀을 때를 위한 callback 변수

@@ -1,10 +1,9 @@
 package com.example.myapplication.ui.main.location.around
 
-import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentAroundBinding
-import com.example.myapplication.ui.main.BaseFragment
+import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.location.MapAroundData
 
 

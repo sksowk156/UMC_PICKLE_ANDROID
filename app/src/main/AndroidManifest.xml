@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
+        android:name=".utils.ApplicationClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
-            android:name=".ui.AgreementActivity"
+            android:name=".ui.login.AgreementActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -25,7 +26,7 @@
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="b2kjcldcq0" /> <!-- 처음 시작하는 화면을 설정 -->
         <activity
-            android:name=".ui.SplashActivity"
+            android:name=".ui.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +35,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.SecondActivity"
+        <activity android:name=".ui.main.SecondActivity"
             android:launchMode="singleTop"
             android:exported="true">
             <intent-filter>
@@ -45,7 +46,7 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <activity android:name=".ui.MainActivity" />
+        <activity android:name=".ui.login.MainActivity" />
 
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"

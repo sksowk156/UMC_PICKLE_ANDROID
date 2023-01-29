@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemInquiryRecyclerBinding
 
 class InquiryAdapter : RecyclerView.Adapter<InquiryAdapter.ViewHolder>() {

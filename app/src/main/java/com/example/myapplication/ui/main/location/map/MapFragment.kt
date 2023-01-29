@@ -5,7 +5,7 @@ import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMapBinding
-import com.example.myapplication.ui.main.BaseFragment
+import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.location.around.AroundFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.naver.maps.geometry.LatLng

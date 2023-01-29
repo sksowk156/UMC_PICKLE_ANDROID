@@ -1,4 +1,4 @@
-package com.example.myapplication.ui
+package com.example.myapplication.ui.login
 
 import android.content.ContentValues
 import android.content.ContentValues.TAG
@@ -8,6 +8,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ActivityMainBinding
+import com.example.myapplication.db.remote.APIS
+import com.example.myapplication.ui.*
+import com.example.myapplication.ui.main.SecondActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.AuthErrorCause

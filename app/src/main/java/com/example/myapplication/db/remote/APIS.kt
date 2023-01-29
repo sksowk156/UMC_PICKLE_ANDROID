@@ -1,5 +1,7 @@
-package com.example.myapplication.ui
+package com.example.myapplication.db.remote
 
+import com.example.myapplication.ui.PostModel
+import com.example.myapplication.ui.PostResult
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import retrofit2.Call

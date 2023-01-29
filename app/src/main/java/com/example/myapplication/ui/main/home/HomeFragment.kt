@@ -2,28 +2,13 @@ package com.example.myapplication.ui.main.home
 
 
 import android.content.Intent
-import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import androidx.activity.OnBackPressedCallback
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.databinding.DataBindingUtil.setContentView
-import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.R.layout.fragment_home_base
-import com.example.myapplication.R.layout.fragment_recent
-import com.example.myapplication.databinding.FragmentHomeBaseBinding
 import com.example.myapplication.databinding.FragmentHomeBinding
-import com.example.myapplication.ui.main.BaseFragment
-import com.example.myapplication.ui.main.location.around.AroundFragment
+import com.example.myapplication.ui.base.BaseFragment
 import com.smarteist.autoimageslider.SliderView
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_home_base.*
-import com.example.myapplication.R.id.home_base_layout
-import com.example.myapplication.ui.SecondActivity
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),ClothesClickListener {
 

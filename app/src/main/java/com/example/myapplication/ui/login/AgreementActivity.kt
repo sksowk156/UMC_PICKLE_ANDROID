@@ -1,4 +1,4 @@
-package com.example.myapplication.ui
+package com.example.myapplication.ui.login
 
 import android.content.ContentValues
 import android.content.Intent
@@ -10,6 +10,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import com.example.myapplication.databinding.ActivityAgreementBinding
+import com.example.myapplication.db.remote.APIS
+import com.example.myapplication.ui.PostModel
+import com.example.myapplication.ui.PostResult
+import com.example.myapplication.ui.main.SecondActivity
 import com.kakao.sdk.user.UserApiClient
 
 class AgreementActivity : AppCompatActivity() {
