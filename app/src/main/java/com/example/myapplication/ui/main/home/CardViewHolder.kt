@@ -2,6 +2,7 @@ package com.example.myapplication.ui.main.home
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.CardCellBinding
+import com.example.myapplication.ui.main.home.Clothes
 
 class CardViewHolder(
     private val cardCellBinding: CardCellBinding
@@ -20,4 +21,3 @@ class CardViewHolder(
 
     }
 }
-

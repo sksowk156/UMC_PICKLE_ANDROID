@@ -1,7 +1,5 @@
 package com.example.myapplication.ui.main.home
 
-
-
 var clothesList= mutableListOf<Clothes>()
 var newclothesList= mutableListOf<Clothes>()
 
@@ -15,3 +13,4 @@ data class Clothes(
     val id:Int?= newclothesList.size
 
 )
+
