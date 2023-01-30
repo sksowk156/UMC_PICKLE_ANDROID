@@ -3,12 +3,10 @@ package com.example.myapplication.ui.main.home
 import android.util.Log
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBaseBinding
-import com.example.myapplication.ui.base.AppbarData
 import com.example.myapplication.ui.base.BaseFragment
 
 class HomeBaseFragment : BaseFragment<FragmentHomeBaseBinding>(R.layout.fragment_home_base) {
-
-    lateinit var appbarData: AppbarData
+//    private var searchHistoryDataList = ArrayList<SearchHistroyData>()
 
     override fun init() {
         // 초기 화면
@@ -16,22 +14,24 @@ class HomeBaseFragment : BaseFragment<FragmentHomeBaseBinding>(R.layout.fragment
             .beginTransaction()
             .replace(R.id.home_base_layout, HomeFragment(), "home")
             .commitAllowingStateLoss()
+        initAppbar(binding.homeBaseToolbarcontent, binding.homeBaseToolbar, "홈")
         changeAppbar()
     }
 
-    fun changeAppbar(){
+    fun changeAppbar() {
         childFragmentManager.addOnBackStackChangedListener {
             when (childFragmentManager.fragments.last().tag) {
                 "recent" -> {
-                    appbarData = initAppbar("최근 본 상품",true)
+                    initSubAppbar("최근 본 상품", true, false)
                 }
                 "new" -> {
-                    appbarData = initAppbar("NEW",true)
+                    initSubAppbar("NEW", true, false)
                 }
                 "home" -> {
-                    appbarData = initAppbar("홈",false)
+                    initSubAppbar("홈", false, true)
                 }
             }
         }
     }
+
 }

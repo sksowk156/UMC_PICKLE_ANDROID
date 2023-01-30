@@ -12,9 +12,6 @@ import com.smarteist.autoimageslider.SliderView
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),ClothesClickListener {
 
-    lateinit var menuHost : MenuHost
-    lateinit var menuProvider_base : MenuProvider
-
     override fun init() {
         initSlide()
         rcView()

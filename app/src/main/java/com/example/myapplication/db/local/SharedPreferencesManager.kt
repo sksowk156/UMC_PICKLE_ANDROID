@@ -2,7 +2,7 @@ package com.example.myapplication.db.local
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.myapplication.ui.main.SearchHistroyData
+import com.example.myapplication.ui.base.SearchHistroyData
 import com.example.myapplication.utils.ApplicationClass.Companion.SHARED_SEARCH_HISTORY
 import com.google.gson.Gson
 
@@ -16,7 +16,6 @@ class SharedPreferencesManager(context: Context) {
     // 데이터 출력
     fun getsearchhistoryString(key: String): MutableList<SearchHistroyData> {
         var storedSearchHistoryList = ArrayList<SearchHistroyData>()
-
         val storedSearchHistoryListString =  searchhistoryprefs.getString(key, "")!!
         // 검색 목록에 값이 있다면
         if(storedSearchHistoryListString.isNotEmpty()){
