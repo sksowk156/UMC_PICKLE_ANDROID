@@ -1,5 +1,6 @@
-package com.example.myapplication.ui.main
+package com.example.myapplication.ui.base
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +41,9 @@ class SearchhistoryAdapter(val clicklistener: ItemClickListener) :
     }
 
     override fun getItemCount(): Int {
-        return userList?.size ?: 0
+//        Log.d("whatisthis",userList?.size.toString())
+//        userList?.size?.let { Math.min(it, 5) }
+        return userList?.size?.let { Math.min(it, 10) }?: 0
     }
 
     inner class ViewHolder(val binding: ItemSearchhistoryRecyclerBinding) :

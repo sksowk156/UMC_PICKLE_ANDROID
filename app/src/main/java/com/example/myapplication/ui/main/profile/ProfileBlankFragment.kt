@@ -2,18 +2,17 @@ package com.example.myapplication.ui.main.profile
 
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentProfileBlankBinding
-import com.example.myapplication.ui.base.AppbarData
 import com.example.myapplication.ui.base.BaseFragment
 
 class ProfileBlankFragment :
     BaseFragment<FragmentProfileBlankBinding>(R.layout.fragment_profile_blank) {
-    lateinit var appbarData: AppbarData
 
     override fun init() {
-        childFragmentManager.beginTransaction()
+        childFragmentManager
+            .beginTransaction()
             .replace(R.id.profileblank_layout, ProfileFragment(), "profile")
             .commitAllowingStateLoss()
-
+        initAppbar(binding.profileblankToolbarcontent,binding.profileblankToolbar,"마이페이지")
         changeAppbar()
     }
 
@@ -21,28 +20,28 @@ class ProfileBlankFragment :
         childFragmentManager.addOnBackStackChangedListener {
             when (childFragmentManager.fragments.last().tag) {
                 "myprofile" -> {
-                    initAppbar("내 정보 수정",true)
+                    initSubAppbar("내 정보 수정", true, false)
                 }
                 "completeorder" -> {
-                    initAppbar("주문 완료",true)
+                    initSubAppbar("주문 완료", true, false)
                 }
                 "pickup" -> {
-                    initAppbar("픽업 중",true)
+                    initSubAppbar("픽업 중", true, false)
                 }
                 "pickupconfirm" -> {
-                    initAppbar("픽업 완료",true)
+                    initSubAppbar("픽업 완료", true, false)
                 }
                 "purchaseconfirm" -> {
-                    initAppbar("구매 확정",true)
+                    initSubAppbar("구매 확정", true, false)
                 }
                 "notice" -> {
-                    initAppbar("공지사항",true)
+                    initSubAppbar("공지사항", true, false)
                 }
                 "inquiry" -> {
-                    initAppbar("문의사항",true)
+                    initSubAppbar("문의사항", true, false)
                 }
                 "profile" -> {
-                    initAppbar("마이페이지",false)
+                    initSubAppbar("마이페이지", false, true)
                 }
             }
         }

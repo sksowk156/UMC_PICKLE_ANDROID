@@ -15,16 +15,9 @@ import com.smarteist.autoimageslider.SliderView
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
 
-    lateinit var menuHost : MenuHost
-    lateinit var menuProvider_base : MenuProvider
-    private lateinit var callback: OnBackPressedCallback
-
     override fun init() {
-
         initSlide()
         rcView()
-        initBackbtn()
-
 
         binding.button.setOnClickListener {
             parentFragmentManager
@@ -164,30 +157,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
             adapter=CardViewAdapter(newclothesList)
 
         }
-
     }
-
-
-
-
-    private fun initBackbtn(){
-        // 뒤로 가기 버튼을 눌렀을 때 이벤트 처리
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                parentFragmentManager
-                    .popBackStackImmediate(null, 0)
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-
-    }
-
-
-    // 프래그먼트가 종료되면 callback 변수 제거
-    override fun onDetach() {
-        super.onDetach()
-        callback.remove()
-    }
-
-
 }
