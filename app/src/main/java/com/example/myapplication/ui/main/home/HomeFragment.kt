@@ -2,19 +2,23 @@ package com.example.myapplication.ui.main.home
 
 
 import android.content.Intent
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.ui.base.BaseFragment
+
 import com.smarteist.autoimageslider.SliderView
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),ClothesClickListener {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
 
     override fun init() {
         initSlide()
         rcView()
+
         binding.button.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
@@ -111,7 +115,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
         clothesList.add(clothes3)
         newclothesList.add(clothes1)
 
-        val clothes4=Clothes(
+        val clothes4= Clothes(
             R.drawable.one,
             "store1",
             "옷4",
@@ -153,19 +157,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
             adapter=CardViewAdapter(newclothesList)
 
         }
-
     }
-
-    override fun onClick(clothes: Clothes) {
-        val intent= Intent(this@HomeFragment.context,javaClass)
-        intent.putExtra(CLOTHES_ID_EXTRA,clothes.id)
-    }
-
-  /*  private fun addData(){
-        for(i in 0 .. 9){
-            dataSet.add(listOf("$i th main","$i th sub"))
-        }
-    }*/
-
-
 }

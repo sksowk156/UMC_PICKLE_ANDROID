@@ -84,8 +84,6 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         }
 
 
-
-
     }
 
 

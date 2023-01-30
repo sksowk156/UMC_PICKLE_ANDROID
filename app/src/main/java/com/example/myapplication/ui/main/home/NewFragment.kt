@@ -13,13 +13,10 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) {
 
     override fun init() {
 
-
         rcView()
         initBackbtn()
 
     }
-
-
 
     private fun addClothes(){
 
@@ -70,20 +67,15 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) {
 
     }
 
-
-
     private fun rcView(){
         addClothes()
-
 
         binding.newRecyclerView.apply {
 
             layoutManager= GridLayoutManager(this.context,2)
-            adapter=CardViewAdapter(clothesList)
+            adapter=CardViewAdapter(newclothesList)
 
         }
-
-
 
     }
 
