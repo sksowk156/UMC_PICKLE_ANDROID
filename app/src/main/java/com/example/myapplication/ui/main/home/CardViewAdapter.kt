@@ -9,15 +9,15 @@ import com.example.myapplication.ui.main.home.Clothes
 
 
 class CardViewAdapter(
-    private val clothes:List<Clothes>
-    // private val clickListener: HomeFragment
+    private val clothes:List<Clothes>,
+    private val clickListener: ClothesClickListener
 )
     : RecyclerView.Adapter<CardViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
 
         val from= LayoutInflater.from(parent.context)
         val binding= CardCellBinding.inflate(from,parent,false)
-        return CardViewHolder(binding)
+        return CardViewHolder(binding,clickListener)
     }
 
     override fun getItemCount(): Int=clothes.size

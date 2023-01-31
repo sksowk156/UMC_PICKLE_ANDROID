@@ -1,13 +1,16 @@
 package com.example.myapplication.ui.main.home
 
+import android.content.Intent
 import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentNewBinding
 import com.example.myapplication.ui.base.BaseFragment
+import com.example.myapplication.ui.store.ClothActivity
+import com.example.myapplication.ui.store.StoreActivity
 
 
-class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) {
+class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) ,ClothesClickListener{
     // 뒤로가기 버튼을 눌렀을 때를 위한 callback 변수
     private lateinit var callback: OnBackPressedCallback
 
@@ -73,10 +76,19 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) {
         binding.newRecyclerView.apply {
 
             layoutManager= GridLayoutManager(this.context,2)
-            adapter=CardViewAdapter(newclothesList)
+            adapter=CardViewAdapter(newclothesList,this@NewFragment)
 
         }
 
+    }
+    override fun onClick(clothes: Clothes) {
+     //   val intent = Intent(context, ClothActivity::class.java)
+      //  startActivity(intent)
+    }
+
+    override fun onClickStore(string: String) {
+        val intent = Intent(getActivity(), StoreActivity::class.java)
+        startActivity(intent)
     }
 
 
@@ -99,5 +111,7 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) {
         super.onDetach()
         callback.remove()
     }
+
+
 
 }

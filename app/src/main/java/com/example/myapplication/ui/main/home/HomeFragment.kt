@@ -2,18 +2,17 @@ package com.example.myapplication.ui.main.home
 
 
 import android.content.Intent
-import androidx.activity.OnBackPressedCallback
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.ui.base.BaseFragment
+import com.example.myapplication.ui.store.ClothActivity
+import com.example.myapplication.ui.store.StoreActivity
 
 import com.smarteist.autoimageslider.SliderView
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
+class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),ClothesClickListener{
 
     override fun init() {
         initSlide()
@@ -145,7 +144,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
 
             layoutManager=
                 LinearLayoutManager(this.context,LinearLayoutManager.HORIZONTAL,false)
-            adapter=CardViewAdapter(clothesList)
+            adapter=CardViewAdapter(clothesList,this@HomeFragment)
 
         }
 
@@ -154,8 +153,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
 
             layoutManager=
                 LinearLayoutManager(this.context,LinearLayoutManager.HORIZONTAL,false)
-            adapter=CardViewAdapter(newclothesList)
+            adapter=CardViewAdapter(newclothesList,this@HomeFragment)
 
         }
     }
+
+    override fun onClick(clothes: Clothes) {
+
+   //     val intent = Intent(getActivity(), ClothActivity::class.java)
+    //    startActivity(intent)
+
+    }
+    override fun onClickStore(string: String) {
+        val intent = Intent(getActivity(), StoreActivity::class.java)
+        startActivity(intent)
+    }
+
 }

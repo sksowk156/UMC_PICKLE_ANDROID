@@ -2,10 +2,10 @@ package com.example.myapplication.ui.main.home
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.CardCellBinding
-import com.example.myapplication.ui.main.home.Clothes
 
 class CardViewHolder(
-    private val cardCellBinding: CardCellBinding
+    private val cardCellBinding: CardCellBinding,
+    private val clickListener: ClothesClickListener
 ): RecyclerView.ViewHolder(cardCellBinding.root) {
 
     fun bindClothes(clothes: Clothes){
@@ -16,7 +16,11 @@ class CardViewHolder(
         cardCellBinding.price.text= clothes.price.toString()
 
         cardCellBinding.cardviewframe.setOnClickListener{
-            //clickListener.onClick(clothes)
+            clickListener.onClick(clothes)
+        }
+
+        cardCellBinding.store.setOnClickListener{
+            clickListener.onClickStore(clothes.store)
         }
 
     }

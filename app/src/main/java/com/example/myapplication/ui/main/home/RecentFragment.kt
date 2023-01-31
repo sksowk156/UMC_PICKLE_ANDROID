@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.main.home
 
+import android.content.Intent
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -7,8 +8,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentRecentBinding
 import com.example.myapplication.ui.base.BaseFragment
+import com.example.myapplication.ui.store.ClothActivity
+import com.example.myapplication.ui.store.StoreActivity
 
-class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent) {
+class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent),ClothesClickListener {
     // 뒤로가기 버튼을 눌렀을 때를 위한 callback 변수
     private lateinit var callback: OnBackPressedCallback
     lateinit var menuProvider_recent : MenuProvider
@@ -79,7 +82,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         binding.newRecyclerView.apply {
 
             layoutManager= GridLayoutManager(this.context,2)
-            adapter=CardViewAdapter(clothesList)
+            adapter=CardViewAdapter(clothesList,this@RecentFragment)
 
         }
 
@@ -105,6 +108,16 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
     override fun onDetach() {
         super.onDetach()
         callback.remove()
+    }
+
+    override fun onClick(clothes: Clothes) {
+      //  val intent = Intent(context, ClothActivity::class.java)
+       // startActivity(intent)
+    }
+
+    override fun onClickStore(string: String) {
+        val intent = Intent(getActivity(), StoreActivity::class.java)
+        startActivity(intent)
     }
 
 }
