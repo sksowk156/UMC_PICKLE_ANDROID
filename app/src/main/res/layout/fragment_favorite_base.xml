@@ -12,18 +12,43 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/favorite_base_layout"
+            android:id="@+id/favoritebase_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/favorite_base_toolbar">
+            app:layout_constraintTop_toBottomOf="@id/favoritebase_toolbar">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/favorite_tablayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabIndicatorAnimationMode="fade"
+                app:tabIndicatorColor="@color/black"
+                app:tabIndicatorFullWidth="true"
+                app:tabIndicatorGravity="bottom"
+                app:tabRippleColor="@android:color/transparent"
+                app:tabSelectedTextColor="@color/black" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/favorite_viewpager"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/favorite_tablayout" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
-            android:id="@+id/favorite_base_toolbar"
+            android:id="@+id/favoritebase_toolbar"
             layout="@layout/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,14 +57,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <include
-            android:id="@+id/favorite_base_toolbarcontent"
+            android:id="@+id/favoritebase_toolbarcontent"
             layout="@layout/toolbar_content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/favorite_base_toolbar" />
+            app:layout_constraintTop_toBottomOf="@id/favoritebase_toolbar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

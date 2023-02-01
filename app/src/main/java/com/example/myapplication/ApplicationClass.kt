@@ -1,35 +1,50 @@
 package com.example.myapplication
 
 import android.app.Application
+import com.example.myapplication.config.XAccessTokenInterceptor
 import com.example.myapplication.db.local.SharedPreferencesManager
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.kakao.sdk.common.KakaoSdk
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 class ApplicationClass : Application() {
     companion object {
-        const val X_ACCESS_TOKEN: String = "X-ACCESS-TOKEN"         // JWT Token Key
+        const val SERVER_TOKEN: String = "server_token"
+        const val X_ACCESS_TOKEN: String = "x_access_token"         // JWT Token Key
         const val SHARED_SEARCH_HISTORY = "shared_search_histroy"
         const val KEY_SEARCH_HISTORY = "key_search_history"
-        //        const val ISSUE_API_URL = api 베이스 주소
-        // 만들어져있는 SharedPreferences 를 사용해야한다.
-        lateinit var sharedPreferencesmanager: SharedPreferencesManager
+        const val BASE_URL = "https://pick-cle.shop/"
 
-//        // JWT Token Header 키 값
-//        val X_ACCESS_TOKEN = "X-ACCESS-TOKEN"
-
-//        // Issue 요청 key
-//        val Issue_request_key = "키값"
-
-//        // Retrofit 인스턴스, 앱 실행시 한번만 생성하여 사용
-//        lateinit var IssueRetrofit: Retrofit
-        lateinit var username : String
+        lateinit var sharedPreferencesmanager: SharedPreferencesManager // 쉐어드
+        lateinit var username: String
+        lateinit var retrofit: Retrofit
     }
 
     override fun onCreate() {
         super.onCreate()
-//        sSharedPreferences =
-//            applicationContext.getSharedPreferences("SOFTSQUARED_TEMPLATE_APP", MODE_PRIVATE)
+        // 한번만 생성한다.
         sharedPreferencesmanager = SharedPreferencesManager(applicationContext)
 
+        val client: OkHttpClient = OkHttpClient.Builder()
+            .readTimeout(30000, TimeUnit.MILLISECONDS)
+            .connectTimeout(30000, TimeUnit.MILLISECONDS)
+            .addNetworkInterceptor(XAccessTokenInterceptor()) // preference에 저장된 jwt 토큰을 헤더에 자동으로 입력
+            .build()
+
+        // ??
+        val gson: Gson = GsonBuilder().setLenient().create()
+
+        retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+
+        // 카카오 로그인에 필요한 것
         KakaoSdk.init(this, "e9c2a8bf10ae12652fdc9ee9059ac02f")
 
     }

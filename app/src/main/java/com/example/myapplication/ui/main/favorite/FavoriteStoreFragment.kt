@@ -8,10 +8,8 @@ import com.example.myapplication.ui.base.BaseFragment
 
 class FavoriteStoreFragment : BaseFragment<FragmentFavoriteStoreBinding>(R.layout.fragment_favorite_store) {
 
-
     override fun init() {
 
     }
-
 
 }
