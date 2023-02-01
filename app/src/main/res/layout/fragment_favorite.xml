@@ -10,31 +10,25 @@
         android:clickable="true"
         tools:context=".ui.main.favorite.FavoriteFragment">
 
-        <TextView
-            android:id="@+id/ex"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="favorite" />
+            android:orientation="horizontal">
 
-<!--        툴바랑 툴바컨텐트 코드가 제일 밑에 오게 해주세요!-->
-        <include
-            android:id="@+id/favorite_toolbar"
-            layout="@layout/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <Button
+                android:id="@+id/tab_store"
+                android:layout_width="204dp"
+                android:layout_height="63dp"
+                android:layout_gravity=""
+                android:text="스토어" />
 
-        <include
-            android:id="@+id/favorite_toolbarcontent"
-            layout="@layout/toolbar_content"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/favorite_toolbar" />
+            <Button
+                android:id="@+id/tab_item"
+                android:layout_width="206dp"
+                android:layout_height="63dp"
+                android:text="아이템" />
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

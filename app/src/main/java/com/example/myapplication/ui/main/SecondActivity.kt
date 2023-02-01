@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySecondBinding
 import com.example.myapplication.ui.main.chat.ChatFragment
+import com.example.myapplication.ui.main.favorite.FavoriteBaseFragment
 import com.example.myapplication.ui.main.favorite.FavoriteFragment
 import com.example.myapplication.ui.main.home.HomeBaseFragment
 import com.example.myapplication.ui.main.location.LocationFragment
@@ -41,7 +42,7 @@ class SecondActivity : AppCompatActivity() {
                     changeFragment("homebase", HomeBaseFragment())
                 }
                 R.id.menu_favorite -> { // 두 번째 fragment
-                    changeFragment("favorite", FavoriteFragment())
+                    changeFragment("favorite", FavoriteBaseFragment())
                 }
                 R.id.menu_map -> { // 세 번째 fragment
                     changeFragment("location", LocationFragment())
