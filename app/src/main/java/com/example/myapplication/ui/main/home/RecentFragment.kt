@@ -1,11 +1,17 @@
 package com.example.myapplication.ui.main.home
 
+import android.content.Intent
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentRecentBinding
 import com.example.myapplication.ui.base.BaseFragment
+import com.example.myapplication.ui.store.StoreActivity
 
-class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent) {
+//<<<<<<< HEAD
+//class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent) {
+//=======
+class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent),ClothesClickListener {
+//>>>>>>> main
     override fun init() {
         rcView()
     }
@@ -62,7 +68,22 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         addClothes()
         binding.newRecyclerView.apply {
             layoutManager= GridLayoutManager(this.context,2)
-            adapter=CardViewAdapter(clothesList)
+//<<<<<<< HEAD
+//            adapter=CardViewAdapter(clothesList)
+//=======
+            adapter=CardViewAdapter(clothesList,this@RecentFragment)
+
+//>>>>>>> main
         }
     }
+    override fun onClick(clothes: Clothes) {
+      //  val intent = Intent(context, ClothActivity::class.java)
+       // startActivity(intent)
+    }
+
+    override fun onClickStore(string: String) {
+        val intent = Intent(getActivity(), StoreActivity::class.java)
+        startActivity(intent)
+    }
+
 }
