@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.main.home
 
 import android.content.Intent
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
@@ -8,8 +9,10 @@ import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.store.StoreActivity
 import com.smarteist.autoimageslider.SliderView
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),ClothesClickListener{
+class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
+    CardViewAdapter.ClothesClickListener {
 
+    lateinit var fragmentadapter : CardViewAdapter
     override fun init() {
         initSlide()
         rcView()
@@ -129,41 +132,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
 
     private fun rcView(){
         addClothes()
+        fragmentadapter = CardViewAdapter(this@HomeFragment)
+        fragmentadapter.submitList(clothesList.toMutableList())
+
         binding.recyclerView.apply {
             layoutManager=
                 LinearLayoutManager(this.context,LinearLayoutManager.HORIZONTAL,false)
-//<<<<<<< HEAD
-//            adapter=CardViewAdapter(clothesList)
-//=======
-            adapter=CardViewAdapter(clothesList,this@HomeFragment)
-
-//>>>>>>> main
+            adapter=fragmentadapter
         }
 
         binding.SecondRecyclerView.apply {
             layoutManager=
                 LinearLayoutManager(this.context,LinearLayoutManager.HORIZONTAL,false)
-//<<<<<<< HEAD
-//            adapter=CardViewAdapter(newclothesList)
-//        }
-//    }
-//
-//=======
-            adapter=CardViewAdapter(newclothesList,this@HomeFragment)
+            adapter=fragmentadapter
 
         }
     }
 
-    override fun onClick(clothes: Clothes) {
-
-   //     val intent = Intent(getActivity(), ClothActivity::class.java)
-    //    startActivity(intent)
-
+    override fun onItemImageClick(view: View, position: Int) {
+        //     val intent = Intent(getActivity(), ClothActivity::class.java)
+        //    startActivity(intent)
     }
-    override fun onClickStore(string: String) {
+
+    override fun onItemMarketNameClick(view: View, position: Int) {
         val intent = Intent(getActivity(), StoreActivity::class.java)
         startActivity(intent)
     }
-//>>>>>>> main
-
 }

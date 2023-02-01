@@ -19,6 +19,8 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
         rcView()
     }
 
+    lateinit var fragmentadapter: CardViewAdapter
+
     private fun addClothes(){
         val clothes1= Clothes(
             R.drawable.one,
@@ -70,18 +72,21 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
     private fun rcView(){
         clothesList.clear()
         addClothes()
+        fragmentadapter = CardViewAdapter(clicklistener = (object : CardViewAdapter.ClothesClickListener{
+            override fun onItemImageClick(view: View, position: Int) {
+                //  val intent = Intent(context, ClothActivity::class.java)
+                // startActivity(intent)
+            }
+
+            override fun onItemMarketNameClick(view: View, position: Int) {
+                val intent = Intent(getActivity(), StoreActivity::class.java)
+                startActivity(intent)
+            }
+        }))
+        fragmentadapter.submitList(clothesList.toMutableList())
         binding.searchresultRecycler.apply {
             layoutManager= GridLayoutManager(this.context,2)
-            adapter= CardViewAdapter(clothesList, clickListener = (object : ClothesClickListener{
-                override fun onClick(clothes: Clothes) {
-
-                }
-
-                override fun onClickStore(string: String) {
-                    val intent = Intent(getActivity(), StoreActivity::class.java)
-                    startActivity(intent)
-                }
-            }))
+            adapter= fragmentadapter
         }
         binding.searchresultTextviewResultcount.text = String.format("검색 결과 %d개", clothesList.size)
     }

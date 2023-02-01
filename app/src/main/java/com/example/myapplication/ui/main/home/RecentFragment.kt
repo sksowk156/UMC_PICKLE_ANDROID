@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.main.home
 
 import android.content.Intent
+import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentRecentBinding
@@ -10,8 +11,10 @@ import com.example.myapplication.ui.store.StoreActivity
 //<<<<<<< HEAD
 //class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent) {
 //=======
-class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent),ClothesClickListener {
-//>>>>>>> main
+class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent),
+    CardViewAdapter.ClothesClickListener {
+
+    lateinit var fragmentadapter : CardViewAdapter
     override fun init() {
         rcView()
     }
@@ -66,24 +69,24 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
 
     private fun rcView(){
         addClothes()
+        fragmentadapter = CardViewAdapter(this@RecentFragment)
         binding.newRecyclerView.apply {
             layoutManager= GridLayoutManager(this.context,2)
-//<<<<<<< HEAD
-//            adapter=CardViewAdapter(clothesList)
-//=======
-            adapter=CardViewAdapter(clothesList,this@RecentFragment)
+            adapter = fragmentadapter
+            fragmentadapter.submitList(clothesList.toMutableList())
 
-//>>>>>>> main
         }
     }
-    override fun onClick(clothes: Clothes) {
-      //  val intent = Intent(context, ClothActivity::class.java)
-       // startActivity(intent)
+
+    override fun onItemImageClick(view: View, position: Int) {
+        //  val intent = Intent(context, ClothActivity::class.java)
+        // startActivity(intent)
     }
 
-    override fun onClickStore(string: String) {
+    override fun onItemMarketNameClick(view: View, position: Int) {
         val intent = Intent(getActivity(), StoreActivity::class.java)
         startActivity(intent)
     }
+
 
 }
