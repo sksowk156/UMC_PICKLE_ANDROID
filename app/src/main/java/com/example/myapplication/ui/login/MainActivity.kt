@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         viewbinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewbinding.root)
 
-        KakaoSdk.init(this, "e9c2a8bf10ae12652fdc9ee9059ac02f")
+//        KakaoSdk.init(this, "e9c2a8bf10ae12652fdc9ee9059ac02f")
 
         viewbinding.button.setOnClickListener{
             // 카카오톡 설치 확인

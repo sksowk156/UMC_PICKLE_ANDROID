@@ -1,6 +1,5 @@
-package com.example.myapplication.ui.base
+package com.example.myapplication.ui.main.search
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

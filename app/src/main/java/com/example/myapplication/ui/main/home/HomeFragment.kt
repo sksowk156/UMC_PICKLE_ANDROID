@@ -1,11 +1,5 @@
 package com.example.myapplication.ui.main.home
 
-
-import android.content.Intent
-import androidx.activity.OnBackPressedCallback
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
@@ -57,7 +51,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
         // a variable for our slider view.
         lateinit var sliderView: SliderView
 
-
         sliderView=binding.slider
 
         // on below line we are creating
@@ -87,7 +80,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
 
 
     private fun addClothes(){
-
         val clothes1=Clothes(
             R.drawable.one,
             "store1",
@@ -132,30 +124,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
         )
         clothesList.add(clothes5)
         newclothesList.add(clothes1)
-
     }
-
-
 
     private fun rcView(){
         addClothes()
-
-
         binding.recyclerView.apply {
-
             layoutManager=
                 LinearLayoutManager(this.context,LinearLayoutManager.HORIZONTAL,false)
             adapter=CardViewAdapter(clothesList)
-
         }
 
-
         binding.SecondRecyclerView.apply {
-
             layoutManager=
                 LinearLayoutManager(this.context,LinearLayoutManager.HORIZONTAL,false)
             adapter=CardViewAdapter(newclothesList)
-
         }
     }
+
+
 }
