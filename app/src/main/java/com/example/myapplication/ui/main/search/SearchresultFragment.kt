@@ -1,23 +1,26 @@
-package com.example.myapplication.ui.main.home
+package com.example.myapplication.ui.main.search
 
 import android.content.Intent
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.databinding.FragmentRecentBinding
+import com.example.myapplication.databinding.FragmentSearchresultBinding
 import com.example.myapplication.ui.base.BaseFragment
+import com.example.myapplication.ui.main.home.*
 import com.example.myapplication.ui.store.StoreActivity
+import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController.ClickListener
 
-//<<<<<<< HEAD
-//class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent) {
-//=======
-class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent),ClothesClickListener {
-//>>>>>>> main
+class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.fragment_searchresult) {
     override fun init() {
         rcView()
     }
 
     private fun addClothes(){
-        val clothes1=Clothes(
+        val clothes1= Clothes(
             R.drawable.one,
             "store1",
             "옷1",
@@ -26,7 +29,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         clothesList.add(clothes1)
         newclothesList.add(clothes1)
 
-        val clothes2=Clothes(
+        val clothes2= Clothes(
             R.drawable.two,
             "store2",
             "옷2",
@@ -35,7 +38,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         clothesList.add(clothes2)
         newclothesList.add(clothes1)
 
-        val clothes3=Clothes(
+        val clothes3= Clothes(
             R.drawable.two,
             "store1",
             "옷3",
@@ -44,7 +47,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         clothesList.add(clothes3)
         newclothesList.add(clothes1)
 
-        val clothes4=Clothes(
+        val clothes4= Clothes(
             R.drawable.one,
             "store1",
             "옷4",
@@ -53,7 +56,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         clothesList.add(clothes4)
         newclothesList.add(clothes1)
 
-        val clothes5=Clothes(
+        val clothes5= Clothes(
             R.drawable.two,
             "store1",
             "옷5",
@@ -65,25 +68,21 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
     }
 
     private fun rcView(){
+        clothesList.clear()
         addClothes()
-        binding.newRecyclerView.apply {
+        binding.searchresultRecycler.apply {
             layoutManager= GridLayoutManager(this.context,2)
-//<<<<<<< HEAD
-//            adapter=CardViewAdapter(clothesList)
-//=======
-            adapter=CardViewAdapter(clothesList,this@RecentFragment)
+            adapter= CardViewAdapter(clothesList, clickListener = (object : ClothesClickListener{
+                override fun onClick(clothes: Clothes) {
 
-//>>>>>>> main
+                }
+
+                override fun onClickStore(string: String) {
+                    val intent = Intent(getActivity(), StoreActivity::class.java)
+                    startActivity(intent)
+                }
+            }))
         }
+        binding.searchresultTextviewResultcount.text = String.format("검색 결과 %d개", clothesList.size)
     }
-    override fun onClick(clothes: Clothes) {
-      //  val intent = Intent(context, ClothActivity::class.java)
-       // startActivity(intent)
-    }
-
-    override fun onClickStore(string: String) {
-        val intent = Intent(getActivity(), StoreActivity::class.java)
-        startActivity(intent)
-    }
-
 }

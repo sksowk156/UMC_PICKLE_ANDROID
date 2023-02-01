@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.example.myapplication.ApplicationClass
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMyprofileBinding
 import com.example.myapplication.ui.base.BaseFragment
@@ -33,6 +34,7 @@ class MyprofileFragment : BaseFragment<FragmentMyprofileBinding>(R.layout.fragme
         binding.myprofileImagePhoto.setOnClickListener {
             openDialog(requireContext())
         }
+
     }
 
     private fun openDialog(context: Context) {

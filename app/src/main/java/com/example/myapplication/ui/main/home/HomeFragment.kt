@@ -1,15 +1,11 @@
 package com.example.myapplication.ui.main.home
 
-
 import android.content.Intent
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.ui.base.BaseFragment
-import com.example.myapplication.ui.store.ClothActivity
 import com.example.myapplication.ui.store.StoreActivity
-
 import com.smarteist.autoimageslider.SliderView
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),ClothesClickListener{
@@ -56,7 +52,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
         // a variable for our slider view.
         lateinit var sliderView: SliderView
 
-
         sliderView=binding.slider
 
         // on below line we are creating
@@ -86,7 +81,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
 
 
     private fun addClothes(){
-
         val clothes1=Clothes(
             R.drawable.one,
             "store1",
@@ -131,28 +125,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
         )
         clothesList.add(clothes5)
         newclothesList.add(clothes1)
-
     }
-
-
 
     private fun rcView(){
         addClothes()
-
-
         binding.recyclerView.apply {
-
             layoutManager=
                 LinearLayoutManager(this.context,LinearLayoutManager.HORIZONTAL,false)
+//<<<<<<< HEAD
+//            adapter=CardViewAdapter(clothesList)
+//=======
             adapter=CardViewAdapter(clothesList,this@HomeFragment)
 
+//>>>>>>> main
         }
 
-
         binding.SecondRecyclerView.apply {
-
             layoutManager=
                 LinearLayoutManager(this.context,LinearLayoutManager.HORIZONTAL,false)
+//<<<<<<< HEAD
+//            adapter=CardViewAdapter(newclothesList)
+//        }
+//    }
+//
+//=======
             adapter=CardViewAdapter(newclothesList,this@HomeFragment)
 
         }
@@ -168,5 +164,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),C
         val intent = Intent(getActivity(), StoreActivity::class.java)
         startActivity(intent)
     }
+//>>>>>>> main
 
 }
