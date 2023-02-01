@@ -11,6 +11,7 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSearchresultBinding
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.home.*
+import com.example.myapplication.ui.store.ClothActivity
 import com.example.myapplication.ui.store.StoreActivity
 import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController.ClickListener
 
@@ -74,8 +75,13 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
         addClothes()
         fragmentadapter = CardViewAdapter(clicklistener = (object : CardViewAdapter.ClothesClickListener{
             override fun onItemImageClick(view: View, position: Int) {
-                //  val intent = Intent(context, ClothActivity::class.java)
-                // startActivity(intent)
+                val intent = Intent(getActivity(), ClothActivity::class.java)
+                intent.putExtra("storeName","store1")
+                intent.putExtra("clothName","옷1")
+                intent.putExtra("clothPrice",30000)
+                //intent.putExtra("StoreName",20000)
+
+                startActivity(intent)
             }
 
             override fun onItemMarketNameClick(view: View, position: Int) {

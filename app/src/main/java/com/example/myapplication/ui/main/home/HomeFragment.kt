@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.ui.base.BaseFragment
+import com.example.myapplication.ui.store.ClothActivity
 import com.example.myapplication.ui.store.StoreActivity
 import com.smarteist.autoimageslider.SliderView
 
@@ -150,8 +151,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
     }
 
     override fun onItemImageClick(view: View, position: Int) {
-        //     val intent = Intent(getActivity(), ClothActivity::class.java)
-        //    startActivity(intent)
+        val intent = Intent(getActivity(), ClothActivity::class.java)
+        intent.putExtra("storeName","store1")
+        intent.putExtra("clothName","옷1")
+        intent.putExtra("clothPrice",30000)
+        //intent.putExtra("StoreName",20000)
+
+        startActivity(intent)
+
     }
 
     override fun onItemMarketNameClick(view: View, position: Int) {

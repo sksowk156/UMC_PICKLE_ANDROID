@@ -6,6 +6,7 @@ import com.kakao.sdk.common.KakaoSdk
 
 class ApplicationClass : Application() {
     companion object {
+        const val X_ACCESS_TOKEN: String = "X-ACCESS-TOKEN"         // JWT Token Key
         const val SHARED_SEARCH_HISTORY = "shared_search_histroy"
         const val KEY_SEARCH_HISTORY = "key_search_history"
         //        const val ISSUE_API_URL = api 베이스 주소

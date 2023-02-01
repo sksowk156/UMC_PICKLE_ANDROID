@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.myapplication.ui.main.search.SearchHistroyData
 import com.example.myapplication.ApplicationClass.Companion.SHARED_SEARCH_HISTORY
+import com.example.myapplication.ApplicationClass.Companion.X_ACCESS_TOKEN
 import com.google.gson.Gson
 
 
@@ -38,4 +39,14 @@ class SharedPreferencesManager(context: Context) {
     fun deletesearchhistoryString(){
         searchhistoryprefs.edit().clear().apply()
     }
+
+//    fun saveJwt(jwtToken: String) {
+//        val editor = mSharedPreferences.edit()
+//        editor.putString(X_ACCESS_TOKEN, jwtToken)
+//
+//        editor.apply()
+//    }
+//
+//    fun getJwt(): String? = mSharedPreferences.getString(X_ACCESS_TOKEN, null)
+
 }
