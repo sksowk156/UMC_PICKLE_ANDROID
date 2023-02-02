@@ -1,23 +1,32 @@
 package com.example.myapplication.ui.store
 
 import android.os.Bundle
+import android.view.Menu
+import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityClothBinding
+import kotlinx.android.synthetic.main.activity_cloth.*
 
 class ClothActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityClothBinding
     private lateinit var viewpager: ViewPager2
-
     private lateinit var storeName: String
     private lateinit var clothName: String
     private var clothPrice: Int = 0
+    private lateinit var toolbar : Toolbar
+
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         viewBinding = ActivityClothBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
+       // initAppbar(viewBinding.homeBaseToolbarcontent, viewBinding.homeBaseToolbar, "<")
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        supportActionBar?.title = "<"
 
         //어댑터 설정
         viewpager = viewBinding.viewPager2
@@ -37,8 +46,8 @@ class ClothActivity : AppCompatActivity() {
         viewBinding.tvClothName2.text = clothName
         viewBinding.tvClothPrice2.text = clothPrice.toString()
 
-        val btnOrder = viewBinding.btnOrder
-        btnOrder.setOnClickListener {
+        val ivOrder = viewBinding.ivOrder
+        ivOrder.setOnClickListener {
             val bottomSheet = BottomSheetFragment(applicationContext)
             //bottomSheet.setContentView(R.layout.fragment_bottom_sheet)
 
@@ -66,4 +75,13 @@ class ClothActivity : AppCompatActivity() {
             R.drawable.cardigan4
         )
     }
+
+
+    override fun onCreateOptionsMenu(menu : Menu) : Boolean{
+        menuInflater.inflate(R.menu.menu_appbar, menu)
+        return true
+
+    }
+
+
 }

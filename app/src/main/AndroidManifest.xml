@@ -14,6 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
+
         <activity
             android:name=".ui.login.AgreementActivity"
             android:exported="false">
@@ -35,15 +36,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.main.SecondActivity"
-            android:exported="true">
-        </activity>
+        <activity
+            android:name=".ui.main.SecondActivity"
+            android:exported="true"></activity>
 
         <activity android:name=".ui.login.MainActivity" />
 
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -56,15 +58,18 @@
                     android:scheme="kakaoe9c2a8bf10ae12652fdc9ee9059ac02f" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.store.StoreActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.store.PickupActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.store.ClothActivity"
             android:exported="false" />
-    </application>
 
+    </application>
 </manifest>

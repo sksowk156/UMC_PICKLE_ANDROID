@@ -11,6 +11,7 @@ import com.example.myapplication.ui.base.BaseFragment
 
 
 class FavoriteItemFragment : BaseFragment<FragmentFavoriteItemBinding>(R.layout.fragment_favorite_item) {
+
     override fun init() {
 
     }
