@@ -49,6 +49,8 @@ class BottomSheetFragment(context: Context) : BottomSheetDialogFragment() {
         adapterColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerColor.adapter = adapterColor
         val tvColor: TextView = view.findViewById(R.id.tv_color)
+        val clothCountView : View = view.findViewById(R.id.cloth_count)
+        spinnerColor.prompt = "제목입니다."
 
         spinnerColor.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -59,6 +61,7 @@ class BottomSheetFragment(context: Context) : BottomSheetDialogFragment() {
             ) {
                 tvColor.text = colors[position]
                 color = colors[position]
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -88,7 +91,7 @@ class BottomSheetFragment(context: Context) : BottomSheetDialogFragment() {
             }
         }
 
-        val btnMinus: TextView = view.findViewById(R.id.btn_minus)
+        val btnMinus: ImageView = view.findViewById(R.id.iv_minus)
         val tvCount: TextView = view.findViewById(R.id.tv_count)
         val tvMultiPrice: TextView = view.findViewById(R.id.tv_multi_price)
         btnMinus.setOnClickListener{
@@ -102,7 +105,7 @@ class BottomSheetFragment(context: Context) : BottomSheetDialogFragment() {
             tvMultiPrice.text = multiPrice.toString() + "원"
         }
 
-        val btnPlus: TextView = view.findViewById(R.id.btn_plus)
+        val btnPlus: ImageView = view.findViewById(R.id.iv_plus)
         btnPlus.setOnClickListener{
             count++
             tvCount.text = count.toString()
@@ -113,7 +116,7 @@ class BottomSheetFragment(context: Context) : BottomSheetDialogFragment() {
             tvMultiPrice.text = multiPrice.toString() + "원"
         }
 
-        val btnPickup : Button = view.findViewById(R.id.btn_pickup)
+        val btnPickup : ImageView = view.findViewById(R.id.iv_pickup)
         btnPickup.setOnClickListener {
             val intent = Intent(getActivity(), PickupActivity::class.java)
             intent.putExtra("color", color)
