@@ -1,30 +1,57 @@
 package com.example.myapplication.ui.main.home
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.databinding.CardCellBinding
-import com.example.myapplication.ui.main.home.CardViewHolder
-import com.example.myapplication.ui.main.home.Clothes
+import com.example.myapplication.databinding.ItemCardRecyclerBinding
 
+class CardViewAdapter(clicklistener: ClothesClickListener) :
+   ListAdapter<Clothes, CardViewAdapter.MyViewHolder>(CardViewDiffUtil) {
 
-class CardViewAdapter(
-    private val clothes:List<Clothes>,
-    private val clickListener: ClothesClickListener
-)
-    : RecyclerView.Adapter<CardViewHolder>(){
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
-
-        val from= LayoutInflater.from(parent.context)
-        val binding= CardCellBinding.inflate(from,parent,false)
-        return CardViewHolder(binding,clickListener)
+    interface ClothesClickListener {
+        fun onItemImageClick(view: View, position: Int)
+        fun onItemMarketNameClick(view: View, position: Int)
     }
 
-    override fun getItemCount(): Int=clothes.size
+    var clicklistener: ClothesClickListener = clicklistener
 
-    override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
-        holder.bindClothes(clothes[position])
+    inner class MyViewHolder(val binding: ItemCardRecyclerBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(clothes: Clothes) {
+            binding.cardCardviewFrame.setOnClickListener {
+                clicklistener.onItemImageClick(it, absoluteAdapterPosition)
+            }
+
+            binding.cardTextviewStorename.setOnClickListener {
+                clicklistener.onItemMarketNameClick(it, absoluteAdapterPosition)
+            }
+            binding.cardImageviewImage.setImageResource(clothes.image)
+            binding.cardTextviewStorename.text = clothes.store
+            binding.cardTextviewClothename.text = clothes.name
+            binding.cardTextviewClotheprice.text = clothes.price.toString()
+        }
     }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val binding =
+            ItemCardRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(binding)
+    }
 
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
+}
+
+object CardViewDiffUtil : DiffUtil.ItemCallback<Clothes>() {
+    override fun areItemsTheSame(oldItem: Clothes, newItem: Clothes): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Clothes, newItem: Clothes): Boolean {
+        return oldItem == newItem
+    }
 }

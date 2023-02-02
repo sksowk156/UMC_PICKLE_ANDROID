@@ -2,6 +2,7 @@ package com.example.myapplication.ui.base
 
 import android.os.Bundle
 import android.text.InputFilter
+import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.Toast
@@ -18,8 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ToolbarBinding
 import com.example.myapplication.databinding.ToolbarContentBinding
-import com.example.myapplication.utils.ApplicationClass
-import com.example.myapplication.utils.ApplicationClass.Companion.KEY_SEARCH_HISTORY
+import com.example.myapplication.ApplicationClass
+import com.example.myapplication.ApplicationClass.Companion.KEY_SEARCH_HISTORY
+import com.example.myapplication.ui.main.search.SearchHistroyData
+import com.example.myapplication.ui.main.search.SearchhistoryAdapter
+import com.example.myapplication.ui.main.search.SearchresultFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.toolbar_content.view.*
 import kotlin.collections.ArrayList
@@ -36,6 +40,7 @@ abstract class BaseFragment<T : ViewDataBinding>(
 
     // 툴바 변수들
     protected lateinit var toolbarlayout: ConstraintLayout
+    protected lateinit var toolbarinnerlayout: ConstraintLayout
     protected lateinit var toolbar: Toolbar
     protected lateinit var toolbarmenusearch: MenuItem
     protected lateinit var toolbarmenunotification: MenuItem
@@ -103,6 +108,7 @@ abstract class BaseFragment<T : ViewDataBinding>(
     ) {
         // 툴바, 툴바 검색 기록 레이아웃, 툴바 메뉴 연결
         toolbarlayout = toolbarContentBinding.contentLayout
+        toolbarinnerlayout = toolbarContentBinding.contentInnerlayout
         toolbar = toolbarBinding.toolbarToolbar
         // 툴바 메뉴 추가
         toolbar.inflateMenu(R.menu.menu_appbar)
@@ -133,9 +139,9 @@ abstract class BaseFragment<T : ViewDataBinding>(
         searchView.setIconifiedByDefault(false)
         searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
-            // 검색 후 엔터를 쳤을 때
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                // 글자를 하나라도 쳤을 때
+            // // 검색 후 엔터를 쳤을 때
+            override fun onQueryTextSubmit(query: String): Boolean {
+                // // 글자를 하나라도 쳤을 때
                 if (!query.isNullOrEmpty()) {
                     val newSearchData = SearchHistroyData(query)
                     // 검색 기록 추가하기(역순으로)
@@ -147,16 +153,39 @@ abstract class BaseFragment<T : ViewDataBinding>(
                     )
                     // recycler 데이터 갱신 요청
                     searchhistoryAdapter.notifyDataSetChanged()
-//                    검색 결과 보여주기(API 요청)
 
-                } else {
-                    Toast.makeText(requireContext(), "글자를 입력하세요", Toast.LENGTH_SHORT).show()
+                    // // 화면 전환 및 검색 결과 보여주기(API 요청)
+                    // 검색 기록 보여주는 창 가리고
+                    toolbarinnerlayout.visibility = View.INVISIBLE
+                    // 검색 기록 보여주는 fragment 보여주기
+                    childFragmentManager.beginTransaction()
+                        .replace(toolbarlayout.id, SearchresultFragment(), "searchresult")
+                        .commitAllowingStateLoss()
+                    // 엔터를 쳤기 때문에 커서를 없앤다.
+                    searchView.clearFocus()
                 }
                 return true
             }
 
-            // 검색 중일 때
+            // // 검색 중일 때
             override fun onQueryTextChange(newText: String?): Boolean {
+                if(newText?.length!! > 0){
+                    // 한글자라도 쳤다면 검색기록은 보여주지 않는다. (원래는 추천 검색어가 떠야한다.)
+                    toolbarinnerlayout.visibility = View.INVISIBLE
+                    // 만약 검색 결과 fragment가 있다면 그것도 없앤다.
+                    if(childFragmentManager.findFragmentByTag("searchresult")!=null){
+                        childFragmentManager.beginTransaction()
+                            .remove(childFragmentManager.findFragmentByTag("searchresult")!!)
+                            .commitAllowingStateLoss()
+                    }
+                }else{
+                    // 한글자도 안쳤다면
+                    // 검색 결과 fragment도 없다면 검색기록을 보여준다.
+                    if(childFragmentManager.findFragmentByTag("searchresult")==null){
+                        toolbarinnerlayout.visibility = View.VISIBLE
+                    }
+                    // 검색한 것이 있다면 검색한 것을 보여준다.
+                }
                 return true
             }
         })
@@ -164,12 +193,19 @@ abstract class BaseFragment<T : ViewDataBinding>(
         searchView.setOnQueryTextFocusChangeListener { view, hasFocus ->
             when (hasFocus) {
                 true -> {
-                    // 검색창에 커서가 생김
-                    toolbarlayout.visibility = View.VISIBLE
+                    // // 검색창에 커서가 생김
+                    // 검색 결과 fragment가 있다면 그대로 유지해 검색 결과를 보여준다.
+                    // 없다면 검색창에 text가 없다는 뜻이므로 검색 기록을 보여준다.
+                    if(childFragmentManager.findFragmentByTag("searchresult")==null){
+                        // 검색 content를 보여준다.( 검색기록이 기본적으로 보여진다. )
+                        toolbarlayout.visibility = View.VISIBLE
+                        toolbarinnerlayout.visibility = View.VISIBLE
+                    }
+                    // 하단바를 가린다.
                     hideBottomNavigation(true)
                 }
                 false -> {
-                    // 검색창에서 커서가 사라짐
+                    // // 검색창에서 커서가 사라짐
                 }
             }
         }
@@ -181,7 +217,14 @@ abstract class BaseFragment<T : ViewDataBinding>(
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                // 검색창이 가려 졌을 때
+                // 검색창이 닫혔 때
+                // 검색창 초기화
+                if(childFragmentManager.findFragmentByTag("searchresult")!=null){
+                    childFragmentManager.beginTransaction()
+                        .remove(childFragmentManager.findFragmentByTag("searchresult")!!)
+                        .commitAllowingStateLoss()
+                }
+                toolbarinnerlayout.visibility = View.VISIBLE
                 toolbarlayout.visibility = View.INVISIBLE
                 hideBottomNavigation(false)
                 return true

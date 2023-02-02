@@ -1,7 +1,7 @@
 package com.example.myapplication.ui.main.home
 
 import android.content.Intent
-import androidx.activity.OnBackPressedCallback
+import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentNewBinding
@@ -10,19 +10,19 @@ import com.example.myapplication.ui.store.ClothActivity
 import com.example.myapplication.ui.store.StoreActivity
 
 
-class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) ,ClothesClickListener{
-    // 뒤로가기 버튼을 눌렀을 때를 위한 callback 변수
-    private lateinit var callback: OnBackPressedCallback
+//<<<<<<< HEAD
+//class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) {
+//=======
+class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) ,
+    CardViewAdapter.ClothesClickListener {
+//>>>>>>> main
 
+    lateinit var fragmentadapter : CardViewAdapter
     override fun init() {
-
         rcView()
-        initBackbtn()
-
     }
 
     private fun addClothes(){
-
         val clothes1=Clothes(
             R.drawable.one,
             "store1",
@@ -72,46 +72,22 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) ,Clo
 
     private fun rcView(){
         addClothes()
-
+        fragmentadapter = CardViewAdapter(this@NewFragment)
         binding.newRecyclerView.apply {
-
             layoutManager= GridLayoutManager(this.context,2)
-            adapter=CardViewAdapter(newclothesList,this@NewFragment)
+            adapter=fragmentadapter
+            fragmentadapter.submitList(newclothesList.toMutableList())
 
         }
-
-    }
-    override fun onClick(clothes: Clothes) {
-     //   val intent = Intent(context, ClothActivity::class.java)
-      //  startActivity(intent)
     }
 
-    override fun onClickStore(string: String) {
+    override fun onItemImageClick(view: View, position: Int) {
+        //     val intent = Intent(getActivity(), ClothActivity::class.java)
+        //    startActivity(intent)
+    }
+
+    override fun onItemMarketNameClick(view: View, position: Int) {
         val intent = Intent(getActivity(), StoreActivity::class.java)
         startActivity(intent)
     }
-
-
-    private fun initBackbtn(){
-        // 뒤로 가기 버튼을 눌렀을 때 이벤트 처리
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                parentFragmentManager
-                    .popBackStackImmediate(null, 0)
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-
-    }
-
-
-
-    // 프래그먼트가 종료되면 callback 변수 제거
-    override fun onDetach() {
-        super.onDetach()
-        callback.remove()
-    }
-
-
-
 }

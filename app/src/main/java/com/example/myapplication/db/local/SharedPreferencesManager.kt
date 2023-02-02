@@ -2,26 +2,34 @@ package com.example.myapplication.db.local
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.myapplication.ui.base.SearchHistroyData
-import com.example.myapplication.utils.ApplicationClass.Companion.SHARED_SEARCH_HISTORY
+import com.example.myapplication.ApplicationClass.Companion.SERVER_TOKEN
+import com.example.myapplication.ui.main.search.SearchHistroyData
+import com.example.myapplication.ApplicationClass.Companion.SHARED_SEARCH_HISTORY
+import com.example.myapplication.ApplicationClass.Companion.X_ACCESS_TOKEN
 import com.google.gson.Gson
 
 
 class SharedPreferencesManager(context: Context) {
 
     // 쉐어드 만들기
+    // 검색 기록
     private val searchhistoryprefs: SharedPreferences =
         context.getSharedPreferences(SHARED_SEARCH_HISTORY, Context.MODE_PRIVATE)
+
+    // jwt
+    private val jwtprefs: SharedPreferences =
+        context.getSharedPreferences(SERVER_TOKEN, Context.MODE_PRIVATE)
 
     // 데이터 출력
     fun getsearchhistoryString(key: String): MutableList<SearchHistroyData> {
         var storedSearchHistoryList = ArrayList<SearchHistroyData>()
-        val storedSearchHistoryListString =  searchhistoryprefs.getString(key, "")!!
+        val storedSearchHistoryListString = searchhistoryprefs.getString(key, "")!!
         // 검색 목록에 값이 있다면
-        if(storedSearchHistoryListString.isNotEmpty()){
+        if (storedSearchHistoryListString.isNotEmpty()) {
             // 저장된 문자열을 객체 배열로 변경
-            storedSearchHistoryList = Gson().fromJson(storedSearchHistoryListString, Array<SearchHistroyData>::class.java)
-                .toMutableList() as ArrayList<SearchHistroyData>
+            storedSearchHistoryList =
+                Gson().fromJson(storedSearchHistoryListString, Array<SearchHistroyData>::class.java)
+                    .toMutableList() as ArrayList<SearchHistroyData>
         }
         return storedSearchHistoryList
     }
@@ -35,7 +43,21 @@ class SharedPreferencesManager(context: Context) {
     }
 
     // 데이터 삭제
-    fun deletesearchhistoryString(){
+    fun deletesearchhistoryString() {
         searchhistoryprefs.edit().clear().apply()
     }
+
+    fun getJwt(key:String): String {
+        val storedJwtString = jwtprefs.getString(key, "")!!
+        return storedJwtString
+    }
+
+    fun setJwt(key : String, jwtToken: String) {
+        jwtprefs.edit().putString(key, jwtToken).apply()
+    }
+
+    fun deleteJwt(){
+        jwtprefs.edit().clear().apply()
+    }
+
 }

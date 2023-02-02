@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.login
 
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
@@ -8,28 +7,23 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ActivityMainBinding
-import com.example.myapplication.db.remote.APIS
-import com.example.myapplication.ui.*
+import com.example.myapplication.db.remote.LoginService
+import com.example.myapplication.db.remote.remotedata.LoginTokenAccessData
+import com.example.myapplication.db.remote.remotedata.PostModel
 import com.example.myapplication.ui.main.SecondActivity
 import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
-    val api = APIS.create();
     lateinit var viewbinding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewbinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewbinding.root)
-
-        KakaoSdk.init(this, "e9c2a8bf10ae12652fdc9ee9059ac02f")
 
         viewbinding.button.setOnClickListener{
             // 카카오톡 설치 확인
@@ -50,36 +44,24 @@ class MainActivity : AppCompatActivity() {
                     }
                     // 로그인 성공 부분
                     else if (token != null) {
+                        val data = PostModel(token.accessToken)
+                        // API service 카카오 로그인 후 발급받은 appToken, isNewMember 값
+                        LoginService.create(data)
+                        //
                         Log.e(TAG, "로그인 성공! 토큰값 : ${token.accessToken}")
                         UserApiClient.instance.me { user, error ->
+                            var email = user?.kakaoAccount?.email
+                            var name = user?.kakaoAccount?.profile?.nickname
                             Log.e(TAG, "닉네임 ${user?.kakaoAccount?.profile?.nickname}")
                             Log.e(TAG, "이메일 ${user?.kakaoAccount?.email}" )
+                            var accessData : LoginTokenAccessData = LoginTokenAccessData(email,name)
+                            // 카카오 로그인 후 받은 카카오 데이터(email, name)를 서버에 보내서 토큰 받아오기
+                            LoginService.jwt(accessData)
+                            Toast.makeText(this, "${user?.kakaoAccount?.profile?.nickname}님 환영합니다.", Toast.LENGTH_SHORT).show()
                         }
-
-                        UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
-                            if (token != null) {
-                                val data = PostModel(token.accessToken)
-                                api.post_users(data).enqueue(object : Callback<PostResult> {
-                                    override fun onResponse(call: Call<PostResult>, response: Response<PostResult>) {
-                                        Log.d("log", response.toString())
-                                        Log.d("log", response.body().toString())
-                                    }
-
-                                    override fun onFailure(call: Call<PostResult>, t: Throwable) {
-                                        // 실패
-                                        Log.d("log", t.message.toString())
-                                        Log.d("log", "fail")
-                                    }
-                                })
-                                Log.e(ContentValues.TAG, "토큰값 전송 완료 ${token.accessToken}")
-                                UserApiClient.instance.me { user, error ->
-                                    Toast.makeText(this, "${user?.kakaoAccount?.profile?.nickname}님 환영합니다.", Toast.LENGTH_SHORT).show()
-                                }
-                                val intent = Intent(this, SecondActivity::class.java)
-                                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                                finish()
-                            }
-                        }
+                        val intent = Intent(this, SecondActivity::class.java)
+                        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
                     }
                 }
             } else {

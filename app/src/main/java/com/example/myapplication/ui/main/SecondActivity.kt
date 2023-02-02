@@ -1,37 +1,18 @@
 package com.example.myapplication.ui.main
 
 import android.Manifest
-import android.app.SearchManager
-import android.content.Context
-import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputFilter
-import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.widget.EditText
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySecondBinding
 import com.example.myapplication.ui.main.chat.ChatFragment
-import com.example.myapplication.ui.main.favorite.FavoriteFragment
+import com.example.myapplication.ui.main.favorite.FavoriteBaseFragment
 import com.example.myapplication.ui.main.home.HomeBaseFragment
 import com.example.myapplication.ui.main.location.LocationFragment
 import com.example.myapplication.ui.main.profile.ProfileBlankFragment
-import com.example.myapplication.utils.ApplicationClass
-import com.example.myapplication.utils.ApplicationClass.Companion.KEY_SEARCH_HISTORY
 
 class SecondActivity : AppCompatActivity() {
     // 바인딩
@@ -60,7 +41,7 @@ class SecondActivity : AppCompatActivity() {
                     changeFragment("homebase", HomeBaseFragment())
                 }
                 R.id.menu_favorite -> { // 두 번째 fragment
-                    changeFragment("favorite", FavoriteFragment())
+                    changeFragment("favorite", FavoriteBaseFragment())
                 }
                 R.id.menu_map -> { // 세 번째 fragment
                     changeFragment("location", LocationFragment())
