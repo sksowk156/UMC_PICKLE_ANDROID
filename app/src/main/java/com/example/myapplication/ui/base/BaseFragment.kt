@@ -36,7 +36,7 @@ abstract class BaseFragment<T : ViewDataBinding>(
 
     // 뒤로가기 버튼을 눌렀을 때를 위한 callback 변수
     private lateinit var callback: OnBackPressedCallback
-    var temp : ArrayList<SearchHistroyData> ?= null
+    var temp: ArrayList<SearchHistroyData>? = null
 
     // 툴바 변수들
     protected lateinit var toolbarlayout: ConstraintLayout
@@ -145,7 +145,7 @@ abstract class BaseFragment<T : ViewDataBinding>(
                 if (!query.isNullOrEmpty()) {
                     val newSearchData = SearchHistroyData(query)
                     // 검색 기록 추가하기(역순으로)
-                    searchHistoryDataList.add(0,newSearchData)
+                    searchHistoryDataList.add(0, newSearchData)
                     // 쉐어드에 저장하기
                     ApplicationClass.sharedPreferencesmanager.setsearchhistoryString(
                         KEY_SEARCH_HISTORY,
@@ -169,22 +169,26 @@ abstract class BaseFragment<T : ViewDataBinding>(
 
             // // 검색 중일 때
             override fun onQueryTextChange(newText: String?): Boolean {
-                if(newText?.length!! > 0){
-                    // 한글자라도 쳤다면 검색기록은 보여주지 않는다. (원래는 추천 검색어가 떠야한다.)
-                    toolbarinnerlayout.visibility = View.INVISIBLE
-                    // 만약 검색 결과 fragment가 있다면 그것도 없앤다.
-                    if(childFragmentManager.findFragmentByTag("searchresult")!=null){
+                if (newText?.length!! > 0) { // 글자를 입력하거나 지웠을 때(글자에 변화 생겼을 때)
+                    // 검색 결과 fragment가 있었다면 지운다.
+                    if (childFragmentManager.findFragmentByTag("searchresult") != null) {
                         childFragmentManager.beginTransaction()
                             .remove(childFragmentManager.findFragmentByTag("searchresult")!!)
                             .commitAllowingStateLoss()
                     }
-                }else{
-                    // 한글자도 안쳤다면
-                    // 검색 결과 fragment도 없다면 검색기록을 보여준다.
-                    if(childFragmentManager.findFragmentByTag("searchresult")==null){
-                        toolbarinnerlayout.visibility = View.VISIBLE
+                    // 검색기록은 보여주지 않는다. (원래는 추천 검색어가 떠야한다.)
+                    toolbarlayout.visibility = View.VISIBLE
+                    toolbarinnerlayout.visibility = View.INVISIBLE
+                } else { // 글자를 다 지워서 없을 때 -> 검색 기록만 남아있어야한다.
+                    // 검색 결과 fragment가 있었다면 지운다.
+                    if (childFragmentManager.findFragmentByTag("searchresult") != null) {
+                        childFragmentManager.beginTransaction()
+                            .remove(childFragmentManager.findFragmentByTag("searchresult")!!)
+                            .commitAllowingStateLoss()
                     }
-                    // 검색한 것이 있다면 검색한 것을 보여준다.
+                    // 검색 기록만 보인다.
+                    toolbarlayout.visibility = View.VISIBLE
+                    toolbarinnerlayout.visibility = View.VISIBLE
                 }
                 return true
             }
@@ -192,46 +196,47 @@ abstract class BaseFragment<T : ViewDataBinding>(
 
         searchView.setOnQueryTextFocusChangeListener { view, hasFocus ->
             when (hasFocus) {
-                true -> {
-                    // // 검색창에 커서가 생김
-                    // 검색 결과 fragment가 있다면 그대로 유지해 검색 결과를 보여준다.
-                    // 없다면 검색창에 text가 없다는 뜻이므로 검색 기록을 보여준다.
-                    if(childFragmentManager.findFragmentByTag("searchresult")==null){
-                        // 검색 content를 보여준다.( 검색기록이 기본적으로 보여진다. )
-                        toolbarlayout.visibility = View.VISIBLE
-                        toolbarinnerlayout.visibility = View.VISIBLE
+                true -> { // 검색창에 커서가 생김
+                    // 검색 결과 fragment가 있다면 fragment를 지우지 않고 그대로 유지한다.
+                    if (childFragmentManager.findFragmentByTag("searchresult") == null) { // 없다면
+                        if (searchViewEditText.text.length > 0) { // 입력한 글자가 있는 경우, 추천 검색어를 보여준다.
+                            // 검색 content를 보여준다.( 검색기록이 기본적으로 보여진다. )
+                            toolbarlayout.visibility = View.VISIBLE
+                            toolbarinnerlayout.visibility = View.INVISIBLE
+                        } else { // 입력한 글자가 없는 경우, 검색 기록을 보여준다.
+                            toolbarlayout.visibility = View.VISIBLE
+                            toolbarinnerlayout.visibility = View.VISIBLE
+                        }
                     }
                     // 하단바를 가린다.
                     hideBottomNavigation(true)
                 }
-                false -> {
-                    // // 검색창에서 커서가 사라짐
+                false -> {// 검색창에서 커서가 사라짐
                 }
             }
         }
 
         toolbarmenusearch.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                // 검색창이 펼쳐 졌을 때
+                initSearchHistory()
                 return true
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
                 // 검색창이 닫혔 때
                 // 검색창 초기화
-                if(childFragmentManager.findFragmentByTag("searchresult")!=null){
+                searchViewEditText.text.clear()
+                if (childFragmentManager.findFragmentByTag("searchresult") != null) {
                     childFragmentManager.beginTransaction()
                         .remove(childFragmentManager.findFragmentByTag("searchresult")!!)
                         .commitAllowingStateLoss()
                 }
-                toolbarinnerlayout.visibility = View.VISIBLE
+                toolbarinnerlayout.visibility = View.INVISIBLE
                 toolbarlayout.visibility = View.INVISIBLE
                 hideBottomNavigation(false)
                 return true
             }
         })
-
-        initSearchHistory()
     }
 
     protected fun initSearchHistory() {

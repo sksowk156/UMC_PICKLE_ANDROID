@@ -17,7 +17,6 @@ class ClothActivity : AppCompatActivity() {
     private var clothPrice: Int = 0
     private lateinit var toolbar : Toolbar
 
-
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         viewBinding = ActivityClothBinding.inflate(layoutInflater)

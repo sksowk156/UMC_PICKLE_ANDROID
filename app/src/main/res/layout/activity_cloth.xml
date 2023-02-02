@@ -8,7 +8,6 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar"/>
 
-
     <FrameLayout
         android:id="@+id/framelayout"
         android:layout_gravity="center"
