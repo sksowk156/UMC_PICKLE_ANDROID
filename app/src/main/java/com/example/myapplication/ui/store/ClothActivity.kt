@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.activity_cloth.*
 class ClothActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityClothBinding
     private lateinit var viewpager: ViewPager2
-
     private lateinit var storeName: String
     private lateinit var clothName: String
     private var clothPrice: Int = 0
