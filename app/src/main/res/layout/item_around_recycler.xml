@@ -7,12 +7,12 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/market_image"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_margin="20dp"
-        app:civ_border_width="2dp"
-        app:civ_border_color="@color/black"
         android:src="@drawable/ic_launcher_foreground"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,63 +27,26 @@
         app:layout_constraintStart_toEndOf="@id/market_image"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <TextView
+            android:id="@+id/market_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginStart="8dp"
+            android:text="매장명" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="매장명" />
-
-            <TextView
-                android:id="@+id/market_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="매장명" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <TextView
+            android:id="@+id/market_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginStart="8dp"
+            android:text="주소" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="주소" />
-
-            <TextView
-                android:id="@+id/market_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="주소" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <TextView
+            android:id="@+id/market_operationhours"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="운영 시간" />
-
-            <TextView
-                android:id="@+id/market_operationhours"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="운영 시간" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
+            android:layout_marginStart="8dp"
+            android:text="운영 시간" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
