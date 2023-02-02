@@ -53,5 +53,7 @@ class LogoutFragment : BottomSheetDialogFragment() {
         logoutno.setOnClickListener {
             dismiss()
         }
+
     }
+
 }

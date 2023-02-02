@@ -1,17 +1,16 @@
-package com.example.myapplication.db.local
+package com.example.myapplication.util
 
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.myapplication.ApplicationClass.Companion.SERVER_TOKEN
 import com.example.myapplication.ui.main.search.SearchHistroyData
 import com.example.myapplication.ApplicationClass.Companion.SHARED_SEARCH_HISTORY
-import com.example.myapplication.ApplicationClass.Companion.X_ACCESS_TOKEN
 import com.google.gson.Gson
 
 
 class SharedPreferencesManager(context: Context) {
 
-    // 쉐어드 만들기
+    // // 쉐어드 만들기
     // 검색 기록
     private val searchhistoryprefs: SharedPreferences =
         context.getSharedPreferences(SHARED_SEARCH_HISTORY, Context.MODE_PRIVATE)
@@ -20,7 +19,7 @@ class SharedPreferencesManager(context: Context) {
     private val jwtprefs: SharedPreferences =
         context.getSharedPreferences(SERVER_TOKEN, Context.MODE_PRIVATE)
 
-    // 데이터 출력
+    // 검색 기록 데이터 출력
     fun getsearchhistoryString(key: String): MutableList<SearchHistroyData> {
         var storedSearchHistoryList = ArrayList<SearchHistroyData>()
         val storedSearchHistoryListString = searchhistoryprefs.getString(key, "")!!
@@ -34,7 +33,7 @@ class SharedPreferencesManager(context: Context) {
         return storedSearchHistoryList
     }
 
-    // 데이터 저장
+    // 검색 기록 데이터 저장
     fun setsearchhistoryString(key: String, searchHistoryList: MutableList<SearchHistroyData>) {
         // 매개변수로 들어온 배열을 문자열로 변환
         val storedSearchHistoryListString = Gson().toJson(searchHistoryList)
@@ -42,20 +41,23 @@ class SharedPreferencesManager(context: Context) {
         searchhistoryprefs.edit().putString(key, storedSearchHistoryListString).apply()
     }
 
-    // 데이터 삭제
+    // 검색 기록 데이터 삭제
     fun deletesearchhistoryString() {
         searchhistoryprefs.edit().clear().apply()
     }
 
+    // jwt 데이터 출력
     fun getJwt(key:String): String {
         val storedJwtString = jwtprefs.getString(key, "")!!
         return storedJwtString
     }
 
+    // jwt 데이터 저장
     fun setJwt(key : String, jwtToken: String) {
         jwtprefs.edit().putString(key, jwtToken).apply()
     }
 
+    // jwt 데이터 삭제
     fun deleteJwt(){
         jwtprefs.edit().clear().apply()
     }
