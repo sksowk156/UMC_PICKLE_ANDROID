@@ -43,6 +43,12 @@ class ProfileBlankFragment :
                 "profile" -> {
                     initSubAppbar("마이페이지", false, true)
                 }
+                "orderstatusdetail" -> {
+                    initSubAppbar("주문 상세보기", true, false)
+                }
+                "noticedetail"->{
+                    initSubAppbar("공지사항",true, false)
+                }
             }
         }
     }

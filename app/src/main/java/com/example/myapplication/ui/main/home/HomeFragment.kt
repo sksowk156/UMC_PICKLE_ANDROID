@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.ui.base.BaseFragment
+import com.example.myapplication.ui.store.ClothActivity
 import com.example.myapplication.ui.store.StoreActivity
 import com.smarteist.autoimageslider.SliderView
 
@@ -53,7 +54,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
 
         lateinit var imageList:ArrayList<Int>
         imageList=ArrayList()
-        imageList.add(R.drawable.img_1)
         imageList.add(R.drawable.img_2)
         imageList.add(R.drawable.img_3)
         imageList.add(R.drawable.img_4)

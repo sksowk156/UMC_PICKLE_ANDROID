@@ -18,7 +18,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
     }
 
     private fun initButton(){
-        val toolbar: androidx.appcompat.widget.Toolbar
         binding.apply {
             // 마이페이지
             profileTextviewMyprofile.setOnClickListener {

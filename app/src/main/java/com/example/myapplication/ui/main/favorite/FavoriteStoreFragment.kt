@@ -11,6 +11,7 @@ import com.example.myapplication.ui.main.home.CardViewAdapter
 import com.example.myapplication.ui.main.home.Clothes
 import com.example.myapplication.ui.main.home.clothesList
 import com.example.myapplication.ui.main.home.newclothesList
+import com.example.myapplication.ui.store.ClothActivity
 import com.example.myapplication.ui.store.StoreActivity
 
 
@@ -94,7 +95,7 @@ class FavoriteStoreFragment : BaseFragment<FragmentFavoriteStoreBinding>(R.layou
     }
 
     override fun onItemImageClick(view: View, position: Int) {
-        val intent = Intent(getActivity(), ClothActivity::class.java)
+        val intent = Intent(context, ClothActivity::class.java)
         intent.putExtra("storeName","store1")
         intent.putExtra("clothName","옷1")
         intent.putExtra("clothPrice",30000)
@@ -103,7 +104,7 @@ class FavoriteStoreFragment : BaseFragment<FragmentFavoriteStoreBinding>(R.layou
     }
 
     override fun onItemMarketNameClick(view: View, position: Int) {
-        val intent = Intent(getActivity(), StoreActivity::class.java)
+        val intent = Intent(context, StoreActivity::class.java)
         startActivity(intent)
     }
 

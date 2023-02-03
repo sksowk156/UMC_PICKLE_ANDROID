@@ -12,7 +12,7 @@
         tools:context=".ui.main.profile.orderstatus.OrderstatusFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:background="@color/lightgrey"
+            android:background="#F4F6F8"
             android:id="@+id/orderstatus_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

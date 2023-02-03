@@ -17,19 +17,17 @@
 
     <style name="AppBottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
-        <item name="android:minHeight">194px</item>
         <item name="behavior_draggable">false</item>
     </style>
 
     <style name="AppBottomSheetDialogTheme2" parent="Theme.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
-        <item name="android:minHeight">255px</item>
         <item name="behavior_draggable">false</item>
     </style>
 
     <style name="AppBottomSheetDialogTheme3" parent="Theme.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
-        <item name="android:minHeight">255px</item>
+        <item name="android:minHeight">231px</item>
         <item name="behavior_draggable">false</item>
     </style>
 
