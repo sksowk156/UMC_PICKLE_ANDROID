@@ -24,7 +24,8 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
             R.drawable.one,
             "store1",
             "옷1",
-            30000
+            30000,
+            false
         )
         clothesList.add(clothes1)
         newclothesList.add(clothes1)
@@ -33,7 +34,8 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
             R.drawable.two,
             "store2",
             "옷2",
-            30000
+            30000,
+            false
         )
         clothesList.add(clothes2)
         newclothesList.add(clothes1)
@@ -42,7 +44,8 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
             R.drawable.two,
             "store1",
             "옷3",
-            30000
+            30000,
+            false
         )
         clothesList.add(clothes3)
         newclothesList.add(clothes1)
@@ -51,7 +54,8 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
             R.drawable.one,
             "store1",
             "옷4",
-            30000
+            30000,
+            false
         )
         clothesList.add(clothes4)
         newclothesList.add(clothes1)
@@ -60,7 +64,8 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
             R.drawable.two,
             "store1",
             "옷5",
-            30000
+            30000,
+            false
         )
         clothesList.add(clothes5)
         newclothesList.add(clothes1)
@@ -86,6 +91,10 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
     override fun onItemMarketNameClick(view: View, position: Int) {
         val intent = Intent(getActivity(), StoreActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun onItemButtonClick(view: View, position: Int) {
+
     }
 
 

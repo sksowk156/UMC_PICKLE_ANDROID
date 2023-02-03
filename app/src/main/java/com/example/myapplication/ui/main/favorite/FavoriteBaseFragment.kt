@@ -5,6 +5,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFavoriteBaseBinding
 import com.example.myapplication.ui.base.BaseFragment
+import com.example.myapplication.ui.main.home.HomeFragment
 import com.example.myapplication.ui.main.profile.notice.NoticeFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -14,6 +15,7 @@ class FavoriteBaseFragment : BaseFragment<FragmentFavoriteBaseBinding>(R.layout.
     override fun init() {
         initAppbar(binding.favoritebaseToolbarcontent,binding.favoritebaseToolbar,"찜 목록")
         initViewPager()
+
     }
 
     private fun initViewPager() {

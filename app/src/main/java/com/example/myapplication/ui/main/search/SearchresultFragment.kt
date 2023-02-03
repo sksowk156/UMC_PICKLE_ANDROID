@@ -16,8 +16,7 @@ import com.example.myapplication.ui.store.StoreActivity
 import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController.ClickListener
 
 class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.fragment_searchresult) {
-    override fun init() {
-        rcView()
+    override fun init() {     rcView()
     }
 
     lateinit var fragmentadapter: CardViewAdapter
@@ -27,7 +26,8 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
             R.drawable.one,
             "store1",
             "옷1",
-            30000
+            30000,
+            false
         )
         clothesList.add(clothes1)
         newclothesList.add(clothes1)
@@ -36,7 +36,8 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
             R.drawable.two,
             "store2",
             "옷2",
-            30000
+            30000,
+            false
         )
         clothesList.add(clothes2)
         newclothesList.add(clothes1)
@@ -45,7 +46,8 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
             R.drawable.two,
             "store1",
             "옷3",
-            30000
+            30000,
+            false
         )
         clothesList.add(clothes3)
         newclothesList.add(clothes1)
@@ -54,7 +56,8 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
             R.drawable.one,
             "store1",
             "옷4",
-            30000
+            30000,
+            false
         )
         clothesList.add(clothes4)
         newclothesList.add(clothes1)
@@ -63,7 +66,8 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
             R.drawable.two,
             "store1",
             "옷5",
-            30000
+            30000,
+            false
         )
         clothesList.add(clothes5)
         newclothesList.add(clothes1)
@@ -87,6 +91,10 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
             override fun onItemMarketNameClick(view: View, position: Int) {
                 val intent = Intent(getActivity(), StoreActivity::class.java)
                 startActivity(intent)
+            }
+
+            override fun onItemButtonClick(view: View, position: Int) {
+                showToast("clicked")
             }
         }))
         fragmentadapter.submitList(clothesList.toMutableList())
