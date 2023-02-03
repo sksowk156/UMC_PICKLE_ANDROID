@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
     android:id="@+id/logout_layout"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="194dp">
 
 
     <TextView
@@ -14,30 +14,36 @@
         android:gravity="center"
         android:text="로그아웃 하시겠습니까?"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/logout_button_no"
-        android:layout_width="154dp"
+        android:layout_width="156dp"
         android:layout_height="48dp"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="40dp"
+        android:background="@drawable/logout_withdrawal_button_background"
         android:text="취소"
+        android:textColor="#A4A4A4"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/logout_button_yes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logout_textview1"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/logout_button_yes"
-        android:layout_width="154dp"
+        android:layout_width="156dp"
         android:layout_height="48dp"
+        android:background="@drawable/logout_withdrawal_button_background2"
         android:text="로그아웃"
+        android:textColor="@color/white"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/logout_button_no"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

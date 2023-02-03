@@ -2,7 +2,6 @@ package com.example.myapplication.ui.main.home
 
 import android.content.Intent
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
@@ -55,7 +54,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
 
         lateinit var imageList:ArrayList<Int>
         imageList=ArrayList()
-        imageList.add(R.drawable.img_1)
         imageList.add(R.drawable.img_2)
         imageList.add(R.drawable.img_3)
         imageList.add(R.drawable.img_4)

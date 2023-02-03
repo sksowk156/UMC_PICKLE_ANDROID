@@ -1,8 +1,11 @@
 package com.example.myapplication.ui.main.location.map
 
 import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.drawable.toDrawable
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMapBinding
 import com.example.myapplication.ui.base.BaseFragment
@@ -124,7 +127,6 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
 
         // 위치버튼 갱신
         binding.mapLocationbutton.map = naverMap
-
         naverMap.locationTrackingMode = LocationTrackingMode.Face
 
         // 현재 위치 설정

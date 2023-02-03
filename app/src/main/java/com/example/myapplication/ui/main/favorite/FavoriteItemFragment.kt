@@ -1,15 +1,10 @@
 package com.example.myapplication.ui.main.favorite
 
 import android.content.Intent
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFavoriteItemBinding
-import com.example.myapplication.databinding.FragmentNewBinding
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.home.*
 import com.example.myapplication.ui.store.ClothActivity
@@ -96,7 +91,7 @@ class FavoriteItemFragment : BaseFragment<FragmentFavoriteItemBinding>(R.layout.
     }
 
     override fun onItemImageClick(view: View, position: Int) {
-        val intent = Intent(getActivity(), ClothActivity::class.java)
+        val intent = Intent(context, ClothActivity::class.java)
         intent.putExtra("storeName","store1")
         intent.putExtra("clothName","옷1")
         intent.putExtra("clothPrice",30000)
@@ -105,7 +100,7 @@ class FavoriteItemFragment : BaseFragment<FragmentFavoriteItemBinding>(R.layout.
     }
 
     override fun onItemMarketNameClick(view: View, position: Int) {
-        val intent = Intent(getActivity(), StoreActivity::class.java)
+        val intent = Intent(context, StoreActivity::class.java)
         startActivity(intent)
     }
 

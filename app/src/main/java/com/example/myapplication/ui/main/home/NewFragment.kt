@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentNewBinding
 import com.example.myapplication.ui.base.BaseFragment
-import com.example.myapplication.ui.store.ClothActivity
 import com.example.myapplication.ui.store.StoreActivity
 
 

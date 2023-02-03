@@ -15,6 +15,7 @@
             android:id="@+id/profile_layout_inner"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="#F4F6F8"
             android:divider="@color/teal_700"
             android:orientation="vertical"
             android:showDividers="middle"
@@ -24,23 +25,40 @@
             app:layout_constraintTop_toTopOf="@id/profile_layout">
 
 
-            <TextView
-                android:id="@+id/profile_textview_myprofile"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:text="OOO님, 안녕하세요!" />
+                android:layout_height="71dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/profile_textview_myprofile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="16dp"
+                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    android:text="OOO님, 안녕하세요!"
+                    android:textColor="#1E1E1E"
+                    android:textSize="16sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/profile_layout_inner2"
                 android:layout_width="match_parent"
-                android:layout_height="170dp">
+                android:layout_height="178dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/white">
 
                 <TextView
                     android:id="@+id/profile_textview1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="주문현황"
+                    android:textColor="#1E1E1E"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@id/profile_layout_inner2"
                     app:layout_constraintTop_toTopOf="@id/profile_layout_inner2" />
 
@@ -48,7 +66,9 @@
                     android:id="@+id/profile_textview2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
                     android:text="(최근3개월)"
+                    android:textColor="#767676"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@id/profile_textview1"
                     app:layout_constraintStart_toEndOf="@id/profile_textview1" />
@@ -57,9 +77,10 @@
                     android:id="@+id/profile_textview_completeorder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:padding="10dp"
+                    android:layout_marginStart="44dp"
                     android:text="0"
+                    android:textColor="#1E1E1E"
+                    android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/profile_image1"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -70,7 +91,10 @@
                     android:id="@+id/profile_textview3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="주문완료"
+                    android:textColor="#1E1E1E"
+                    android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="@+id/profile_textview_completeorder"
                     app:layout_constraintStart_toStartOf="@+id/profile_textview_completeorder"
                     app:layout_constraintTop_toBottomOf="@+id/profile_textview_completeorder" />
@@ -80,7 +104,7 @@
                     android:id="@+id/profile_image1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:layout_marginHorizontal="29dp"
                     android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
                     app:layout_constraintBottom_toBottomOf="@+id/profile_textview_completeorder"
                     app:layout_constraintEnd_toStartOf="@+id/profile_textview_pickup"
@@ -93,8 +117,9 @@
                     android:id="@+id/profile_textview_pickup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
                     android:text="2"
+                    android:textColor="#1E1E1E"
+                    android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/profile_image1"
                     app:layout_constraintEnd_toStartOf="@+id/profile_image2"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -105,7 +130,10 @@
                     android:id="@+id/profile_textview4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="픽업중"
+                    android:textColor="#1E1E1E"
+                    android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="@+id/profile_textview_pickup"
                     app:layout_constraintStart_toStartOf="@+id/profile_textview_pickup"
                     app:layout_constraintTop_toBottomOf="@id/profile_textview_pickup" />
@@ -114,7 +142,7 @@
                     android:id="@+id/profile_image2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:layout_marginHorizontal="29dp"
                     android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
                     app:layout_constraintBottom_toBottomOf="@+id/profile_textview_pickup"
                     app:layout_constraintEnd_toStartOf="@+id/profile_textview_pickupconfirm"
@@ -126,8 +154,9 @@
                     android:id="@+id/profile_textview_pickupconfirm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
                     android:text="3"
+                    android:textColor="#1E1E1E"
+                    android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/profile_image2"
                     app:layout_constraintEnd_toStartOf="@+id/profile_image3"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -138,7 +167,10 @@
                     android:id="@+id/profile_textview5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="픽업완료"
+                    android:textColor="#1E1E1E"
+                    android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="@+id/profile_textview_pickupconfirm"
                     app:layout_constraintStart_toStartOf="@+id/profile_textview_pickupconfirm"
                     app:layout_constraintTop_toBottomOf="@+id/profile_textview_pickupconfirm" />
@@ -147,7 +179,7 @@
                     android:id="@+id/profile_image3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:layout_marginHorizontal="29dp"
                     android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
                     app:layout_constraintBottom_toBottomOf="@+id/profile_textview_pickupconfirm"
                     app:layout_constraintEnd_toStartOf="@+id/profile_textview_purchaseconfirm"
@@ -159,8 +191,10 @@
                     android:id="@+id/profile_textview_purchaseconfirm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:layout_marginEnd="49dp"
                     android:text="4"
+                    android:textColor="#1E1E1E"
+                    android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/profile_image3"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -171,7 +205,10 @@
                     android:id="@+id/profile_textview6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="구매확정"
+                    android:textColor="#1E1E1E"
+                    android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="@+id/profile_textview_purchaseconfirm"
                     app:layout_constraintStart_toStartOf="@+id/profile_textview_purchaseconfirm"
                     app:layout_constraintTop_toBottomOf="@+id/profile_textview_purchaseconfirm" />
@@ -179,29 +216,78 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/profile_textview_announcement"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="공지사항" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
+                android:background="@color/white"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/profile_textview_questions"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="문의사항" />
+                <TextView
+                    android:id="@+id/profile_textview_announcement"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:gravity="center_vertical"
+                    android:text="공지사항"
+                    android:textColor="#1E1E1E"
+                    android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/profile_textview_logout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="로그아웃" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="#E1E1E1" />
 
-            <TextView
-                android:id="@+id/profile_textview_withdrawal"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="회원탈퇴" />
+                <TextView
+                    android:id="@+id/profile_textview_questions"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:gravity="center_vertical"
+                    android:text="문의사항"
+                    android:textColor="#1E1E1E"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="#E1E1E1" />
+
+                <TextView
+                    android:id="@+id/profile_textview_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:gravity="center_vertical"
+                    android:text="로그아웃"
+                    android:textColor="#1E1E1E"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="#E1E1E1" />
+
+                <TextView
+                    android:id="@+id/profile_textview_withdrawal"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:gravity="center_vertical"
+                    android:text="회원탈퇴"
+                    android:textColor="#1E1E1E"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="#E1E1E1" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

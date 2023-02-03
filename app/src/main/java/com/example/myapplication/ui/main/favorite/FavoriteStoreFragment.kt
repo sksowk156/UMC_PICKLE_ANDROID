@@ -3,7 +3,6 @@ package com.example.myapplication.ui.main.favorite
 
 import android.content.Intent
 import android.view.View
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFavoriteStoreBinding
@@ -96,7 +95,7 @@ class FavoriteStoreFragment : BaseFragment<FragmentFavoriteStoreBinding>(R.layou
     }
 
     override fun onItemImageClick(view: View, position: Int) {
-        val intent = Intent(getActivity(), ClothActivity::class.java)
+        val intent = Intent(context, ClothActivity::class.java)
         intent.putExtra("storeName","store1")
         intent.putExtra("clothName","옷1")
         intent.putExtra("clothPrice",30000)
@@ -105,7 +104,7 @@ class FavoriteStoreFragment : BaseFragment<FragmentFavoriteStoreBinding>(R.layou
     }
 
     override fun onItemMarketNameClick(view: View, position: Int) {
-        val intent = Intent(getActivity(), StoreActivity::class.java)
+        val intent = Intent(context, StoreActivity::class.java)
         startActivity(intent)
     }
 

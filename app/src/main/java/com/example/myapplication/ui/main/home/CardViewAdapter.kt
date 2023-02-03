@@ -16,7 +16,6 @@ class CardViewAdapter(clicklistener: ClothesClickListener) :
     interface ClothesClickListener {
         fun onItemImageClick(view: View, position: Int)
         fun onItemMarketNameClick(view: View, position: Int)
-
         fun onItemButtonClick(view: View,position: Int)
     }
 
