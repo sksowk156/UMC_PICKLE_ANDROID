@@ -2,12 +2,10 @@ package com.example.myapplication.ui.main.home
 
 import android.content.Intent
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.ui.base.BaseFragment
-import com.example.myapplication.ui.store.ClothActivity
 import com.example.myapplication.ui.store.StoreActivity
 import com.smarteist.autoimageslider.SliderView
 

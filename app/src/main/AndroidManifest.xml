@@ -67,9 +67,7 @@
             android:name=".ui.store.PickupActivity"
             android:exported="false" />
 
-        <activity
-            android:name=".ui.store.ClothActivity"
-            android:exported="false" />
+        <activity android:name=".ui.store.ClothActivity"/>
 
     </application>
 </manifest>

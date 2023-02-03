@@ -1,87 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.store.ClothActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar"/>
+        layout="@layout/toolbar" />
 
     <FrameLayout
         android:id="@+id/framelayout"
-        android:layout_gravity="center"
         android:layout_width="400dp"
         android:layout_height="300dp"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:layout_gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp" />
 
         <me.relex.circleindicator.CircleIndicator3
             android:id="@+id/indicator"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="10dp" />
 
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_margin="20dp"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/framelayout">
-        
+
         <TextView
             android:id="@+id/tv_store_name2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="매장명"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
+
         <TextView
             android:id="@+id/tv_cloth_name2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="옷 이름"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/tv_cloth_price2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="50,000원"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="11dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginBottom="11dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/button_favorite"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:src="@drawable/button_favorite" />
 
         <ImageView
             android:id="@+id/iv_order"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:src="@drawable/button_order"
-            android:layout_weight="3"/>
+            android:layout_weight="3"
+            android:src="@drawable/button_order" />
 
     </LinearLayout>
 

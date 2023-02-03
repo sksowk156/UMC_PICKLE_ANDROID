@@ -3,7 +3,6 @@ package com.example.myapplication.ui.main.favorite
 
 import android.content.Intent
 import android.view.View
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFavoriteStoreBinding
@@ -12,7 +11,6 @@ import com.example.myapplication.ui.main.home.CardViewAdapter
 import com.example.myapplication.ui.main.home.Clothes
 import com.example.myapplication.ui.main.home.clothesList
 import com.example.myapplication.ui.main.home.newclothesList
-import com.example.myapplication.ui.store.ClothActivity
 import com.example.myapplication.ui.store.StoreActivity
 
 
