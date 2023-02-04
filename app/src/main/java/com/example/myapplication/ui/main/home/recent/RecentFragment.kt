@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.main.home
+package com.example.myapplication.ui.main.home.recent
 
 import android.content.Intent
 import android.view.View
@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentRecentBinding
 import com.example.myapplication.ui.base.BaseFragment
+import com.example.myapplication.ui.main.home.Clothes
+import com.example.myapplication.ui.main.home.clothesList
+import com.example.myapplication.ui.main.home.newclothesList
 import com.example.myapplication.ui.store.StoreActivity
 
-//<<<<<<< HEAD
-//class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent) {
-//=======
 class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent),
     CardViewAdapter.ClothesClickListener {
 
@@ -20,7 +20,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
     }
 
     private fun addClothes(){
-        val clothes1=Clothes(
+        val clothes1= Clothes(
             R.drawable.one,
             "store1",
             "옷1",
@@ -30,7 +30,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         clothesList.add(clothes1)
         newclothesList.add(clothes1)
 
-        val clothes2=Clothes(
+        val clothes2= Clothes(
             R.drawable.two,
             "store2",
             "옷2",
@@ -40,7 +40,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         clothesList.add(clothes2)
         newclothesList.add(clothes1)
 
-        val clothes3=Clothes(
+        val clothes3= Clothes(
             R.drawable.two,
             "store1",
             "옷3",
@@ -50,7 +50,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         clothesList.add(clothes3)
         newclothesList.add(clothes1)
 
-        val clothes4=Clothes(
+        val clothes4= Clothes(
             R.drawable.one,
             "store1",
             "옷4",
@@ -60,7 +60,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         clothesList.add(clothes4)
         newclothesList.add(clothes1)
 
-        val clothes5=Clothes(
+        val clothes5= Clothes(
             R.drawable.two,
             "store1",
             "옷5",

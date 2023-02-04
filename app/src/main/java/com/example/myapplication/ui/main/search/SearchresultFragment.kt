@@ -7,6 +7,7 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSearchresultBinding
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.home.*
+import com.example.myapplication.ui.main.home.recent.CardViewAdapter
 import com.example.myapplication.ui.store.ClothActivity
 import com.example.myapplication.ui.store.StoreActivity
 

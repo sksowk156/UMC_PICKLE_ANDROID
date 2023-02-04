@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.main.home
+package com.example.myapplication.ui.main.home.newclothe
 
 import android.content.Intent
 import android.view.View
@@ -6,15 +6,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentNewBinding
 import com.example.myapplication.ui.base.BaseFragment
+import com.example.myapplication.ui.main.home.Clothes
+import com.example.myapplication.ui.main.home.clothesList
+import com.example.myapplication.ui.main.home.newclothesList
+import com.example.myapplication.ui.main.home.recent.CardViewAdapter
 import com.example.myapplication.ui.store.StoreActivity
 
 
-//<<<<<<< HEAD
-//class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) {
-//=======
+
 class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) ,
     CardViewAdapter.ClothesClickListener {
-//>>>>>>> main
 
     lateinit var fragmentadapter : CardViewAdapter
     override fun init() {
@@ -22,7 +23,7 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) ,
     }
 
     private fun addClothes(){
-        val clothes1=Clothes(
+        val clothes1= Clothes(
             R.drawable.one,
             "store1",
             "옷1",
@@ -32,7 +33,7 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) ,
         clothesList.add(clothes1)
         newclothesList.add(clothes1)
 
-        val clothes2=Clothes(
+        val clothes2= Clothes(
             R.drawable.two,
             "store2",
             "옷2",
@@ -42,7 +43,7 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) ,
         clothesList.add(clothes2)
         newclothesList.add(clothes1)
 
-        val clothes3=Clothes(
+        val clothes3= Clothes(
             R.drawable.two,
             "store1",
             "옷3",
@@ -52,7 +53,7 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) ,
         clothesList.add(clothes3)
         newclothesList.add(clothes1)
 
-        val clothes4=Clothes(
+        val clothes4= Clothes(
             R.drawable.one,
             "store1",
             "옷4",
@@ -62,7 +63,7 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) ,
         clothesList.add(clothes4)
         newclothesList.add(clothes1)
 
-        val clothes5=Clothes(
+        val clothes5= Clothes(
             R.drawable.two,
             "store1",
             "옷5",

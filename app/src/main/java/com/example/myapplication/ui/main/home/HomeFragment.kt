@@ -6,14 +6,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.ui.base.BaseFragment
+import com.example.myapplication.ui.main.home.newclothe.NewFragment
+import com.example.myapplication.ui.main.home.recent.CardViewAdapter
+import com.example.myapplication.ui.main.home.recent.RecentFragment
 import com.example.myapplication.ui.store.ClothActivity
 import com.example.myapplication.ui.store.StoreActivity
 import com.smarteist.autoimageslider.SliderView
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
-    CardViewAdapter.ClothesClickListener {
+    HomeCardViewAdapter.ClothesClickListener {
 
-    lateinit var fragmentadapter : CardViewAdapter
+    lateinit var fragmentadapter : HomeCardViewAdapter
     override fun init() {
         initSlide()
         rcView()
@@ -26,7 +29,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
                 .commitAllowingStateLoss()
         }
 
-        binding.secondbutton.setOnClickListener {
+        binding.button2.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
                 .replace(R.id.home_base_layout, NewFragment(),"new")
@@ -147,7 +150,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
 
     private fun rcView(){
         addClothes()
-        fragmentadapter = CardViewAdapter(this@HomeFragment)
+        fragmentadapter = HomeCardViewAdapter(this@HomeFragment)
         fragmentadapter.submitList(clothesList.toMutableList())
 
         binding.recyclerView.apply {

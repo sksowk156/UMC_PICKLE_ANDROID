@@ -7,23 +7,20 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFavoriteStoreBinding
 import com.example.myapplication.ui.base.BaseFragment
-import com.example.myapplication.ui.main.home.CardViewAdapter
 import com.example.myapplication.ui.main.home.Clothes
 import com.example.myapplication.ui.main.home.clothesList
 import com.example.myapplication.ui.main.home.newclothesList
+import com.example.myapplication.ui.main.home.recent.CardViewAdapter
 import com.example.myapplication.ui.store.ClothActivity
 import com.example.myapplication.ui.store.StoreActivity
 
 
 class FavoriteStoreFragment : BaseFragment<FragmentFavoriteStoreBinding>(R.layout.fragment_favorite_store),
     CardViewAdapter.ClothesClickListener {
-//>>>>>>> main
 
     lateinit var fragmentadapter : CardViewAdapter
     override fun init() {
         rcView()
-
-
     }
 
     private fun addClothes(){
@@ -82,9 +79,6 @@ class FavoriteStoreFragment : BaseFragment<FragmentFavoriteStoreBinding>(R.layou
     private fun rcView(){
         addClothes()
         fragmentadapter = CardViewAdapter(this@FavoriteStoreFragment)
-
-
-
 
         binding.favoriteStoreRecyclerView.apply {
             layoutManager= GridLayoutManager(this.context,2)
