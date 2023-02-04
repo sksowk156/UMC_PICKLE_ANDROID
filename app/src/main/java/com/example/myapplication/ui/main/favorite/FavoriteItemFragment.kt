@@ -7,19 +7,17 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFavoriteItemBinding
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.home.*
+import com.example.myapplication.ui.main.home.recent.CardViewAdapter
 import com.example.myapplication.ui.store.ClothActivity
 import com.example.myapplication.ui.store.StoreActivity
 
 
 class FavoriteItemFragment : BaseFragment<FragmentFavoriteItemBinding>(R.layout.fragment_favorite_item) ,
     CardViewAdapter.ClothesClickListener {
-//>>>>>>> main
 
     lateinit var fragmentadapter : CardViewAdapter
     override fun init() {
         rcView()
-
-
     }
 
     private fun addClothes(){

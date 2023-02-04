@@ -3,15 +3,13 @@ package com.example.myapplication.ui.main.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.databinding.ItemCardRecyclerBinding
-import kotlinx.coroutines.NonDisposableHandle.parent
+import com.example.myapplication.databinding.ItemHomecardRecyclerBinding
 
-class CardViewAdapter(clicklistener: ClothesClickListener) :
-   ListAdapter<Clothes, CardViewAdapter.MyViewHolder>(CardViewDiffUtil) {
+class HomeCardViewAdapter(clicklistener: ClothesClickListener) :
+   ListAdapter<Clothes, HomeCardViewAdapter.MyViewHolder>(HomeCardViewDiffUtil) {
 
     interface ClothesClickListener {
         fun onItemImageClick(view: View, position: Int)
@@ -21,24 +19,24 @@ class CardViewAdapter(clicklistener: ClothesClickListener) :
 
     var clicklistener: ClothesClickListener = clicklistener
 
-    inner class MyViewHolder(val binding: ItemCardRecyclerBinding) :
+    inner class MyViewHolder(val binding: ItemHomecardRecyclerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(clothes: Clothes) {
-            binding.cardCardviewFrame.setOnClickListener {
+            binding.homecardCardviewFrame.setOnClickListener {
                 clicklistener.onItemImageClick(it, absoluteAdapterPosition)
             }
 
-            binding.cardTextviewStorename.setOnClickListener {
+            binding.homecardTextviewStorename.setOnClickListener {
                 clicklistener.onItemMarketNameClick(it, absoluteAdapterPosition)
             }
 
-            binding.cardImagebuttonFavorite.setOnClickListener{
+            binding.homecardImagebuttonFavorite.setOnClickListener{
                 clicklistener.onItemButtonClick(it,absoluteAdapterPosition)
             }
-            binding.cardImageviewImage.setImageResource(clothes.image)
-            binding.cardTextviewStorename.text = clothes.store
-            binding.cardTextviewClothename.text = clothes.name
-            binding.cardTextviewClotheprice.text = clothes.price.toString()
+            binding.homecardImageviewImage.setImageResource(clothes.image)
+            binding.homecardTextviewStorename.text = clothes.store
+            binding.homecardTextviewClothename.text = clothes.name
+            binding.homecardTextviewClotheprice.text = clothes.price.toString()
 
 
         }
@@ -46,7 +44,7 @@ class CardViewAdapter(clicklistener: ClothesClickListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding =
-            ItemCardRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemHomecardRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
     }
 
@@ -55,7 +53,7 @@ class CardViewAdapter(clicklistener: ClothesClickListener) :
     }
 }
 
-object CardViewDiffUtil : DiffUtil.ItemCallback<Clothes>() {
+object HomeCardViewDiffUtil : DiffUtil.ItemCallback<Clothes>() {
     override fun areItemsTheSame(oldItem: Clothes, newItem: Clothes): Boolean {
         return oldItem.id == newItem.id
     }
