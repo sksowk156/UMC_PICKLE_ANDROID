@@ -30,7 +30,7 @@ class SearchhistoryAdapter(val clicklistener: ItemClickListener) :
         val user = userList?.get(position)
         holder.setUser(user)
 
-        holder.binding.searchhistoryTextviewHistory.setOnClickListener {
+        holder.binding.searchhistoryLayoutDetail.setOnClickListener {
             clicklistener.onTextItemClick(it, position)
         }
 
@@ -40,8 +40,6 @@ class SearchhistoryAdapter(val clicklistener: ItemClickListener) :
     }
 
     override fun getItemCount(): Int {
-//        Log.d("whatisthis",userList?.size.toString())
-//        userList?.size?.let { Math.min(it, 5) }
         return userList?.size?.let { Math.min(it, 10) }?: 0
     }
 

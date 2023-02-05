@@ -6,23 +6,36 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemCardRecyclerBinding
+import com.example.myapplication.ui.main.ItemClickInterface
 import com.example.myapplication.ui.main.home.Clothes
 
-class CardViewAdapter(clicklistener: ClothesClickListener) :
+class CardViewAdapter(clicklistener: ItemClickInterface) :
     ListAdapter<Clothes, CardViewAdapter.MyViewHolder>(CardViewDiffUtil) {
 
-    interface ClothesClickListener {
-        fun onItemImageClick(view: View, position: Int)
-        fun onItemMarketNameClick(view: View, position: Int)
-        fun onItemButtonClick(view: View, position: Int)
-    }
-
-    var clicklistener: ClothesClickListener = clicklistener
+    var clicklistener: ItemClickInterface = clicklistener
 
     inner class MyViewHolder(val binding: ItemCardRecyclerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(clothes: Clothes) {
+            if (clothes?.like == false) {
+                //화면에 보여주기
+                Glide.with(this@MyViewHolder.itemView)
+                    .load(R.drawable.icon_favorite_whiteline) //이미지
+                    .into(binding.cardImagebuttonFavorite) //보여줄 위치
+            } else {
+                //화면에 보여주기
+                Glide.with(this@MyViewHolder.itemView)
+                    .load(R.drawable.icon_favorite_filledpink) //이미지
+                    .into(binding.cardImagebuttonFavorite) //보여줄 위치
+            }
+
+            binding.cardImagebuttonFavorite.setOnClickListener{
+                clicklistener.onItemFavoriteClick(it,absoluteAdapterPosition)
+            }
+
             binding.cardCardviewFrame.setOnClickListener {
                 clicklistener.onItemImageClick(it, absoluteAdapterPosition)
             }
@@ -31,15 +44,10 @@ class CardViewAdapter(clicklistener: ClothesClickListener) :
                 clicklistener.onItemMarketNameClick(it, absoluteAdapterPosition)
             }
 
-            binding.cardImagebuttonFavorite.setOnClickListener{
-                clicklistener.onItemButtonClick(it,absoluteAdapterPosition)
-            }
             binding.cardImageviewImage.setImageResource(clothes.image)
             binding.cardTextviewStorename.text = clothes.store
             binding.cardTextviewClothename.text = clothes.name
             binding.cardTextviewClotheprice.text = clothes.price.toString()
-
-
         }
     }
 

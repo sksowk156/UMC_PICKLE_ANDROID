@@ -15,6 +15,7 @@
         tools:context=".ui.main.location.around.AroundFragment">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:background="#F4F6F8"
             android:id="@+id/around_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

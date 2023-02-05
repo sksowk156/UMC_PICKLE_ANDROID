@@ -8,12 +8,8 @@ import com.example.myapplication.databinding.FragmentHomeBaseBinding
 import com.example.myapplication.ui.base.BaseFragment
 
 class HomeBaseFragment : BaseFragment<FragmentHomeBaseBinding>(R.layout.fragment_home_base) {
-//    private var searchHistoryDataList = ArrayList<SearchHistroyData>()
 
     override fun init() {
-
-      //  toolbar = binding.homeBaseToolbar.homeBaseToolbarToolbar
-
         // 초기 화면
         childFragmentManager
             .beginTransaction()

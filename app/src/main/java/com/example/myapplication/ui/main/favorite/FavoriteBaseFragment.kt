@@ -5,8 +5,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFavoriteBaseBinding
 import com.example.myapplication.ui.base.BaseFragment
-import com.example.myapplication.ui.main.home.HomeFragment
-import com.example.myapplication.ui.main.profile.notice.NoticeFragment
+import com.example.myapplication.ui.main.favorite.item.FavoriteItemFragment
+import com.example.myapplication.ui.main.favorite.store.FavoriteStoreFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 
