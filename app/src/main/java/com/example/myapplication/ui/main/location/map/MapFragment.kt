@@ -1,8 +1,11 @@
 package com.example.myapplication.ui.main.location.map
 
 import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.drawable.toDrawable
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMapBinding
 import com.example.myapplication.ui.base.BaseFragment
@@ -12,6 +15,8 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.Overlay
+import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
 import com.naver.maps.map.widget.LocationButtonView
@@ -124,13 +129,11 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
 
         // 위치버튼 갱신
         binding.mapLocationbutton.map = naverMap
-
         naverMap.locationTrackingMode = LocationTrackingMode.Face
 
         // 현재 위치 설정
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
         naverMap.locationSource = locationSource
-
         // 카메라가 이동하기 전 화면의 위도 경도 값을 저장할 변수
         var before_LatLngBounds: LatLngBounds
 
@@ -249,8 +252,8 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
         marker.minZoom = 13.3 // Marker가 보이는 최대 줌 정하기
         marker.position = LatLng(37.4979921, 127.028046)
         marker.map = naverMap
-        marker.icon = MarkerIcons.BLACK
-        marker.iconTintColor = Color.RED
+        marker.icon = OverlayImage.fromResource(R.drawable.icon_map_pin)
+//        marker.iconTintColor = Color.RED
         marker.captionText = "something"
         marker.isHideCollidedSymbols = true // 마커와 겹치는 지도 심벌을 자동으로 숨기도록 지정하는 예제
 

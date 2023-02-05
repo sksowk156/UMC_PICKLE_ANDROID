@@ -10,12 +10,12 @@ import com.smarteist.autoimageslider.SliderViewAdapter
 
 // on below line we are creating a class for slider
 // adapter and passing our array list to it.
-class SliderAdapter(imageUrl: ArrayList<String>) :
+class SliderAdapter(imageList: ArrayList<Int>) :
     SliderViewAdapter<SliderAdapter.SliderViewHolder>() {
 
     // on below line we are creating a
     // new array list and initializing it.
-    var sliderList: ArrayList<String> = imageUrl
+    var sliderList: ArrayList<Int> = imageList
 
     // on below line we are calling get method
     override fun getCount(): Int {

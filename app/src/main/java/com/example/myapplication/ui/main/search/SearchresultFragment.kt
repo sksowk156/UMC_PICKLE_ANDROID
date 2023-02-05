@@ -1,23 +1,21 @@
 package com.example.myapplication.ui.main.search
 
 import android.content.Intent
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSearchresultBinding
 import com.example.myapplication.ui.base.BaseFragment
+import com.example.myapplication.ui.main.ItemClickInterface
 import com.example.myapplication.ui.main.home.*
+import com.example.myapplication.ui.main.home.recent.CardViewAdapter
 import com.example.myapplication.ui.store.ClothActivity
 import com.example.myapplication.ui.store.StoreActivity
-import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController.ClickListener
 
 class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.fragment_searchresult) {
-    override fun init() {
-        rcView()
+    override fun init() {     rcView()
     }
 
     lateinit var fragmentadapter: CardViewAdapter
@@ -27,7 +25,8 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
             R.drawable.one,
             "store1",
             "옷1",
-            30000
+            30000,
+            false
         )
         clothesList.add(clothes1)
         newclothesList.add(clothes1)
@@ -36,7 +35,8 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
             R.drawable.two,
             "store2",
             "옷2",
-            30000
+            30000,
+            false
         )
         clothesList.add(clothes2)
         newclothesList.add(clothes1)
@@ -45,7 +45,8 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
             R.drawable.two,
             "store1",
             "옷3",
-            30000
+            30000,
+            false
         )
         clothesList.add(clothes3)
         newclothesList.add(clothes1)
@@ -54,7 +55,8 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
             R.drawable.one,
             "store1",
             "옷4",
-            30000
+            30000,
+            false
         )
         clothesList.add(clothes4)
         newclothesList.add(clothes1)
@@ -63,7 +65,8 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
             R.drawable.two,
             "store1",
             "옷5",
-            30000
+            30000,
+            false
         )
         clothesList.add(clothes5)
         newclothesList.add(clothes1)
@@ -73,9 +76,9 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
     private fun rcView(){
         clothesList.clear()
         addClothes()
-        fragmentadapter = CardViewAdapter(clicklistener = (object : CardViewAdapter.ClothesClickListener{
+        fragmentadapter = CardViewAdapter(clicklistener = (object : ItemClickInterface {
             override fun onItemImageClick(view: View, position: Int) {
-                val intent = Intent(getActivity(), ClothActivity::class.java)
+                val intent = Intent(context, ClothActivity::class.java)
                 intent.putExtra("storeName","store1")
                 intent.putExtra("clothName","옷1")
                 intent.putExtra("clothPrice",30000)
@@ -87,6 +90,26 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
             override fun onItemMarketNameClick(view: View, position: Int) {
                 val intent = Intent(getActivity(), StoreActivity::class.java)
                 startActivity(intent)
+            }
+
+            override fun onItemButtonClick(view: View, position: Int) {
+                showToast("clicked")
+            }
+
+            override fun onItemFavoriteClick(view: View, position: Int) {
+                if (clothesList[position].like == false) {
+                    //화면에 보여주기
+                    Glide.with(this@SearchresultFragment)
+                        .load(R.drawable.icon_favorite_filledpink) //이미지
+                        .into(view.findViewById<ImageButton>(R.id.card_imagebutton_favorite)) //보여줄 위치
+                    clothesList[position].like = true
+                } else {
+                    //화면에 보여주기
+                    Glide.with(this@SearchresultFragment)
+                        .load(R.drawable.icon_favorite_whiteline) //이미지
+                        .into(view.findViewById<ImageButton>(R.id.card_imagebutton_favorite)) //보여줄 위치
+                    clothesList[position].like = false
+                }
             }
         }))
         fragmentadapter.submitList(clothesList.toMutableList())

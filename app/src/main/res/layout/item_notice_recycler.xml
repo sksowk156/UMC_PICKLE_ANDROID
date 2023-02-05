@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/notice_layout"
     android:layout_width="match_parent"
     android:layout_height="76dp"
-    android:background="@color/white"
-    android:padding="16dp">
-
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/notice_item_textview1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
         android:text="[공지]"
+        android:textColor="#1E1E1E"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/notice_item_textview_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,7 +22,9 @@
         android:id="@+id/notice_item_textview_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="공지제목"
+        android:text=" 공지 제목"
+        android:textColor="#1E1E1E"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/notice_item_textview1"
         app:layout_constraintStart_toEndOf="@+id/notice_item_textview1"
         app:layout_constraintTop_toTopOf="@+id/notice_item_textview1" />
@@ -30,8 +33,21 @@
         android:id="@+id/notice_item_textview_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="17dp"
         android:text="2023.1.16"
+        android:textColor="#767676"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/notice_item_textview1"
         app:layout_constraintTop_toBottomOf="@+id/notice_item_textview1" />
+
+    <!--    <View-->
+    <!--        android:id="@+id/view"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="1dp"-->
+    <!--        android:background="#E1E1E1"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

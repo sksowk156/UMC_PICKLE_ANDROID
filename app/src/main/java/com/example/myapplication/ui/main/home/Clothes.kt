@@ -10,6 +10,7 @@ data class Clothes(
     var store:String,
     var name:String,
     var price:Int,
+    var like:Boolean,
     val id:Int?= newclothesList.size
 
 )

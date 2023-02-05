@@ -18,7 +18,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
     }
 
     private fun initButton(){
-        val toolbar: androidx.appcompat.widget.Toolbar
         binding.apply {
             // 마이페이지
             profileTextviewMyprofile.setOnClickListener {
@@ -29,25 +28,25 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
             }
 
             // 주문현황
-            profileTextviewCompleteorder.setOnClickListener {
+            profileInnerlayoutCompleteorder.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"completeorder")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
             }
-            profileTextviewPickup.setOnClickListener {
+            profileInnerlayoutPickup.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"pickup")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
             }
-            profileTextviewPickupconfirm.setOnClickListener {
+            profileInnerlayoutPickupconfirm.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"pickupconfirm")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
             }
-            profileTextviewPurchaseconfirm.setOnClickListener {
+            profileInnerlayoutPurchaseconfirm.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"purchaseconfirm")
                     .addToBackStack(null)
