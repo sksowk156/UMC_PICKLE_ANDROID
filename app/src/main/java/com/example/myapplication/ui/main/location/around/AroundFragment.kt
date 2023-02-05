@@ -1,5 +1,8 @@
 package com.example.myapplication.ui.main.location.around
 
+import android.graphics.drawable.Icon
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentAroundBinding
@@ -11,6 +14,7 @@ class AroundFragment : BaseFragment<FragmentAroundBinding>(R.layout.fragment_aro
 
     override fun init() {
         // 플로팅 버튼 이벤트 처리
+
         binding.aroundFab.setOnClickListener {
             parentFragmentManager
                 .popBackStackImmediate(null, 0)

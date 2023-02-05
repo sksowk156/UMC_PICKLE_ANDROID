@@ -96,7 +96,8 @@
                         android:layout_marginTop="16dp"
                         android:text="0"
                         android:textColor="#1E1E1E"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/profile_textview3"
@@ -145,7 +146,8 @@
                         android:layout_marginTop="16dp"
                         android:text="2"
                         android:textColor="#1E1E1E"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/profile_textview4"
@@ -194,7 +196,8 @@
                         android:layout_marginTop="16dp"
                         android:text="3"
                         android:textColor="#1E1E1E"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/profile_textview5"
@@ -243,7 +246,8 @@
                         android:layout_marginTop="16dp"
                         android:text="4"
                         android:textColor="#1E1E1E"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/profile_textview6"

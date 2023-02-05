@@ -33,6 +33,8 @@ class SecondActivity : AppCompatActivity() {
                 .commitAllowingStateLoss()
             currentFragmenttag = "homebase" // 현재 보고 있는 fragmet의 Tag
         }
+        // 네비게이션 버튼의 테마색으로 변하는 것을 막기 위해서
+        binding.secondBottomNavigationView.itemIconTintList = null
 
         // 네비게이션 버튼 클릭시 프래그먼트 전환
         binding.secondBottomNavigationView.setOnItemSelectedListener {

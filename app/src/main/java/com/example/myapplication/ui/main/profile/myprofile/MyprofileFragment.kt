@@ -15,33 +15,33 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.example.myapplication.ApplicationClass
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMyprofileBinding
 import com.example.myapplication.ui.base.BaseFragment
+import com.example.myapplication.ui.main.profile.logout.LogoutFragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MyprofileFragment : BaseFragment<FragmentMyprofileBinding>(R.layout.fragment_myprofile) {
+class MyprofileFragment() : BaseFragment<FragmentMyprofileBinding>(R.layout.fragment_myprofile) {
 
     private var CAMERA_PERMISSION: Boolean = false
     private var WRITE_EXTERNAL_STORAGE_PERMISSION: Boolean = false
     private var READ_EXTERNAL_STORAGE_PERMISSION: Boolean = false
 
-
     override fun init() {
         hideBottomNavigation(true)
         binding.myprofileImagePhoto.setOnClickListener {
-            openDialog(requireContext())
+//            openDialog(requireContext())
+            val bottomSheetDialogFragment: BottomSheetDialogFragment = PermissionFragment()
+            bottomSheetDialogFragment.show(parentFragmentManager, null)
         }
-
     }
 
     private fun openDialog(context: Context) {
         val dialogLayout = layoutInflater.inflate(R.layout.dialog, null)
         val dialogBuild = AlertDialog.Builder(context).apply {
             setView(dialogLayout)
-
         }
         val dialog = dialogBuild.create().apply { show() }
 
