@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_baseline_map_24" />
+            android:src="@drawable/icon_around_map" />
     </androidx.cardview.widget.CardView>
 
     <ImageButton

@@ -5,30 +5,30 @@
     <item
         android:id="@+id/menu_home"
         android:enabled="true"
-        android:icon="@drawable/home_line"
+        android:icon="@drawable/bottom_nav_home"
         android:title="Home"/>
 
     <item
         android:id="@+id/menu_favorite"
         android:enabled="true"
-        android:icon="@drawable/heart_line"
+        android:icon="@drawable/bottom_nav_favorite"
         android:title="Favorite"/>
 
     <item
         android:id="@+id/menu_map"
         android:enabled="true"
-        android:icon="@drawable/map_line"
+        android:icon="@drawable/bottom_nav_location"
         android:title="Location"/>
 
     <item
         android:id="@+id/menu_chat"
         android:enabled="true"
-        android:icon="@drawable/message_line"
+        android:icon="@drawable/bottom_nav_chat"
         android:title="Chat"/>
 
     <item
         android:id="@+id/menu_profileblank"
         android:enabled="true"
-        android:icon="@drawable/user_line"
+        android:icon="@drawable/bottom_nav_profile"
         android:title="Profile"/>
 </menu>

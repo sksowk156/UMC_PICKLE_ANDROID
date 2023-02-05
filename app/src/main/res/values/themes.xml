@@ -27,7 +27,6 @@
 
     <style name="AppBottomSheetDialogTheme3" parent="Theme.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
-        <item name="android:minHeight">231px</item>
         <item name="behavior_draggable">false</item>
     </style>
 
