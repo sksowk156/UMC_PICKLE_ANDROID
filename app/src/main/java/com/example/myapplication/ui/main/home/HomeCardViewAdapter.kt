@@ -6,22 +6,31 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemHomecardRecyclerBinding
+import com.example.myapplication.ui.main.ItemClickInterface
 
-class HomeCardViewAdapter(clicklistener: ClothesClickListener) :
+class HomeCardViewAdapter(clicklistener: ItemClickInterface) :
    ListAdapter<Clothes, HomeCardViewAdapter.MyViewHolder>(HomeCardViewDiffUtil) {
 
-    interface ClothesClickListener {
-        fun onItemImageClick(view: View, position: Int)
-        fun onItemMarketNameClick(view: View, position: Int)
-        fun onItemButtonClick(view: View,position: Int)
-    }
-
-    var clicklistener: ClothesClickListener = clicklistener
+    var clicklistener: ItemClickInterface = clicklistener
 
     inner class MyViewHolder(val binding: ItemHomecardRecyclerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(clothes: Clothes) {
+            if (clothes?.like == false) {
+                //화면에 보여주기
+                Glide.with(this@MyViewHolder.itemView)
+                    .load(R.drawable.icon_favorite_whiteline) //이미지
+                    .into(binding.homecardImagebuttonFavorite) //보여줄 위치
+            } else {
+                //화면에 보여주기
+                Glide.with(this@MyViewHolder.itemView)
+                    .load(R.drawable.icon_favorite_filledpink) //이미지
+                    .into(binding.homecardImagebuttonFavorite) //보여줄 위치
+            }
+
             binding.homecardCardviewFrame.setOnClickListener {
                 clicklistener.onItemImageClick(it, absoluteAdapterPosition)
             }
@@ -31,14 +40,12 @@ class HomeCardViewAdapter(clicklistener: ClothesClickListener) :
             }
 
             binding.homecardImagebuttonFavorite.setOnClickListener{
-                clicklistener.onItemButtonClick(it,absoluteAdapterPosition)
+                clicklistener.onItemFavoriteClick(it,absoluteAdapterPosition)
             }
             binding.homecardImageviewImage.setImageResource(clothes.image)
             binding.homecardTextviewStorename.text = clothes.store
             binding.homecardTextviewClothename.text = clothes.name
             binding.homecardTextviewClotheprice.text = clothes.price.toString()
-
-
         }
     }
 

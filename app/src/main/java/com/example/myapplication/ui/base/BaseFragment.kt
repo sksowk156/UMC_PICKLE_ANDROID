@@ -44,6 +44,7 @@ abstract class BaseFragment<T : ViewDataBinding>(
     protected lateinit var toolbar: Toolbar
     protected lateinit var toolbarmenusearch: MenuItem
     protected lateinit var toolbarmenunotification: MenuItem
+    protected lateinit var searchView : SearchView
 
     // 검색 기록을 저장하는 배열
     private var searchHistoryDataList = ArrayList<SearchHistroyData>()
@@ -126,7 +127,7 @@ abstract class BaseFragment<T : ViewDataBinding>(
         backpress()
 
         // searchView 선언
-        var searchView = toolbarmenusearch.actionView as SearchView
+        searchView = toolbarmenusearch.actionView as SearchView
         // searchView 힌트
         searchView.queryHint = "검색중"
         // searchView editText
@@ -249,7 +250,15 @@ abstract class BaseFragment<T : ViewDataBinding>(
             SearchhistoryAdapter(object : SearchhistoryAdapter.ItemClickListener {
                 // recycler 아이템 중 텍스트를 클릭했을 때 -> 해당 텍스트로 재검색
                 override fun onTextItemClick(view: View, position: Int) {
-
+                    // // 화면 전환 및 검색 결과 보여주기(API 요청)
+                    // 검색 기록 보여주는 창 가리고
+                    toolbarinnerlayout.visibility = View.INVISIBLE
+                    // 검색 기록 보여주는 fragment 보여주기
+                    childFragmentManager.beginTransaction()
+                        .replace(toolbarlayout.id, SearchresultFragment(), "searchresult")
+                        .commitAllowingStateLoss()
+                    // 엔터를 쳤기 때문에 커서를 없앤다.
+                    searchView.clearFocus()
                 }
 
                 // recycler 아이템 중 x 이미지를 클릭했을 때 -> 데이터 삭제
