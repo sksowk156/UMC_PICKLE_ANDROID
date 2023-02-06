@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/lightergrey"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,8 +17,10 @@
 
             <LinearLayout
                 android:id="@+id/linearlayout1"
+                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -25,88 +28,81 @@
 
                 <TextView
                     android:id="@+id/tv_store_name"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:text="매장명"
-                    android:textSize="25sp"
+                    android:layout_margin="16dp"
+                    android:text="픽업할 매장 정보"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:text="영업 중" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:text="주소" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:text="운영 시간" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_margin="10dp"
-                    android:background="@color/black" />
+                    android:background="@color/lightergrey" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="매장명" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="매장 위치" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="운영 시간" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearlayout2"
+                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearlayout1">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
+                    android:layout_margin="16dp"
                     android:text="주문 상품"
-                    android:textSize="25sp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_cloth_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:text="옷 이름" />
-
-                <TextView
-                    android:id="@+id/tv_cloth_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:text="흰색/S" />
-
-                <TextView
-                    android:id="@+id/tv_multi_price"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:text="0원" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_margin="10dp"
-                    android:background="@color/black" />
+                    android:background="@color/lightergrey" />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_order_cloths"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintlayout1"
+                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -114,34 +110,44 @@
 
                 <TextView
                     android:id="@+id/tv_pickup_time"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_margin="16dp"
                     android:text="픽업 시간"
-                    android:textSize="25sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
+                    android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_pickup_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_margin="10dp"
+                    android:background="@color/lightergrey"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_pickup_time"/>
+
 
                 <ImageView
                     android:id="@+id/iv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="50dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginVertical="16dp"
                     android:src="@drawable/ic_baseline_calendar_month_24"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_pickup_time" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_pickup_line" />
 
                 <TextView
                     android:id="@+id/tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginVertical="16dp"
                     android:text="날짜"
                     app:layout_constraintStart_toEndOf="@+id/iv_date"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_pickup_time" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_pickup_line" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -156,7 +162,7 @@
                     android:id="@+id/tv_date_dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/box_border"
                     android:ems="10"
@@ -167,8 +173,8 @@
                     android:id="@+id/iv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="50dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
                     android:src="@drawable/ic_baseline_access_time_24"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_date_dialog" />
@@ -177,7 +183,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="24dp"
                     android:text="시간"
                     app:layout_constraintStart_toEndOf="@+id/iv_time"
                     app:layout_constraintTop_toBottomOf="@+id/tv_date_dialog" />
@@ -304,117 +310,14 @@
                         android:text="19:30" />
                 </com.google.android.material.chip.ChipGroup>
 
-                <!--
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chip_group2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:singleSelection="true"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/chip_group1">
-
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="14:00"
-                        android:layout_margin="10dp"/>
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="14:30"
-                        android:layout_margin="10dp"/>
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="15:00"
-                        android:layout_margin="10dp"/>
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="15:30"
-                        android:layout_margin="10dp"/>
-                </com.google.android.material.chip.ChipGroup>
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chip_group3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:singleSelection="true"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/chip_group2">
-
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="16:00"
-                        android:layout_margin="10dp"/>
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="16:30"
-                        android:layout_margin="10dp"/>
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="17:00"
-                        android:layout_margin="10dp"/>
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="17:30"
-                        android:layout_margin="10dp"/>
-                </com.google.android.material.chip.ChipGroup>
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chip_group4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/chip_group3">
-
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="18:00"
-                        android:layout_margin="10dp"/>
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="18:30"
-                        android:layout_margin="10dp"/>
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="19:00"
-                        android:layout_margin="10dp"/>
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="19:30"
-                        android:layout_margin="10dp"/>
-                </com.google.android.material.chip.ChipGroup>
-    -->
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="2px"
-                    android:layout_margin="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="9dp"
-                    android:background="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/chip_group" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:id="@+id/linearlayout3"
+                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -423,27 +326,25 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
+                    android:layout_margin="16dp"
                     android:text="요청 사항"
-                    android:textSize="25sp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="2px"
-                    android:layout_margin="10dp"
-                    android:background="@color/black" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintlayout"
+                android:id="@+id/constraintlayout2"
+                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:paddingBottom="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearlayout3">
@@ -451,9 +352,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
+                    android:layout_margin="16dp"
                     android:text="총 결제 금액"
-                    android:textSize="25sp"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -462,9 +364,10 @@
                     android:id="@+id/tv_total_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
+                    android:layout_margin="16dp"
                     android:text="0원"
-                    android:textSize="25sp"
+                    android:textColor="@color/pink"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -477,6 +380,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="parent" />
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/linearlayout4"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintlayout2">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -488,8 +404,9 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_total_price" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintTop_toTopOf="parent" />
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
