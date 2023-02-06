@@ -12,7 +12,7 @@ class ProfileBlankFragment :
             .beginTransaction()
             .replace(R.id.profileblank_layout, ProfileFragment(), "profile")
             .commitAllowingStateLoss()
-        initAppbar(binding.profileblankToolbarcontent,binding.profileblankToolbar,"마이페이지")
+        initAppbar(binding.profileblankToolbarcontent,binding.profileblankToolbar,"마이페이지",false,true)
         changeAppbar()
     }
 

@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.store
+package com.example.myapplication.ui.store.storedetail
 
 import android.graphics.Rect
 import android.view.View

@@ -1,11 +1,8 @@
-package com.example.myapplication.ui.store
+package com.example.myapplication.ui.store.clothdetail.pickupdetail
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivityPickupBinding
 import java.util.*
 

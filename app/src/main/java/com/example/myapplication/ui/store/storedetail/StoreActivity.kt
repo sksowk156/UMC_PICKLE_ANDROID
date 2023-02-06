@@ -1,8 +1,5 @@
-package com.example.myapplication.ui.store
+package com.example.myapplication.ui.store.storedetail
 
-import android.app.SearchManager
-import android.content.ClipData
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,8 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet.Layout
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.MenuProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +21,8 @@ import com.example.myapplication.databinding.ActivityStoreBinding
 import com.example.myapplication.ui.main.search.SearchHistroyData
 import com.example.myapplication.ui.main.search.SearchhistoryAdapter
 import com.example.myapplication.ui.main.search.SearchresultFragment
-import kotlinx.android.synthetic.main.activity_store.view.*
+import com.example.myapplication.ui.store.clothdetail.ClothActivity
+import com.example.myapplication.ui.store.Data
 import kotlinx.android.synthetic.main.toolbar_content.view.*
 
 

@@ -13,10 +13,9 @@ import com.example.myapplication.ui.main.ItemClickInterface
 import com.example.myapplication.ui.main.home.newclothe.NewFragment
 import com.example.myapplication.ui.main.home.recent.CardViewAdapter
 import com.example.myapplication.ui.main.home.recent.RecentFragment
-import com.example.myapplication.ui.store.ClothActivity
-import com.example.myapplication.ui.store.StoreActivity
+import com.example.myapplication.ui.store.clothdetail.ClothActivity
+import com.example.myapplication.ui.store.storedetail.StoreActivity
 import com.smarteist.autoimageslider.SliderView
-import kotlinx.android.synthetic.main.item_around_recycler.*
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), ItemClickInterface {
 

@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.store
+package com.example.myapplication.ui.store.storedetail
 
 import android.content.Context
 import android.util.SparseBooleanArray
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemDataBinding
+import com.example.myapplication.ui.store.Data
 
 
 class DataRVAdapter(private val dataList: ArrayList<Data>, context : Context): RecyclerView.Adapter<DataRVAdapter.DataViewHolder>() {

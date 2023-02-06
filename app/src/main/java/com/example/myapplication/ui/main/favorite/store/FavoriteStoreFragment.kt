@@ -3,24 +3,16 @@ package com.example.myapplication.ui.main.favorite.store
 
 import android.content.Intent
 import android.graphics.Color
-import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFavoriteStoreBinding
 import com.example.myapplication.ui.base.BaseFragment
-import com.example.myapplication.ui.main.home.Clothes
-import com.example.myapplication.ui.main.home.clothesList
-import com.example.myapplication.ui.main.home.newclothesList
-import com.example.myapplication.ui.main.home.recent.CardViewAdapter
 import com.example.myapplication.ui.main.location.MapAroundData
 import com.example.myapplication.ui.main.location.around.AroundAdapter
-import com.example.myapplication.ui.main.location.around.AroundFragment
 import com.example.myapplication.ui.main.profile.orderstatus.OrderListDivider
-import com.example.myapplication.ui.store.ClothActivity
-import com.example.myapplication.ui.store.StoreActivity
+import com.example.myapplication.ui.store.storedetail.StoreActivity
 import kotlinx.android.synthetic.main.fragment_favorite_store.*
 import kotlinx.android.synthetic.main.item_around_recycler.*
 
