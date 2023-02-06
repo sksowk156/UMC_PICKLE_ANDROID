@@ -1,7 +1,9 @@
-package com.example.myapplication.ui.store
+package com.example.myapplication.ui.store.clothdetail
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,11 +11,14 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.BottomSheetBinding
-import com.example.myapplication.ui.main.search.SearchhistoryAdapter
+import com.example.myapplication.ui.main.profile.myprofile.MyprofileFragment
+import com.example.myapplication.ui.store.ClothCount
+import com.example.myapplication.ui.store.clothdetail.pickupdetail.ClothCountRVAdapter
+import com.example.myapplication.ui.store.clothdetail.pickupdetail.PickupActivity
+import com.example.myapplication.ui.store.clothdetail.pickupdetail.PickupDetailFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomSheetFragment(context: Context) : BottomSheetDialogFragment(R.layout.bottom_sheet) {
@@ -129,7 +134,8 @@ class BottomSheetFragment(context: Context) : BottomSheetDialogFragment(R.layout
                         size = sizes[position]
                         dataList.last().size = size
                         clothCountRVadapter.notifyDataSetChanged()
-                        viewBinding.ivPickup.setImageResource(R.drawable.button_pickup_abled)
+                        viewBinding.ivPickup.setBackgroundResource(R.drawable.green_button_background)
+                        viewBinding.ivPickup.setTextColor(Color.WHITE)
                         searchFilter = -1
                     }
                 }
@@ -154,14 +160,31 @@ class BottomSheetFragment(context: Context) : BottomSheetDialogFragment(R.layout
 
         val btnPickup = viewBinding.ivPickup
         btnPickup.setOnClickListener {
-            val intent = Intent(getActivity(), PickupActivity::class.java)
-            intent.putExtra("color", color)
-            intent.putExtra("size", size)
-            intent.putExtra("count", count)
-            intent.putExtra("storeName", storeName)
-            intent.putExtra("clothName", clothName)
-            intent.putExtra("multiPrice", multiPrice)
-            startActivity(intent)
+//            val intent = Intent(getActivity(), PickupActivity::class.java)
+//            intent.putExtra("color", color)
+//            intent.putExtra("size", size)
+//            intent.putExtra("count", count)
+//            intent.putExtra("storeName", storeName)
+//            intent.putExtra("clothName", clothName)
+//            intent.putExtra("multiPrice", multiPrice)
+//            startActivity(intent)
+
+            var bundle = Bundle()
+            bundle.putString("color", color)
+            bundle.putString("size", size)
+            bundle.putInt("count", count)
+            bundle.putString("storeName", storeName)
+            bundle.putString("clothName", clothName)
+            bundle.putInt("multiPrice", multiPrice)
+
+            val pickupdetail = PickupDetailFragment()
+            pickupdetail.arguments = bundle //fragment의 arguments에 데이터를 담은 bundle을 넘겨줌
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.clothblank_layout, pickupdetail,"pickupdetail")
+                .addToBackStack(null)
+                .commitAllowingStateLoss()
+            dismiss()
         }
 
         return viewBinding.root

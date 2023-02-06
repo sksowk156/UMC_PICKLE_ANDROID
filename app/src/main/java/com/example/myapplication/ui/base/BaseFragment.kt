@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.base
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputFilter
 import android.util.Log
@@ -16,17 +17,20 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.ApplicationClass
+import com.example.myapplication.ApplicationClass.Companion.KEY_SEARCH_HISTORY
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ToolbarBinding
 import com.example.myapplication.databinding.ToolbarContentBinding
-import com.example.myapplication.ApplicationClass
-import com.example.myapplication.ApplicationClass.Companion.KEY_SEARCH_HISTORY
+import com.example.myapplication.ui.login.MainActivity
+import com.example.myapplication.ui.main.SecondActivity
 import com.example.myapplication.ui.main.search.SearchHistroyData
 import com.example.myapplication.ui.main.search.SearchhistoryAdapter
 import com.example.myapplication.ui.main.search.SearchresultFragment
+import com.example.myapplication.ui.store.clothdetail.ClothActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.toolbar_content.view.*
-import kotlin.collections.ArrayList
+
 
 abstract class BaseFragment<T : ViewDataBinding>(
     @LayoutRes val layoutResId: Int
@@ -60,12 +64,14 @@ abstract class BaseFragment<T : ViewDataBinding>(
 
     // 하단 바 숨길때
     protected fun hideBottomNavigation(bool: Boolean) {
-        val bottom: BottomNavigationView =
-            requireActivity().findViewById(R.id.second_bottomNavigationView)
-        if (bool == true) {
-            bottom.visibility = View.GONE
-        } else {
-            bottom.visibility = View.VISIBLE
+        if(requireActivity().findViewById<BottomNavigationView>(R.id.second_bottomNavigationView)!=null){
+            val bottom: BottomNavigationView =
+                requireActivity().findViewById(R.id.second_bottomNavigationView)
+            if (bool == true) {
+                bottom.visibility = View.GONE
+            } else {
+                bottom.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -105,7 +111,9 @@ abstract class BaseFragment<T : ViewDataBinding>(
     protected fun initAppbar(
         toolbarContentBinding: ToolbarContentBinding,
         toolbarBinding: ToolbarBinding,
-        firstlayoutname: String
+        firstlayoutname: String,
+        backbtn: Boolean,
+        item : Boolean
     ) {
         // 툴바, 툴바 검색 기록 레이아웃, 툴바 메뉴 연결
         toolbarlayout = toolbarContentBinding.contentLayout
@@ -116,11 +124,17 @@ abstract class BaseFragment<T : ViewDataBinding>(
         toolbarmenunotification = toolbar.menu.findItem(R.id.notification)
         toolbarmenusearch = toolbar.menu.findItem(R.id.search)
 
-        initSubAppbar(firstlayoutname, false, true)
+        initSubAppbar(firstlayoutname, backbtn, item)
         // 툴바 뒤로가기 버튼 클릭 시 효과
         toolbar.setNavigationOnClickListener {
             if (childFragmentManager.backStackEntryCount > 0) {
                 childFragmentManager.popBackStackImmediate(null, 0)
+            }else{
+//                val intent = Intent(requireContext(), SecondActivity::class.java) //지금 액티비티에서 다른 액티비티로 이동하는 인텐트 설정
+//                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP //인텐트 플래그 설정
+//                startActivity(intent) //인텐트 이동
+//                requireActivity().finish() //현재 액티비티 종료
+                requireActivity().onBackPressed()
             }
         }
 

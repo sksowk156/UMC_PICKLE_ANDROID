@@ -13,6 +13,6 @@ class LocationFragment : BaseFragment<FragmentLocationBinding>(R.layout.fragment
             .beginTransaction()
             .replace(R.id.location_layout, MapFragment())
             .commitAllowingStateLoss()
-        initAppbar(binding.locationToolbarcontent,binding.locationToolbar,"주변매장")
+        initAppbar(binding.locationToolbarcontent,binding.locationToolbar,"주변매장",false,true)
     }
 }

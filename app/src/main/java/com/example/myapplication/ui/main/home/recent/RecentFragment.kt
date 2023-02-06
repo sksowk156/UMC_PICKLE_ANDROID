@@ -12,8 +12,7 @@ import com.example.myapplication.ui.main.ItemClickInterface
 import com.example.myapplication.ui.main.home.Clothes
 import com.example.myapplication.ui.main.home.clothesList
 import com.example.myapplication.ui.main.home.newclothesList
-import com.example.myapplication.ui.store.StoreActivity
-import kotlinx.android.synthetic.main.item_around_recycler.*
+import com.example.myapplication.ui.store.storedetail.StoreActivity
 
 class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent),
     ItemClickInterface {

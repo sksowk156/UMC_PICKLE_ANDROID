@@ -16,7 +16,7 @@ class HomeBaseFragment : BaseFragment<FragmentHomeBaseBinding>(R.layout.fragment
             .replace(R.id.home_base_layout, HomeFragment(), "home")
             .commitAllowingStateLoss()
 
-        initAppbar(binding.homeBaseToolbarcontent, binding.homeBaseToolbar, "홈")
+        initAppbar(binding.homeBaseToolbarcontent, binding.homeBaseToolbar, "홈",false,true)
         changeAppbar()
     }
 

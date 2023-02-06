@@ -11,8 +11,8 @@ import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.ItemClickInterface
 import com.example.myapplication.ui.main.home.*
 import com.example.myapplication.ui.main.home.recent.CardViewAdapter
-import com.example.myapplication.ui.store.ClothActivity
-import com.example.myapplication.ui.store.StoreActivity
+import com.example.myapplication.ui.store.clothdetail.ClothActivity
+import com.example.myapplication.ui.store.storedetail.StoreActivity
 
 class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.fragment_searchresult) {
     override fun init() {     rcView()

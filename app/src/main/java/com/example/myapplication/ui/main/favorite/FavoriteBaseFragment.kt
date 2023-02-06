@@ -13,7 +13,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class FavoriteBaseFragment : BaseFragment<FragmentFavoriteBaseBinding>(R.layout.fragment_favorite_base) {
 
     override fun init() {
-        initAppbar(binding.favoritebaseToolbarcontent,binding.favoritebaseToolbar,"찜 목록")
+        initAppbar(binding.favoritebaseToolbarcontent,binding.favoritebaseToolbar,"찜 목록",false,true)
         initViewPager()
 
     }

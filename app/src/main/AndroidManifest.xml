@@ -63,14 +63,14 @@
         </activity>
 
         <activity
-            android:name=".ui.store.StoreActivity"
+            android:name=".ui.store.storedetail.StoreActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.store.PickupActivity"
+            android:name=".ui.store.clothdetail.pickupdetail.PickupActivity"
             android:exported="false" />
 
-        <activity android:name=".ui.store.ClothActivity"/>
+        <activity android:name=".ui.store.clothdetail.ClothActivity"/>
 
     </application>
 </manifest>
