@@ -4,8 +4,10 @@ import android.Manifest
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import com.example.myapplication.ApplicationClass.Companion.retrofit
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySecondBinding
 import com.example.myapplication.ui.main.chat.ChatFragment
