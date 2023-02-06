@@ -4,6 +4,8 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivityPickupBinding
 import java.util.*
 
@@ -13,6 +15,7 @@ class PickupActivity : AppCompatActivity() {
     private lateinit var storeName: String
     private lateinit var clothName: String
     private var multiPrice: Int = 0
+    private var totalPrice: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -27,10 +30,17 @@ class PickupActivity : AppCompatActivity() {
         val clothName = extras!!["clothName"] as String
         val multiPrice = extras!!["multiPrice"] as Int
 
-        viewBinding.tvStoreName.text = storeName
-        viewBinding.tvClothName.text = clothName
-        viewBinding.tvClothInfo.text = color + " / " + size + " / " + count.toString() +"개"
-        viewBinding.tvMultiPrice.text = multiPrice.toString() + "원"
+        //recyclerView
+   //     val clothCountRVadapter = ClothCountRVAdapter(dataList, applicationContext)
+
+    //    viewBinding.rvOrderCloths.adapter = clothCountRVadapter
+    //    viewBinding.rvOrderCloths.layoutManager = LinearLayoutManager(applicationContext)
+        //   viewBinding.tvStoreName.text = storeName
+   //     viewBinding.tvClothName.text = clothName
+    //    viewBinding.tvClothInfo.text = color + " / " + size + " / " + count.toString() +"개"
+    //    viewBinding.tvMultiPrice.text = multiPrice.toString() + "원"
+
+        //날짜 선택
 
         viewBinding.tvDateDialog.setOnClickListener{
             val cal = Calendar.getInstance()
