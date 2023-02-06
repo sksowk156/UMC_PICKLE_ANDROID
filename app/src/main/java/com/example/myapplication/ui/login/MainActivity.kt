@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.db.remote.LoginService
-import com.example.myapplication.db.remote.remotedata.LoginTokenAccessData
 import com.example.myapplication.db.remote.remotedata.PostModel
 import com.example.myapplication.ui.main.SecondActivity
 import com.kakao.sdk.auth.model.OAuthToken
@@ -47,16 +46,13 @@ class MainActivity : AppCompatActivity() {
                         val data = PostModel(token.accessToken)
                         // API service 카카오 로그인 후 발급받은 appToken, isNewMember 값
                         LoginService.create(data)
-                        //
                         Log.e(TAG, "로그인 성공! 토큰값 : ${token.accessToken}")
                         UserApiClient.instance.me { user, error ->
                             var email = user?.kakaoAccount?.email
                             var name = user?.kakaoAccount?.profile?.nickname
                             Log.e(TAG, "닉네임 ${user?.kakaoAccount?.profile?.nickname}")
                             Log.e(TAG, "이메일 ${user?.kakaoAccount?.email}" )
-                            var accessData : LoginTokenAccessData = LoginTokenAccessData(email,name)
                             // 카카오 로그인 후 받은 카카오 데이터(email, name)를 서버에 보내서 토큰 받아오기
-                            LoginService.jwt(accessData)
                             Toast.makeText(this, "${user?.kakaoAccount?.profile?.nickname}님 환영합니다.", Toast.LENGTH_SHORT).show()
                         }
                         val intent = Intent(this, SecondActivity::class.java)
