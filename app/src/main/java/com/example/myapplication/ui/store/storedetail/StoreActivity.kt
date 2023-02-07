@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.ApplicationClass
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityStoreBinding
+import com.example.myapplication.ui.base.BaseActivity
 import com.example.myapplication.ui.main.search.SearchHistroyData
 import com.example.myapplication.ui.main.search.SearchhistoryAdapter
 import com.example.myapplication.ui.main.search.SearchresultFragment
@@ -26,9 +27,8 @@ import com.example.myapplication.ui.store.Data
 import kotlinx.android.synthetic.main.toolbar_content.view.*
 
 
-class StoreActivity : AppCompatActivity() {
+class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store) {
 
-    private lateinit var viewBinding: ActivityStoreBinding
     private lateinit var toolbar: Toolbar
     // 검색 기록을 저장하는 배열
     private var searchHistoryDataList = ArrayList<SearchHistroyData>()
@@ -38,19 +38,14 @@ class StoreActivity : AppCompatActivity() {
     protected lateinit var toolbarlayout: ConstraintLayout
     protected lateinit var toolbarmenusearch: MenuItem
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewBinding = ActivityStoreBinding.inflate(layoutInflater)
-        setContentView(viewBinding.root)
-
-        toolbar = viewBinding.toolbar.toolbarToolbar
+    override fun init() {
+        toolbar = binding.toolbar.toolbarToolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        toolbarinnerlayout = viewBinding.storeToolbarcontent.contentInnerlayout
-        toolbarlayout = viewBinding.storeToolbarcontent.contentLayout
+        toolbarinnerlayout = binding.storeToolbarcontent.contentInnerlayout
+        toolbarlayout = binding.storeToolbarcontent.contentLayout
 
 
         addMenuProvider(object : MenuProvider {
@@ -147,8 +142,8 @@ class StoreActivity : AppCompatActivity() {
                 toolbarmenusearch.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
                     override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                         // 검색창이 펼쳐 졌을 때
-                        viewBinding.storeInnerlayoutStoreinfo.visibility = View.GONE
-                        viewBinding.appbar.setLiftable(false)
+                        binding.storeInnerlayoutStoreinfo.visibility = View.GONE
+                        binding.appbar.setLiftable(false)
 
                         initSearchHistory()
                         return true
@@ -158,8 +153,8 @@ class StoreActivity : AppCompatActivity() {
                         // 검색창이 닫혔 때
                         // 검색창 초기화
                         searchViewEditText.text.clear()
-                        viewBinding.storeInnerlayoutStoreinfo.visibility = View.VISIBLE
-                        viewBinding.appbar.setLiftable(true)
+                        binding.storeInnerlayoutStoreinfo.visibility = View.VISIBLE
+                        binding.appbar.setLiftable(true)
 
                         if(supportFragmentManager.findFragmentByTag("searchresult")!=null){
                             supportFragmentManager.beginTransaction()
@@ -205,10 +200,10 @@ class StoreActivity : AppCompatActivity() {
 
         val dataRVadapter = DataRVAdapter(dataList, applicationContext)
 
-        viewBinding.rvData.adapter = dataRVadapter
-        viewBinding.rvData.layoutManager = GridLayoutManager(applicationContext, 2)
+        binding.rvData.adapter = dataRVadapter
+        binding.rvData.layoutManager = GridLayoutManager(applicationContext, 2)
 
-        viewBinding.rvData.run {
+        binding.rvData.run {
             adapter = dataRVadapter
             val spanCount = 2
             val space = 30
@@ -226,7 +221,6 @@ class StoreActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
-
     }
 
     protected fun initSearchHistory() {
@@ -267,7 +261,5 @@ class StoreActivity : AppCompatActivity() {
         // 데이터 변경 알리기
         searchhistoryAdapter.notifyDataSetChanged()
     }
-
-
 
 }

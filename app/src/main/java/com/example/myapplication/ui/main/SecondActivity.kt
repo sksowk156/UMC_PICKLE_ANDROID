@@ -4,37 +4,45 @@ import android.Manifest
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.example.myapplication.ApplicationClass.Companion.retrofit
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySecondBinding
+import com.example.myapplication.ui.base.BaseActivity
 import com.example.myapplication.ui.main.chat.ChatFragment
 import com.example.myapplication.ui.main.favorite.FavoriteBaseFragment
 import com.example.myapplication.ui.main.home.HomeBaseFragment
 import com.example.myapplication.ui.main.location.LocationFragment
 import com.example.myapplication.ui.main.profile.ProfileBlankFragment
 
-class SecondActivity : AppCompatActivity() {
-    // 바인딩
-    private lateinit var binding: ActivitySecondBinding
-    // 현재 보이는 fragment의 Tag를 저장
+class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_second) {
+
     private lateinit var currentFragmenttag: String
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySecondBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun savedatainit() {
+        supportFragmentManager
+            .beginTransaction()
+            .add(binding.secondFramelayout.id, HomeBaseFragment(), "homebase")
+            .commitAllowingStateLoss()
+        currentFragmenttag = "homebase" // 현재 보고 있는 fragmet의 Tag
+    }
 
-        // 앱을 켰을 때 첫 fragment
-        if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .add(binding.secondFramelayout.id, HomeBaseFragment(), "homebase")
-                .commitAllowingStateLoss()
-            currentFragmenttag = "homebase" // 현재 보고 있는 fragmet의 Tag
-        }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("currentfragment",currentFragmenttag)
+
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        currentFragmenttag = savedInstanceState.get("currentfragment").toString()
+    }
+
+    override fun init() {
+
         // 네비게이션 버튼의 테마색으로 변하는 것을 막기 위해서
         binding.secondBottomNavigationView.itemIconTintList = null
 
