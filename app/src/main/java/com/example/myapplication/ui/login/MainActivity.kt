@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.db.remote.LoginService
 import com.example.myapplication.db.remote.remotedata.PostModel
+import com.example.myapplication.ui.base.BaseActivity
 import com.example.myapplication.ui.main.SecondActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause
@@ -16,15 +18,10 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 
-class MainActivity : AppCompatActivity() {
-    lateinit var viewbinding: ActivityMainBinding
+class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewbinding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(viewbinding.root)
-
-        viewbinding.button.setOnClickListener{
+    override fun init() {
+        binding.button.setOnClickListener{
             // 카카오톡 설치 확인
             if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
                 // 카카오톡 로그인
@@ -64,7 +61,6 @@ class MainActivity : AppCompatActivity() {
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
             }
         }
-
     }
 
     private val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->

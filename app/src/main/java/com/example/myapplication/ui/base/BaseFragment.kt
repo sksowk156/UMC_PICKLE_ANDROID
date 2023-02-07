@@ -1,9 +1,7 @@
 package com.example.myapplication.ui.base
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.InputFilter
-import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.Toast
@@ -22,12 +20,9 @@ import com.example.myapplication.ApplicationClass.Companion.KEY_SEARCH_HISTORY
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ToolbarBinding
 import com.example.myapplication.databinding.ToolbarContentBinding
-import com.example.myapplication.ui.login.MainActivity
-import com.example.myapplication.ui.main.SecondActivity
 import com.example.myapplication.ui.main.search.SearchHistroyData
 import com.example.myapplication.ui.main.search.SearchhistoryAdapter
 import com.example.myapplication.ui.main.search.SearchresultFragment
-import com.example.myapplication.ui.store.clothdetail.ClothActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.toolbar_content.view.*
 
@@ -56,6 +51,9 @@ abstract class BaseFragment<T : ViewDataBinding>(
     // 검색 기록 어댑터
     private lateinit var searchhistoryAdapter: SearchhistoryAdapter
 
+    protected open fun savedatainit(){
+
+    }
     protected abstract fun init()
 
     protected fun showToast(message: String) {
@@ -307,6 +305,9 @@ abstract class BaseFragment<T : ViewDataBinding>(
         savedInstanceState: Bundle?
     ): View? {
         _binding = DataBindingUtil.inflate(inflater, layoutResId, container, false)
+        if(savedInstanceState == null){
+            savedatainit()
+        }
         return binding.root
     }
 

@@ -9,13 +9,15 @@ import com.example.myapplication.ui.base.BaseFragment
 
 class HomeBaseFragment : BaseFragment<FragmentHomeBaseBinding>(R.layout.fragment_home_base) {
 
-    override fun init() {
+    override fun savedatainit() {
         // 초기 화면
         childFragmentManager
             .beginTransaction()
             .replace(R.id.home_base_layout, HomeFragment(), "home")
             .commitAllowingStateLoss()
+    }
 
+    override fun init() {
         initAppbar(binding.homeBaseToolbarcontent, binding.homeBaseToolbar, "홈",false,true)
         changeAppbar()
     }
