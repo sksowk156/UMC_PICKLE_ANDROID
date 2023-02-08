@@ -12,11 +12,10 @@ class XAccessTokenInterceptor : Interceptor {
         val builder: Request.Builder = chain.request().newBuilder()
 
         val jwtToken: String? = sharedPreferencesmanager.getJwt(X_ACCESS_TOKEN)
-        Log.d("whatisthis","jwt헤더 : "+jwtToken.toString())
 
         // 서버로 부터 발급 받은 토큰 값이 preference에 저장되어 있다면 retrofit 쓸 때마다 자동으로 헤더에 넣어준다.
         jwtToken?.let {
-            builder.addHeader(X_ACCESS_TOKEN, jwtToken)
+            builder.addHeader("Authorization", jwtToken?:"")
         }
 
         return chain.proceed(builder.build())

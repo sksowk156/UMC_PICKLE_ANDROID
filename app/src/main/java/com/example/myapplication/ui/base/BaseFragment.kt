@@ -35,7 +35,6 @@ abstract class BaseFragment<T : ViewDataBinding>(
 
     // 뒤로가기 버튼을 눌렀을 때를 위한 callback 변수
     private lateinit var callback: OnBackPressedCallback
-    var temp: ArrayList<SearchHistroyData>? = null
 
     // 툴바 변수들
     protected lateinit var toolbarlayout: ConstraintLayout

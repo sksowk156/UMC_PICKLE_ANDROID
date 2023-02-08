@@ -1,13 +1,23 @@
 package com.example.myapplication.ui.main
 
 import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.ApplicationClass.Companion.retrofit
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySecondBinding
@@ -17,12 +27,22 @@ import com.example.myapplication.ui.main.favorite.FavoriteBaseFragment
 import com.example.myapplication.ui.main.home.HomeBaseFragment
 import com.example.myapplication.ui.main.location.LocationFragment
 import com.example.myapplication.ui.main.profile.ProfileBlankFragment
+import com.example.myapplication.viewmodel.MapViewModel
+import java.io.IOException
+import java.util.*
 
 class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_second) {
-
+    var latitude: Double=0.0
+    var longitude:Double=0.0
+    val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    val PERMISSIONS_REQUEST_CODE = 100
+    private lateinit var locatioNManager : LocationManager
     private lateinit var currentFragmenttag: String
+    lateinit var mapViewModel: MapViewModel
 
     override fun savedatainit() {
+        mapViewModel = ViewModelProvider(this).get(MapViewModel::class.java)
+
         supportFragmentManager
             .beginTransaction()
             .add(binding.secondFramelayout.id, HomeBaseFragment(), "homebase")
@@ -120,9 +140,11 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
                 }
             }
             if (isGranted) {
+                Log.d("whatisthis","111")
                 // Check background permission android Q
                 checkPermissionAndroidQ()
             } else {
+                Log.d("whatisthis","222")
                 // Continue run app no permission.
             }
 
@@ -148,13 +170,69 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (LocationPermissionUtils.isBackgroundLocationGranted(this)) {
                 // Continue run app flow
+                Log.d("whatisthis","3333")
+                getLocation()
             } else {
                 LocationPermissionUtils.openSettingBackgroundMode(requestPermissionAndroidQ)
+                Log.d("whatisthis","4444")
+
             }
 
         } else {
             // Continue run app flow
         }
+    }
+
+    private fun getLocation(){
+        locatioNManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        var userLocation: Location = getLatLng()
+        Log.d("CheckCurrentLocation", "현재 내 위치 값: ")
+
+        if(userLocation != null){
+            latitude = userLocation.latitude
+            longitude = userLocation.longitude
+            Log.d("CheckCurrentLocation", "현재 내 위치 값: ${latitude}, ${longitude}")
+
+            var mGeoCoder =  Geocoder(applicationContext, Locale.KOREAN)
+            var mResultList: List<Address>? = null
+            try{
+                mResultList = mGeoCoder.getFromLocation(
+                    latitude!!, longitude!!, 1
+                )
+            }catch(e: IOException){
+                e.printStackTrace()
+            }
+
+            if(mResultList != null){
+                Log.d("CheckCurrentLocation", mResultList[0].getAddressLine(0))
+            }
+        }
+    }
+
+    private fun getLatLng(): Location{
+
+        var currentLatLng: Location? = null
+        var hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
+            Manifest.permission.ACCESS_FINE_LOCATION)
+        var hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
+            Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        if(hasFineLocationPermission == PackageManager.PERMISSION_GRANTED ||
+            hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED){
+            val locatioNProvider = LocationManager.GPS_PROVIDER
+            currentLatLng = locatioNManager?.getLastKnownLocation(locatioNProvider)
+            Log.d("CheckCurrentLocation", "4444")
+
+        }else{
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])){
+                Toast.makeText(this, "앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
+            }else{
+                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
+            }
+            currentLatLng = getLatLng()
+        }
+        return currentLatLng!!
     }
 
 }

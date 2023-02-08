@@ -13,14 +13,21 @@ class ProfileBlankFragment :
         childFragmentManager
             .beginTransaction()
             .replace(R.id.profileblank_layout, ProfileFragment(), "profile")
-            .commitAllowingStateLoss()    }
+            .commitAllowingStateLoss()
+    }
 
     override fun init() {
-        initAppbar(binding.profileblankToolbarcontent,binding.profileblankToolbar,"마이페이지",false,true)
+        initAppbar(
+            binding.profileblankToolbarcontent,
+            binding.profileblankToolbar,
+            "마이페이지",
+            false,
+            true
+        )
         changeAppbar()
     }
 
-    fun changeAppbar(){
+    fun changeAppbar() {
         childFragmentManager.addOnBackStackChangedListener {
             when (childFragmentManager.fragments.last().tag) {
                 "myprofile" -> {
@@ -50,8 +57,8 @@ class ProfileBlankFragment :
                 "orderstatusdetail" -> {
                     initSubAppbar("주문 상세보기", true, false)
                 }
-                "noticedetail"->{
-                    initSubAppbar("공지사항",true, false)
+                "noticedetail" -> {
+                    initSubAppbar("공지사항", true, false)
                 }
             }
         }
