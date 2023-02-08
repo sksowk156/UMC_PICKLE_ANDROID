@@ -92,6 +92,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 }
                 else -> { // Unknown
                     Toast.makeText(this, "기타 에러", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, SecondActivity::class.java)
+                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                 }
             }
         }
