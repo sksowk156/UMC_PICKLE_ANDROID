@@ -21,9 +21,9 @@ object LoginService{ // static 처럼 공유객체로 사용가능함. 모든 �
         fun post_users(@Body jsonparams: PostModel): Call<PostResult>
 
     }
+    val authService = retrofit.create(LoginInterface::class.java)
 
     fun create(jsonparams: PostModel){
-        val authService = retrofit.create(LoginInterface::class.java)
 
         authService.post_users(jsonparams).enqueue(object : Callback<PostResult> {
             override fun onResponse(call: Call<PostResult>, response: Response<PostResult>) {

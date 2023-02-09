@@ -21,8 +21,7 @@ import kotlinx.android.synthetic.main.item_around_recycler.view.*
 
 class AroundFragment : BaseFragment<FragmentAroundBinding>(R.layout.fragment_around) {
     lateinit var mapViewModel: MapViewModel
-
-    private var nearstoredata : MapModel ?= null
+    private var nearstoredata: MapModel? = null
     private var storedetaildatalist = ArrayList<StoreDetailData>()
 
     override fun init() {
@@ -40,7 +39,6 @@ class AroundFragment : BaseFragment<FragmentAroundBinding>(R.layout.fragment_aro
     private fun initRecyclerView() {
         with(binding) {
             // 1. 어댑터 생성 및 리사이클러뷰 연결
-            Log.d("whatisthis", "000")
             val aroundAdapter =
                 AroundAdapter(clicklistener = (object : AroundAdapter.ClothesClickListener {
                     override fun onItemMarketFavoriteClick(view: View, position: Int) {
@@ -75,30 +73,27 @@ class AroundFragment : BaseFragment<FragmentAroundBinding>(R.layout.fragment_aro
                 )
             )
             aroundAdapter.updatedata(storedetaildatalist)
-            Log.d("whatisthis", "데이터 " + mapViewModel.near_store_data.value.toString())
 
-            if(mapViewModel.near_store_data.value != null){
-                nearstoredata = mapViewModel.near_store_data.value!!
-                Log.d("whatisthis", "데이터 " + nearstoredata.toString())
-
-                for (i in nearstoredata!!) {
-                    mapViewModel.near_store_detail(i.id, "전체")
-                    mapViewModel.near_store_detail.observe(
-                        viewLifecycleOwner,
-                        Observer<StoreDetailData> {
-                            if (it != null) {
-
-                                storedetaildatalist.add(it)
-                                aroundAdapter.updatedata(storedetaildatalist)
-
-                            } else {
-                                Log.d("whatisthis", "1네트워크 오류가 발생했습니다.")
-                            }
-                        })
-                }
-            }else{
-                nearstoredata = null
-            }
+//            if (mapViewModel.store_near_data.value != null) {
+//                nearstoredata = mapViewModel.store_near_data.value!!
+//
+//                for (i in nearstoredata!!) {
+//                    mapViewModel.get_store_detail_data(i.id, "전체")
+//                    mapViewModel.store_detail_data.observe(
+//                        viewLifecycleOwner,
+//                        Observer<StoreDetailData> {
+//                            if (it != null) {
+//                                storedetaildatalist.add(it)
+//                                aroundAdapter.updatedata(storedetaildatalist)
+//
+//                            } else {
+//                                Log.d("whatisthis", "1네트워크 오류가 발생했습니다.")
+//                            }
+//                        })
+//                }
+//            } else {
+//                nearstoredata = null
+//            }
 
 
 //

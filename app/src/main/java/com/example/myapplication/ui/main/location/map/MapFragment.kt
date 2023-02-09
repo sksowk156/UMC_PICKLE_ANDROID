@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.main.location.map
 
+import android.icu.lang.UCharacter.GraphemeClusterBreak.L
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -20,7 +21,6 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
-import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.widget.LocationButtonView
@@ -39,13 +39,11 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
     private var NowMarkers: CopyOnWriteArrayList<Marker> = CopyOnWriteArrayList<Marker>()
 
     // 카메라가 이동하기 전 화면의 위도 경도 값을 저장할 변수
-    private lateinit var before_LatLngBounds: LatLngBounds
-    private lateinit var now_LatLngBounds: LatLngBounds
-
-    // 카메라가 이동하기 전 화면의 위도 경도 값을 저장할 변수
     private lateinit var before_MapModel: MapModel
 
     lateinit var mapViewModel: MapViewModel
+
+    private var clickedMarker: Marker ?= null // 클릭된 마커 변수
 
     override fun init() {
         mapViewModel = ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
@@ -60,6 +58,7 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                 .addToBackStack(null)
                 .commitAllowingStateLoss()
         }
+
     }
 
     private fun openMap() {
@@ -84,29 +83,25 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
     override fun onMapReady(map: NaverMap) {
         // 지도 초기 설정
         initMapSetting(map)
-        // 매장 api 요청
-        updateStore(37.5581, 126.9260)
-        // 최초 화면에 보이는 위경도 저장
-        before_LatLngBounds = naverMap.contentBounds
 
         // 화면 움직임이 멈췄을 때 -> 화면에 보이는 부분의 데이터 받아오기
         naverMap.addOnCameraIdleListener {
-            now_LatLngBounds = naverMap.contentBounds
             // 지금 바운더리에서 새롭게 보여지는 Marker들은 추가한다.
             // 지금 바운더리로 새롭게 데이터 요청 *************
-
+            var lat = naverMap.cameraPosition.target.latitude
+            var lng = naverMap.cameraPosition.target.longitude
             // Retrofit 주변 매장 전체 데이터 가져와서 NowMarker 갱신
-            updateStore(naverMap.cameraPosition.target.latitude, naverMap.cameraPosition.target.longitude)
+            updateStore(lat, lng)
+        }
 
-//            for (i in 0..(BeforeMarkers.size - 1)) { // 이전 바운더리 Marker들 전부 확인
-//                marker_temp = BeforeMarkers[i]
-//                position_temp = marker_temp.position
-//                if (!now_LatLngBounds.contains(position_temp)) { // 지금 바운더리에서 안보여지는 이전 바운더리의 Marker는 삭제한다.
-//                    marker_temp.map = null
-//                }
-//                // 이전 바운더리에서도 존재하고 있던 지금 바운더리 Marker는 보존한다.
-//            }
-
+        naverMap.setOnMapClickListener { pointF, latLng ->
+            if(clickedMarker != null){ // 클릭된 마커가 있을 경우
+                clickedMarker?.icon = OverlayImage.fromResource(R.drawable.icon_map_small_pin) // 클릭되지 않은 마커로 변경
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                clickedMarker = null // 클릭된 마커 지우기
+            }else{ // 클릭된 마커가 없을 경우
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            }
         }
     }
 
@@ -153,41 +148,52 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
 
     // 주변 1km 매장 정보 얻어오기
     private fun updateStore(lat: Double, lng: Double) {
-        mapViewModel.near_store(lat,lng)
-        mapViewModel.near_store_data.observe(viewLifecycleOwner, Observer<MapModel> { now_MapModel->
+        mapViewModel.get_store_near_data(lat,lng)
+        mapViewModel.store_near_data.observe(viewLifecycleOwner, Observer<MapModel> { now_MapModel->
             if(now_MapModel != null){
                 if (::before_MapModel.isInitialized) { // 이전 데이터 기록이 있을 경우
+                    // 이전 데이터와 겹치지 않는 현재 데이터만 추가하기
                     var new_data = MapModel()
                     for (data in now_MapModel) {
-                        if (!before_MapModel.contains(data)) { // 이전 데이터와 겹치지 않는 현재 데이터가 발견
+                        var flag : Boolean = false
+
+                        for(old_data_temp in before_MapModel){
+                            if(old_data_temp.id == data.id){
+                                flag = true
+                                break
+                            }
+                        }
+                        if(flag == false){ // 이전 데이터와 겹치지 않는 현재 데이터가 발견
                             new_data.add(data) // 따로 저장
                         }
                     }
-                    if (new_data != null) { // 이전 데이터와 겹치지 않는 데이터가 따로 저장되어 있다면
+
+                    if (new_data.size > 0) {
                         updateMarker(new_data) // 그 마커만 update
                     } else {
-                        Log.d("whatisthis", "마커 업데이트 필요없음")
                     }
 
+                    // 현재 데이터와 겹치지 않는 이전 데이터만 지우기
                     for (data in before_MapModel) {
-                        if (!now_MapModel.contains(data)) { // 현재 데이터와 겹치지 않는 과거 데이터 발견
-                            freeMarker(data) // 그 마커만 update
+                        var flag : Boolean = false
+                        for(new_data_temp in now_MapModel){
+                            if(new_data_temp.id == data.id){
+                                flag = true
+                                break
+                            }
+                        }
+                        if(flag == false){ // 이전 데이터와 겹치지 않는 현재 데이터가 발견
+                            freeMarker(data) // 그 마커만 지우기
                         }
                     }
-
-                } else {
-                    updateMarker(now_MapModel) // 이전 데이터 기록이 없을 경우(최초)
+                } else { // 이전 데이터 기록이 없을 경우(최초)
+                    updateMarker(now_MapModel)
                 }
                 before_MapModel = now_MapModel // 이전 데이터 기록 갱신
             }else{
                 Log.d("whatisthis", "11네트워크 오류가 발생했습니다.")
             }
         })
-
-        // Marker가 아닌 바깥 지도 클릭시
-        naverMap.setOnMapClickListener { pointF, latLng ->
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        }
     }
 
     // 마커 그리기
@@ -200,11 +206,8 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                 val marker = Marker() // 마커 생성
                 marker.position = LatLng(storeData.latitude, storeData.longitude) // 마커 위치 설정
                 marker.icon = OverlayImage.fromResource(R.drawable.icon_map_small_pin) // 마커 아이콘 설정
-                //marker.setIconTintColor(Color.RED); // 덧입힐 색상
                 marker.width = Marker.SIZE_AUTO
                 marker.height = Marker.SIZE_AUTO
-                //marker.setCaptionMinZoom(12);
-                //marker.setCaptionMaxZoom(16);
                 marker.minZoom = 13.3 // Marker가 보이는 최대 줌 정하기
                 marker.captionText = storeData.name
                 marker.isHideCollidedCaptions = true // 겹치는 캡션 자동 숨김 처리
@@ -215,32 +218,21 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
 
                 // Marker 클릭시
                 marker.setOnClickListener { overlay ->
-                    marker.icon = OverlayImage.fromResource(R.drawable.icon_map_pin)
-                    // Retrofit 주변매장 데이터를 가져왔을 경우 -> 클릭한 Marker의 정보를 List 데이터에서 tag로 찾는다.
-                    for (i in storelist) {
-                        if (i.id == overlay.tag) {
-                            mapViewModel.near_store_detail(i.id,"전체")
-                            mapViewModel.near_store_detail.observe(viewLifecycleOwner, Observer<StoreDetailData>{
-                                if(it!=null){
-                                    // 위에서 찾았다면 데이터 Bottomsheet에 들어갈 데이터 갱신
-                                    binding.mapTextviewName.text = it.store_name
-                                    binding.mapTextviewAddress.text =
-                                        it.store_address
-                                    binding.mapTextviewOperationhours.text =
-                                        it.hours_of_operation
-                                }else{
-                                    Log.d("whatisthis", "22네트워크 오류가 발생했습니다.")
-                                }
-                            })
-                            break
+                    if(clickedMarker!=null){ // 클릭된 마커가 있음
+                        if(clickedMarker == overlay as Marker){ // 같은 마커를 클릭 시
+                            clickedMarker?.icon = OverlayImage.fromResource(R.drawable.icon_map_small_pin) // 클릭되지 않은 마커로 변경
+                            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                            clickedMarker = null // 클릭된 마커 지우기
+                        }else{ // 다른 마커를 클릭 시
+                            clickedMarker?.icon = OverlayImage.fromResource(R.drawable.icon_map_small_pin) // 클릭되지 않은 마커로 변경
+                            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                            clickMarker(overlay as Marker, storelist) // 마커 클릭 이벤트 처리
                         }
+                    }else{ // 클릭된 마커가 없음
+                        clickMarker(overlay as Marker, storelist) // 마커 클릭 이벤트 처리
                     }
-
-                    // bottomsheetbehavior 사용할 경우
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     true
                 }
-
             }
             handler.post {
                 // 메인 스레드
@@ -249,6 +241,32 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                 }
             }
         }
+    }
+
+    // 마커 클릭 시
+    private fun clickMarker(overlay: Marker, storelist : MapModel){
+        clickedMarker = overlay  // 클릭된 마커 갱신
+        clickedMarker?.icon = OverlayImage.fromResource(R.drawable.icon_map_pin) // 클릭된 마커로 변경
+        for (i in storelist) {
+            if (i.id == clickedMarker?.tag) {
+                mapViewModel.get_store_detail_data(i.id,"전체")
+                mapViewModel.store_detail_data.observe(viewLifecycleOwner, Observer<StoreDetailData>{
+                    if(it!=null){
+                        // 위에서 찾았다면 데이터 Bottomsheet에 들어갈 데이터 갱신
+                        binding.mapTextviewName.text = it.store_name
+                        binding.mapTextviewAddress.text =
+                            it.store_address
+                        binding.mapTextviewOperationhours.text =
+                            it.hours_of_operation
+                    }else{
+                        Log.d("whatisthis", "22네트워크 오류가 발생했습니다.")
+                    }
+                })
+                break
+            }
+        }
+        // bottomsheetbehavior 사용할 경우
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     // 마커 지우기

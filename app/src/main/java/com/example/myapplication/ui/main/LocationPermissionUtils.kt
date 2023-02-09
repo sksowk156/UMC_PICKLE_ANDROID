@@ -53,15 +53,12 @@ object LocationPermissionUtils {
     * */
     @RequiresApi(Build.VERSION_CODES.Q)
     fun isBackgroundLocationGranted(context: Context): Boolean {
-        Log.d("whatisthis",isAccessBackgroundGrantedAllTime(context).toString())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !isAccessBackgroundGrantedAllTime(
                 context
             )
         ) {
-            Log.d("whatisthis","들어오면안돼")
             return false
         }
-        Log.d("whatisthis","여기")
         return true
     }
 

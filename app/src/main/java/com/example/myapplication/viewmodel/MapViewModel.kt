@@ -13,46 +13,46 @@ import retrofit2.Response
 
 class MapViewModel : ViewModel() {
 
-    private var _near_store_data = MutableLiveData<MapModel>()
-    val near_store_data: LiveData<MapModel> get() = _near_store_data
+    private var _store_near_data = MutableLiveData<MapModel>()
+    val store_near_data: LiveData<MapModel> get() = _store_near_data
 
-    private var _near_store_detail = MutableLiveData<StoreDetailData>()
-    val near_store_detail: LiveData<StoreDetailData> get() = _near_store_detail
+    private var _store_detail_data = MutableLiveData<StoreDetailData>()
+    val store_detail_data: LiveData<StoreDetailData> get() = _store_detail_data
 
-    fun near_store(lat: Double, lng: Double) {
-        MapService.mapService.near_store(lat, lng).enqueue(object : Callback<MapModel> {
+    fun get_store_near_data(lat: Double, lng: Double) {
+        MapService.mapService.get_store_near_data(lat, lng).enqueue(object : Callback<MapModel> {
             override fun onResponse(call: Call<MapModel>, response: Response<MapModel>) {
                 if (response.isSuccessful) {
-                    _near_store_data.postValue(response.body())
+                    _store_near_data.postValue(response.body())
                 } else {
-                    _near_store_data.postValue(null)
+                    _store_near_data.postValue(null)
                 }
             }
 
             override fun onFailure(call: Call<MapModel>, t: Throwable) {
                 Log.d("whatisthis", "네트워크 오류가 발생했습니다." + t.message.toString())
-                _near_store_data.postValue(null)
+                _store_near_data.postValue(null)
             }
         })
     }
 
-    fun near_store_detail(id: Int, category: String) {
-        MapService.mapService.near_store_detail(id, category)
+    fun get_store_detail_data(id: Int, category: String) {
+        MapService.mapService.get_store_detail_data(id, category)
             .enqueue(object : Callback<StoreDetailData> {
                 override fun onResponse(
                     call: Call<StoreDetailData>,
                     response: Response<StoreDetailData>
                 ) {
                     if (response.isSuccessful) {
-                        _near_store_detail.postValue(response.body())
+                        _store_detail_data.postValue(response.body())
                     } else {
-                        _near_store_detail.postValue(null)
+                        _store_detail_data.postValue(null)
                     }
                 }
 
                 override fun onFailure(call: Call<StoreDetailData>, t: Throwable) {
                     Log.d("whatisthis", "네트워크 오류가 발생했습니다." + t.message.toString())
-                    _near_store_detail.postValue(null)
+                    _store_detail_data.postValue(null)
                 }
             })
     }
