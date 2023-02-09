@@ -58,7 +58,39 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                     }
                 }
             } else {
-                UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
+                UserApiClient.instance.loginWithKakaoAccount(this){ token, error ->
+                    // 로그인 실패 부분
+                    if (error != null) {
+                        Log.e(TAG, "로그인 실패 $error")
+                        // 사용자가 취소
+                        if (error is ClientError && error.reason == ClientErrorCause.Cancelled ) {
+                            return@loginWithKakaoAccount
+                        }
+                        // 다른 오류
+                        else {
+                            UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
+                        }
+                    }
+                    // 로그인 성공 부분
+                    else if (token != null) {
+                        val data = PostModel(token.accessToken)
+                        // API service 카카오 로그인 후 발급받은 appToken, isNewMember 값
+                        LoginService.create(data)
+                        Log.e(TAG, "로그인 성공! 토큰값 : ${token.accessToken}")
+                        UserApiClient.instance.me { user, error ->
+                            var email = user?.kakaoAccount?.email
+                            var name = user?.kakaoAccount?.profile?.nickname
+                            Log.e(TAG, "닉네임 ${user?.kakaoAccount?.profile?.nickname}")
+                            Log.e(TAG, "이메일 ${user?.kakaoAccount?.email}" )
+                            // 카카오 로그인 후 받은 카카오 데이터(email, name)를 서버에 보내서 토큰 받아오기
+                            Toast.makeText(this, "${user?.kakaoAccount?.profile?.nickname}님 환영합니다.", Toast.LENGTH_SHORT).show()
+                        }
+                        val intent = Intent(this, SecondActivity::class.java)
+                        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
+                    }
+                }
+//                        UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
             }
         }
     }

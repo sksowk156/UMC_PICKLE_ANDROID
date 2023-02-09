@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import com.example.myapplication.ApplicationClass
 import com.example.myapplication.R
 import com.example.myapplication.ui.login.MainActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -40,6 +41,7 @@ class WithdrawalFragment : BottomSheetDialogFragment() {
                 if(error != null){
                     Toast.makeText(requireContext(),"회원탈퇴 실패", Toast.LENGTH_SHORT).show()
                 }else{
+                    ApplicationClass.sharedPreferencesmanager.deleteJwt()
                     Toast.makeText(requireContext(),"회원탈퇴 성공", Toast.LENGTH_SHORT).show()
                     // 로그인 화면으로 넘어갈건가??
                     val intent = Intent(requireContext(), MainActivity::class.java)
