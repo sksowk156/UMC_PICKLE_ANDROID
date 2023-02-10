@@ -1,6 +1,6 @@
-package com.example.myapplication.ui.store
+package com.example.myapplication.ui.store.clothdetail
 
-data class ClothCount(
+data class ClothOrderData(
     val color: String,
     var size: String,
     var count: Int,

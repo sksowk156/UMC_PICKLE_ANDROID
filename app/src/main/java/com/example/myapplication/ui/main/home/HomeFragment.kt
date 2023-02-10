@@ -34,6 +34,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
     override fun init() {
         homeViewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
 
+        homeViewModel.home_latlng.observe(this, Observer<Pair<Double,Double>>{
+            if(homeViewModel.home_latlng.value != null){
+                homeViewModel.get_home_data(homeViewModel.home_latlng.value!!.first, homeViewModel.home_latlng.value!!.second)
+            }
+        })
+
+
         initSlideView()
         initRecyclerView()
         binding.button.setOnClickListener {

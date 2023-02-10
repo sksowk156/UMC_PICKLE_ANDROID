@@ -10,16 +10,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySecondBinding
-import com.example.myapplication.db.remote.AddDressLikeService.add_liked_dress_data
-import com.example.myapplication.db.remote.DressLikeService.get_liked_dress_data
-import com.example.myapplication.db.remote.model.updatedressLikeDto
 import com.example.myapplication.ui.base.BaseActivity
 import com.example.myapplication.ui.main.chat.ChatFragment
 import com.example.myapplication.ui.main.favorite.FavoriteBaseFragment
@@ -27,14 +24,9 @@ import com.example.myapplication.ui.main.home.HomeBaseFragment
 import com.example.myapplication.ui.main.location.LocationFragment
 import com.example.myapplication.ui.main.profile.ProfileBlankFragment
 import com.example.myapplication.viewmodel.HomeViewModel
-import com.example.myapplication.viewmodel.MapViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_second) {
-    private var latitude: Double=0.0
-    private var longitude:Double=0.0
+
     private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     private val PERMISSIONS_REQUEST_CODE = 100
     private lateinit var locatioNManager : LocationManager
@@ -105,11 +97,6 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
 //            checkPermissionAndroidQ()
             getLocation()
         }
-
-        Log.d("whatisthis",latitude.toString()+" "+longitude.toString())
-
-        homeViewModel.get_home_data(37.5581, 126.9260)
-
     }
 
     private fun changeFragment(tag: String, fragment: Fragment) {
@@ -189,9 +176,11 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
         var userLocation: Location = getLatLng()
 
         if(userLocation != null){
-            latitude = userLocation.latitude
-            longitude = userLocation.longitude
-            Log.d("CheckCurrentLocation", "현재 내 위치 값: ${latitude}, ${longitude}")
+            homeViewModel.set_home_latlng(userLocation.latitude,userLocation.longitude)
+
+//            latitude = userLocation.latitude
+//            longitude = userLocation.longitude
+//            Log.d("CheckCurrentLocation", "현재 내 위치 값: ${latitude}, ${longitude}")
 //            var mGeoCoder =  Geocoder(applicationContext, Locale.KOREAN)
 //            var mResultList: List<Address>? = null
 //            try{
@@ -209,7 +198,6 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
     }
 
     private fun getLatLng(): Location{
-
         var currentLatLng: Location? = null
         var hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
             Manifest.permission.ACCESS_FINE_LOCATION)

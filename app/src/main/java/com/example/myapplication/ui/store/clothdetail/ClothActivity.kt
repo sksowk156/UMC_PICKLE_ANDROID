@@ -1,21 +1,18 @@
 package com.example.myapplication.ui.store.clothdetail
 
-import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityClothBinding
 import com.example.myapplication.ui.base.BaseActivity
-import com.example.myapplication.viewmodel.HomeViewModel
-import com.example.myapplication.viewmodel.MapViewModel
+import com.example.myapplication.viewmodel.DressViewModel
+import com.example.myapplication.viewmodel.StoreViewModel
 
 class ClothActivity : BaseActivity<ActivityClothBinding>(R.layout.activity_cloth) {
-    lateinit var mapViewModel: MapViewModel
+    lateinit var dressViewModel: DressViewModel
 
     override fun savedatainit() {
-        mapViewModel = ViewModelProvider(this).get(MapViewModel::class.java)
+        dressViewModel = ViewModelProvider(this).get(DressViewModel::class.java)
+        dressViewModel.get_dress_detail_data(intent.getIntExtra("cloth_id",0))
 
         supportFragmentManager
             .beginTransaction()
@@ -24,6 +21,5 @@ class ClothActivity : BaseActivity<ActivityClothBinding>(R.layout.activity_cloth
     }
 
     override fun init() {
-        mapViewModel.get_store_detail_data(intent.getIntExtra("cloth_id",0),"전체")
     }
 }

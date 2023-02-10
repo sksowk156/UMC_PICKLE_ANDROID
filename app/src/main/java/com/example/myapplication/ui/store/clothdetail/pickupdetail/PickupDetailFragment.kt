@@ -9,9 +9,7 @@ import com.example.myapplication.ui.main.profile.orderstatus.detail.OrderstatusD
 
 class PickupDetailFragment : BaseFragment<FragmentPickupDetailBinding>(R.layout.fragment_pickup_detail) {
     override fun init() {
-        var storeName = arguments?.getString("storeName").toString()
-        var clothName = arguments?.getString("clothName").toString()
-        var clothPrice = arguments?.getInt("clothPrice")!!
+
         initRecyclerView()
     }
 
