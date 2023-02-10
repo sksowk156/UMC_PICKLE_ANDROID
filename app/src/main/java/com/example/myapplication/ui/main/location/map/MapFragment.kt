@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.main.location.map
 
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -7,13 +8,14 @@ import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMapBinding
 import com.example.myapplication.db.remote.model.StoreCoordDtoList
 import com.example.myapplication.db.remote.model.StoreCoordDto
-import com.example.myapplication.db.remote.model.StoreDetailDto
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.location.around.AroundFragment
+import com.example.myapplication.ui.store.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.StoreViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.naver.maps.geometry.LatLng
@@ -21,6 +23,7 @@ import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
+import kotlinx.android.synthetic.main.item_around_recycler.*
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
 
@@ -39,7 +42,7 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
 
     lateinit var storeViewModel: StoreViewModel
 
-    private var clickedMarker: Marker ?= null // 클릭된 마커 변수
+    private var clickedMarker: Marker? = null // 클릭된 마커 변수
 
     override fun init() {
         storeViewModel = ViewModelProvider(requireParentFragment()).get(StoreViewModel::class.java)
@@ -84,18 +87,17 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
         naverMap.addOnCameraIdleListener {
             // 지금 바운더리에서 새롭게 보여지는 Marker들은 추가한다.
             // 지금 바운더리로 새롭게 데이터 요청 *************
-            var lat = naverMap.cameraPosition.target.latitude
-            var lng = naverMap.cameraPosition.target.longitude
             // Retrofit 주변 매장 전체 데이터 가져와서 NowMarker 갱신
-            updateStore(lat, lng)
+            updateStore(naverMap.cameraPosition.target.latitude, naverMap.cameraPosition.target.longitude)
         }
 
         naverMap.setOnMapClickListener { pointF, latLng ->
-            if(clickedMarker != null){ // 클릭된 마커가 있을 경우
-                clickedMarker?.icon = OverlayImage.fromResource(R.drawable.icon_map_small_pin) // 클릭되지 않은 마커로 변경
+            if (clickedMarker != null) { // 클릭된 마커가 있을 경우
+                clickedMarker?.icon =
+                    OverlayImage.fromResource(R.drawable.icon_map_small_pin) // 클릭되지 않은 마커로 변경
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 clickedMarker = null // 클릭된 마커 지우기
-            }else{ // 클릭된 마커가 없을 경우
+            } else { // 클릭된 마커가 없을 경우
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
         }
@@ -144,52 +146,54 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
 
     // 주변 1km 매장 정보 얻어오기
     private fun updateStore(lat: Double, lng: Double) {
-        storeViewModel.get_store_near_data(lat,lng)
-        storeViewModel.store_near_data.observe(viewLifecycleOwner, Observer<StoreCoordDtoList> { now_StoreCoordDtoList->
-            if(now_StoreCoordDtoList != null){
-                if (::before_StoreCoordDtoList.isInitialized) { // 이전 데이터 기록이 있을 경우
-                    // 이전 데이터와 겹치지 않는 현재 데이터만 추가하기
-                    var new_data = StoreCoordDtoList()
-                    for (data in now_StoreCoordDtoList) {
-                        var flag : Boolean = false
+        storeViewModel.get_store_near_data(lat, lng)
+        storeViewModel.store_near_data.observe(
+            viewLifecycleOwner,
+            Observer<StoreCoordDtoList> { now_StoreCoordDtoList ->
+                if (now_StoreCoordDtoList != null) {
+                    if (::before_StoreCoordDtoList.isInitialized) { // 이전 데이터 기록이 있을 경우
+                        // 이전 데이터와 겹치지 않는 현재 데이터만 추가하기
+                        var new_data = StoreCoordDtoList()
+                        for (data in now_StoreCoordDtoList) {
+                            var flag: Boolean = false
 
-                        for(old_data_temp in before_StoreCoordDtoList){
-                            if(old_data_temp.id == data.id){
-                                flag = true
-                                break
+                            for (old_data_temp in before_StoreCoordDtoList) {
+                                if (old_data_temp.store_id == data.store_id) {
+                                    flag = true
+                                    break
+                                }
+                            }
+                            if (flag == false) { // 이전 데이터와 겹치지 않는 현재 데이터가 발견
+                                new_data.add(data) // 따로 저장
                             }
                         }
-                        if(flag == false){ // 이전 데이터와 겹치지 않는 현재 데이터가 발견
-                            new_data.add(data) // 따로 저장
+
+                        if (new_data.size > 0) {
+                            updateMarker(new_data) // 그 마커만 update
+                        } else {
                         }
-                    }
 
-                    if (new_data.size > 0) {
-                        updateMarker(new_data) // 그 마커만 update
-                    } else {
-                    }
-
-                    // 현재 데이터와 겹치지 않는 이전 데이터만 지우기
-                    for (data in before_StoreCoordDtoList) {
-                        var flag : Boolean = false
-                        for(new_data_temp in now_StoreCoordDtoList){
-                            if(new_data_temp.id == data.id){
-                                flag = true
-                                break
+                        // 현재 데이터와 겹치지 않는 이전 데이터만 지우기
+                        for (data in before_StoreCoordDtoList) {
+                            var flag: Boolean = false
+                            for (new_data_temp in now_StoreCoordDtoList) {
+                                if (new_data_temp.store_id == data.store_id) {
+                                    flag = true
+                                    break
+                                }
+                            }
+                            if (flag == false) { // 이전 데이터와 겹치지 않는 현재 데이터가 발견
+                                freeMarker(data) // 그 마커만 지우기
                             }
                         }
-                        if(flag == false){ // 이전 데이터와 겹치지 않는 현재 데이터가 발견
-                            freeMarker(data) // 그 마커만 지우기
-                        }
+                    } else { // 이전 데이터 기록이 없을 경우(최초)
+                        updateMarker(now_StoreCoordDtoList)
                     }
-                } else { // 이전 데이터 기록이 없을 경우(최초)
-                    updateMarker(now_StoreCoordDtoList)
+                    before_StoreCoordDtoList = now_StoreCoordDtoList // 이전 데이터 기록 갱신
+                } else {
+                    Log.d("whatisthis", "11네트워크 오류가 발생했습니다.")
                 }
-                before_StoreCoordDtoList = now_StoreCoordDtoList // 이전 데이터 기록 갱신
-            }else{
-                Log.d("whatisthis", "11네트워크 오류가 발생했습니다.")
-            }
-        })
+            })
     }
 
     // 마커 그리기
@@ -205,26 +209,28 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                 marker.width = Marker.SIZE_AUTO
                 marker.height = Marker.SIZE_AUTO
                 marker.minZoom = 13.3 // Marker가 보이는 최대 줌 정하기
-                marker.captionText = storeData.name
+                marker.captionText = storeData.store_name
                 marker.isHideCollidedCaptions = true // 겹치는 캡션 자동 숨김 처리
                 marker.isHideCollidedSymbols = true //  마커와 겹치는 지도 심벌을 자동으로 숨기도록 지정
                 //marker.setHideCollidedMarkers(false);
-                marker.tag = storeData.id
+                marker.tag = storeData.store_id
                 NowMarkers?.add(marker)
 
                 // Marker 클릭시
                 marker.setOnClickListener { overlay ->
-                    if(clickedMarker!=null){ // 클릭된 마커가 있음
-                        if(clickedMarker == overlay as Marker){ // 같은 마커를 클릭 시
-                            clickedMarker?.icon = OverlayImage.fromResource(R.drawable.icon_map_small_pin) // 클릭되지 않은 마커로 변경
+                    if (clickedMarker != null) { // 클릭된 마커가 있음
+                        if (clickedMarker == overlay as Marker) { // 같은 마커를 클릭 시
+                            clickedMarker?.icon =
+                                OverlayImage.fromResource(R.drawable.icon_map_small_pin) // 클릭되지 않은 마커로 변경
                             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                             clickedMarker = null // 클릭된 마커 지우기
-                        }else{ // 다른 마커를 클릭 시
-                            clickedMarker?.icon = OverlayImage.fromResource(R.drawable.icon_map_small_pin) // 클릭되지 않은 마커로 변경
+                        } else { // 다른 마커를 클릭 시
+                            clickedMarker?.icon =
+                                OverlayImage.fromResource(R.drawable.icon_map_small_pin) // 클릭되지 않은 마커로 변경
                             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                             clickMarker(overlay as Marker, storelist) // 마커 클릭 이벤트 처리
                         }
-                    }else{ // 클릭된 마커가 없음
+                    } else { // 클릭된 마커가 없음
                         clickMarker(overlay as Marker, storelist) // 마커 클릭 이벤트 처리
                     }
                     true
@@ -240,35 +246,49 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
     }
 
     // 마커 클릭 시
-    private fun clickMarker(overlay: Marker, storelist : StoreCoordDtoList){
+    private fun clickMarker(overlay: Marker, storelist: StoreCoordDtoList) {
         clickedMarker = overlay  // 클릭된 마커 갱신
         clickedMarker?.icon = OverlayImage.fromResource(R.drawable.icon_map_pin) // 클릭된 마커로 변경
         for (i in storelist) {
-            if (i.id == clickedMarker?.tag) {
-                storeViewModel.get_store_detail_data(i.id,"전체")
-                storeViewModel.store_detail_data.observe(viewLifecycleOwner, Observer<StoreDetailDto>{
-                    if(it!=null){
-                        // 위에서 찾았다면 데이터 Bottomsheet에 들어갈 데이터 갱신
-                        binding.mapTextviewName.text = it.store_name
-                        binding.mapTextviewAddress.text =
-                            it.store_address
-                        binding.mapTextviewOperationhours.text =
-                            it.hours_of_operation
-                    }else{
-                        Log.d("whatisthis", "22네트워크 오류가 발생했습니다.")
-                    }
-                })
+            if (i.store_id == clickedMarker?.tag) {
+                Glide.with(this@MapFragment)
+                    .load(i.store_img) //이미지
+                    .into(binding.mapImage) //보여줄 위치
+
+                if (i.store_like  == true) {
+                    //화면에 보여주기
+                    Glide.with(this@MapFragment)
+                        .load(R.drawable.icon_favorite_filledpink) //이미지
+                        .into(binding.mapImageFavorite) //보여줄 위치
+                } else {
+                    //화면에 보여주기
+                    Glide.with(this@MapFragment)
+                        .load(R.drawable.icon_favorite_line) //이미지
+                        .into(binding.mapImageFavorite) //보여줄 위치
+                }
+
+                binding.mapTextviewName.text = i.store_name
+                binding.mapTextviewAddress.text =
+                    i.address
+                binding.mapTextviewOperationhours.text =
+                    i.hoursOfOperation
+
+                // 버튼 클릭시 상세 페이지로 이동
+                binding.mapInnerlayout.setOnClickListener {
+                    val intent = Intent(getActivity(), StoreActivity::class.java)
+                    intent.putExtra("store_id", i.store_id)
+                    startActivity(intent)
+                }
                 break
             }
         }
-        // bottomsheetbehavior 사용할 경우
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     // 마커 지우기
     private fun freeMarker(invisible_stores: StoreCoordDto) {
         for (marker in NowMarkers) {
-            if (marker.tag == invisible_stores.id) {
+            if (marker.tag == invisible_stores.store_id) {
                 marker.map = null // 마커들 지도에서 삭제
                 NowMarkers.remove(marker) // 목록에서 제거
                 break
