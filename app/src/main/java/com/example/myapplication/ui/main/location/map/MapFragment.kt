@@ -12,7 +12,7 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMapBinding
 import com.example.myapplication.db.remote.model.MapModel
 import com.example.myapplication.db.remote.model.MapModelItem
-import com.example.myapplication.db.remote.model.StoreDetailData
+import com.example.myapplication.db.remote.model.StoreDetailDto
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.location.around.AroundFragment
 import com.example.myapplication.viewmodel.MapViewModel
@@ -46,7 +46,7 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
     private var clickedMarker: Marker ?= null // 클릭된 마커 변수
 
     override fun init() {
-        mapViewModel = ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
+        mapViewModel = ViewModelProvider(requireParentFragment()).get(MapViewModel::class.java)
         // 지도 띄우기
         openMap()
 
@@ -250,7 +250,7 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
         for (i in storelist) {
             if (i.id == clickedMarker?.tag) {
                 mapViewModel.get_store_detail_data(i.id,"전체")
-                mapViewModel.store_detail_data.observe(viewLifecycleOwner, Observer<StoreDetailData>{
+                mapViewModel.store_detail_data.observe(viewLifecycleOwner, Observer<StoreDetailDto>{
                     if(it!=null){
                         // 위에서 찾았다면 데이터 Bottomsheet에 들어갈 데이터 갱신
                         binding.mapTextviewName.text = it.store_name
@@ -309,8 +309,7 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
         // BottomSheetBehavior에 layout 설정
         bottomSheetBehavior = BottomSheetBehavior.from(binding.mapBottomsheetlayout)
         // 미리보기 높이 = 현재 위치 버튼 크기 + 로고 크기 + 마진 크기
-        bottomSheetBehavior.peekHeight =
-            Math.round((24 + LocationButtonView.MEASURED_HEIGHT_STATE_SHIFT + LogoView.MEASURED_HEIGHT_STATE_SHIFT) * dm.density)
+        bottomSheetBehavior.peekHeight = 0
 
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {

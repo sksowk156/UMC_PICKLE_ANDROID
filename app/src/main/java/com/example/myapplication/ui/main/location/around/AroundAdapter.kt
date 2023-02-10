@@ -4,19 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemAroundRecyclerBinding
-import com.example.myapplication.db.remote.model.MapModel
-import com.example.myapplication.db.remote.model.MapModelItem
-import com.example.myapplication.db.remote.model.StoreDetailData
-import com.example.myapplication.ui.main.home.recent.CardViewAdapter
-import kotlinx.android.synthetic.main.item_around_recycler.*
+import com.example.myapplication.db.remote.model.StoreDetailDto
 
 class AroundAdapter(clicklistener: AroundAdapter.ClothesClickListener) :
     RecyclerView.Adapter<AroundAdapter.ViewHolder>() {
 
-    var userList: ArrayList<StoreDetailData>? = null
+    var userList: ArrayList<StoreDetailDto>? = null
 
     var clicklistener: AroundAdapter.ClothesClickListener = clicklistener
 
@@ -25,7 +19,7 @@ class AroundAdapter(clicklistener: AroundAdapter.ClothesClickListener) :
         fun onItemMarketLayoutClick(view: View, position: Int)
     }
 
-    fun updatedata(data : ArrayList<StoreDetailData>){
+    fun updatedata(data : ArrayList<StoreDetailDto>){
         userList = data
         notifyDataSetChanged()
     }
@@ -49,7 +43,7 @@ class AroundAdapter(clicklistener: AroundAdapter.ClothesClickListener) :
     inner class ViewHolder(val binding: ItemAroundRecyclerBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun setUser(user: StoreDetailData?, position: Int) {
+        fun setUser(user: StoreDetailDto?, position: Int) {
             with(binding) {
 //                if (user?. == false) {
 //                    //화면에 보여주기

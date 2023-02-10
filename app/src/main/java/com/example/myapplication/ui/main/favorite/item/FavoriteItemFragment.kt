@@ -10,7 +10,6 @@ import com.example.myapplication.databinding.FragmentFavoriteItemBinding
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.ItemClickInterface
 import com.example.myapplication.ui.main.home.*
-import com.example.myapplication.ui.main.home.recent.CardViewAdapter
 import com.example.myapplication.ui.store.clothdetail.ClothActivity
 import com.example.myapplication.ui.store.storedetail.StoreActivity
 
@@ -18,9 +17,9 @@ import com.example.myapplication.ui.store.storedetail.StoreActivity
 class FavoriteItemFragment :
     BaseFragment<FragmentFavoriteItemBinding>(R.layout.fragment_favorite_item), ItemClickInterface {
 
-    lateinit var fragmentadapter: CardViewAdapter
+//    lateinit var fragmentadapter: CardViewAdapter
     override fun init() {
-        rcView()
+//        rcView()
     }
 
     private fun addClothes() {
@@ -76,17 +75,17 @@ class FavoriteItemFragment :
 
     }
 
-    private fun rcView() {
-        addClothes()
-        fragmentadapter = CardViewAdapter(this)
-        binding.favoriteItemRecyclerView.apply {
-            layoutManager = GridLayoutManager(this.context, 2)
-            adapter = fragmentadapter
-            fragmentadapter.submitList(newclothesList.toMutableList())
-        }
-    }
+//    private fun rcView() {
+//        addClothes()
+//        fragmentadapter = CardViewAdapter(this)
+//        binding.favoriteItemRecyclerView.apply {
+//            layoutManager = GridLayoutManager(this.context, 2)
+//            adapter = fragmentadapter
+//            fragmentadapter.submitList(newclothesList.toMutableList())
+//        }
+//    }
 
-    override fun onItemImageClick(view: View, position: Int) {
+    override fun onItemImageClick(id: Int, position: Int) {
         val intent = Intent(context, ClothActivity::class.java)
         intent.putExtra("storeName", "store1")
         intent.putExtra("clothName", "옷1")
@@ -95,28 +94,28 @@ class FavoriteItemFragment :
         startActivity(intent)
     }
 
-    override fun onItemMarketNameClick(view: View, position: Int) {
+    override fun onItemStoreNameClick(id: Int, position: Int) {
         val intent = Intent(context, StoreActivity::class.java)
         startActivity(intent)
     }
 
-    override fun onItemButtonClick(view: View, position: Int) {
+    override fun onItemButtonClick(id: Int, position: Int) {
         showToast("clicked!!")
     }
 
-    override fun onItemFavoriteClick(view: View, position: Int) {
-        if (newclothesList[position].like == false) {
-            //화면에 보여주기
-            Glide.with(this@FavoriteItemFragment)
-                .load(R.drawable.icon_favorite_filledpink) //이미지
-                .into(view.findViewById<ImageButton>(R.id.card_imagebutton_favorite)) //보여줄 위치
-            newclothesList[position].like = true
-        } else {
-            //화면에 보여주기
-            Glide.with(this@FavoriteItemFragment)
-                .load(R.drawable.icon_favorite_whiteline) //이미지
-                .into(view.findViewById<ImageButton>(R.id.card_imagebutton_favorite)) //보여줄 위치
-            newclothesList[position].like = false
-        }
+    override fun onItemFavoriteClick(id: Int, position: Int) {
+//        if (newclothesList[position].like == false) {
+//            //화면에 보여주기
+//            Glide.with(this@FavoriteItemFragment)
+//                .load(R.drawable.icon_favorite_filledpink) //이미지
+//                .into(view.findViewById<ImageButton>(R.id.card_imagebutton_favorite)) //보여줄 위치
+//            newclothesList[position].like = true
+//        } else {
+//            //화면에 보여주기
+//            Glide.with(this@FavoriteItemFragment)
+//                .load(R.drawable.icon_favorite_whiteline) //이미지
+//                .into(view.findViewById<ImageButton>(R.id.card_imagebutton_favorite)) //보여줄 위치
+//            newclothesList[position].like = false
+//        }
     }
 }

@@ -17,9 +17,9 @@ import com.example.myapplication.ui.store.storedetail.StoreActivity
 class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent),
     ItemClickInterface {
 
-    lateinit var fragmentadapter : CardViewAdapter
+//    lateinit var fragmentadapter : CardViewAdapter
     override fun init() {
-        rcView()
+//        rcView()
     }
 
     private fun addClothes(){
@@ -76,44 +76,44 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
     }
 
     private fun rcView(){
-        addClothes()
-        fragmentadapter = CardViewAdapter(this@RecentFragment)
-        binding.newRecyclerView.apply {
-            layoutManager= GridLayoutManager(this.context,2)
-            adapter = fragmentadapter
-            fragmentadapter.submitList(clothesList.toMutableList())
-
-        }
+//        addClothes()
+//        fragmentadapter = CardViewAdapter(this@RecentFragment)
+//        binding.newRecyclerView.apply {
+//            layoutManager= GridLayoutManager(this.context,2)
+//            adapter = fragmentadapter
+//            fragmentadapter.submitList(clothesList.toMutableList())
+//
+//        }
     }
 
-    override fun onItemImageClick(view: View, position: Int) {
+    override fun onItemImageClick(id: Int, position: Int) {
         //  val intent = Intent(context, ClothActivity::class.java)
         // startActivity(intent)
     }
 
-    override fun onItemMarketNameClick(view: View, position: Int) {
+    override fun onItemStoreNameClick(id: Int, position: Int) {
         val intent = Intent(getActivity(), StoreActivity::class.java)
         startActivity(intent)
     }
 
-    override fun onItemButtonClick(view: View, position: Int) {
+    override fun onItemButtonClick(id: Int, position: Int) {
 
     }
 
-    override fun onItemFavoriteClick(view: View, position: Int) {
-        if (clothesList[position].like == false) {
-            //화면에 보여주기
-            Glide.with(this@RecentFragment)
-                .load(R.drawable.icon_favorite_filledpink) //이미지
-                .into(view.findViewById<ImageButton>(R.id.card_imagebutton_favorite)) //보여줄 위치
-            clothesList[position].like = true
-        } else {
-            //화면에 보여주기
-            Glide.with(this@RecentFragment)
-                .load(R.drawable.icon_favorite_whiteline) //이미지
-                .into(view.findViewById<ImageButton>(R.id.card_imagebutton_favorite)) //보여줄 위치
-            clothesList[position].like = false
-        }
+    override fun onItemFavoriteClick(id: Int, position: Int) {
+//        if (clothesList[position].like == false) {
+//            //화면에 보여주기
+//            Glide.with(this@RecentFragment)
+//                .load(R.drawable.icon_favorite_filledpink) //이미지
+//                .into(view.findViewById<ImageButton>(R.id.card_imagebutton_favorite)) //보여줄 위치
+//            clothesList[position].like = true
+//        } else {
+//            //화면에 보여주기
+//            Glide.with(this@RecentFragment)
+//                .load(R.drawable.icon_favorite_whiteline) //이미지
+//                .into(view.findViewById<ImageButton>(R.id.card_imagebutton_favorite)) //보여줄 위치
+//            clothesList[position].like = false
+//        }
     }
 
 

@@ -9,7 +9,7 @@ import android.widget.Toast
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityAgreementBinding
 import com.example.myapplication.db.remote.LoginService
-import com.example.myapplication.db.remote.remotedata.PostModel
+import com.example.myapplication.db.remote.remotedata.AuthRequest
 import com.example.myapplication.ui.base.BaseActivity
 import com.example.myapplication.ui.main.SecondActivity
 import com.kakao.sdk.user.UserApiClient
@@ -21,7 +21,7 @@ class AgreementActivity : BaseActivity<ActivityAgreementBinding>(R.layout.activi
 
             UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
                 if (token != null) {
-                    val data = PostModel(token.accessToken)
+                    val data = AuthRequest(token.accessToken)
 
                     LoginService.create(data)
 
