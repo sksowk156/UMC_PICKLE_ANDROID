@@ -19,7 +19,7 @@ class HomeViewModel : ViewModel() {
     val home_data: LiveData<HomeModel> get() = _home_data
 
     init {
-        _home_latlng.value = Pair(0.0, 0.0)
+        _home_latlng.value = Pair(37.5581, 126.9260)
     }
 
     fun set_home_latlng(lat:Double,lng:Double){

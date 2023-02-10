@@ -80,9 +80,11 @@ class OrderBottomSheetFragment() :
                 if(it.size > 0){ // 선택 목록이 있다면 버튼 활성화
                     binding.orderTextviewPickupbutton.setBackgroundResource(R.drawable.green_button_background)
                     binding.orderTextviewPickupbutton.setTextColor(Color.WHITE)
+                    buttonOnOff(true)
                 }else{ // 선택 목록이 없다면 버튼 비활성화
                     binding.orderTextviewPickupbutton.setBackgroundResource(R.drawable.gray_button_background)
                     binding.orderTextviewPickupbutton.setTextColor(Color.parseColor("#A4A4A4"))
+                    buttonOnOff(false)
                 }
             } else {
                 Log.d("whatisthis", "11네트워크 오류가 발생했습니다.")
@@ -167,14 +169,23 @@ class OrderBottomSheetFragment() :
                 checkedTwoButton[1] = false
             }
         }
+    }
 
-        binding.orderTextviewPickupbutton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.clothblank_layout, PickupDetailFragment(), "pickupdetail")
-                .addToBackStack(null)
-                .commitAllowingStateLoss()
-            dismiss()
+    private fun buttonOnOff(switch:Boolean){
+        if(switch){
+            binding.orderTextviewPickupbutton.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.clothblank_layout, PickupDetailFragment(), "pickupdetail")
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss()
+                dismiss()
+            }
+        }else{
+            binding.orderTextviewPickupbutton.setOnClickListener {
+                null
+            }
         }
+
     }
 
     override fun onItemPlusClick(_clothorderdata: ClothOrderData, position: Int) {

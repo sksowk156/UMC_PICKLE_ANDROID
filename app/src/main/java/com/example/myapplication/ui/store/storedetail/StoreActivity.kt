@@ -213,29 +213,6 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
                 }
             }
         })
-
-//        val dataRVadapter = DataRVAdapter(applicationContext)
-//        binding.rvData.adapter = dataRVadapter
-//        binding.rvData.layoutManager = GridLayoutManager(applicationContext, 2)
-//
-//        binding.rvData.run {
-//            adapter = dataRVadapter
-//            val spanCount = 2
-//            val space = 30
-//            addItemDecoration(GridSpaceItemDecoration(spanCount, space))
-//        }
-//
-//        dataRVadapter.setItemClickListener(object : DataRVAdapter.OnItemClickListener {
-//            override fun onClick(v: View, position: Int) {
-//                // 클릭 시 이벤트 작성
-//                val intent = Intent(applicationContext, ClothActivity::class.java)
-//                intent.putExtra("storeName", dataList[position].store)
-//                Log.d("intent", dataList[position].store)
-//                intent.putExtra("clothName", dataList[position].cloth)
-//                intent.putExtra("clothPrice", dataList[position].price.toInt())
-//                startActivity(intent)
-//            }
-//        })
     }
 
     protected fun initSearchHistory() {

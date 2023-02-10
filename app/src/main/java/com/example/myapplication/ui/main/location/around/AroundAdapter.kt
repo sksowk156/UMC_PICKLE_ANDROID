@@ -4,13 +4,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemAroundRecyclerBinding
+import com.example.myapplication.db.remote.model.StoreCoordDto
 import com.example.myapplication.db.remote.model.StoreDetailDto
 
 class AroundAdapter(clicklistener: AroundAdapter.ClothesClickListener) :
     RecyclerView.Adapter<AroundAdapter.ViewHolder>() {
 
-    var userList: ArrayList<StoreDetailDto>? = null
+    var userList: ArrayList<StoreCoordDto>? = null
 
     var clicklistener: AroundAdapter.ClothesClickListener = clicklistener
 
@@ -19,7 +22,7 @@ class AroundAdapter(clicklistener: AroundAdapter.ClothesClickListener) :
         fun onItemMarketLayoutClick(view: View, position: Int)
     }
 
-    fun updatedata(data : ArrayList<StoreDetailDto>){
+    fun updatedata(data: ArrayList<StoreCoordDto>) {
         userList = data
         notifyDataSetChanged()
     }
@@ -43,22 +46,26 @@ class AroundAdapter(clicklistener: AroundAdapter.ClothesClickListener) :
     inner class ViewHolder(val binding: ItemAroundRecyclerBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun setUser(user: StoreDetailDto?, position: Int) {
+        fun setUser(user: StoreCoordDto?, position: Int) {
             with(binding) {
-//                if (user?. == false) {
-//                    //화면에 보여주기
-//                    Glide.with(this@ViewHolder.itemView)
-//                        .load(R.drawable.icon_favorite_line) //이미지
-//                        .into(marketFavorite) //보여줄 위치
-//                } else {
-//                    //화면에 보여주기
-//                    Glide.with(this@ViewHolder.itemView)
-//                        .load(R.drawable.icon_favorite_filledpink) //이미지
-//                        .into(marketFavorite) //보여줄 위치
-//                }
+                if (user?.store_like == false) {
+                    //화면에 보여주기
+                    Glide.with(this@ViewHolder.itemView)
+                        .load(R.drawable.icon_favorite_line) //이미지
+                        .into(marketFavorite) //보여줄 위치
+                } else {
+                    //화면에 보여주기
+                    Glide.with(this@ViewHolder.itemView)
+                        .load(R.drawable.icon_favorite_filledpink) //이미지
+                        .into(marketFavorite) //보여줄 위치
+                }
+
+                Glide.with(this@ViewHolder.itemView)
+                    .load(user?.store_img) //이미지
+                    .into(marketImage) //보여줄 위치
                 marketName.text = user?.store_name.toString()
-                marketAddress.text = user?.store_address.toString()
-                marketOperationhours.text = user?.hours_of_operation.toString()
+                marketAddress.text = user?.address.toString()
+                marketOperationhours.text = user?.hoursOfOperation.toString()
 
                 marketLayout.setOnClickListener {
                     clicklistener.onItemMarketLayoutClick(it, absoluteAdapterPosition)

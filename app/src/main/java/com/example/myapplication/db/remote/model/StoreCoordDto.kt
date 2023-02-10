@@ -3,9 +3,13 @@ package com.example.myapplication.db.remote.model
 class StoreCoordDtoList : ArrayList<StoreCoordDto>()
 
 data class StoreCoordDto(
-    var dist: Double,
-    var id: Int,
+    var address: String? = null,
+    var hoursOfOperation: String? = null,
     var latitude: Double,
     var longitude: Double,
-    var name: String
+    var open_day: String? = null,
+    var store_id: Int,
+    var store_img: String? = null,
+    var store_like: Boolean = false,
+    var store_name: String
 )
