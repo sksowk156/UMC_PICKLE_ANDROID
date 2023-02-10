@@ -26,22 +26,24 @@ import com.example.myapplication.ui.main.favorite.FavoriteBaseFragment
 import com.example.myapplication.ui.main.home.HomeBaseFragment
 import com.example.myapplication.ui.main.location.LocationFragment
 import com.example.myapplication.ui.main.profile.ProfileBlankFragment
+import com.example.myapplication.viewmodel.HomeViewModel
 import com.example.myapplication.viewmodel.MapViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_second) {
-    var latitude: Double=0.0
-    var longitude:Double=0.0
-    val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-    val PERMISSIONS_REQUEST_CODE = 100
+    private var latitude: Double=0.0
+    private var longitude:Double=0.0
+    private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    private val PERMISSIONS_REQUEST_CODE = 100
     private lateinit var locatioNManager : LocationManager
     private lateinit var currentFragmenttag: String
-    lateinit var mapViewModel: MapViewModel
+
+    lateinit var homeViewModel: HomeViewModel
 
     override fun savedatainit() {
-        mapViewModel = ViewModelProvider(this).get(MapViewModel::class.java)
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         supportFragmentManager
             .beginTransaction()
@@ -53,7 +55,6 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString("currentfragment",currentFragmenttag)
-
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -104,6 +105,10 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
 //            checkPermissionAndroidQ()
             getLocation()
         }
+
+        Log.d("whatisthis",latitude.toString()+" "+longitude.toString())
+
+        homeViewModel.get_home_data(37.5581, 126.9260)
 
     }
 
@@ -187,8 +192,6 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
             latitude = userLocation.latitude
             longitude = userLocation.longitude
             Log.d("CheckCurrentLocation", "현재 내 위치 값: ${latitude}, ${longitude}")
-
-
 //            var mGeoCoder =  Geocoder(applicationContext, Locale.KOREAN)
 //            var mResultList: List<Address>? = null
 //            try{

@@ -13,21 +13,30 @@ import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.myapplication.ApplicationClass
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityStoreBinding
+import com.example.myapplication.db.remote.model.StoreDetailDto
 import com.example.myapplication.ui.base.BaseActivity
+import com.example.myapplication.ui.main.ItemClickInterface
+import com.example.myapplication.ui.main.home.recent.HomeRecommendAdapter
 import com.example.myapplication.ui.main.search.SearchHistroyData
 import com.example.myapplication.ui.main.search.SearchhistoryAdapter
 import com.example.myapplication.ui.main.search.SearchresultFragment
 import com.example.myapplication.ui.store.clothdetail.ClothActivity
 import com.example.myapplication.ui.store.Data
+import com.example.myapplication.viewmodel.MapViewModel
+import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController.ClickListener
 import kotlinx.android.synthetic.main.toolbar_content.view.*
 
 
-class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store) {
+class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store), ItemClickInterface {
+    lateinit var mapViewModel: MapViewModel
+    lateinit var storedetailAdapter: StoreDetailAdapter
 
     private lateinit var toolbar: Toolbar
     // 검색 기록을 저장하는 배열
@@ -39,6 +48,31 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
     protected lateinit var toolbarmenusearch: MenuItem
 
     override fun init() {
+        mapViewModel.get_store_detail_data(intent.getIntExtra("store_id",0),"전체")
+        storedetailAdapter = StoreDetailAdapter(this)
+
+        mapViewModel.store_detail_data.observe(this, Observer<StoreDetailDto> { now_storedetail ->
+            if (now_storedetail != null) {
+                Glide.with(this)
+                    .load(now_storedetail.store_image_url) //이미지
+                    .into(binding.storeImageviewImage) //보여줄 위치
+
+                binding.storeTextviewStorename.text = now_storedetail.store_name
+                binding.storeTextviewAddress.text = now_storedetail.store_address
+                binding.storeTextviewOperationhours.text = now_storedetail.hours_of_operation
+                storedetailAdapter.submitList(now_storedetail.store_dress_list?.toMutableList())
+
+            } else {
+                Log.d("whatisthis", "11네트워크 오류가 발생했습니다.")
+            }
+        })
+
+        binding.storeRecyclerview.apply {
+            layoutManager = GridLayoutManager(this.context, 2)
+            adapter = storedetailAdapter
+        }
+
+
         toolbar = binding.toolbar.toolbarToolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -184,43 +218,28 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
             }
         })
 
-        val dataList: ArrayList<Data> = arrayListOf()
-
-        dataList.apply {
-            add(Data("매장1", "옷1", "10000"))
-            add(Data("매장1", "옷2", "15000"))
-            add(Data("매장1", "옷3", "10000"))
-            add(Data("매장1", "옷4", "20000"))
-            add(Data("매장1", "옷5", "10000"))
-            add(Data("매장1", "옷6", "10000"))
-            add(Data("매장1", "옷7", "10000"))
-            add(Data("매장1", "옷8", "10000"))
-            add(Data("매장1", "옷9", "10000"))
-        }
-
-        val dataRVadapter = DataRVAdapter(dataList, applicationContext)
-
-        binding.rvData.adapter = dataRVadapter
-        binding.rvData.layoutManager = GridLayoutManager(applicationContext, 2)
-
-        binding.rvData.run {
-            adapter = dataRVadapter
-            val spanCount = 2
-            val space = 30
-            addItemDecoration(GridSpaceItemDecoration(spanCount, space))
-        }
-
-        dataRVadapter.setItemClickListener(object : DataRVAdapter.OnItemClickListener {
-            override fun onClick(v: View, position: Int) {
-                // 클릭 시 이벤트 작성
-                val intent = Intent(applicationContext, ClothActivity::class.java)
-                intent.putExtra("storeName", dataList[position].store)
-                Log.d("intent", dataList[position].store)
-                intent.putExtra("clothName", dataList[position].cloth)
-                intent.putExtra("clothPrice", dataList[position].price.toInt())
-                startActivity(intent)
-            }
-        })
+//        val dataRVadapter = DataRVAdapter(applicationContext)
+//        binding.rvData.adapter = dataRVadapter
+//        binding.rvData.layoutManager = GridLayoutManager(applicationContext, 2)
+//
+//        binding.rvData.run {
+//            adapter = dataRVadapter
+//            val spanCount = 2
+//            val space = 30
+//            addItemDecoration(GridSpaceItemDecoration(spanCount, space))
+//        }
+//
+//        dataRVadapter.setItemClickListener(object : DataRVAdapter.OnItemClickListener {
+//            override fun onClick(v: View, position: Int) {
+//                // 클릭 시 이벤트 작성
+//                val intent = Intent(applicationContext, ClothActivity::class.java)
+//                intent.putExtra("storeName", dataList[position].store)
+//                Log.d("intent", dataList[position].store)
+//                intent.putExtra("clothName", dataList[position].cloth)
+//                intent.putExtra("clothPrice", dataList[position].price.toInt())
+//                startActivity(intent)
+//            }
+//        })
     }
 
     protected fun initSearchHistory() {
@@ -260,6 +279,22 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
 
         // 데이터 변경 알리기
         searchhistoryAdapter.notifyDataSetChanged()
+    }
+
+    override fun onItemImageClick(id: Int, position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onItemStoreNameClick(id: Int, position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onItemButtonClick(id: Int, position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onItemFavoriteClick(id: Int, position: Int) {
+        TODO("Not yet implemented")
     }
 
 }

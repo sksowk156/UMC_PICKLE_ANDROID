@@ -11,7 +11,7 @@ import com.example.myapplication.R
 import com.example.myapplication.R.drawable.icon_favorite_whiteline
 import com.example.myapplication.databinding.FragmentAroundBinding
 import com.example.myapplication.db.remote.model.MapModel
-import com.example.myapplication.db.remote.model.StoreDetailData
+import com.example.myapplication.db.remote.model.StoreDetailDto
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.profile.orderstatus.OrderListDivider
 import com.example.myapplication.viewmodel.MapViewModel
@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.item_around_recycler.view.*
 class AroundFragment : BaseFragment<FragmentAroundBinding>(R.layout.fragment_around) {
     lateinit var mapViewModel: MapViewModel
     private var nearstoredata: MapModel? = null
-    private var storedetaildatalist = ArrayList<StoreDetailData>()
+    private var StoreDetailDtolist = ArrayList<StoreDetailDto>()
 
     override fun init() {
         // 플로팅 버튼 이벤트 처리
@@ -42,18 +42,18 @@ class AroundFragment : BaseFragment<FragmentAroundBinding>(R.layout.fragment_aro
             val aroundAdapter =
                 AroundAdapter(clicklistener = (object : AroundAdapter.ClothesClickListener {
                     override fun onItemMarketFavoriteClick(view: View, position: Int) {
-//                            if(storedetaildatalist[position].market_around_favorite==false){
+//                            if(StoreDetailDtolist[position].market_around_favorite==false){
 //                                //화면에 보여주기
 //                                Glide.with(this@AroundFragment)
 //                                    .load(R.drawable.icon_favorite_filledpink) //이미지
 //                                    .into(market_favorite) //보여줄 위치
-//                                storedetaildatalist[position].market_around_favorite = true
+//                                StoreDetailDtolist[position].market_around_favorite = true
 //                            }else{
 //                                //화면에 보여주기
 //                                Glide.with(this@AroundFragment)
 //                                    .load(R.drawable.icon_favorite_line) //이미지
 //                                    .into(market_favorite) //보여줄 위치
-//                                storedetaildatalist[position].market_around_favorite = false
+//                                StoreDetailDtolist[position].market_around_favorite = false
 //                            }
                     }
 
@@ -72,7 +72,7 @@ class AroundFragment : BaseFragment<FragmentAroundBinding>(R.layout.fragment_aro
                     Color.TRANSPARENT
                 )
             )
-            aroundAdapter.updatedata(storedetaildatalist)
+            aroundAdapter.updatedata(StoreDetailDtolist)
 
 //            if (mapViewModel.store_near_data.value != null) {
 //                nearstoredata = mapViewModel.store_near_data.value!!
@@ -81,10 +81,10 @@ class AroundFragment : BaseFragment<FragmentAroundBinding>(R.layout.fragment_aro
 //                    mapViewModel.get_store_detail_data(i.id, "전체")
 //                    mapViewModel.store_detail_data.observe(
 //                        viewLifecycleOwner,
-//                        Observer<StoreDetailData> {
+//                        Observer<StoreDetailDto> {
 //                            if (it != null) {
-//                                storedetaildatalist.add(it)
-//                                aroundAdapter.updatedata(storedetaildatalist)
+//                                StoreDetailDtolist.add(it)
+//                                aroundAdapter.updatedata(StoreDetailDtolist)
 //
 //                            } else {
 //                                Log.d("whatisthis", "1네트워크 오류가 발생했습니다.")

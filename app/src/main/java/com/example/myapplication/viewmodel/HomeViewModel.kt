@@ -27,7 +27,7 @@ class HomeViewModel : ViewModel() {
 
             override fun onFailure(call: Call<HomeModel>, t: Throwable) {
                 Log.d("whatisthis", "네트워크 오류가 발생했습니다." + t.message.toString())
-                _home_data            }
+            }
         })
     }
 

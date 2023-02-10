@@ -65,7 +65,7 @@
                     app:layout_constraintTop_toTopOf="@+id/text" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
+                    android:id="@+id/home_recyclerview_recent"
                     android:layout_width="0dp"
                     android:layout_height="208dp"
                     android:layout_marginTop="20dp"
@@ -106,7 +106,7 @@
                     app:layout_constraintTop_toTopOf="@+id/newtext" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/Second_recycler_view"
+                    android:id="@+id/home_recyclerview_new"
                     android:layout_width="0dp"
                     android:layout_height="208dp"
                     android:layout_marginTop="20dp"
@@ -134,7 +134,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/home_recyclerview3"
+                    android:id="@+id/home_recyclerview_recommend"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"

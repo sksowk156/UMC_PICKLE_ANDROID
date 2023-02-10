@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.db.remote.LoginService
-import com.example.myapplication.db.remote.remotedata.PostModel
+import com.example.myapplication.db.remote.remotedata.AuthRequest
 import com.example.myapplication.ui.base.BaseActivity
 import com.example.myapplication.ui.main.SecondActivity
 import com.kakao.sdk.auth.model.OAuthToken
@@ -40,7 +40,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                     }
                     // 로그인 성공 부분
                     else if (token != null) {
-                        val data = PostModel(token.accessToken)
+                        val data = AuthRequest(token.accessToken)
                         // API service 카카오 로그인 후 발급받은 appToken, isNewMember 값
                         LoginService.create(data)
                         Log.e(TAG, "로그인 성공! 토큰값 : ${token.accessToken}")
@@ -73,7 +73,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                     }
                     // 로그인 성공 부분
                     else if (token != null) {
-                        val data = PostModel(token.accessToken)
+                        val data = AuthRequest(token.accessToken)
                         // API service 카카오 로그인 후 발급받은 appToken, isNewMember 값
                         LoginService.create(data)
                         Log.e(TAG, "로그인 성공! 토큰값 : ${token.accessToken}")

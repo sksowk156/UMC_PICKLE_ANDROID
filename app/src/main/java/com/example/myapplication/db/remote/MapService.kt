@@ -1,12 +1,9 @@
 package com.example.myapplication.db.remote
 
-import android.util.Log
 import com.example.myapplication.ApplicationClass
 import com.example.myapplication.db.remote.model.MapModel
-import com.example.myapplication.db.remote.model.StoreDetailData
+import com.example.myapplication.db.remote.model.StoreDetailDto
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -24,7 +21,7 @@ object MapService { // static 처럼 공유객체로 사용가능함. 모든 인
         fun get_store_detail_data(
             @Path(value = "id") id: Int,
             @Query("category") category: String
-        ): Call<StoreDetailData>
+        ): Call<StoreDetailDto>
 
     }
     val mapService = ApplicationClass.retrofit.create(MapService.MapInterface::class.java)

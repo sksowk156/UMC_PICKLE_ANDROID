@@ -3,8 +3,8 @@ package com.example.myapplication.ui.main
 import android.view.View
 
 interface ItemClickInterface {
-    fun onItemImageClick(view: View, position: Int)
-    fun onItemMarketNameClick(view: View, position: Int)
-    fun onItemButtonClick(view: View, position: Int)
-    fun onItemFavoriteClick(view: View, position: Int)
+    fun onItemImageClick(id:Int, position: Int)
+    fun onItemStoreNameClick(id:Int, position: Int)
+    fun onItemButtonClick(id:Int, position: Int)
+    fun onItemFavoriteClick(id:Int, position: Int)
 }
