@@ -17,4 +17,6 @@ object HomeService {
     }
 
     val homeService = ApplicationClass.retrofit.create(HomeService.HomeInterface::class.java)
+
+
 }

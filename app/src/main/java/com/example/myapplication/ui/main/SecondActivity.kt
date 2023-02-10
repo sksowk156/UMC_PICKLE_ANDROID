@@ -10,12 +10,16 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySecondBinding
+import com.example.myapplication.db.remote.AddDressLikeService.add_liked_dress_data
+import com.example.myapplication.db.remote.DressLikeService.get_liked_dress_data
+import com.example.myapplication.db.remote.model.updatedressLikeDto
 import com.example.myapplication.ui.base.BaseActivity
 import com.example.myapplication.ui.main.chat.ChatFragment
 import com.example.myapplication.ui.main.favorite.FavoriteBaseFragment
@@ -24,6 +28,9 @@ import com.example.myapplication.ui.main.location.LocationFragment
 import com.example.myapplication.ui.main.profile.ProfileBlankFragment
 import com.example.myapplication.viewmodel.HomeViewModel
 import com.example.myapplication.viewmodel.MapViewModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_second) {
     private var latitude: Double=0.0
