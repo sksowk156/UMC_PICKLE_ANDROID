@@ -1,21 +1,21 @@
 package com.example.myapplication.db.remote
 
 import com.example.myapplication.ApplicationClass
-import com.example.myapplication.db.remote.model.MapModel
+import com.example.myapplication.db.remote.model.StoreCoordDtoList
 import com.example.myapplication.db.remote.model.StoreDetailDto
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-object MapService { // static 처럼 공유객체로 사용가능함. 모든 인스턴스가 공유하는 객체로서 동작함.
+object StoreService { // static 처럼 공유객체로 사용가능함. 모든 인스턴스가 공유하는 객체로서 동작함.
 
-    interface MapInterface {
+    interface StoreInterface {
         @GET("stores/near")
         fun get_store_near_data(
             @Query("lat") lat: Double,
             @Query("lng") lng: Double
-        ): Call<MapModel>
+        ): Call<StoreCoordDtoList>
 
         @GET("stores/detail/{id}")
         fun get_store_detail_data(
@@ -24,5 +24,5 @@ object MapService { // static 처럼 공유객체로 사용가능함. 모든 인
         ): Call<StoreDetailDto>
 
     }
-    val mapService = ApplicationClass.retrofit.create(MapService.MapInterface::class.java)
+    val storeService = ApplicationClass.retrofit.create(StoreService.StoreInterface::class.java)
 }

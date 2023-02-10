@@ -1,19 +1,17 @@
 package com.example.myapplication.ui.store.storedetail
 
-import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -23,19 +21,16 @@ import com.example.myapplication.databinding.ActivityStoreBinding
 import com.example.myapplication.db.remote.model.StoreDetailDto
 import com.example.myapplication.ui.base.BaseActivity
 import com.example.myapplication.ui.main.ItemClickInterface
-import com.example.myapplication.ui.main.home.recent.HomeRecommendAdapter
 import com.example.myapplication.ui.main.search.SearchHistroyData
 import com.example.myapplication.ui.main.search.SearchhistoryAdapter
 import com.example.myapplication.ui.main.search.SearchresultFragment
-import com.example.myapplication.ui.store.clothdetail.ClothActivity
-import com.example.myapplication.ui.store.Data
-import com.example.myapplication.viewmodel.MapViewModel
-import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController.ClickListener
+import com.example.myapplication.viewmodel.DressViewModel
+import com.example.myapplication.viewmodel.StoreViewModel
 import kotlinx.android.synthetic.main.toolbar_content.view.*
 
 
 class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store), ItemClickInterface {
-    lateinit var mapViewModel: MapViewModel
+    lateinit var storeViewModel: StoreViewModel
     lateinit var storedetailAdapter: StoreDetailAdapter
 
     private lateinit var toolbar: Toolbar
@@ -48,10 +43,11 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
     protected lateinit var toolbarmenusearch: MenuItem
 
     override fun init() {
-        mapViewModel.get_store_detail_data(intent.getIntExtra("store_id",0),"전체")
+        storeViewModel = ViewModelProvider(this).get(StoreViewModel::class.java)
+        storeViewModel.get_store_detail_data(intent.getIntExtra("store_id",0),"전체")
         storedetailAdapter = StoreDetailAdapter(this)
 
-        mapViewModel.store_detail_data.observe(this, Observer<StoreDetailDto> { now_storedetail ->
+        storeViewModel.store_detail_data.observe(this, Observer<StoreDetailDto> { now_storedetail ->
             if (now_storedetail != null) {
                 Glide.with(this)
                     .load(now_storedetail.store_image_url) //이미지

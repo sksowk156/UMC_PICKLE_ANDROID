@@ -30,18 +30,6 @@ class HomeNewAdapter(clicklistener: ItemClickInterface) :
 //                    .into(binding.homecardImagebuttonFavorite) //보여줄 위치
 //            }
 
-//            binding.homecardCardviewFrame.setOnClickListener {
-//                clicklistener.onItemImageClick(it, absoluteAdapterPosition)
-//            }
-//
-//            binding.homecardTextviewStorename.setOnClickListener {
-//                clicklistener.onItemStoreNameClick(it, absoluteAdapterPosition)
-//            }
-//
-//            binding.homecardImagebuttonFavorite.setOnClickListener{
-//                clicklistener.onItemFavoriteClick(it,absoluteAdapterPosition)
-//            }
-
             Glide.with(this.itemView)
                 .load(new_clothes.dress_default_img) //이미지
                 .into(binding.homecardImageviewImage) //보여줄 위치
@@ -49,6 +37,18 @@ class HomeNewAdapter(clicklistener: ItemClickInterface) :
             binding.homecardTextviewStorename.text = new_clothes.store_name
             binding.homecardTextviewClothename.text = new_clothes.dress_name
             binding.homecardTextviewClotheprice.text = new_clothes.dress_price
+
+            binding.homecardCardviewFrame.setOnClickListener {
+                clicklistener.onItemImageClick(new_clothes.dress_id, absoluteAdapterPosition)
+            }
+
+            binding.homecardTextviewStorename.setOnClickListener {
+                clicklistener.onItemStoreNameClick(new_clothes.store_id, absoluteAdapterPosition)
+            }
+
+//            binding.homecardImagebuttonFavorite.setOnClickListener {
+//                clicklistener.onItemFavoriteClick(it, absoluteAdapterPosition)
+//            }
         }
     }
 

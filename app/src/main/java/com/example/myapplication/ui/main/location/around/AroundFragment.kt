@@ -1,32 +1,26 @@
 package com.example.myapplication.ui.main.location.around
 
 import android.graphics.Color
-import android.util.Log
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.myapplication.R
-import com.example.myapplication.R.drawable.icon_favorite_whiteline
 import com.example.myapplication.databinding.FragmentAroundBinding
-import com.example.myapplication.db.remote.model.MapModel
+import com.example.myapplication.db.remote.model.StoreCoordDtoList
 import com.example.myapplication.db.remote.model.StoreDetailDto
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.profile.orderstatus.OrderListDivider
-import com.example.myapplication.viewmodel.MapViewModel
-import kotlinx.android.synthetic.main.item_around_recycler.*
-import kotlinx.android.synthetic.main.item_around_recycler.view.*
+import com.example.myapplication.viewmodel.StoreViewModel
 
 
 class AroundFragment : BaseFragment<FragmentAroundBinding>(R.layout.fragment_around) {
-    lateinit var mapViewModel: MapViewModel
-    private var nearstoredata: MapModel? = null
+    lateinit var storeViewModel: StoreViewModel
+    private var nearstoredata: StoreCoordDtoList? = null
     private var StoreDetailDtolist = ArrayList<StoreDetailDto>()
 
     override fun init() {
         // 플로팅 버튼 이벤트 처리
-        mapViewModel = ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
+        storeViewModel = ViewModelProvider(requireActivity()).get(StoreViewModel::class.java)
 
         binding.aroundFab.setOnClickListener {
             parentFragmentManager
@@ -74,12 +68,12 @@ class AroundFragment : BaseFragment<FragmentAroundBinding>(R.layout.fragment_aro
             )
             aroundAdapter.updatedata(StoreDetailDtolist)
 
-//            if (mapViewModel.store_near_data.value != null) {
-//                nearstoredata = mapViewModel.store_near_data.value!!
+//            if (storeViewModel.store_near_data.value != null) {
+//                nearstoredata = storeViewModel.store_near_data.value!!
 //
 //                for (i in nearstoredata!!) {
-//                    mapViewModel.get_store_detail_data(i.id, "전체")
-//                    mapViewModel.store_detail_data.observe(
+//                    storeViewModel.get_store_detail_data(i.id, "전체")
+//                    storeViewModel.store_detail_data.observe(
 //                        viewLifecycleOwner,
 //                        Observer<StoreDetailDto> {
 //                            if (it != null) {

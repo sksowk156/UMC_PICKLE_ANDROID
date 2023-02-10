@@ -12,8 +12,19 @@ import retrofit2.Response
 
 class HomeViewModel : ViewModel() {
 
+    private var _home_latlng = MutableLiveData<Pair<Double,Double>>()
+    val home_latlng: LiveData<Pair<Double,Double>> get() = _home_latlng
+
     private var _home_data = MutableLiveData<HomeModel>()
     val home_data: LiveData<HomeModel> get() = _home_data
+
+    init {
+        _home_latlng.value = Pair(0.0, 0.0)
+    }
+
+    fun set_home_latlng(lat:Double,lng:Double){
+        _home_latlng.value = Pair(lat, lng)
+    }
 
     fun get_home_data(lat: Double, lng: Double) {
         HomeService.homeService.get_home_data(lat, lng).enqueue(object : Callback<HomeModel> {
@@ -30,5 +41,4 @@ class HomeViewModel : ViewModel() {
             }
         })
     }
-
 }

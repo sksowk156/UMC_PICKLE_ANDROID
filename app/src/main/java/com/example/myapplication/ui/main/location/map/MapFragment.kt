@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.main.location.map
 
-import android.icu.lang.UCharacter.GraphemeClusterBreak.L
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -10,21 +9,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMapBinding
-import com.example.myapplication.db.remote.model.MapModel
-import com.example.myapplication.db.remote.model.MapModelItem
+import com.example.myapplication.db.remote.model.StoreCoordDtoList
+import com.example.myapplication.db.remote.model.StoreCoordDto
 import com.example.myapplication.db.remote.model.StoreDetailDto
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.location.around.AroundFragment
-import com.example.myapplication.viewmodel.MapViewModel
+import com.example.myapplication.viewmodel.StoreViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
-import com.naver.maps.map.widget.LocationButtonView
-import com.naver.maps.map.widget.LogoView
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
 
@@ -39,14 +35,14 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
     private var NowMarkers: CopyOnWriteArrayList<Marker> = CopyOnWriteArrayList<Marker>()
 
     // 카메라가 이동하기 전 화면의 위도 경도 값을 저장할 변수
-    private lateinit var before_MapModel: MapModel
+    private lateinit var before_StoreCoordDtoList: StoreCoordDtoList
 
-    lateinit var mapViewModel: MapViewModel
+    lateinit var storeViewModel: StoreViewModel
 
     private var clickedMarker: Marker ?= null // 클릭된 마커 변수
 
     override fun init() {
-        mapViewModel = ViewModelProvider(requireParentFragment()).get(MapViewModel::class.java)
+        storeViewModel = ViewModelProvider(requireParentFragment()).get(StoreViewModel::class.java)
         // 지도 띄우기
         openMap()
 
@@ -148,16 +144,16 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
 
     // 주변 1km 매장 정보 얻어오기
     private fun updateStore(lat: Double, lng: Double) {
-        mapViewModel.get_store_near_data(lat,lng)
-        mapViewModel.store_near_data.observe(viewLifecycleOwner, Observer<MapModel> { now_MapModel->
-            if(now_MapModel != null){
-                if (::before_MapModel.isInitialized) { // 이전 데이터 기록이 있을 경우
+        storeViewModel.get_store_near_data(lat,lng)
+        storeViewModel.store_near_data.observe(viewLifecycleOwner, Observer<StoreCoordDtoList> { now_StoreCoordDtoList->
+            if(now_StoreCoordDtoList != null){
+                if (::before_StoreCoordDtoList.isInitialized) { // 이전 데이터 기록이 있을 경우
                     // 이전 데이터와 겹치지 않는 현재 데이터만 추가하기
-                    var new_data = MapModel()
-                    for (data in now_MapModel) {
+                    var new_data = StoreCoordDtoList()
+                    for (data in now_StoreCoordDtoList) {
                         var flag : Boolean = false
 
-                        for(old_data_temp in before_MapModel){
+                        for(old_data_temp in before_StoreCoordDtoList){
                             if(old_data_temp.id == data.id){
                                 flag = true
                                 break
@@ -174,9 +170,9 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                     }
 
                     // 현재 데이터와 겹치지 않는 이전 데이터만 지우기
-                    for (data in before_MapModel) {
+                    for (data in before_StoreCoordDtoList) {
                         var flag : Boolean = false
-                        for(new_data_temp in now_MapModel){
+                        for(new_data_temp in now_StoreCoordDtoList){
                             if(new_data_temp.id == data.id){
                                 flag = true
                                 break
@@ -187,9 +183,9 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                         }
                     }
                 } else { // 이전 데이터 기록이 없을 경우(최초)
-                    updateMarker(now_MapModel)
+                    updateMarker(now_StoreCoordDtoList)
                 }
-                before_MapModel = now_MapModel // 이전 데이터 기록 갱신
+                before_StoreCoordDtoList = now_StoreCoordDtoList // 이전 데이터 기록 갱신
             }else{
                 Log.d("whatisthis", "11네트워크 오류가 발생했습니다.")
             }
@@ -197,7 +193,7 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
     }
 
     // 마커 그리기
-    private fun updateMarker(storelist: MapModel) {
+    private fun updateMarker(storelist: StoreCoordDtoList) {
         val executor = Executors.newSingleThreadExecutor()
         val handler = Handler(Looper.getMainLooper())
         executor.execute {
@@ -244,13 +240,13 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
     }
 
     // 마커 클릭 시
-    private fun clickMarker(overlay: Marker, storelist : MapModel){
+    private fun clickMarker(overlay: Marker, storelist : StoreCoordDtoList){
         clickedMarker = overlay  // 클릭된 마커 갱신
         clickedMarker?.icon = OverlayImage.fromResource(R.drawable.icon_map_pin) // 클릭된 마커로 변경
         for (i in storelist) {
             if (i.id == clickedMarker?.tag) {
-                mapViewModel.get_store_detail_data(i.id,"전체")
-                mapViewModel.store_detail_data.observe(viewLifecycleOwner, Observer<StoreDetailDto>{
+                storeViewModel.get_store_detail_data(i.id,"전체")
+                storeViewModel.store_detail_data.observe(viewLifecycleOwner, Observer<StoreDetailDto>{
                     if(it!=null){
                         // 위에서 찾았다면 데이터 Bottomsheet에 들어갈 데이터 갱신
                         binding.mapTextviewName.text = it.store_name
@@ -270,7 +266,7 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
     }
 
     // 마커 지우기
-    private fun freeMarker(invisible_stores: MapModelItem) {
+    private fun freeMarker(invisible_stores: StoreCoordDto) {
         for (marker in NowMarkers) {
             if (marker.tag == invisible_stores.id) {
                 marker.map = null // 마커들 지도에서 삭제

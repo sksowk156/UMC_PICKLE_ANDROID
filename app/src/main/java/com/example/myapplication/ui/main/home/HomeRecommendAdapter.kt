@@ -29,19 +29,6 @@ class HomeRecommendAdapter(clicklistener: ItemClickInterface) :
 //                    .load(R.drawable.icon_favorite_filledpink) //이미지
 //                    .into(binding.cardImagebuttonFavorite) //보여줄 위치
 //            }
-//
-//            binding.cardImagebuttonFavorite.setOnClickListener{
-//                clicklistener.onItemFavoriteClick(it,absoluteAdapterPosition)
-//            }
-//
-//            binding.cardHomeRecommendFrame.setOnClickListener {
-//                clicklistener.onItemImageClick(it, absoluteAdapterPosition)
-//            }
-//
-//            binding.cardTextviewStorename.setOnClickListener {
-//                clicklistener.onItemStoreNameClick(it, absoluteAdapterPosition)
-//            }
-
 
             Glide.with(this.itemView)
                 .load(recommend_clothes.dress_default_img) //이미지
@@ -50,6 +37,18 @@ class HomeRecommendAdapter(clicklistener: ItemClickInterface) :
             binding.cardTextviewStorename.text = recommend_clothes.store_name
             binding.cardTextviewClothename.text = recommend_clothes.dress_name
             binding.cardTextviewClotheprice.text = recommend_clothes.dress_price
+
+            binding.cardCardviewFrame.setOnClickListener {
+                clicklistener.onItemImageClick(recommend_clothes.dress_id, absoluteAdapterPosition)
+            }
+
+            binding.cardTextviewStorename.setOnClickListener {
+                clicklistener.onItemStoreNameClick(recommend_clothes.store_id, absoluteAdapterPosition)
+            }
+
+//            binding.cardImagebuttonFavorite.setOnClickListener {
+//                clicklistener.onItemFavoriteClick(recommend_clothes.좋아요, absoluteAdapterPosition)
+//            }
         }
     }
 
