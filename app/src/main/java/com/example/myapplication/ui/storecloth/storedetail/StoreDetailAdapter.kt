@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.store.storedetail
+package com.example.myapplication.ui.storecloth.storedetail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -18,7 +18,7 @@ class StoreDetailAdapter(clicklistener: ItemClickInterface) :
     inner class MyViewHolder(val binding: ItemCardRecyclerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(dressBriefInStoreDTO: DressBriefInStoreDTO) {
-//            if (RecDresse?.좋아요 == false) {
+//            if (DressOverviewDtoe?.좋아요 == false) {
 //                //화면에 보여주기
 //                Glide.with(this@MyViewHolder.itemView)
 //                    .load(R.drawable.icon_favorite_whiteline) //이미지
@@ -30,17 +30,17 @@ class StoreDetailAdapter(clicklistener: ItemClickInterface) :
 //                    .into(binding.cardImagebuttonFavorite) //보여줄 위치
 //            }
 //
-//            binding.cardImagebuttonFavorite.setOnClickListener{
-//                clicklistener.onItemFavoriteClick(it,absoluteAdapterPosition)
-//            }
-//
-//            binding.cardHomeRecommendFrame.setOnClickListener {
-//                clicklistener.onItemImageClick(it, absoluteAdapterPosition)
-//            }
-//
-//            binding.cardTextviewStorename.setOnClickListener {
-//                clicklistener.onItemStoreNameClick(it, absoluteAdapterPosition)
-//            }
+            binding.cardImagebuttonFavorite.setOnClickListener{
+                clicklistener.onItemFavoriteClick(dressBriefInStoreDTO.dress_id,absoluteAdapterPosition)
+            }
+
+            binding.cardCardviewFrame.setOnClickListener {
+                clicklistener.onItemImageClick(dressBriefInStoreDTO.dress_id, absoluteAdapterPosition)
+            }
+
+            binding.cardTextviewStorename.setOnClickListener {
+                clicklistener.onItemStoreNameClick(dressBriefInStoreDTO.dress_id, absoluteAdapterPosition)
+            }
 
 
             Glide.with(this.itemView)

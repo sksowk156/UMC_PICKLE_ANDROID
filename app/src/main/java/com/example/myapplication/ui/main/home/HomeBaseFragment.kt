@@ -18,24 +18,5 @@ class HomeBaseFragment : BaseFragment<FragmentHomeBaseBinding>(R.layout.fragment
     }
 
     override fun init() {
-        initAppbar(binding.homeBaseToolbarcontent, binding.homeBaseToolbar, "홈",false,true)
-        changeAppbar()
     }
-
-    fun changeAppbar() {
-        childFragmentManager.addOnBackStackChangedListener {
-            when (childFragmentManager.fragments.last().tag) {
-                "recent" -> {
-                    initSubAppbar("최근 본 상품", true, false)
-                }
-                "new" -> {
-                    initSubAppbar("NEW", true, false)
-                }
-                "home" -> {
-                    initSubAppbar("홈", false, true)
-                }
-            }
-        }
-    }
-
 }

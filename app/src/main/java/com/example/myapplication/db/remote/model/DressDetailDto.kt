@@ -7,7 +7,7 @@ data class DressDetailDto(
     var dress_name: String? = "",
     var dress_option1: DressOptionDto? = DressOptionDto(),
     var dress_option2: DressOptionDto? = DressOptionDto(),
-    var dress_price: String? = "",
+    var dress_price: Int,
     var dress_stock: List<DressStockDto>? = listOf(),
     var store_id: Int,
     var store_name: String? = ""

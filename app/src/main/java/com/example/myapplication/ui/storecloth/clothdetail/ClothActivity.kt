@@ -1,11 +1,10 @@
-package com.example.myapplication.ui.store.clothdetail
+package com.example.myapplication.ui.storecloth.clothdetail
 
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityClothBinding
 import com.example.myapplication.ui.base.BaseActivity
 import com.example.myapplication.viewmodel.DressViewModel
-import com.example.myapplication.viewmodel.StoreViewModel
 
 class ClothActivity : BaseActivity<ActivityClothBinding>(R.layout.activity_cloth) {
     lateinit var dressViewModel: DressViewModel

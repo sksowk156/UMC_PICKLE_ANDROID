@@ -10,6 +10,15 @@
         android:clickable="true"
         tools:context=".ui.main.profile.inquiry.InquiryFragment">
 
+        <include
+            android:id="@+id/inquiry_toolbar"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/inquiry_textview1"
             android:layout_width="wrap_content"
@@ -20,7 +29,7 @@
             android:textColor="#000000"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/inquiry_toolbar" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/inquiry_recyclerview"

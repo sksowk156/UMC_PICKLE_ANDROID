@@ -10,6 +10,7 @@ import com.example.myapplication.ui.main.profile.orderstatus.OrderListDivider
 
 class InquiryFragment : BaseFragment<FragmentInquiryBinding>(R.layout.fragment_inquiry) {
     override fun init() {
+        initAppbar(binding.inquiryToolbar, "자주 묻는 질문", true, false)
         hideBottomNavigation(true)
         initRecyclerView()
     }

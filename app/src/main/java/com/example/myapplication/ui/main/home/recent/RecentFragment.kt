@@ -1,10 +1,6 @@
 package com.example.myapplication.ui.main.home.recent
 
 import android.content.Intent
-import android.view.View
-import android.widget.ImageButton
-import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentRecentBinding
 import com.example.myapplication.ui.base.BaseFragment
@@ -12,18 +8,19 @@ import com.example.myapplication.ui.main.ItemClickInterface
 import com.example.myapplication.ui.main.home.Clothes
 import com.example.myapplication.ui.main.home.clothesList
 import com.example.myapplication.ui.main.home.newclothesList
-import com.example.myapplication.ui.store.storedetail.StoreActivity
+import com.example.myapplication.ui.storecloth.storedetail.StoreActivity
 
 class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent),
     ItemClickInterface {
 
-//    lateinit var fragmentadapter : CardViewAdapter
+    //    lateinit var fragmentadapter : CardViewAdapter
     override fun init() {
+        initAppbar(binding.recentToolbar, "최근 본 상품", true, false)
 //        rcView()
     }
 
-    private fun addClothes(){
-        val clothes1= Clothes(
+    private fun addClothes() {
+        val clothes1 = Clothes(
             R.drawable.one,
             "store1",
             "옷1",
@@ -33,7 +30,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         clothesList.add(clothes1)
         newclothesList.add(clothes1)
 
-        val clothes2= Clothes(
+        val clothes2 = Clothes(
             R.drawable.two,
             "store2",
             "옷2",
@@ -43,7 +40,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         clothesList.add(clothes2)
         newclothesList.add(clothes1)
 
-        val clothes3= Clothes(
+        val clothes3 = Clothes(
             R.drawable.two,
             "store1",
             "옷3",
@@ -53,7 +50,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         clothesList.add(clothes3)
         newclothesList.add(clothes1)
 
-        val clothes4= Clothes(
+        val clothes4 = Clothes(
             R.drawable.one,
             "store1",
             "옷4",
@@ -63,7 +60,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         clothesList.add(clothes4)
         newclothesList.add(clothes1)
 
-        val clothes5= Clothes(
+        val clothes5 = Clothes(
             R.drawable.two,
             "store1",
             "옷5",
@@ -75,7 +72,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
 
     }
 
-    private fun rcView(){
+    private fun rcView() {
 //        addClothes()
 //        fragmentadapter = CardViewAdapter(this@RecentFragment)
 //        binding.newRecyclerView.apply {
@@ -96,9 +93,6 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
         startActivity(intent)
     }
 
-    override fun onItemButtonClick(id: Int, position: Int) {
-
-    }
 
     override fun onItemFavoriteClick(id: Int, position: Int) {
 //        if (clothesList[position].like == false) {

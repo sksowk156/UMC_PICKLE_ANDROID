@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.store.clothdetail
+package com.example.myapplication.db.remote.model.order
 
 data class ClothOrderData(
     val color: String,

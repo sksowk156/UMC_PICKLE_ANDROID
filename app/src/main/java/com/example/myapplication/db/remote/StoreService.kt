@@ -3,6 +3,7 @@ package com.example.myapplication.db.remote
 import com.example.myapplication.ApplicationClass
 import com.example.myapplication.db.remote.model.StoreCoordDtoList
 import com.example.myapplication.db.remote.model.StoreDetailDto
+import com.example.myapplication.db.remote.model.StoreLikeDto
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -22,6 +23,10 @@ object StoreService { // static 처럼 공유객체로 사용가능함. 모든 �
             @Path(value = "id") id: Int,
             @Query("category") category: String
         ): Call<StoreDetailDto>
+
+        @GET("stores/likes")
+        fun get_store_like_data(
+        ): Call<List<StoreLikeDto>>
 
     }
     val storeService = ApplicationClass.retrofit.create(StoreService.StoreInterface::class.java)

@@ -11,93 +11,109 @@
         android:clickable="true"
         tools:context=".ui.main.profile.myprofile.MyprofileFragment">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:clickable="true"
-            android:id="@+id/myprofile_image_photo"
-            android:layout_width="112dp"
-            android:layout_height="112dp"
-            android:layout_marginTop="56dp"
-            android:src="@drawable/ic_baseline_notifications_none_24"
-            app:civ_border_color="@color/black"
-            app:civ_border_overlay="true"
-            app:civ_border_width="1dp"
+        <include
+            android:id="@+id/myprofile_toolbar"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/myprofile_image1"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-
-            android:background="@drawable/camera_background"
-            android:src="@drawable/icon_myprofile_camera"
-            app:civ_border_color="#A4A4A4"
-            app:civ_border_overlay="true"
-            app:civ_border_width="1dp"
-            app:layout_constraintBottom_toBottomOf="@+id/myprofile_image_photo"
-            app:layout_constraintEnd_toEndOf="@+id/myprofile_image_photo"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/myprofile_image_photo"
-            app:layout_constraintTop_toTopOf="@+id/myprofile_image_photo"
-            app:layout_constraintVertical_bias="0.829" />
-
-        <TextView
-            android:id="@+id/myprofile_textview1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="40dp"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:textColor="#1E1E1E"
-            android:text="이름"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/myprofile_image_photo" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/myprofile_textview_name"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_margin="14dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/edittext_background"
-            android:padding="16dp"
-            android:textSize="14sp"
-            android:text="이름"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.571"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/myprofile_textview1" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/myprofile_toolbar">
 
-        <TextView
-            android:id="@+id/myprofile_textview2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:textStyle="bold"
-            android:textColor="#1E1E1E"
-            android:textSize="14sp"
-            android:layout_marginTop="41dp"
-            android:text="이메일"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/myprofile_textview_name" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/myprofile_textview_email"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_margin="14dp"
-            android:background="@drawable/edittext_background"
-            android:padding="16dp"
-            android:text="이메일"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/myprofile_textview2" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:clickable="true"
+                android:id="@+id/myprofile_image_photo"
+                android:layout_width="112dp"
+                android:layout_height="112dp"
+                android:layout_marginTop="56dp"
+                android:src="@drawable/ic_baseline_notifications_none_24"
+                app:civ_border_color="@color/black"
+                app:civ_border_overlay="true"
+                app:civ_border_width="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/myprofile_image1"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+
+                android:background="@drawable/camera_background"
+                android:src="@drawable/icon_myprofile_camera"
+                app:civ_border_color="#A4A4A4"
+                app:civ_border_overlay="true"
+                app:civ_border_width="1dp"
+                app:layout_constraintBottom_toBottomOf="@+id/myprofile_image_photo"
+                app:layout_constraintEnd_toEndOf="@+id/myprofile_image_photo"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/myprofile_image_photo"
+                app:layout_constraintTop_toTopOf="@+id/myprofile_image_photo"
+                app:layout_constraintVertical_bias="0.829" />
+
+            <TextView
+                android:id="@+id/myprofile_textview1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="40dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#1E1E1E"
+                android:text="이름"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/myprofile_image_photo" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/myprofile_textview_name"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_margin="14dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/edittext_background"
+                android:padding="16dp"
+                android:textSize="14sp"
+                android:text="이름"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.571"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/myprofile_textview1" />
+
+            <TextView
+                android:id="@+id/myprofile_textview2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:textStyle="bold"
+                android:textColor="#1E1E1E"
+                android:textSize="14sp"
+                android:layout_marginTop="41dp"
+                android:text="이메일"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/myprofile_textview_name" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/myprofile_textview_email"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_margin="14dp"
+                android:background="@drawable/edittext_background"
+                android:padding="16dp"
+                android:text="이메일"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/myprofile_textview2" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 

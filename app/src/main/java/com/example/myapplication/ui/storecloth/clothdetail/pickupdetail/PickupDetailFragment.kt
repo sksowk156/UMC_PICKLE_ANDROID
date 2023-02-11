@@ -1,14 +1,14 @@
-package com.example.myapplication.ui.store.clothdetail.pickupdetail
+package com.example.myapplication.ui.storecloth.clothdetail.pickupdetail
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentPickupDetailBinding
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.profile.orderstatus.OrderedClotheData
-import com.example.myapplication.ui.main.profile.orderstatus.detail.OrderstatusDetailAdapter
 
 class PickupDetailFragment : BaseFragment<FragmentPickupDetailBinding>(R.layout.fragment_pickup_detail) {
     override fun init() {
+        initAppbar(binding.pickupdetailToolbar, "픽업 주문하기", true, false)
 
         initRecyclerView()
     }

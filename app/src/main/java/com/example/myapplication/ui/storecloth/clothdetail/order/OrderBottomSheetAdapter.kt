@@ -1,13 +1,12 @@
-package com.example.myapplication.ui.store.clothdetail.order
+package com.example.myapplication.ui.storecloth.clothdetail.order
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemClothcountRecyclerBinding
-import com.example.myapplication.ui.store.clothdetail.ClothOrderData
+import com.example.myapplication.db.remote.model.order.ClothOrderData
 
 class OrderBottomSheetAdapter (clicklistener: OrderClickListener) :
     ListAdapter<ClothOrderData, OrderBottomSheetAdapter.MyViewHolder>(OrderDiffUtil) {

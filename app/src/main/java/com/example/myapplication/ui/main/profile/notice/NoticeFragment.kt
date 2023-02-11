@@ -14,6 +14,7 @@ import java.util.Objects
 class NoticeFragment : BaseFragment<FragmentNoticeBinding>(R.layout.fragment_notice) {
     override fun init() {
         hideBottomNavigation(true)
+        initAppbar(binding.noticeToolbar, "공지사항", true, false)
         initRecyclerView()
     }
 

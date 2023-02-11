@@ -35,8 +35,6 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
     lateinit var homeViewModel: HomeViewModel
 
     override fun savedatainit() {
-        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-
         supportFragmentManager
             .beginTransaction()
             .add(binding.secondFramelayout.id, HomeBaseFragment(), "homebase")
@@ -55,7 +53,7 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
     }
 
     override fun init() {
-
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         // 네비게이션 버튼의 테마색으로 변하는 것을 막기 위해서
         binding.secondBottomNavigationView.itemIconTintList = null
 
@@ -97,6 +95,15 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
 //            checkPermissionAndroidQ()
             getLocation()
         }
+
+        homeViewModel.home_latlng.observe(this, Observer<Pair<Double,Double>>{
+            if(it != null){
+//                homeViewModel.get_home_data(37.5581, 126.9260)
+                homeViewModel.get_home_data(it!!.first, it!!.second)
+            }else{
+                Log.d("whatisthis", "home_latlng, 데이터 없음")
+            }
+        })
     }
 
     private fun changeFragment(tag: String, fragment: Fragment) {

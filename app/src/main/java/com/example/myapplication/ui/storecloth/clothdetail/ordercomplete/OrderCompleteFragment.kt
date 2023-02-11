@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.store.clothdetail.ordercomplete
+package com.example.myapplication.ui.storecloth.clothdetail.ordercomplete
 
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentOrderCompleteBinding

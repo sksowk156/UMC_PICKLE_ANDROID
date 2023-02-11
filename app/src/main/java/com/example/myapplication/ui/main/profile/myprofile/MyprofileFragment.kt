@@ -31,6 +31,7 @@ class MyprofileFragment() : BaseFragment<FragmentMyprofileBinding>(R.layout.frag
 
     override fun init() {
         hideBottomNavigation(true)
+        initAppbar(binding.myprofileToolbar, "내 정보 수정", true, false)
         binding.myprofileImagePhoto.setOnClickListener {
 //            openDialog(requireContext())
             val bottomSheetDialogFragment: BottomSheetDialogFragment = PermissionFragment()
