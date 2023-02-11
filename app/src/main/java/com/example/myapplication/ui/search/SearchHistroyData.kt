@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.main.search
+package com.example.myapplication.ui.search
 
 data class SearchHistroyData(
     var searchhistory : String

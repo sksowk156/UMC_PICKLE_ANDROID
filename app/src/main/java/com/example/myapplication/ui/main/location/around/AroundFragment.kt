@@ -11,10 +11,9 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentAroundBinding
 import com.example.myapplication.db.remote.model.StoreCoordDtoList
-import com.example.myapplication.db.remote.model.StoreDetailDto
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.profile.orderstatus.OrderListDivider
-import com.example.myapplication.ui.store.storedetail.StoreActivity
+import com.example.myapplication.ui.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.StoreViewModel
 import kotlinx.android.synthetic.main.item_around_recycler.*
 
@@ -47,12 +46,14 @@ class AroundFragment : BaseFragment<FragmentAroundBinding>(R.layout.fragment_aro
                                 .load(R.drawable.icon_favorite_filledpink) //이미지
                                 .into(market_favorite) //보여줄 위치
                             nearstoredata?.get(position)?.store_like = true
+                            // 좋아요 정보 갱신
                         } else {
                             //화면에 보여주기
                             Glide.with(this@AroundFragment)
                                 .load(R.drawable.icon_favorite_line) //이미지
                                 .into(market_favorite) //보여줄 위치
                             nearstoredata?.get(position)?.store_like = false
+                            // 좋아요 정보 갱신
                         }
                     }
 
@@ -77,12 +78,14 @@ class AroundFragment : BaseFragment<FragmentAroundBinding>(R.layout.fragment_aro
                 )
             )
 
-            storeViewModel.store_near_data.observe(
-                viewLifecycleOwner,
-                Observer<StoreCoordDtoList> { now_StoreCoordDtoList ->
-                    aroundAdapter.updatedata(now_StoreCoordDtoList)
-                    nearstoredata = now_StoreCoordDtoList
-                })
+            storeViewModel.store_near_data.observe(viewLifecycleOwner, Observer<StoreCoordDtoList> { now_StoreCoordDtoList ->
+                    if(now_StoreCoordDtoList != null){
+                        aroundAdapter.updatedata(now_StoreCoordDtoList)
+                        nearstoredata = now_StoreCoordDtoList
+                    }else{
+                        Log.d("whatisthis", "store_near_data, 데이터 없음")
+                    }
+            })
 
         }
     }

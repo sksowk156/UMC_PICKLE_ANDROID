@@ -15,7 +15,7 @@ import com.example.myapplication.db.remote.model.StoreCoordDtoList
 import com.example.myapplication.db.remote.model.StoreCoordDto
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.location.around.AroundFragment
-import com.example.myapplication.ui.store.storedetail.StoreActivity
+import com.example.myapplication.ui.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.StoreViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.naver.maps.geometry.LatLng

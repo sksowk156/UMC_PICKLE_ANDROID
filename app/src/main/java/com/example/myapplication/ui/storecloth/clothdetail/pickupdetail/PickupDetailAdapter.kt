@@ -1,11 +1,10 @@
-package com.example.myapplication.ui.store.clothdetail.pickupdetail
+package com.example.myapplication.ui.storecloth.clothdetail.pickupdetail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemOrderstatusdetailRecyclerBinding
 import com.example.myapplication.ui.main.profile.orderstatus.OrderedClotheData
-import com.example.myapplication.ui.main.profile.orderstatus.detail.OrderstatusDetailAdapter
 
 class PickupDetailAdapter : RecyclerView.Adapter<PickupDetailAdapter.ViewHolder>() {
 

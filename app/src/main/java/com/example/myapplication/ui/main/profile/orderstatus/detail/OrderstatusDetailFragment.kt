@@ -9,6 +9,7 @@ import com.example.myapplication.ui.main.profile.orderstatus.OrderedClotheData
 
 class OrderstatusDetailFragment : BaseFragment<FragmentOrderstatusDetailBinding>(R.layout.fragment_orderstatus_detail) {
     override fun init() {
+        initAppbar(binding.orderstatusToolbar, "주문 상세보기", true, false)
         hideBottomNavigation(true)
         initRecyclerView()
     }
