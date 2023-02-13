@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.store.clothdetail
+package com.example.myapplication.ui.storecloth.clothdetail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

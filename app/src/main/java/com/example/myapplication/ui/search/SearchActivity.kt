@@ -1,6 +1,5 @@
-package com.example.myapplication.ui.store.storedetail
+package com.example.myapplication.ui.search
 
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -10,77 +9,37 @@ import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.MenuProvider
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.myapplication.ApplicationClass
 import com.example.myapplication.R
-import com.example.myapplication.databinding.ActivityStoreBinding
-import com.example.myapplication.db.remote.model.StoreDetailDto
+import com.example.myapplication.databinding.ActivitySearchBinding
 import com.example.myapplication.ui.base.BaseActivity
-import com.example.myapplication.ui.main.ItemClickInterface
-import com.example.myapplication.ui.main.search.SearchHistroyData
-import com.example.myapplication.ui.main.search.SearchhistoryAdapter
-import com.example.myapplication.ui.main.search.SearchresultFragment
-import com.example.myapplication.viewmodel.DressViewModel
-import com.example.myapplication.viewmodel.StoreViewModel
 import kotlinx.android.synthetic.main.toolbar_content.view.*
 
-
-class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store), ItemClickInterface {
-    lateinit var storeViewModel: StoreViewModel
-    lateinit var storedetailAdapter: StoreDetailAdapter
-
-    private lateinit var toolbar: Toolbar
+class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search){
     // 검색 기록을 저장하는 배열
     private var searchHistoryDataList = ArrayList<SearchHistroyData>()
     // 검색 기록 어댑터
     private lateinit var searchhistoryAdapter: SearchhistoryAdapter
+
+    private lateinit var toolbar: Toolbar
     protected lateinit var toolbarinnerlayout: ConstraintLayout
     protected lateinit var toolbarlayout: ConstraintLayout
     protected lateinit var toolbarmenusearch: MenuItem
 
     override fun init() {
-        storeViewModel = ViewModelProvider(this).get(StoreViewModel::class.java)
-        storeViewModel.get_store_detail_data(intent.getIntExtra("store_id",0),"전체")
-        storedetailAdapter = StoreDetailAdapter(this)
+        toolbar = binding.searchToolbar.toolbarToolbar
+        toolbarinnerlayout = binding.searchContent.contentInnerlayout
+        toolbarlayout = binding.searchContent.contentLayout
 
-        storeViewModel.store_detail_data.observe(this, Observer<StoreDetailDto> { now_storedetail ->
-            if (now_storedetail != null) {
-                Glide.with(this)
-                    .load(now_storedetail.store_image_url) //이미지
-                    .into(binding.storeImageviewImage) //보여줄 위치
-
-                binding.storeTextviewStorename.text = now_storedetail.store_name
-                binding.storeTextviewAddress.text = now_storedetail.store_address
-                binding.storeTextviewOperationhours.text = now_storedetail.hours_of_operation
-                storedetailAdapter.submitList(now_storedetail.store_dress_list?.toMutableList())
-
-            } else {
-                Log.d("whatisthis", "11네트워크 오류가 발생했습니다.")
-            }
-        })
-
-        binding.storeRecyclerview.apply {
-            layoutManager = GridLayoutManager(this.context, 2)
-            adapter = storedetailAdapter
-        }
-
-
-        toolbar = binding.toolbar.toolbarToolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        toolbarinnerlayout = binding.storeToolbarcontent.contentInnerlayout
-        toolbarlayout = binding.storeToolbarcontent.contentLayout
-
-
         addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_appbar, menu)
+                menuInflater.inflate(R.menu.menu_search_appbar, menu)
                 toolbarmenusearch = toolbar.menu.findItem(R.id.search)
 
                 val searchView = menu.findItem(R.id.search).actionView as SearchView
@@ -90,6 +49,7 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
 
                 // SearchView 가 Icon 화 되어 시작할지 펼쳐진 상태에서 시작할지 설정
                 searchView.setIconifiedByDefault(false)
+
                 searchView.setOnQueryTextListener(object :
                     SearchView.OnQueryTextListener {
                     // // 검색 후 엔터를 쳤을 때
@@ -172,9 +132,6 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
                 toolbarmenusearch.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
                     override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                         // 검색창이 펼쳐 졌을 때
-                        binding.storeInnerlayoutStoreinfo.visibility = View.GONE
-                        binding.appbar.setLiftable(false)
-
                         initSearchHistory()
                         return true
                     }
@@ -182,22 +139,20 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
                     override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
                         // 검색창이 닫혔 때
                         // 검색창 초기화
-                        searchViewEditText.text.clear()
-                        binding.storeInnerlayoutStoreinfo.visibility = View.VISIBLE
-                        binding.appbar.setLiftable(true)
-
-                        if(supportFragmentManager.findFragmentByTag("searchresult")!=null){
-                            supportFragmentManager.beginTransaction()
-                                .remove(supportFragmentManager.findFragmentByTag("searchresult")!!)
-                                .commitAllowingStateLoss()
-                        }
-                        toolbarinnerlayout.visibility = View.INVISIBLE
-                        toolbarlayout.visibility = View.INVISIBLE
+//                        searchViewEditText.text.clear()
+//                        if(supportFragmentManager.findFragmentByTag("searchresult")!=null){
+//                            supportFragmentManager.beginTransaction()
+//                                .remove(supportFragmentManager.findFragmentByTag("searchresult")!!)
+//                                .commitAllowingStateLoss()
+//                        }
+//                        toolbarinnerlayout.visibility = View.INVISIBLE
+//                        toolbarlayout.visibility = View.INVISIBLE
+                        finish()
 
                         return true
                     }
                 })
-
+                toolbarmenusearch.expandActionView()
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -253,21 +208,4 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
         // 데이터 변경 알리기
         searchhistoryAdapter.notifyDataSetChanged()
     }
-
-    override fun onItemImageClick(id: Int, position: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onItemStoreNameClick(id: Int, position: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onItemButtonClick(id: Int, position: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onItemFavoriteClick(id: Int, position: Int) {
-        TODO("Not yet implemented")
-    }
-
 }

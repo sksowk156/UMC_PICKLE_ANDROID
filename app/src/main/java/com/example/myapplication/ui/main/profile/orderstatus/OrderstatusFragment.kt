@@ -10,8 +10,24 @@ import com.example.myapplication.ui.main.profile.orderstatus.detail.OrderstatusD
 
 class OrderstatusFragment : BaseFragment<FragmentOrderstatusBinding>(R.layout.fragment_orderstatus) {
     override fun init() {
+        initAppbarName()
         hideBottomNavigation(true)
         initRecyclerView()
+    }
+
+    private fun initAppbarName(){
+        if(parentFragmentManager.findFragmentByTag("completeorder")!=null){ // 주문완료
+            initAppbar(binding.orderstatusToolbar, "주문완료", true, false)
+
+        }else if(parentFragmentManager.findFragmentByTag("pickup")!=null){ // 픽업 중
+            initAppbar(binding.orderstatusToolbar, "픽업 중", true, false)
+
+        }else if(parentFragmentManager.findFragmentByTag("pickupconfirm")!=null){ // 픽업 완료
+            initAppbar(binding.orderstatusToolbar, "픽업완료", true, false)
+
+        }else{ // 구매 확정
+            initAppbar(binding.orderstatusToolbar, "구매확정", true, false)
+        }
     }
 
     private fun initRecyclerView(){

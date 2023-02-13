@@ -7,17 +7,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ItemHomecardRecyclerBinding
-import com.example.myapplication.db.remote.model.NewDresse
+import com.example.myapplication.db.remote.model.DressOverviewDto
 import com.example.myapplication.ui.main.ItemClickInterface
 
 class HomeNewAdapter(clicklistener: ItemClickInterface) :
-    ListAdapter<NewDresse, HomeNewAdapter.MyViewHolder>(HomeNewDiffUtil) {
+    ListAdapter<DressOverviewDto, HomeNewAdapter.MyViewHolder>(HomeNewDiffUtil) {
 
     var clicklistener: ItemClickInterface = clicklistener
 
     inner class MyViewHolder(val binding: ItemHomecardRecyclerBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(new_clothes: NewDresse) {
+        fun bind(new_clothes: DressOverviewDto) {
 //            if (recent_clothes?.좋아요 == false) {
 //                //화면에 보여주기
 //                Glide.with(this@MyViewHolder.itemView)
@@ -63,12 +63,12 @@ class HomeNewAdapter(clicklistener: ItemClickInterface) :
     }
 }
 
-object HomeNewDiffUtil : DiffUtil.ItemCallback<NewDresse>() {
-    override fun areItemsTheSame(oldItem: NewDresse, newItem: NewDresse): Boolean {
+object HomeNewDiffUtil : DiffUtil.ItemCallback<DressOverviewDto>() {
+    override fun areItemsTheSame(oldItem: DressOverviewDto, newItem: DressOverviewDto): Boolean {
         return oldItem.dress_id == newItem.dress_id
     }
 
-    override fun areContentsTheSame(oldItem: NewDresse, newItem: NewDresse): Boolean {
+    override fun areContentsTheSame(oldItem: DressOverviewDto, newItem: DressOverviewDto): Boolean {
         return oldItem == newItem
     }
 }

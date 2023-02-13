@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.store.clothdetail.ordercomplete
+package com.example.myapplication.ui.storecloth.clothdetail.ordercomplete
 
 import android.content.Intent
 import com.example.myapplication.R

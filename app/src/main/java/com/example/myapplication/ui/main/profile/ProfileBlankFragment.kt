@@ -17,50 +17,44 @@ class ProfileBlankFragment :
     }
 
     override fun init() {
-        initAppbar(
-            binding.profileblankToolbarcontent,
-            binding.profileblankToolbar,
-            "마이페이지",
-            false,
-            true
-        )
-        changeAppbar()
+//        initAppbar(binding.profileblankToolbar, "마이페이지", false, true)
+//        changeAppbar()
     }
 
-    fun changeAppbar() {
-        childFragmentManager.addOnBackStackChangedListener {
-            when (childFragmentManager.fragments.last().tag) {
-                "myprofile" -> {
-                    initSubAppbar("내 정보 수정", true, false)
-                }
-                "completeorder" -> {
-                    initSubAppbar("주문 완료", true, false)
-                }
-                "pickup" -> {
-                    initSubAppbar("픽업 중", true, false)
-                }
-                "pickupconfirm" -> {
-                    initSubAppbar("픽업 완료", true, false)
-                }
-                "purchaseconfirm" -> {
-                    initSubAppbar("구매 확정", true, false)
-                }
-                "notice" -> {
-                    initSubAppbar("공지사항", true, false)
-                }
-                "inquiry" -> {
-                    initSubAppbar("문의사항", true, false)
-                }
-                "profile" -> {
-                    initSubAppbar("마이페이지", false, true)
-                }
-                "orderstatusdetail" -> {
-                    initSubAppbar("주문 상세보기", true, false)
-                }
-                "noticedetail" -> {
-                    initSubAppbar("공지사항", true, false)
-                }
-            }
-        }
-    }
+//    fun changeAppbar() {
+//        childFragmentManager.addOnBackStackChangedListener {
+//            when (childFragmentManager.fragments.last().tag) {
+//                "myprofile" -> {
+//                    initSubAppbar("내 정보 수정", true, false)
+//                }
+//                "completeorder" -> {
+//                    initSubAppbar("주문 완료", true, false)
+//                }
+//                "pickup" -> {
+//                    initSubAppbar("픽업 중", true, false)
+//                }
+//                "pickupconfirm" -> {
+//                    initSubAppbar("픽업 완료", true, false)
+//                }
+//                "purchaseconfirm" -> {
+//                    initSubAppbar("구매 확정", true, false)
+//                }
+//                "notice" -> {
+//                    initSubAppbar("공지사항", true, false)
+//                }
+//                "inquiry" -> {
+//                    initSubAppbar("문의사항", true, false)
+//                }
+//                "profile" -> {
+//                    initSubAppbar("마이페이지", false, true)
+//                }
+//                "orderstatusdetail" -> {
+//                    initSubAppbar("주문 상세보기", true, false)
+//                }
+//                "noticedetail" -> {
+//                    initSubAppbar("공지사항", true, false)
+//                }
+//            }
+//        }
+//    }
 }

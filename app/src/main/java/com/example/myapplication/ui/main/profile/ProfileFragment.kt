@@ -14,6 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_profile) {
     override fun init() {
         hideBottomNavigation(false)
+        initAppbar(binding.profileToolbar, "마이페이지", false, true)
         initButton()
     }
 

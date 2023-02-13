@@ -8,6 +8,6 @@ import com.example.myapplication.ui.base.BaseFragment
 class ChatFragment : BaseFragment<FragmentChatBinding>(R.layout.fragment_chat) {
 
     override fun init() {
-        initAppbar(binding.chatTtoolbarcontent,binding.chatToolbar,"채팅",false,true)
+        initAppbar(binding.chatToolbar,"채팅",false,true)
     }
 }

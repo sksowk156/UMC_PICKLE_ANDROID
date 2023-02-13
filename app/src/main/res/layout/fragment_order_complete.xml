@@ -5,7 +5,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.store.clothdetail.ordercomplete.OrderCompleteFragment">
+        tools:context=".ui.storecloth.clothdetail.ordercomplete.OrderCompleteFragment">
 
         <ImageView
             android:id="@+id/iv_check"

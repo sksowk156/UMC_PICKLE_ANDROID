@@ -1,10 +1,6 @@
 package com.example.myapplication.ui.main.home.newclothe
 
 import android.content.Intent
-import android.view.View
-import android.widget.ImageButton
-import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentNewBinding
 import com.example.myapplication.ui.base.BaseFragment
@@ -12,7 +8,7 @@ import com.example.myapplication.ui.main.ItemClickInterface
 import com.example.myapplication.ui.main.home.Clothes
 import com.example.myapplication.ui.main.home.clothesList
 import com.example.myapplication.ui.main.home.newclothesList
-import com.example.myapplication.ui.store.storedetail.StoreActivity
+import com.example.myapplication.ui.storecloth.storedetail.StoreActivity
 
 
 class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) ,
@@ -20,6 +16,7 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) ,
 
 //    lateinit var fragmentadapter : CardViewAdapter
     override fun init() {
+    initAppbar(binding.newToolbar, "NEW",true,false)
 //        rcView()
     }
 
@@ -95,10 +92,6 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new) ,
     override fun onItemStoreNameClick(id: Int, position: Int) {
         val intent = Intent(getActivity(), StoreActivity::class.java)
         startActivity(intent)
-    }
-
-    override fun onItemButtonClick(id: Int, position: Int) {
-
     }
 
     override fun onItemFavoriteClick(id: Int, position: Int) {

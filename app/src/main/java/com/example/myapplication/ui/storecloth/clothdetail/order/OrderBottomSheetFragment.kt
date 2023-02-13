@@ -1,49 +1,46 @@
-package com.example.myapplication.ui.store.clothdetail.order
+package com.example.myapplication.ui.storecloth.clothdetail.order
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import android.widget.AdapterView.OnItemSelectedListener
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentOrderBinding
+import com.example.myapplication.db.remote.model.order.ClothOptionData
 import com.example.myapplication.ui.main.profile.orderstatus.OrderListDivider
-import com.example.myapplication.ui.store.clothdetail.ClothOrderData
-import com.example.myapplication.ui.store.clothdetail.pickupdetail.PickupDetailFragment
+import com.example.myapplication.db.remote.model.order.ClothOrderData
+import com.example.myapplication.ui.storecloth.clothdetail.pickupdetail.PickupDetailFragment
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.OrderViewModel
-import com.example.myapplication.viewmodel.StoreViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class OrderBottomSheetFragment() :
     BottomSheetDialogFragment(R.layout.fragment_order), OrderBottomSheetAdapter.OrderClickListener{
     private lateinit var binding: FragmentOrderBinding
     private lateinit var orderViewModel: OrderViewModel
-    private lateinit var dressViewModel: DressViewModel
 
     private var checkedTwoButton = ArrayList<Boolean>()
 
-    private var selectedPrice: Int = 0
     private lateinit var selectedcolor: String
     private lateinit var selectedsize: String
 
     private var orderdatalist = ArrayList<ClothOrderData>()
 
+    private var optiondata : ClothOptionData?= null
+
     private lateinit var spinnerColor: Spinner
     private lateinit var spinnerSize: Spinner
 
-    private lateinit var spinnercolorlist: Array<String>
-    private lateinit var spinnersizelist: Array<String>
+    private var spinnercolorlist = ArrayList<String>()
+    private var spinnersizelist = ArrayList<String>()
+    private var selectedPrice: Int = 0
 
 
     override fun onCreateView(
@@ -53,7 +50,6 @@ class OrderBottomSheetFragment() :
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_order, container, false)
         orderViewModel = ViewModelProvider(requireParentFragment()).get(OrderViewModel::class.java)
-        dressViewModel = ViewModelProvider(requireActivity()).get(DressViewModel::class.java)
         return binding.root
     }
 
@@ -63,15 +59,36 @@ class OrderBottomSheetFragment() :
         checkedTwoButton.add(false)
         checkedTwoButton.add(false)
 
-        // 메뉴 선택 결과
+        optiondata = orderViewModel.option_data.value
+        selectedPrice = optiondata?.clothPrice!!
+        //spinnerColor
+        spinnerColor = binding.orderSpinnerColor
+        spinnerSize = binding.orderSpinnerSize
+        spinnercolorlist.add("색상")
+        spinnersizelist.add("사이즈")
+        // 스피너 목록 불러오기
+        if(optiondata != null){
+            for( i in optiondata?.dress_option1?.dress_option_detail_list!!){
+                spinnercolorlist.add(i.dress_option_detail_name)
+            }
+        }
+
+        // 스피너 목록 불러오기
+        if(optiondata != null){
+            for( i in optiondata?.dress_option2?.dress_option_detail_list!!){
+                spinnersizelist.add(i.dress_option_detail_name)
+            }
+        }
+
         val orderBottomSheetAdapter = OrderBottomSheetAdapter(this)
         binding.orderRecyclerview.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = orderBottomSheetAdapter
             addItemDecoration(OrderListDivider(0f,0f,10f,10f, Color.TRANSPARENT))
         }
+
         orderViewModel.order_data.observe(viewLifecycleOwner, Observer<ArrayList<ClothOrderData>> {
-            if (it != null) {
+            if (it != null) { // 옵션 선택을 했다는 것이므로
                 orderBottomSheetAdapter.submitList(it.toMutableList())
                 spinnerColor.setSelection(0)  // 스피너 목록 초기화
                 spinnerSize.setSelection(0) // 스피너 목록 촉화
@@ -91,9 +108,8 @@ class OrderBottomSheetFragment() :
             }
         })
 
-        //spinnerColor
-        spinnerColor = binding.orderSpinnerColor
-        spinnercolorlist = resources.getStringArray(R.array.spinner_color)
+//        spinnercolorlist = resources.getStringArray(R.array.spinner_color)
+
         val adapterColor =
             ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, spinnercolorlist)
         adapterColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -112,14 +128,7 @@ class OrderBottomSheetFragment() :
                     checkedTwoButton[0] = true
                     selectedcolor = spinnercolorlist[position]
                     if (checkedTwoButton[0] == true && checkedTwoButton[1] == true) {
-                        orderdatalist.add(
-                            ClothOrderData(
-                                selectedcolor,
-                                selectedsize,
-                                1,
-                                selectedPrice
-                            )
-                        )
+                        orderdatalist.add(ClothOrderData(selectedcolor, selectedsize, 1, selectedPrice))
                         orderViewModel.set_order_data(orderdatalist)
                     }
                 }
@@ -132,8 +141,8 @@ class OrderBottomSheetFragment() :
         })
 
         //spinnerSize
-        spinnerSize = binding.orderSpinnerSize
-        spinnersizelist = resources.getStringArray(R.array.spinner_size)
+//        spinnerSize = binding.orderSpinnerSize
+//        spinnersizelist = resources.getStringArray(R.array.spinner_size)
         val adapterSize =
             ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, spinnersizelist)
         adapterSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -153,14 +162,7 @@ class OrderBottomSheetFragment() :
                     checkedTwoButton[1] = true
                     selectedsize = spinnersizelist[position]
                     if (checkedTwoButton[0] == true && checkedTwoButton[1] == true) {
-                        orderdatalist.add(
-                            ClothOrderData(
-                                selectedcolor,
-                                selectedsize,
-                                1,
-                                selectedPrice
-                            )
-                        )
+                        orderdatalist.add(ClothOrderData(selectedcolor, selectedsize, 1, selectedPrice))
                         orderViewModel.set_order_data(orderdatalist)
                     }
                 }

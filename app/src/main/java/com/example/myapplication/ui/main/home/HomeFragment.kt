@@ -2,23 +2,20 @@ package com.example.myapplication.ui.main.home
 
 import android.content.Intent
 import android.util.Log
-import android.view.View
-import android.widget.ImageButton
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
-import com.example.myapplication.db.remote.model.HomeModel
+import com.example.myapplication.db.remote.model.DressHomeDto
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.ItemClickInterface
 import com.example.myapplication.ui.main.home.newclothe.NewFragment
 import com.example.myapplication.ui.main.home.recent.HomeRecommendAdapter
 import com.example.myapplication.ui.main.home.recent.RecentFragment
-import com.example.myapplication.ui.store.clothdetail.ClothActivity
-import com.example.myapplication.ui.store.storedetail.StoreActivity
+import com.example.myapplication.ui.storecloth.clothdetail.ClothActivity
+import com.example.myapplication.ui.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.HomeViewModel
 import com.smarteist.autoimageslider.SliderView
 
@@ -34,15 +31,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
     override fun init() {
         homeViewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
 
-        homeViewModel.home_latlng.observe(this, Observer<Pair<Double,Double>>{
-            if(homeViewModel.home_latlng.value != null){
-                homeViewModel.get_home_data(homeViewModel.home_latlng.value!!.first, homeViewModel.home_latlng.value!!.second)
-            }
-        })
+//        homeViewModel.home_latlng.observe(this, Observer<Pair<Double,Double>>{
+//            if(homeViewModel.home_latlng.value != null){
+//                homeViewModel.get_home_data(homeViewModel.home_latlng.value!!.first, homeViewModel.home_latlng.value!!.second)
+//            }
+//        })
 
-
+        initAppbar(binding.homeToolbar, "홈",false,true)
         initSlideView()
         initRecyclerView()
+
         binding.button.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
@@ -96,13 +94,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
         newAdapter = HomeNewAdapter(this@HomeFragment)
         recommendAdapter = HomeRecommendAdapter(this@HomeFragment)
 
-        homeViewModel.home_data.observe(viewLifecycleOwner, Observer<HomeModel> { now_homeModel ->
+        homeViewModel.home_data.observe(viewLifecycleOwner, Observer<DressHomeDto> { now_homeModel ->
             if (now_homeModel != null) {
                 recentAdapter.submitList(now_homeModel.recentView?.toMutableList())
                 newAdapter.submitList(now_homeModel.newDresses?.toMutableList())
                 recommendAdapter.submitList(now_homeModel.recDresses?.toMutableList())
             } else {
-                Log.d("whatisthis", "11네트워크 오류가 발생했습니다.")
+                Log.d("whatisthis", "home_data, 없음")
             }
         })
 
@@ -128,19 +126,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
     override fun onItemImageClick(id: Int, position: Int) {
         val intent = Intent(getActivity(), ClothActivity::class.java)
         intent.putExtra("cloth_id", id)
-
         startActivity(intent)
     }
 
     override fun onItemStoreNameClick(id: Int, position: Int) {
         val intent = Intent(getActivity(), StoreActivity::class.java)
         intent.putExtra("store_id", id)
-
         startActivity(intent)
-    }
-
-    override fun onItemButtonClick(id: Int, position: Int) {
-        showToast("clicked!!")
     }
 
     override fun onItemFavoriteClick(id: Int, position: Int) {

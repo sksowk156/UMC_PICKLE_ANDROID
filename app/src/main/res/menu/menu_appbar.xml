@@ -7,8 +7,7 @@
         android:enabled="true"
         android:icon="@drawable/icon_search"
         android:title="search"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="always|collapseActionView" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/notification"
         android:enabled="true"
