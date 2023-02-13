@@ -21,8 +21,10 @@ import com.example.myapplication.viewmodel.ReservationViewModel
 import com.example.myapplication.viewmodel.StoreViewModel
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import java.util.*
-import kotlin.collections.ArrayList
 import androidx.lifecycle.Observer
+import com.example.myapplication.db.remote.model.DressReservationDto
+import com.example.myapplication.db.remote.model.StockQuantityDto
+import com.example.myapplication.db.remote.model.order.ClothOrderData
 
 class PickupDetailFragment : BaseFragment<FragmentPickupDetailBinding>(R.layout.fragment_pickup_detail) {
     var chipGroup = ArrayList<TextView>()
@@ -30,16 +32,21 @@ class PickupDetailFragment : BaseFragment<FragmentPickupDetailBinding>(R.layout.
     private lateinit var storeViewModel: StoreViewModel
     private lateinit var orderViewModel: OrderViewModel
     private lateinit var dressViewModel: DressViewModel
+    private lateinit var date: String
+    private lateinit var time: String
+    private lateinit var dateTime: String
     private var totalPrice: Int = 0
 
     override fun init() {
         orderViewModel = ViewModelProvider(requireParentFragment()).get(OrderViewModel::class.java)
         dressViewModel = ViewModelProvider(requireActivity()).get(DressViewModel::class.java)
+        reservationViewModel = ViewModelProvider(requireActivity()).get(ReservationViewModel::class.java)
 
         initAppbar(binding.pickupdetailToolbar, "픽업 주문하기", true, false)
         initStore()
         initDate()
         initChip()
+        initButton()
         initRecyclerView()
         initTotalPrice()
     }
@@ -99,6 +106,14 @@ class PickupDetailFragment : BaseFragment<FragmentPickupDetailBinding>(R.layout.
                 val cal = Calendar.getInstance()
                 val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
                     binding.tvDateDialog.text = "${year}. ${month + 1}. ${day}"
+                    if(month + 1 < 10) {
+                        date = "${year}-0${month + 1}-${day}"
+                        binding.tvDateDialog.text = "${year}. 0${month + 1}. ${day}"
+                    }
+                    else {
+                        date = "${year}-${month + 1}-${day}"
+                        binding.tvDateDialog.text = "${year}. ${month + 1}. ${day}"
+                    }
                 }
 
                 DatePickerDialog(
@@ -140,15 +155,50 @@ class PickupDetailFragment : BaseFragment<FragmentPickupDetailBinding>(R.layout.
                     }
                     chipGroup[i].setBackgroundResource(R.drawable.chip_background_selected)
                     chipGroup[i].setTextColor(Color.WHITE)
-                    binding.ivOrder.setBackgroundResource(R.drawable.green_button_background)
-                    binding.ivOrder.setTextColor(Color.WHITE)
-                    binding.ivOrder.setOnClickListener{
-                        parentFragmentManager.beginTransaction()
-                            .replace(R.id.clothblank_layout, OrderCompleteFragment(), "ordercomplete")
-                            .addToBackStack(null)
-                            .commitAllowingStateLoss()
+                    time = chipGroup[i].text.toString()
+                    if(date != null) {
+                        binding.ivOrder.setBackgroundResource(R.drawable.green_button_background)
+                        binding.ivOrder.setTextColor(Color.WHITE)
                     }
                 }
+            }
+        }
+    }
+
+    private fun initButton(){
+        with(binding){
+            val dress_detail_data = dressViewModel.dress_detail_data.value
+            val order_data = orderViewModel.order_data.value as ArrayList<ClothOrderData>
+
+            var temp : ArrayList<StockQuantityDto> = ArrayList<StockQuantityDto>()
+            for( i in order_data){
+
+                temp.add(StockQuantityDto(i.count , i.coloridx, i.sizeidx))
+
+            }
+
+            binding.ivOrder.setOnClickListener{
+                //예약 정보 보내기
+                val comment = binding.pickupdetailEdittextRequest.text.toString()
+                val dress_id = dress_detail_data?.dress_id
+                val pickup_datetime = date + " " + time + ":00"
+                val price = totalPrice
+                val reserved_dress_list = temp.toList()
+                val store_id = dress_detail_data?.store_id
+
+                Log.d("dress_id", dress_id.toString())
+                Log.d("datetime", pickup_datetime.toString())
+                Log.d("price", price.toString())
+                Log.d("store_id", store_id.toString())
+
+                val dressReservationDto = DressReservationDto(comment, dress_id!!, pickup_datetime, price, reserved_dress_list, store_id!!)
+                reservationViewModel.set_dresses_reservation(dressReservationDto!!)
+
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.clothblank_layout, OrderCompleteFragment(), "ordercomplete")
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss()
+
             }
         }
     }
