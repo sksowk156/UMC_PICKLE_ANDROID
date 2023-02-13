@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentOrderstatusDetailBinding
+import com.example.myapplication.db.remote.DressOrderListDto
 import com.example.myapplication.db.remote.model.DressOrderDto
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.profile.orderstatus.OrderedClotheData
@@ -14,16 +15,9 @@ import com.example.myapplication.viewmodel.DressViewModel
 class OrderstatusDetailFragment : BaseFragment<FragmentOrderstatusDetailBinding>(R.layout.fragment_orderstatus_detail) {
     lateinit var dressViewModel: DressViewModel
 
-
-
-
     override fun init() {
 
         dressViewModel = ViewModelProvider(requireActivity()).get(DressViewModel::class.java)
-        dressViewModel.dress_reservation_dress_data.observe(viewLifecycleOwner, Observer {
-            binding.detailTextviewOrdernumber.text = it.reserved_dress_id.toString()
-
-        })
 
         initAppbar(binding.orderstatusToolbar, "주문 상세보기", true, false)
         hideBottomNavigation(true)
@@ -35,22 +29,24 @@ class OrderstatusDetailFragment : BaseFragment<FragmentOrderstatusDetailBinding>
 
     }
 
-    val OrderedClotheDataList: ArrayList<OrderedClotheData> = ArrayList()
-//
     private fun initRecyclerView(){
         with(binding) {
             // 1. 어댑터 생성 및 리사이클러뷰 연결
             val orderstatusAdapter = OrderstatusDetailAdapter()
-
-
-            OrderedClotheDataList.add(OrderedClotheData("20200204",R.drawable.cardigan1,"ㄴㅁㅇ","옷","8700","검정","M"))
-           OrderedClotheDataList.add(OrderedClotheData("20200204",R.drawable.cardigan1,"ㄴㅁㅇ","옷","8700","검정","M"))
-           OrderedClotheDataList.add(OrderedClotheData("20200204",R.drawable.cardigan1,"ㄴㅁㅇ","옷","8700","검정","M"))
-
             detailRecyclerview.adapter = orderstatusAdapter
             detailRecyclerview.layoutManager = LinearLayoutManager(context)
-            orderstatusAdapter.userList = OrderedClotheDataList
-            orderstatusAdapter.notifyDataSetChanged()
+            dressViewModel.dress_reservation_dress_data.observe(viewLifecycleOwner, Observer {
+                orderstatusAdapter.userList = it as ArrayList<DressOrderDto>
+                orderstatusAdapter.notifyDataSetChanged()
+                detailTextviewOrdernumber.text = it.last().reserved_dress_id.toString()
+                detailTextviewAddress.text = it.last().store_address
+                detailTextviewOperationhours.text = it.last().hours_of_operation.toString()
+                detailTextviewPickupdatetime.text = it.last().pickup_datetime
+                detailTextviewRequests.text = it.last().comment
+                detailTextviewTotalprice.text = it.last().price
+                detailTextviewStorename.text = it.last().store_name
+            })
+
         }
     }
 

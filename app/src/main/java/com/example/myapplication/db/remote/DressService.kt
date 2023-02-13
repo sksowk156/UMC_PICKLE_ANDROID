@@ -33,13 +33,13 @@ object DressService {
         @GET("dresses/order-list")
         fun get_dress_resevation_data(
             @Query("status") status: String
-        ):Call<DressOrderDto>
+        ):Call<List<DressOrderListDto>>
 
         //의상 예약 상세 내역 조회
         @GET("dresses/orders/{dress_reservation_id}")
         fun get_dress_reservation_dress_data(
             @Path("dress_reservation_id")dress_reservation_id:Int
-        ):Call<DressOrderDto>
+        ):Call<List<DressOrderDto>>
 
 
 

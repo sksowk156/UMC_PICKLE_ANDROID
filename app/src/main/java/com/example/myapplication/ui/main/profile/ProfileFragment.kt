@@ -40,7 +40,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"completeorder")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
-              //  dressViewModel.get_dress_resevation_data("")
+                dressViewModel.get_dress_resevation_data("주문완료")
               //  dressViewmodel.method("주문완료")
             }
             profileInnerlayoutPickup.setOnClickListener {
@@ -48,7 +48,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"pickup")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
-             //   dressViewmodel.method("픽업중")
+                dressViewModel.get_dress_resevation_data("픽업중")
+
+                //   dressViewmodel.method("픽업중")
 
             }
             profileInnerlayoutPickupconfirm.setOnClickListener {
@@ -56,7 +58,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"pickupconfirm")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
-              //  dressViewmodel.method("픽업완료")
+
+                dressViewModel.get_dress_resevation_data("픽업완료")
+
+                //  dressViewmodel.method("픽업완료")
 
             }
             profileInnerlayoutPurchaseconfirm.setOnClickListener {
@@ -64,7 +69,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"purchaseconfirm")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
-               // dressViewmodel.method("구매완료")
+
+                dressViewModel.get_dress_resevation_data("구매확정")
+
+                // dressViewmodel.method("구매확정")
 
             }
 
