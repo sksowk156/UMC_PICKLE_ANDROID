@@ -1,14 +1,15 @@
 package com.example.myapplication.ui.storecloth.storedetail
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,8 +26,13 @@ import com.example.myapplication.ui.storecloth.clothdetail.ClothActivity
 import com.example.myapplication.viewmodel.StoreViewModel
 
 
-class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store),
-    ItemCardClickInterface {
+//<<<<<<< HEAD
+//class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store),
+//    ItemCardClickInterface {
+//=======
+class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store), ItemCardClickInterface {
+    var chipGroup = ArrayList<TextView>()
+//>>>>>>> main
     lateinit var storeViewModel: StoreViewModel
     lateinit var storedetailAdapter: StoreDetailAdapter
     private lateinit var toolbar: Toolbar
@@ -99,6 +105,7 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
 
         // 앱바 설정
         initAppbar(R.menu.menu_appbar)
+        initChip()
     }
 
     private fun initAppbar(menuRes: Int) {
@@ -156,6 +163,29 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
 //                .into(view as ImageView)  //보여줄 위치
 //            // 좋아요 정보 갱신 요청
 //        }
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private fun initChip() {
+        chipGroup.add(binding.chip1)
+        chipGroup.add(binding.chip2)
+        chipGroup.add(binding.chip3)
+        chipGroup.add(binding.chip4)
+        chipGroup.add(binding.chip5)
+        chipGroup.add(binding.chip6)
+
+        for (i in 0..chipGroup.size - 1) {
+            chipGroup[i].setOnClickListener {
+                for (j in 0..chipGroup.size - 1) {
+                    if (chipGroup[j].background.constantState == resources.getDrawable(R.drawable.chip_background_selected).constantState) {
+                        chipGroup[j].setBackgroundResource(R.drawable.chip_background)
+                        chipGroup[j].setTextColor(Color.BLACK)
+                    }
+                    chipGroup[i].setBackgroundResource(R.drawable.chip_background_selected)
+                    chipGroup[i].setTextColor(Color.WHITE)
+                }
+            }
+        }
     }
 
 }
