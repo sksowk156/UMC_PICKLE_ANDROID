@@ -1,11 +1,14 @@
 package com.example.myapplication.ui.storecloth.storedetail
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Observer
@@ -19,11 +22,13 @@ import com.example.myapplication.ui.base.BaseActivity
 import com.example.myapplication.ui.main.ItemClickInterface
 import com.example.myapplication.ui.search.SearchActivity
 import com.example.myapplication.ui.storecloth.clothdetail.ClothActivity
+import com.example.myapplication.ui.storecloth.clothdetail.ordercomplete.OrderCompleteFragment
 import com.example.myapplication.viewmodel.StoreViewModel
 import kotlinx.android.synthetic.main.toolbar_content.view.*
 
 
 class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store), ItemClickInterface {
+    var chipGroup = ArrayList<TextView>()
     lateinit var storeViewModel: StoreViewModel
     lateinit var storedetailAdapter: StoreDetailAdapter
     private lateinit var toolbar: Toolbar
@@ -58,6 +63,7 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
 
         // 앱바 설정
         initAppbar(R.menu.menu_appbar)
+        initChip()
     }
 
     private fun initAppbar(menuRes : Int){
@@ -104,6 +110,29 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
     override fun onItemFavoriteClick(id: Int, position: Int) {
         // 좋아요 정보 갱신
 
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private fun initChip() {
+        chipGroup.add(binding.chip1)
+        chipGroup.add(binding.chip2)
+        chipGroup.add(binding.chip3)
+        chipGroup.add(binding.chip4)
+        chipGroup.add(binding.chip5)
+        chipGroup.add(binding.chip6)
+
+        for (i in 0..chipGroup.size - 1) {
+            chipGroup[i].setOnClickListener {
+                for (j in 0..chipGroup.size - 1) {
+                    if (chipGroup[j].background.constantState == resources.getDrawable(R.drawable.chip_background_selected).constantState) {
+                        chipGroup[j].setBackgroundResource(R.drawable.chip_background)
+                        chipGroup[j].setTextColor(Color.BLACK)
+                    }
+                    chipGroup[i].setBackgroundResource(R.drawable.chip_background_selected)
+                    chipGroup[i].setTextColor(Color.WHITE)
+                }
+            }
+        }
     }
 
 }
