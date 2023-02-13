@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.main.favorite.store
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -25,14 +26,13 @@ class FavoriteStoreAdapter(clicklistener: ItemListClickInterface) :
                     .load(R.drawable.icon_favorite_filledpink) //이미지
                     .into(marketFavorite) //보여줄 위치
 
-
                 Glide.with(this@MyViewHolder.itemView)
-                    .load(user?.imageUrl) //이미지
+                    .load(user.imageUrl) //이미지
                     .into(marketImage) //보여줄 위치
 
                 marketName.text = user?.name.toString()
                 marketAddress.text = user?.address.toString()
-                marketOperationhours.text = "${user?.store_open_day}, ${user?.open_time} ~ ${user?.close_time}"
+                marketOperationhours.text = "${user?.store_open_day}, ${user?.hours_of_operation}"
 
                 marketLayout.setOnClickListener {
                     clicklistener.onItemMarketLayoutClick(user.store_id, absoluteAdapterPosition)

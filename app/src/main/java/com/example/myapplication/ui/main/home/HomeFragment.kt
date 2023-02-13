@@ -71,7 +71,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
         }
 
         dressViewModel.dress_like_data.observe(viewLifecycleOwner, Observer<List<DressLikeDto>> {
-            Log.d("whatisthis","!!!!!")
             if (update_list_position != null) {
                 if (recentData[update_list_position!!].dress_id == update_islikedata_id) {
                     recentData[update_list_position!!].dress_like = !recentData[update_list_position!!].dress_like!!
@@ -80,11 +79,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
                     recentAdapter.notifyItemChanged(update_list_position!!)
                 } else if (newData[update_list_position!!].dress_id == update_islikedata_id) {
                     newData[update_list_position!!].dress_like = !newData[update_list_position!!].dress_like!!
-                    newAdapter.submitList(newData.toMutableList())
+//                    newAdapter.submitList(newData.toMutableList())
                     newAdapter.notifyItemChanged(update_list_position!!)
                 } else {
                     recommendData[update_list_position!!].dress_like = !recommendData[update_list_position!!].dress_like!!
-                    recommendAdapter.submitList(recommendData.toMutableList())
+//                    recommendAdapter.submitList(recommendData.toMutableList())
                     recommendAdapter.notifyItemChanged(update_list_position!!)
                 }
                 update_list_position = null
@@ -121,25 +120,39 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
             Observer<DressHomeDto> { now_homeModel ->
                 if (now_homeModel != null) {
 //                    recentAdapter.submitList(null)
-                    newAdapter.submitList(null)
-                    recommendAdapter.submitList(null)
+//                    newAdapter.submitList(null)
+//                    recommendAdapter.submitList(null)
 
 //                    recentAdapter.submitList(now_homeModel.recentView!!.toMutableList())
-                    newAdapter.submitList(now_homeModel.newDresses!!.toMutableList())
-                    recommendAdapter.submitList(now_homeModel.recDresses!!.toMutableList())
+//                    newAdapter.submitList(now_homeModel.newDresses!!.toMutableList())
+//                    recommendAdapter.submitList(now_homeModel.recDresses!!.toMutableList())
+
 
                     recentData = now_homeModel.recentView as ArrayList<DressOverviewDto>
                     newData = now_homeModel.newDresses as ArrayList<DressOverviewDto>
                     recommendData = now_homeModel.recDresses as ArrayList<DressOverviewDto>
+
                     recentAdapter.deleteData()
                     recentAdapter.updateData(recentData)
                     recentAdapter.notifyDataSetChanged()
 
+                    newAdapter.deleteData()
+                    newAdapter.updateData(newData)
+                    newAdapter.notifyDataSetChanged()
+
+                    recommendAdapter.deleteData()
+                    recommendAdapter.updateData(recommendData)
+                    recommendAdapter.notifyDataSetChanged()
+
                 } else {
                     Log.d("whatisthis", "home_data, 없음")
+                    recentAdapter.deleteData()
+                    newAdapter.deleteData()
+                    recommendAdapter.deleteData()
+
 //                    recentAdapter.submitList(null)
-                    newAdapter.submitList(null)
-                    recommendAdapter.submitList(null)
+//                    newAdapter.submitList(null)
+//                    recommendAdapter.submitList(null)
                 }
             })
 

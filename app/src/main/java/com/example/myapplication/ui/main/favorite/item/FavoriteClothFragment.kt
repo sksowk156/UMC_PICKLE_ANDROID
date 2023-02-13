@@ -37,8 +37,6 @@ class FavoriteClothFragment :
         fragmentadapter = FavoriteItemAdapter(this)
 
         dressViewModel.dress_like_data.observe(viewLifecycleOwner, Observer<List<DressLikeDto>> { dresslikedata ->
-            Log.d("whatisthis","444")
-
             if(dresslikedata!=null){
                 fragmentadapter.submitList(dresslikedata.toMutableList())
             }else{
@@ -67,7 +65,6 @@ class FavoriteClothFragment :
 
     override fun onItemClothFavoriteClick(like:Boolean, id: Int, view : View, position: Int) {
         dressViewModel.set_dress_like_data(UpdateDressLikeDto(id))
-        Log.d("whatisthis","2222")
 
         homeViewModel.get_home_data(
             homeViewModel.home_latlng.value!!.first,

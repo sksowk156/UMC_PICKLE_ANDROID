@@ -23,7 +23,7 @@ class FavoriteBaseFragment : BaseFragment<FragmentFavoriteBaseBinding>(R.layout.
 
     override fun init() {
         dressViewModel = ViewModelProvider(requireActivity()).get(DressViewModel::class.java)
-        storeViewModel = ViewModelProvider(this).get(StoreViewModel::class.java)
+        storeViewModel = ViewModelProvider(requireActivity()).get(StoreViewModel::class.java)
         dressViewModel.get_dress_like_data()
         storeViewModel.get_store_like_data()
 

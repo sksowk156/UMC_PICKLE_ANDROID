@@ -39,7 +39,7 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
 
         homeViewModel.home_data.observe(viewLifecycleOwner, Observer<DressHomeDto> { now_homeModel ->
                 if (now_homeModel != null) {
-                    fragmentadapter.submitList(now_homeModel.recentView?.toMutableList())
+//                    fragmentadapter.submitList(now_homeModel.recentView?.toMutableList())
                 } else {
                     Log.d("whatisthis", "home_data, 없음")
                 }

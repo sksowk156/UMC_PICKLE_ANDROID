@@ -87,7 +87,6 @@ class ClothDetailFragment : BaseFragment<FragmentClothDetailBinding>(R.layout.fr
             }
 
             clothdetailImageviewFavorite.setOnClickListener{
-                Log.d("whatisthis","123123")
                 dressViewModel.set_dress_like_data(UpdateDressLikeDto(update_islikedata_id!!))
             }
 

@@ -25,6 +25,7 @@ import com.example.myapplication.ui.main.location.LocationFragment
 import com.example.myapplication.ui.main.profile.ProfileBlankFragment
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.HomeViewModel
+import com.example.myapplication.viewmodel.StoreViewModel
 
 class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_second) {
 
@@ -38,6 +39,12 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var dressViewModel: DressViewModel
+    private lateinit var storeViewModel: StoreViewModel
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        currentFragmenttag = savedInstanceState.get("currentfragment").toString()
+    }
 
     override fun savedatainit() {
         supportFragmentManager
@@ -47,26 +54,18 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
         currentFragmenttag = "homebase" // 현재 보고 있는 fragmet의 Tag
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("currentfragment", currentFragmenttag)
-    }
-
     override fun onResume() {
         super.onResume()
         dressViewModel.get_dress_like_data()
+        storeViewModel.get_store_like_data()
         // 홈화면 데이터 갱신
-        homeViewModel.get_home_data(homeViewModel.home_latlng.value!!.first, homeViewModel.home_latlng.value!!.second)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        currentFragmenttag = savedInstanceState.get("currentfragment").toString()
+        getLocation()
     }
 
     override fun init() {
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         dressViewModel = ViewModelProvider(this).get(DressViewModel::class.java)
+        storeViewModel = ViewModelProvider(this).get(StoreViewModel::class.java)
 
         // 네비게이션 버튼의 테마색으로 변하는 것을 막기 위해서
         binding.secondBottomNavigationView.itemIconTintList = null
@@ -258,4 +257,9 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
         return currentLatLng!!
     }
 
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("currentfragment", currentFragmenttag)
+    }
 }

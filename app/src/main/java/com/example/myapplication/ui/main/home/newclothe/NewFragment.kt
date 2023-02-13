@@ -41,7 +41,7 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new),
 
         homeViewModel.home_data.observe(viewLifecycleOwner, Observer<DressHomeDto> { now_homeModel ->
                 if (now_homeModel != null) {
-                    fragmentadapter.submitList(now_homeModel.newDresses?.toMutableList())
+//                    fragmentadapter.submitList(now_homeModel.newDresses?.toMutableList())
                 } else {
                     Log.d("whatisthis", "home_data, 없음")
                 }

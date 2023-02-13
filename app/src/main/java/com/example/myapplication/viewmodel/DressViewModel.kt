@@ -8,7 +8,6 @@ import com.example.myapplication.db.remote.DressService
 import com.example.myapplication.db.remote.model.DressDetailDto
 import com.example.myapplication.db.remote.model.DressLikeDto
 import com.example.myapplication.db.remote.model.UpdateDressLikeDto
-import com.example.myapplication.ui.storecloth.changefragData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

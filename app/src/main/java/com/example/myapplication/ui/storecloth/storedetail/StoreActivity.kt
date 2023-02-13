@@ -37,12 +37,14 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
     lateinit var storedetailAdapter: StoreDetailAdapter
     private lateinit var toolbar: Toolbar
     private var store_like_state: Boolean? = false
-    private var storeId: Int? = 0
+    private var storeIdData: Int? = null
 
     override fun init() {
         // 뷰모델 선언
         storeViewModel = ViewModelProvider(this).get(StoreViewModel::class.java)
-        storeViewModel.get_store_detail_data(intent.getIntExtra("store_id", 0), "전체")
+        var df : Int = intent.getIntExtra("store_id", 0)
+        Log.d("whatisthis",df.toString())
+        storeViewModel.get_store_detail_data(df, "전체")
 
         storedetailAdapter = StoreDetailAdapter(this)
         // 매장 상세 정보 요청
@@ -66,7 +68,7 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
                 binding.storeTextviewAddress.text = now_storedetail.store_address
                 binding.storeTextviewOperationhours.text = now_storedetail.hours_of_operation
 
-                storeId = now_storedetail.storeId
+                storeIdData = now_storedetail.storeId
                 store_like_state = now_storedetail.is_liked
 
                 storedetailAdapter.submitList(now_storedetail.store_dress_list?.toMutableList())
@@ -92,14 +94,14 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
                 Glide.with(this)
                     .load(R.drawable.icon_favorite_filledpink) //이미지
                     .into(binding.storeImageviewFavorite)  //보여줄 위치
-
                 store_like_state = true
             }
+            storeViewModel.set_store_like_data(UpdateStoreLikeDto(false, storeIdData!!))
 
-            // 좋아요 정보 갱신
-            if (storeId != 0) {
-                storeViewModel.set_store_like_data(UpdateStoreLikeDto(storeId!!))
-            }
+//            // 좋아요 정보 갱신
+//            if (storeIdData != null) {
+//                storeViewModel.set_store_like_data(UpdateStoreLikeDto(false,storeIdData!!))
+//            }
         }
 
 

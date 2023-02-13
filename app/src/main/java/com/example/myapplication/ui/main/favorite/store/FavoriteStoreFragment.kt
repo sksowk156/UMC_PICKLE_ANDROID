@@ -35,7 +35,7 @@ class FavoriteStoreFragment :
 
     override fun init() {
         homeViewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
-        storeViewModel = ViewModelProvider(requireParentFragment()).get(StoreViewModel::class.java)
+        storeViewModel = ViewModelProvider(requireActivity()).get(StoreViewModel::class.java)
         storelikedata = ArrayList<StoreLikeDto>()
         initRecyclerView()
     }
@@ -86,7 +86,7 @@ class FavoriteStoreFragment :
 
     override fun onItemMarketFavoriteClick(like: Boolean, id: Int, view: View, position: Int) {
         storelikedata.removeAt(position)
-        storeViewModel.set_store_like_data(UpdateStoreLikeDto(id))
+        storeViewModel.set_store_like_data(UpdateStoreLikeDto(false,id))
         homeViewModel.get_home_data(
             homeViewModel.home_latlng.value!!.first,
             homeViewModel.home_latlng.value!!.second
