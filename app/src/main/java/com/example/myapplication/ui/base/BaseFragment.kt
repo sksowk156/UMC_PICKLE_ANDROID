@@ -14,6 +14,7 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.ToolbarBinding
 import com.example.myapplication.ui.search.SearchActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.naver.maps.geometry.LatLng
 
 abstract class BaseFragment<T : ViewDataBinding>(
     @LayoutRes val layoutResId: Int
@@ -28,12 +29,19 @@ abstract class BaseFragment<T : ViewDataBinding>(
     protected lateinit var toolbar: Toolbar
     protected lateinit var toolbarmenusearch: MenuItem
     protected lateinit var toolbarmenunotification: MenuItem
-
+    private var lat : Double = 37.5581
+    private var lng : Double = 126.9260
 
     protected open fun savedatainit(){
     }
 
     protected abstract fun init()
+
+    protected fun set_latlng(lat:Double, lng:Double){
+        this.lat = lat
+        this.lng = lng
+    }
+
 
     protected fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
@@ -112,6 +120,7 @@ abstract class BaseFragment<T : ViewDataBinding>(
 
         toolbarmenusearch.setOnMenuItemClickListener {
             val intent = Intent(requireContext(), SearchActivity::class.java)
+            intent.putExtra("lat_lng", LatLng(lat,lng))
             startActivity(intent)
             true
         }

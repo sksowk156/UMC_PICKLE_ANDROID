@@ -4,5 +4,6 @@ data class DressLikeDto(
     val dress_id: Int,
     var image: String?=null,
     var name: String?=null,
-    var price: String?=null
+    var price: String?=null,
+    val store_name: String
 )

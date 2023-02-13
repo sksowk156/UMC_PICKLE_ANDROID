@@ -1,5 +1,7 @@
 package com.example.myapplication.ui.search
 
+import android.content.Intent
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -9,6 +11,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,9 +20,9 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySearchBinding
 import com.example.myapplication.db.remote.model.search.SearchHistroyData
 import com.example.myapplication.ui.base.BaseActivity
-import com.example.myapplication.ui.search.result.SearchresultFragment
+import com.example.myapplication.viewmodel.CategorySortViewModel
 import com.example.myapplication.viewmodel.DressViewModel
-import kotlinx.android.synthetic.main.toolbar_content.view.*
+import com.naver.maps.geometry.LatLng
 
 class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search){
     // 검색 기록을 저장하는 배열
@@ -33,9 +36,23 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
     protected lateinit var toolbarmenusearch: MenuItem
     // 뷰모델
     private lateinit var dressViewModel: DressViewModel
+    private lateinit var categorySortViewModel: CategorySortViewModel
+
+    private var category: String = "전체"
+    private var sort: String = "좋아요많은순"
 
     override fun init() {
+        var df : DoubleArray? = intent.getDoubleArrayExtra("lat_lng")
+
+        categorySortViewModel = ViewModelProvider(this).get(CategorySortViewModel::class.java)
         dressViewModel = ViewModelProvider(this).get(DressViewModel::class.java)
+
+        categorySortViewModel.category_data.observe(this, Observer {
+            category = it
+        })
+        categorySortViewModel.sort_data.observe(this, Observer {
+            sort = it
+        })
 
         toolbar = binding.searchToolbar.toolbarToolbar
         toolbarinnerlayout = binding.searchContent.contentInnerlayout
@@ -75,16 +92,16 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                             // recycler 데이터 갱신 요청
                             searchhistoryAdapter.notifyDataSetChanged()
 
-//                            // // 화면 전환 및 검색 결과 보여주기(API 요청)
-//                            dressViewModel.get_dress_search_data(category,lat,lng,name,sort)
+                            // // 화면 전환 및 검색 결과 보여주기(API 요청)
+//                            dressViewModel.get_dress_search_data(category,df[0],df[1]!!,query,sort)
 
                             // 검색 기록 보여주는 창 가리고
                             toolbarlayout.visibility = View.VISIBLE
                             toolbarinnerlayout.visibility = View.INVISIBLE
-                            // 검색 기록 보여주는 fragment 보여주기
-                            supportFragmentManager.beginTransaction()
-                                .replace(toolbarlayout.id, SearchresultFragment(), "searchresult")
-                                .commitAllowingStateLoss()
+//                            // 검색 기록 보여주는 fragment 보여주기
+//                            supportFragmentManager.beginTransaction()
+//                                .replace(toolbarlayout.id, SearchresultFragment(), "searchresult")
+//                                .commitAllowingStateLoss()
                             // 엔터를 쳤기 때문에 커서를 없앤다.
                             searchView.clearFocus()
                         }
@@ -147,18 +164,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                     }
 
                     override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                        // 검색창이 닫혔 때
-                        // 검색창 초기화
-//                        searchViewEditText.text.clear()
-//                        if(supportFragmentManager.findFragmentByTag("searchresult")!=null){
-//                            supportFragmentManager.beginTransaction()
-//                                .remove(supportFragmentManager.findFragmentByTag("searchresult")!!)
-//                                .commitAllowingStateLoss()
-//                        }
-//                        toolbarinnerlayout.visibility = View.INVISIBLE
-//                        toolbarlayout.visibility = View.INVISIBLE
                         finish()
-
                         return true
                     }
                 })
@@ -206,11 +212,11 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                 }
             })
 
-        // recycler의 어댑터 연결
-        toolbarlayout.content_recycler.adapter = searchhistoryAdapter
-        // 그리드 레이아웃으로 설정
-        var layoutManager = GridLayoutManager(applicationContext, 3) as LinearLayoutManager
-        toolbarlayout.content_recycler.layoutManager = layoutManager
+//        // recycler의 어댑터 연결
+//        toolbarlayout.content_recycler.adapter = searchhistoryAdapter
+//        // 그리드 레이아웃으로 설정
+//        var layoutManager = GridLayoutManager(applicationContext, 3) as LinearLayoutManager
+//        toolbarlayout.content_recycler.layoutManager = layoutManager
         // 어댑터에 쉐어드 데이터 넣기
         searchhistoryAdapter.userList = searchHistoryDataList
 

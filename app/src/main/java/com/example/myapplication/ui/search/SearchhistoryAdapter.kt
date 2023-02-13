@@ -41,7 +41,7 @@ class SearchhistoryAdapter(val clicklistener: ItemClickListener) :
     }
 
     override fun getItemCount(): Int {
-        return userList?.size?.let { Math.min(it, 10) }?: 0
+        return userList?.size?.let { Math.min(it, 10) } ?: 0
     }
 
     inner class ViewHolder(val binding: ItemSearchhistoryRecyclerBinding) :

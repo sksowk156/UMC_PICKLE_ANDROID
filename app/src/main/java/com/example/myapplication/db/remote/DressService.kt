@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.myapplication.ApplicationClass
 import com.example.myapplication.db.remote.model.DressLikeDto
 import com.example.myapplication.db.remote.model.DressDetailDto
+import com.example.myapplication.db.remote.model.DressSearchDto
 import com.example.myapplication.db.remote.model.UpdateDressLikeDto
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,7 +39,7 @@ object DressService {
             @Query("longitude") lng: Double,
             @Query("name") name: String,
             @Query("sort") sort: String
-            ):Call<DressDetailDto>
+            ):Call<DressSearchDto>
     }
 
     val dressService = ApplicationClass.retrofit.create(DressService.DressInterface::class.java)

@@ -20,7 +20,6 @@ import com.example.myapplication.ui.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.HomeViewModel
 import com.example.myapplication.viewmodel.StoreViewModel
 import kotlinx.android.synthetic.main.fragment_favorite_store.*
-import kotlinx.android.synthetic.main.item_around_recycler.*
 
 
 class FavoriteStoreFragment :

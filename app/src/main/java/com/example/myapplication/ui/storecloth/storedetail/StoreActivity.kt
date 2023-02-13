@@ -130,6 +130,7 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
                     }
                     R.id.search -> {
                         val intent = Intent(this@StoreActivity, SearchActivity::class.java)
+//                        intent.putExtra("lat_lng", id)
                         startActivity(intent)
                         true
                     }
