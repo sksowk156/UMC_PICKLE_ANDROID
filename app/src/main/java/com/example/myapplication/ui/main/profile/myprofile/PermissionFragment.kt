@@ -3,6 +3,7 @@ package com.example.myapplication.ui.main.profile.myprofile
 import android.Manifest
 import android.app.Activity
 import android.app.Dialog
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -10,28 +11,27 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
+import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
-import com.example.myapplication.ui.login.MainActivity
+import com.example.myapplication.viewmodel.ProfileViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.kakao.sdk.user.UserApiClient
-import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.fragment_permission.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PermissionFragment() : BottomSheetDialogFragment() {
 
+    private lateinit var profileViewModel: ProfileViewModel
     private var CAMERA_PERMISSION: Boolean = false
     private var WRITE_EXTERNAL_STORAGE_PERMISSION: Boolean = false
     private var READ_EXTERNAL_STORAGE_PERMISSION: Boolean = false
-    private var myimage : CircleImageView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +39,7 @@ class PermissionFragment() : BottomSheetDialogFragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_permission, container, false)
+
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -50,10 +51,19 @@ class PermissionFragment() : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        profileViewModel = ViewModelProvider(requireActivity()).get(ProfileViewModel::class.java)
         var permissioncamera_photo = view.findViewById<Button>(R.id.permission_camera_photo)
         var permissiondeletephoto = view.findViewById<Button>(R.id.permission_deletephoto)
         var permissioncancel = view.findViewById<Button>(R.id.permission_cancel)
-        myimage = parentFragment?.view?.findViewById(R.id.myprofile_image_photo)
+
+        permission_taking_picture.setOnClickListener{
+            if (checkPermission(arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE))) { // 갤러리 실행
+                    camera()
+            }else{
+                requestMultiplePermission.launch(arrayOf(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE))
+            }
+        }
+
 
 
         // 사진이나 앨범에서 선택
@@ -64,18 +74,18 @@ class PermissionFragment() : BottomSheetDialogFragment() {
             } else { // 권한 요청
                 requestMultiplePermission.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))
             }
-            dismiss()
         }
+
 
         // 이미지 지우기
         permissiondeletephoto.setOnClickListener {
 
-            myimage?.let { it1 ->
-                    Glide.with(this)
-                        .load(R.drawable.ic_baseline_notifications_none_24) //이미지
-                        .into(it1) } //보여줄 위치
+
+            profileViewModel.set_default_photo((R.drawable.img_1))
             dismiss()
+
         }
+
 
         // 그냥 취소
         permissioncancel.setOnClickListener {
@@ -83,6 +93,37 @@ class PermissionFragment() : BottomSheetDialogFragment() {
         }
 
     }
+
+
+    var pictureUri: Uri? = null
+    private val getTakePicture = registerForActivityResult(ActivityResultContracts.TakePicture()) {
+        if (it) {
+            profileViewModel.set_profile_photo(pictureUri!!)
+        }
+        dismiss()
+    }
+
+
+
+    // 카메라를 실행한 후 찍은 사진을 프로필 사진으로 설정
+    private fun camera() {
+        pictureUri = createImageFile()
+        getTakePicture.launch(pictureUri)
+    }
+
+    private fun createImageFile(): Uri? {
+        val now = SimpleDateFormat("yyMMdd_HHmmss").format(Date())
+        val content = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, "img_$now.jpg")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
+        }
+        return requireActivity().contentResolver.insert(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            content
+        )
+    }
+
+
 
     // 권한 체크
     fun checkPermission(permissions: Array<String>): Boolean {
@@ -104,7 +145,7 @@ class PermissionFragment() : BottomSheetDialogFragment() {
 
     // 권한 요청
     private val requestMultiplePermission =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
+        super.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
             results.forEach {
                 if (!it.value) {
                     Toast.makeText(requireContext(), "권한 허용 필요", Toast.LENGTH_SHORT).show()
@@ -125,20 +166,20 @@ class PermissionFragment() : BottomSheetDialogFragment() {
             }
         }
 
+
+
     // 갤러리에서 받아온 이미지를 프로필 사진으로 설정
     private val getContentImage =
-        registerForActivityResult(
+        super.registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) {
             //결과 코드 OK , 결가값 null 아니면
             if (it.resultCode == Activity.RESULT_OK && it.data != null) {
                 //값 담기
                 val uri = it.data!!.data
-                //화면에 보여주기
-                Glide.with(this)
-                    .load(uri) //이미지
-                    .into(myimage!!) //보여줄 위치
+                profileViewModel.set_profile_photo(uri!!)
             }
+            dismiss()
         }
 
     // 갤러리 실행
