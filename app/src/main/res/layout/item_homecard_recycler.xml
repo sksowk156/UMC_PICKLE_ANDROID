@@ -59,6 +59,7 @@
         android:layout_marginHorizontal="4dp"
         android:layout_marginTop="4dp"
         android:text="옷이름"
+        android:maxLength="12"
         android:textColor="#1E1E1E"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/homecard_cardview_frame"

@@ -1,15 +1,17 @@
 package com.example.myapplication.db.remote
 
-import android.util.Log
 import com.example.myapplication.ApplicationClass
 import com.example.myapplication.db.remote.model.DressLikeDto
 import com.example.myapplication.db.remote.model.DressDetailDto
 import com.example.myapplication.db.remote.model.DressSearchDto
 import com.example.myapplication.db.remote.model.UpdateDressLikeDto
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.http.*
+import com.example.myapplication.db.remote.model.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 object DressService {
 
@@ -40,6 +42,17 @@ object DressService {
             @Query("name") name: String,
             @Query("sort") sort: String
             ):Call<DressSearchDto>
+        //의상 예약 내역 조회
+        @GET("dresses/order-list")
+        fun get_dress_resevation_data(
+            @Query("status") status: String
+        ):Call<List<DressOrderListDto>>
+
+        //의상 예약 상세 내역 조회
+        @GET("dresses/orders/{dress_reservation_id}")
+        fun get_dress_reservation_dress_data(
+            @Path("dress_reservation_id")dress_reservation_id:Int
+        ):Call<List<DressOrderDto>>
     }
 
     val dressService = ApplicationClass.retrofit.create(DressService.DressInterface::class.java)

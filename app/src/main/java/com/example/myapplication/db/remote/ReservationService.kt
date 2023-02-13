@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.myapplication.ApplicationClass
 import com.example.myapplication.db.remote.model.DressDetailDto
 import com.example.myapplication.db.remote.model.DressReservationDto
+import com.example.myapplication.db.remote.model.ReservationSuccessDto
 import com.example.myapplication.db.remote.model.UpdateDressLikeDto
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,7 +21,7 @@ object ReservationService {
         @POST("dresses/reservation")
         fun set_dresses_reservation(
             @Body dressReservationDto: DressReservationDto
-        ): Call<DressDetailDto>
+        ): Call<ReservationSuccessDto>
 
         @GET("dresses/reservation/{id}")
         fun get_dresses_reservation(

@@ -3,12 +3,15 @@ package com.example.myapplication.ui.main.profile.orderstatus.detail
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ItemOrderstatusdetailRecyclerBinding
+import com.example.myapplication.db.remote.DressOrderListDto
+import com.example.myapplication.db.remote.model.DressOrderDto
 import com.example.myapplication.ui.main.profile.orderstatus.OrderedClotheData
 
 class OrderstatusDetailAdapter() : RecyclerView.Adapter<OrderstatusDetailAdapter.ViewHolder>() {
-
-    var userList: ArrayList<OrderedClotheData>? = null
+//
+    var userList: ArrayList<DressOrderDto>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -33,12 +36,14 @@ class OrderstatusDetailAdapter() : RecyclerView.Adapter<OrderstatusDetailAdapter
     inner class ViewHolder(val binding: ItemOrderstatusdetailRecyclerBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun setUser(user: OrderedClotheData?) {
+        fun setUser(user: DressOrderDto?) {
             with(binding) {
-                orderstatusdetailImageProduct
-                orderstatusdetailTextviewClothename.text = user?.orderclothename
-                orderstatusdetailTextviewClothecolorsize.text = "${user?.orderclothesize} / ${user?.orderclothesize}"
-                orderstatusdetailTextviewClotheprice.text = user?.orderclotheprice
+                Glide.with(this@ViewHolder.itemView)
+                    .load(user?.dress_image_url)
+                    .into(orderstatusdetailImageProduct)
+                orderstatusdetailTextviewClothename.text =user?.dress_name
+                orderstatusdetailTextviewClothecolorsize.text = "${user?.dress_option1_name} / ${user?.dress_option2_name}"
+                orderstatusdetailTextviewClotheprice.text = user?.price
             }
         }
     }

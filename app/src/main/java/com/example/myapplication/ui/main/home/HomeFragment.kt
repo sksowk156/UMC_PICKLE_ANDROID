@@ -94,11 +94,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
 
     private fun initSlideView() {
         imageList = ArrayList()
-        imageList.add(R.drawable.img_2)
-        imageList.add(R.drawable.img_3)
-        imageList.add(R.drawable.img_4)
-        imageList.add(R.drawable.img_5)
-        imageList.add(R.drawable.img_6)
+        imageList.add(R.drawable.slider_home1)
+        imageList.add(R.drawable.slider_home2)
+        imageList.add(R.drawable.slider_home3)
+        imageList.add(R.drawable.slider_home4)
+        imageList.add(R.drawable.slider_home5)
         lateinit var sliderView: SliderView
         sliderView = binding.slider
         lateinit var sliderAdapter: SliderAdapter

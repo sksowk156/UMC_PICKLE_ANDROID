@@ -10,26 +10,53 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMyprofileBinding
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.profile.logout.LogoutFragment
+import com.example.myapplication.viewmodel.ProfileViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MyprofileFragment() : BaseFragment<FragmentMyprofileBinding>(R.layout.fragment_myprofile) {
+    private lateinit var profileViewModel: ProfileViewModel
 
     private var CAMERA_PERMISSION: Boolean = false
     private var WRITE_EXTERNAL_STORAGE_PERMISSION: Boolean = false
     private var READ_EXTERNAL_STORAGE_PERMISSION: Boolean = false
 
     override fun init() {
+        profileViewModel =
+            ViewModelProvider(requireActivity()).get(ProfileViewModel::class.java)
+
+        profileViewModel.profile_photo.observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer<Uri> {
+                Glide.with(this)
+                    .load(it) //이미지
+                    .into(binding.myprofileImagePhoto)
+                //보여줄 위치
+            })
+
+        profileViewModel.default_profile_photo.observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer<Int> {
+                Glide.with(this)
+                    .load(it)
+                    .into(binding.myprofileImagePhoto)
+            })
+
+
+
         hideBottomNavigation(true)
         initAppbar(binding.myprofileToolbar, "내 정보 수정", true, false)
         binding.myprofileImagePhoto.setOnClickListener {
@@ -37,6 +64,7 @@ class MyprofileFragment() : BaseFragment<FragmentMyprofileBinding>(R.layout.frag
             val bottomSheetDialogFragment: BottomSheetDialogFragment = PermissionFragment()
             bottomSheetDialogFragment.show(parentFragmentManager, null)
         }
+
     }
 
     private fun openDialog(context: Context) {
@@ -74,6 +102,7 @@ class MyprofileFragment() : BaseFragment<FragmentMyprofileBinding>(R.layout.frag
             }
             dialog.dismiss()
         }
+
     }
 
     // 권한 체크
