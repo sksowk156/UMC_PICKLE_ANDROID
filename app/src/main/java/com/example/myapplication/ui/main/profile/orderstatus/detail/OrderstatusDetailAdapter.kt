@@ -7,7 +7,7 @@ import com.example.myapplication.databinding.ItemOrderstatusdetailRecyclerBindin
 import com.example.myapplication.ui.main.profile.orderstatus.OrderedClotheData
 
 class OrderstatusDetailAdapter() : RecyclerView.Adapter<OrderstatusDetailAdapter.ViewHolder>() {
-
+//
     var userList: ArrayList<OrderedClotheData>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

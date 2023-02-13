@@ -11,7 +11,7 @@ import com.example.myapplication.viewmodel.ProfileViewModel
 
 class ProfileBlankFragment :
     BaseFragment<FragmentProfileBlankBinding>(R.layout.fragment_profile_blank) {
-
+//
     override fun savedatainit() {
         childFragmentManager
             .beginTransaction()

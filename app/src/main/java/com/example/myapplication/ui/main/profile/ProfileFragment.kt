@@ -23,7 +23,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
         initAppbar(binding.profileToolbar, "마이페이지", false, true)
         initButton()
     }
-
+//
     private fun initButton(){
         binding.apply {
             // 마이페이지

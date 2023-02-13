@@ -36,7 +36,7 @@ class OrderstatusDetailFragment : BaseFragment<FragmentOrderstatusDetailBinding>
     }
 
     val OrderedClotheDataList: ArrayList<OrderedClotheData> = ArrayList()
-
+//
     private fun initRecyclerView(){
         with(binding) {
             // 1. 어댑터 생성 및 리사이클러뷰 연결

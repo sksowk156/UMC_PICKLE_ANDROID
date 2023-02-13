@@ -110,7 +110,7 @@ class DressViewModel : ViewModel() {
                 Log.d("whatisthis","get_dress_reservation_dress_data, 네트워크 오류가 발생했습니다."+ t.message.toString())
             }
         })
-    }
+    }//
     fun get_dress_resevation_data(status: String){
         DressService.dressService.get_dress_resevation_data(status)
             .enqueue(object :

@@ -75,7 +75,7 @@ class OrderstatusFragment : BaseFragment<FragmentOrderstatusBinding>(R.layout.fr
             OrderedClotheDataList.add(OrderedClotheData("20200204",R.drawable.cardigan1,"ㄴㅁㅇ","옷","8700","검정","M"))
             OrderedClotheDataList.add(OrderedClotheData("20200204",R.drawable.cardigan1,"ㄴㅁㅇ","옷","8700","검정","M"))
 //            dressViewModel.dfndslkklsf.observer{
-//                orderstatusAdapter.userList = it
+//   //             orderstatusAdapter.userList = it
 //            }
             orderstatusRecyclerview.adapter = orderstatusAdapter
             orderstatusRecyclerview.layoutManager = LinearLayoutManager(context)
