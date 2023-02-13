@@ -1,14 +1,31 @@
 package com.example.myapplication.ui.main.location.around
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemAroundRecyclerBinding
-import com.example.myapplication.ui.main.location.MapAroundData
+import com.example.myapplication.db.remote.model.StoreCoordDto
+import com.example.myapplication.db.remote.model.StoreDetailDto
 
-class AroundAdapter : RecyclerView.Adapter<AroundAdapter.ViewHolder>() {
+class AroundAdapter(clicklistener: AroundAdapter.ClothesClickListener) :
+    RecyclerView.Adapter<AroundAdapter.ViewHolder>() {
 
-    var userList: ArrayList<MapAroundData>?= null
+    var userList: ArrayList<StoreCoordDto>? = null
+
+    var clicklistener: AroundAdapter.ClothesClickListener = clicklistener
+
+    interface ClothesClickListener {
+        fun onItemMarketFavoriteClick(view: View, position: Int)
+        fun onItemMarketLayoutClick(view: View, position: Int)
+    }
+
+    fun updatedata(data: ArrayList<StoreCoordDto>) {
+        userList = data
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -19,20 +36,46 @@ class AroundAdapter : RecyclerView.Adapter<AroundAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = userList?.get(position)
 
-        holder.setUser(user)
+        holder.setUser(user, position)
     }
 
     override fun getItemCount(): Int {
         return userList?.size ?: 0
     }
 
-    inner class ViewHolder(val binding: ItemAroundRecyclerBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: ItemAroundRecyclerBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun setUser(user: MapAroundData?) {
+        fun setUser(user: StoreCoordDto?, position: Int) {
             with(binding) {
-                marketName.text = user?.market_around_name.toString()
-                marketAddress.text = user?.market_around_address.toString()
-                marketOperationhours.text = user?.market_around_operationhours.toString()
+                if (user?.store_like == false) {
+                    //화면에 보여주기
+                    Glide.with(this@ViewHolder.itemView)
+                        .load(R.drawable.icon_favorite_line) //이미지
+                        .into(marketFavorite) //보여줄 위치
+                } else {
+                    //화면에 보여주기
+                    Glide.with(this@ViewHolder.itemView)
+                        .load(R.drawable.icon_favorite_filledpink) //이미지
+                        .into(marketFavorite) //보여줄 위치
+                }
+
+                Glide.with(this@ViewHolder.itemView)
+                    .load(user?.store_img) //이미지
+                    .into(marketImage) //보여줄 위치
+                marketName.text = user?.store_name.toString()
+                marketAddress.text = user?.address.toString()
+                marketOperationhours.text = user?.hoursOfOperation.toString()
+
+                marketLayout.setOnClickListener {
+                    clicklistener.onItemMarketLayoutClick(it, absoluteAdapterPosition)
+                    notifyDataSetChanged()
+                }
+                marketFavorite.setOnClickListener {
+                    clicklistener.onItemMarketFavoriteClick(it, absoluteAdapterPosition)
+                    notifyDataSetChanged()
+
+                }
             }
         }
     }

@@ -21,14 +21,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/map_fab"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="20dp"
-            android:src="@drawable/ic_baseline_format_list_bulleted_24" />
+            android:layout_margin="16dp"
+            android:orientation="vertical">
 
+            <com.naver.maps.map.widget.LocationButtonView
+                android:id="@+id/map_locationbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/map_fab"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginTop="9dp"
+                android:src="@drawable/icon_maplist"
+                android:layout_gravity="center_horizontal"/>
+
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/map_bottomsheetlayout"
@@ -40,40 +55,25 @@
             android:orientation="vertical"
             app:behavior_draggable="false"
             app:behavior_hideable="false"
-
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-            <com.naver.maps.map.widget.LocationButtonView
-                android:id="@+id/map_locationbutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="4dp"
-                app:layout_constraintBottom_toTopOf="@id/map_innerlayout"
-                app:layout_constraintStart_toStartOf="@id/map_bottomsheetlayout"
-                app:layout_constraintTop_toTopOf="@id/map_bottomsheetlayout" />
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/map_innerlayout"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="120dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/map_bottomsheet_round_background"
                 app:layout_constraintBottom_toBottomOf="@id/map_bottomsheetlayout"
                 app:layout_constraintEnd_toEndOf="@id/map_bottomsheetlayout"
-                app:layout_constraintStart_toStartOf="@id/map_bottomsheetlayout"
-                app:layout_constraintTop_toBottomOf="@id/map_locationbutton">
+                app:layout_constraintStart_toStartOf="@id/map_bottomsheetlayout">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/map_image"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_margin="20dp"
-                    app:civ_border_width="2dp"
-                    app:civ_border_color="@color/black"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_margin="18dp"
                     android:src="@drawable/ic_launcher_foreground"
                     app:layout_constraintBottom_toBottomOf="@id/map_innerlayout"
                     app:layout_constraintStart_toStartOf="@id/map_innerlayout"
@@ -82,50 +82,31 @@
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
+                    android:layout_marginStart="29dp"
+                    android:layout_marginEnd="16dp"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="@id/map_innerlayout"
-                    app:layout_constraintEnd_toStartOf="@id/map_image_favorite"
+                    app:layout_constraintEnd_toStartOf="@+id/map_image_favorite"
                     app:layout_constraintStart_toEndOf="@id/map_image"
                     app:layout_constraintTop_toTopOf="@id/map_innerlayout">
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <TextView
+                        android:id="@+id/map_textview_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_marginStart="8dp"
+                        android:text="매장명"
+                        android:textColor="#1E1E1E"
+                        android:textSize="16sp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="매장명" />
-
-                        <TextView
-                            android:id="@+id/map_textview_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="매장명" />
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <TextView
+                        android:id="@+id/map_textview_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="주소" />
-
-                        <TextView
-                            android:id="@+id/map_textview_address"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="주소" />
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                        android:layout_marginStart="8dp"
+                        android:text="주소"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12sp" />
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="wrap_content"
@@ -135,14 +116,18 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="운영 시간" />
+                            android:text="운영 시간 "
+                            android:textColor="#1E1E1E"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/map_textview_operationhours"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:text="운영 시간" />
+                            android:text="운영 시간"
+                            android:textColor="#1E1E1E"
+                            android:textSize="12sp" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -151,10 +136,10 @@
 
                 <ImageView
                     android:id="@+id/map_image_favorite"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/ic_baseline_favorite_24"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/icon_favorite_line"
                     app:layout_constraintBottom_toBottomOf="@id/map_innerlayout"
                     app:layout_constraintEnd_toEndOf="@id/map_innerlayout"
                     app:layout_constraintTop_toTopOf="@id/map_innerlayout" />

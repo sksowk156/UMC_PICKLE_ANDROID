@@ -5,14 +5,13 @@
     <item
         android:id="@+id/search"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_search_24"
+        android:icon="@drawable/icon_search"
         android:title="search"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="always|collapseActionView" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/notification"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_notifications_none_24"
+        android:icon="@drawable/icon_notification"
         android:title="글 쓰기"
         app:showAsAction="always" />
 </menu>

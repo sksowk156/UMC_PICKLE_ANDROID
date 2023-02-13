@@ -1,168 +1,169 @@
 package com.example.myapplication.ui.main.home
 
 import android.content.Intent
-import android.view.View
+import android.util.Log
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
+import com.example.myapplication.db.remote.model.DressHomeDto
 import com.example.myapplication.ui.base.BaseFragment
-import com.example.myapplication.ui.store.ClothActivity
-import com.example.myapplication.ui.store.StoreActivity
+import com.example.myapplication.ui.main.ItemClickInterface
+import com.example.myapplication.ui.main.home.newclothe.NewFragment
+import com.example.myapplication.ui.main.home.recent.HomeRecommendAdapter
+import com.example.myapplication.ui.main.home.recent.RecentFragment
+import com.example.myapplication.ui.storecloth.clothdetail.ClothActivity
+import com.example.myapplication.ui.storecloth.storedetail.StoreActivity
+import com.example.myapplication.viewmodel.HomeViewModel
 import com.smarteist.autoimageslider.SliderView
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
-    CardViewAdapter.ClothesClickListener {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), ItemClickInterface {
+    lateinit var homeViewModel: HomeViewModel
 
-    lateinit var fragmentadapter : CardViewAdapter
+    lateinit var recentAdapter: HomeRecentAdapter
+    lateinit var newAdapter: HomeNewAdapter
+    lateinit var recommendAdapter: HomeRecommendAdapter
+
+    lateinit var imageList: ArrayList<Int>
+
     override fun init() {
-        initSlide()
-        rcView()
+        homeViewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
+
+//        homeViewModel.home_latlng.observe(this, Observer<Pair<Double,Double>>{
+//            if(homeViewModel.home_latlng.value != null){
+//                homeViewModel.get_home_data(homeViewModel.home_latlng.value!!.first, homeViewModel.home_latlng.value!!.second)
+//            }
+//        })
+
+        initAppbar(binding.homeToolbar, "홈",false,true)
+        initSlideView()
+        initRecyclerView()
 
         binding.button.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
-                .add(R.id.home_base_layout, RecentFragment(),"recent")
+                .add(R.id.home_base_layout, RecentFragment(), "recent")
                 .addToBackStack(null)
                 .commitAllowingStateLoss()
+
         }
 
-        binding.secondbutton.setOnClickListener {
+        binding.button2.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
-                .replace(R.id.home_base_layout, NewFragment(),"new")
+                .replace(R.id.home_base_layout, NewFragment(), "new")
                 .addToBackStack(null)
                 .commitAllowingStateLoss()
         }
     }
 
 
-    private fun initSlide(){
-
-        lateinit var imageUrl: ArrayList<String>
-        // on below line we are creating a variable
-        // for our array list for storing our images.
-        imageUrl = ArrayList()
-
-        // on below line we are adding data to our image url array list.
-        imageUrl =
-            (imageUrl + "https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8c2hvZXN8ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60") as ArrayList<String>
-        imageUrl =
-            (imageUrl + "https://images.unsplash.com/photo-1662532577856-e8ee8b138a8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8NXw5NzY3MDkyfHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=600&q=60") as ArrayList<String>
-        imageUrl =
-            (imageUrl + "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8YmFnfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60") as ArrayList<String>
-
-
+    private fun initSlideView() {
+        imageList = ArrayList()
+        imageList.add(R.drawable.img_2)
+        imageList.add(R.drawable.img_3)
+        imageList.add(R.drawable.img_4)
+        imageList.add(R.drawable.img_5)
+        imageList.add(R.drawable.img_6)
         // on below line we are creating
         // a variable for our slider view.
         lateinit var sliderView: SliderView
-
-        sliderView=binding.slider
-
+        sliderView = binding.slider
         // on below line we are creating
         // a variable for our slider adapter.
         lateinit var sliderAdapter: SliderAdapter
-
-        sliderAdapter=SliderAdapter(imageUrl)
-
+        sliderAdapter = SliderAdapter(imageList)
         sliderView.autoCycleDirection = SliderView.LAYOUT_DIRECTION_LTR
-
         // on below line we are setting adapter for our slider.
         sliderView.setSliderAdapter(sliderAdapter)
-
         // on below line we are setting scroll time
         // in seconds for our slider view.
         sliderView.scrollTimeInSec = 3
-
         // on below line we are setting auto cycle
         // to true to auto slide our items.
         sliderView.isAutoCycle = true
-
         // on below line we are calling start
         // auto cycle to start our cycle.
         sliderView.startAutoCycle()
     }
 
+    private fun initRecyclerView() {
+        recentAdapter = HomeRecentAdapter(this@HomeFragment)
+        newAdapter = HomeNewAdapter(this@HomeFragment)
+        recommendAdapter = HomeRecommendAdapter(this@HomeFragment)
 
+        homeViewModel.home_data.observe(viewLifecycleOwner, Observer<DressHomeDto> { now_homeModel ->
+            if (now_homeModel != null) {
+                recentAdapter.submitList(now_homeModel.recentView?.toMutableList())
+                newAdapter.submitList(now_homeModel.newDresses?.toMutableList())
+                recommendAdapter.submitList(now_homeModel.recDresses?.toMutableList())
+            } else {
+                Log.d("whatisthis", "home_data, 없음")
+            }
+        })
 
-    private fun addClothes(){
-        val clothes1=Clothes(
-            R.drawable.one,
-            "store1",
-            "옷1",
-            30000
-        )
-        clothesList.add(clothes1)
-        newclothesList.add(clothes1)
-
-        val clothes2=Clothes(
-            R.drawable.two,
-            "store2",
-            "옷2",
-            30000
-        )
-        clothesList.add(clothes2)
-        newclothesList.add(clothes1)
-
-        val clothes3=Clothes(
-            R.drawable.two,
-            "store1",
-            "옷3",
-            30000
-        )
-        clothesList.add(clothes3)
-        newclothesList.add(clothes1)
-
-        val clothes4= Clothes(
-            R.drawable.one,
-            "store1",
-            "옷4",
-            30000
-        )
-        clothesList.add(clothes4)
-        newclothesList.add(clothes1)
-
-        val clothes5=Clothes(
-            R.drawable.two,
-            "store1",
-            "옷5",
-            30000
-        )
-        clothesList.add(clothes5)
-        newclothesList.add(clothes1)
-    }
-
-    private fun rcView(){
-        addClothes()
-        fragmentadapter = CardViewAdapter(this@HomeFragment)
-        fragmentadapter.submitList(clothesList.toMutableList())
-
-        binding.recyclerView.apply {
-            layoutManager=
-                LinearLayoutManager(this.context,LinearLayoutManager.HORIZONTAL,false)
-            adapter=fragmentadapter
+        binding.homeRecyclerviewRecent.apply {
+            layoutManager =
+                LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = recentAdapter
         }
 
-        binding.SecondRecyclerView.apply {
-            layoutManager=
-                LinearLayoutManager(this.context,LinearLayoutManager.HORIZONTAL,false)
-            adapter=fragmentadapter
-
+        binding.homeRecyclerviewNew.apply {
+            layoutManager =
+                LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = newAdapter
         }
+
+        binding.homeRecyclerviewRecommend.apply {
+            layoutManager = GridLayoutManager(this.context, 2)
+            adapter = recommendAdapter
+        }
+
     }
 
-    override fun onItemImageClick(view: View, position: Int) {
+    override fun onItemImageClick(id: Int, position: Int) {
         val intent = Intent(getActivity(), ClothActivity::class.java)
-        intent.putExtra("storeName","store1")
-        intent.putExtra("clothName","옷1")
-        intent.putExtra("clothPrice",30000)
-        //intent.putExtra("StoreName",20000)
-
+        intent.putExtra("cloth_id", id)
         startActivity(intent)
-
     }
 
-    override fun onItemMarketNameClick(view: View, position: Int) {
+    override fun onItemStoreNameClick(id: Int, position: Int) {
         val intent = Intent(getActivity(), StoreActivity::class.java)
+        intent.putExtra("store_id", id)
         startActivity(intent)
+    }
+
+    override fun onItemFavoriteClick(id: Int, position: Int) {
+//        if(view == view.findViewById<ImageButton>(R.id.card_imagebutton_favorite)){
+//            if (clothesList[position].like == false) {
+//                //화면에 보여주기
+//                Glide.with(this@HomeFragment)
+//                    .load(R.drawable.icon_favorite_filledpink) //이미지
+//                    .into(view.findViewById<ImageButton>(R.id.card_imagebutton_favorite)) //보여줄 위치
+//                clothesList[position].like = true
+//            } else {
+//                //화면에 보여주기
+//                Glide.with(this@HomeFragment)
+//                    .load(R.drawable.icon_favorite_whiteline) //이미지
+//                    .into(view.findViewById<ImageButton>(R.id.card_imagebutton_favorite)) //보여줄 위치
+//                clothesList[position].like = false
+//            }
+//        }else{
+//            if (newclothesList[position].like == false) {
+//                //화면에 보여주기
+//                Glide.with(this@HomeFragment)
+//                    .load(R.drawable.icon_favorite_filledpink) //이미지
+//                    .into(view.findViewById<ImageButton>(R.id.homecard_imagebutton_favorite)) //보여줄 위치
+//                newclothesList[position].like = true
+//            } else {
+//                //화면에 보여주기
+//                Glide.with(this@HomeFragment)
+//                    .load(R.drawable.icon_favorite_whiteline) //이미지
+//                    .into(view.findViewById<ImageButton>(R.id.homecard_imagebutton_favorite)) //보여줄 위치
+//                newclothesList[position].like = false
+//            }
+//        }
     }
 }

@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:clickable="true"
-        tools:context=".ui.main.search.SearchresultFragment">
+        tools:context=".ui.search.SearchresultFragment">
 
         <TextView
             android:textColor="@color/black"

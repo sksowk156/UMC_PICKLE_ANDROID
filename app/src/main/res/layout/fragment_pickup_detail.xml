@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.storecloth.clothdetail.pickupdetail.PickupDetailFragment">
+
+        <include
+            android:id="@+id/pickupdetail_toolbar"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pickupdetail_toolbar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F4F6F8"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="151dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="17dp"
+                        android:layout_marginTop="16dp"
+                        android:text="픽업할 매장 정보"
+                        android:textColor="#1E1E1E"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="16dp"
+                        android:background="#E1E1E1" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="17dp"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/pickupdetail_textview_storename"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="매장명"
+                            android:textColor="#1E1E1E"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/pickupdetail_textview_storestatus"
+                            android:layout_width="38dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="8dp"
+                            android:background="@drawable/store_status_background"
+                            android:gravity="center"
+                            android:text="영업중"
+                            android:textColor="#D34E8E"
+                            android:textSize="10sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/pickupdetail_textview_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="17dp"
+                        android:layout_marginTop="4dp"
+                        android:text="매장 위치"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/pickupdetail_textview_operationhours"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="17dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="운영시간"
+                        android:textColor="#1E1E1E"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="17dp"
+                        android:layout_marginTop="16dp"
+                        android:text="주문 상품"
+                        android:textColor="#1E1E1E"
+                        android:textSize="16sp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/pickupdetail_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never" />
+                </LinearLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintlayout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_pickup_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:text="픽업 시간"
+                        android:textColor="#1E1E1E"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="(* 3일 내에 픽업해야합니다.)"
+                        android:textSize="10sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_pickup_time"
+                        app:layout_constraintStart_toEndOf="@+id/tv_pickup_time"
+                        app:layout_constraintTop_toTopOf="@+id/tv_pickup_time" />
+
+                    <View
+                        android:id="@+id/tv_pickup_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="16dp"
+                        android:background="#E1E1E1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_pickup_time" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/iv_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:drawableStart="@drawable/icon_pickupcalendar"
+                        android:gravity="center_vertical"
+                        android:text=" 날짜"
+                        android:textColor="#1E1E1E"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_pickup_line" />
+
+                    <TextView
+                        android:id="@+id/tv_date_dialog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:background="@drawable/box_border"
+                        android:ems="10"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_date" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/iv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="24dp"
+                        android:drawableStart="@drawable/ic_baseline_access_time_24"
+                        android:gravity="center_vertical"
+                        android:text=" 시간"
+                        android:textColor="#1E1E1E"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_date_dialog" />
+
+<!--                    <com.google.android.material.chip.ChipGroup-->
+<!--                        android:id="@+id/chip_group"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_margin="16dp"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toBottomOf="@+id/iv_time"-->
+<!--                        app:singleSelection="true">-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="11:00" />-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="11:30" />-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="12:00" />-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="12:30" />-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="14:00" />-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="14:30" />-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="15:00" />-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="15:30" />-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="16:00" />-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="16:30" />-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="17:00" />-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="17:30" />-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="18:00" />-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="18:30" />-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="19:00" />-->
+
+<!--                        <com.google.android.material.chip.Chip-->
+<!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="19:30" />-->
+<!--                    </com.google.android.material.chip.ChipGroup>-->
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:rowCount="4"
+                        android:columnCount="4"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_time"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+
+                        <TextView
+                            android:id="@+id/chip1"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="11:00"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+                        <TextView
+                            android:id="@+id/chip2"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="11:30"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+                        <TextView
+                            android:id="@+id/chip3"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="12:00"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+                        <TextView
+                            android:id="@+id/chip4"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="12:30"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+                        <TextView
+                            android:id="@+id/chip5"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="13:00"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+                        <TextView
+                            android:id="@+id/chip6"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="13:30"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+                        <TextView
+                            android:id="@+id/chip7"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="14:00"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+                        <TextView
+                            android:id="@+id/chip8"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="14:30"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+                        <TextView
+                            android:id="@+id/chip9"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="15:00"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+                        <TextView
+                            android:id="@+id/chip10"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="15:30"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+                        <TextView
+                            android:id="@+id/chip11"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="16:00"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+                        <TextView
+                            android:id="@+id/chip12"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="16:30"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+                        <TextView
+                            android:id="@+id/chip13"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="17:00"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+                        <TextView
+                            android:id="@+id/chip14"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="17:30"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+                        <TextView
+                            android:id="@+id/chip15"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="18:00"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+                        <TextView
+                            android:id="@+id/chip16"
+                            android:layout_width="76dp"
+                            android:layout_height="36dp"
+                            android:text="18:30"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:background="@drawable/chip_background"
+                            android:layout_margin="4dp"/>
+
+                    </GridLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="144dp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="16dp"
+                        android:text="요청 사항"
+                        android:textColor="#1E1E1E"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:background="#E1E1E1" />
+
+                    <EditText
+                        android:id="@+id/pickupdetail_edittext_request"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginHorizontal="14dp"
+                        android:layout_marginVertical="16dp"
+                        android:hint="요청사항이 있으시면 적어주세요!" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="17dp"
+                        android:layout_weight="1"
+                        android:text="총 결제 금액"
+                        android:textColor="#1E1E1E"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/pickupdetail_textview_totalprice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="16dp"
+                        android:text="100,000원"
+                        android:textColor="#D34E8E"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/linearlayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="128dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/iv_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/gray_button_background"
+                        android:gravity="center"
+                        android:text="픽업 예약"
+                        android:textColor="#A4A4A4"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

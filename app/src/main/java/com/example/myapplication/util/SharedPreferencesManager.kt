@@ -3,7 +3,7 @@ package com.example.myapplication.util
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.myapplication.ApplicationClass.Companion.SERVER_TOKEN
-import com.example.myapplication.ui.main.search.SearchHistroyData
+import com.example.myapplication.ui.search.SearchHistroyData
 import com.example.myapplication.ApplicationClass.Companion.SHARED_SEARCH_HISTORY
 import com.google.gson.Gson
 
@@ -12,11 +12,11 @@ class SharedPreferencesManager(context: Context) {
 
     // // 쉐어드 만들기
     // 검색 기록
-    private val searchhistoryprefs: SharedPreferences =
+    private var searchhistoryprefs: SharedPreferences =
         context.getSharedPreferences(SHARED_SEARCH_HISTORY, Context.MODE_PRIVATE)
 
     // jwt
-    private val jwtprefs: SharedPreferences =
+    private var jwtprefs: SharedPreferences =
         context.getSharedPreferences(SERVER_TOKEN, Context.MODE_PRIVATE)
 
     // 검색 기록 데이터 출력
@@ -47,10 +47,8 @@ class SharedPreferencesManager(context: Context) {
     }
 
     // jwt 데이터 출력
-    fun getJwt(key:String): String {
-        val storedJwtString = jwtprefs.getString(key, "")!!
-        return storedJwtString
-    }
+    fun getJwt(key:String): String?= jwtprefs.getString(key, null)
+
 
     // jwt 데이터 저장
     fun setJwt(key : String, jwtToken: String) {

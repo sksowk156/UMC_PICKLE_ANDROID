@@ -17,11 +17,19 @@
         android:id="@+id/inquiry_item_innerlayout1">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Q "
+            android:textSize="14sp"
+            android:textColor="#0FAA59"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
             android:id="@+id/inquiry_item_textview_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Q 질문1"
+            android:text=" 질문1"
             android:textSize="14sp"
             android:layout_gravity="center_vertical"/>
 
@@ -29,7 +37,7 @@
             android:id="@+id/inquiry_item_image1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+            android:src="@drawable/ic_baseline_keyboard_arrow_down_24"/>
 
     </LinearLayout>
 

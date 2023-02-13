@@ -10,6 +10,15 @@
         android:clickable="true"
         tools:context=".ui.main.profile.inquiry.InquiryFragment">
 
+        <include
+            android:id="@+id/inquiry_toolbar"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/inquiry_textview1"
             android:layout_width="wrap_content"
@@ -17,15 +26,17 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:text="자주 묻는 질문"
+            android:textColor="#000000"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/inquiry_toolbar" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/inquiry_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

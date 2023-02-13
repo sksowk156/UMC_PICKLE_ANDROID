@@ -1,38 +1,61 @@
 package com.example.myapplication.ui.main
 
 import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySecondBinding
+import com.example.myapplication.ui.base.BaseActivity
 import com.example.myapplication.ui.main.chat.ChatFragment
 import com.example.myapplication.ui.main.favorite.FavoriteBaseFragment
 import com.example.myapplication.ui.main.home.HomeBaseFragment
 import com.example.myapplication.ui.main.location.LocationFragment
 import com.example.myapplication.ui.main.profile.ProfileBlankFragment
+import com.example.myapplication.viewmodel.HomeViewModel
 
-class SecondActivity : AppCompatActivity() {
-    // 바인딩
-    private lateinit var binding: ActivitySecondBinding
-    // 현재 보이는 fragment의 Tag를 저장
+class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_second) {
+
+    private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    private val PERMISSIONS_REQUEST_CODE = 100
+    private lateinit var locatioNManager : LocationManager
     private lateinit var currentFragmenttag: String
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySecondBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    lateinit var homeViewModel: HomeViewModel
 
-        // 앱을 켰을 때 첫 fragment
-        if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .add(binding.secondFramelayout.id, HomeBaseFragment(), "homebase")
-                .commitAllowingStateLoss()
-            currentFragmenttag = "homebase" // 현재 보고 있는 fragmet의 Tag
-        }
+    override fun savedatainit() {
+        supportFragmentManager
+            .beginTransaction()
+            .add(binding.secondFramelayout.id, HomeBaseFragment(), "homebase")
+            .commitAllowingStateLoss()
+        currentFragmenttag = "homebase" // 현재 보고 있는 fragmet의 Tag
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("currentfragment",currentFragmenttag)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        currentFragmenttag = savedInstanceState.get("currentfragment").toString()
+    }
+
+    override fun init() {
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        // 네비게이션 버튼의 테마색으로 변하는 것을 막기 위해서
+        binding.secondBottomNavigationView.itemIconTintList = null
 
         // 네비게이션 버튼 클릭시 프래그먼트 전환
         binding.secondBottomNavigationView.setOnItemSelectedListener {
@@ -69,8 +92,18 @@ class SecondActivity : AppCompatActivity() {
                     requestLocationPermission()
                 })
         } else {
-            checkPermissionAndroidQ()
+//            checkPermissionAndroidQ()
+            getLocation()
         }
+
+        homeViewModel.home_latlng.observe(this, Observer<Pair<Double,Double>>{
+            if(it != null){
+//                homeViewModel.get_home_data(37.5581, 126.9260)
+                homeViewModel.get_home_data(it!!.first, it!!.second)
+            }else{
+                Log.d("whatisthis", "home_latlng, 데이터 없음")
+            }
+        })
     }
 
     private fun changeFragment(tag: String, fragment: Fragment) {
@@ -108,8 +141,9 @@ class SecondActivity : AppCompatActivity() {
                 }
             }
             if (isGranted) {
+                getLocation()
                 // Check background permission android Q
-                checkPermissionAndroidQ()
+//                checkPermissionAndroidQ()
             } else {
                 // Continue run app no permission.
             }
@@ -139,10 +173,58 @@ class SecondActivity : AppCompatActivity() {
             } else {
                 LocationPermissionUtils.openSettingBackgroundMode(requestPermissionAndroidQ)
             }
-
         } else {
             // Continue run app flow
         }
+    }
+
+    private fun getLocation(){
+        locatioNManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        var userLocation: Location = getLatLng()
+
+        if(userLocation != null){
+            homeViewModel.set_home_latlng(userLocation.latitude,userLocation.longitude)
+
+//            latitude = userLocation.latitude
+//            longitude = userLocation.longitude
+//            Log.d("CheckCurrentLocation", "현재 내 위치 값: ${latitude}, ${longitude}")
+//            var mGeoCoder =  Geocoder(applicationContext, Locale.KOREAN)
+//            var mResultList: List<Address>? = null
+//            try{
+//                mResultList = mGeoCoder.getFromLocation(
+//                    latitude!!, longitude!!, 1
+//                )
+//            }catch(e: IOException){
+//                e.printStackTrace()
+//            }
+//
+//            if(mResultList != null){
+//                Log.d("CheckCurrentLocation", mResultList[0].getAddressLine(0))
+//            }
+        }
+    }
+
+    private fun getLatLng(): Location{
+        var currentLatLng: Location? = null
+        var hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
+            Manifest.permission.ACCESS_FINE_LOCATION)
+        var hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
+            Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        if(hasFineLocationPermission == PackageManager.PERMISSION_GRANTED ||
+            hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED){
+            val locatioNProvider = LocationManager.GPS_PROVIDER
+            currentLatLng = locatioNManager?.getLastKnownLocation(locatioNProvider)
+        }else{
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])){
+                Toast.makeText(this, "앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
+            }else{
+                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
+            }
+            currentLatLng = getLatLng()
+        }
+        return currentLatLng!!
     }
 
 }
