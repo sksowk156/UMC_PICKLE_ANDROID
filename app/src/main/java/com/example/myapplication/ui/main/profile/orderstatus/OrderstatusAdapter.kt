@@ -12,7 +12,7 @@ class OrderstatusAdapter(clicklistener: OrderstatusAdapter.OrderstatusClickListe
     var userList: ArrayList<OrderedClotheData>? = null
 
     interface OrderstatusClickListener {
-        fun onItemImageClick(view: View, position: Int)
+        fun onItemClothImageClick(view: View, position: Int)
         fun onItemDetailClick(view: View, position: Int)
         fun onItemInnerlayoutClick(view: View, position: Int)
     }
@@ -49,7 +49,7 @@ class OrderstatusAdapter(clicklistener: OrderstatusAdapter.OrderstatusClickListe
                 }
 
                 orderstatusImageProduct.setOnClickListener {
-                    clicklistener.onItemImageClick(it, absoluteAdapterPosition)
+                    clicklistener.onItemClothImageClick(it, absoluteAdapterPosition)
                 }
 
                 orderstatusTextviewDetail.setOnClickListener {

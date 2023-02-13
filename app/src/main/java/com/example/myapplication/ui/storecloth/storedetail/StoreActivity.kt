@@ -1,12 +1,14 @@
 package com.example.myapplication.ui.storecloth.storedetail
 
-import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,23 +17,26 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityStoreBinding
 import com.example.myapplication.db.remote.model.StoreDetailDto
+import com.example.myapplication.db.remote.model.UpdateStoreLikeDto
 import com.example.myapplication.ui.base.BaseActivity
-import com.example.myapplication.ui.main.ItemClickInterface
+import com.example.myapplication.ui.ItemCardClickInterface
 import com.example.myapplication.ui.search.SearchActivity
 import com.example.myapplication.ui.storecloth.clothdetail.ClothActivity
 import com.example.myapplication.viewmodel.StoreViewModel
-import kotlinx.android.synthetic.main.toolbar_content.view.*
 
 
-class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store), ItemClickInterface {
+class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store),
+    ItemCardClickInterface {
     lateinit var storeViewModel: StoreViewModel
     lateinit var storedetailAdapter: StoreDetailAdapter
     private lateinit var toolbar: Toolbar
+    private var store_like_state: Boolean? = false
+    private var storeId: Int? = 0
 
     override fun init() {
         // 뷰모델 선언
         storeViewModel = ViewModelProvider(this).get(StoreViewModel::class.java)
-        storeViewModel.get_store_detail_data(intent.getIntExtra("store_id",0),"전체")
+        storeViewModel.get_store_detail_data(intent.getIntExtra("store_id", 0), "전체")
 
         storedetailAdapter = StoreDetailAdapter(this)
         // 매장 상세 정보 요청
@@ -41,9 +46,23 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
                     .load(now_storedetail.store_image_url) //이미지
                     .into(binding.storeImageviewImage) //보여줄 위치
 
+                if (now_storedetail.is_liked!!) {
+                    Glide.with(this)
+                        .load(R.drawable.icon_favorite_filledpink) //이미지
+                        .into(binding.storeImageviewFavorite) //보여줄 위치
+                } else {
+                    Glide.with(this)
+                        .load(R.drawable.icon_favorite_line) //이미지
+                        .into(binding.storeImageviewFavorite)  //보여줄 위치
+                }
+
                 binding.storeTextviewStorename.text = now_storedetail.store_name
                 binding.storeTextviewAddress.text = now_storedetail.store_address
                 binding.storeTextviewOperationhours.text = now_storedetail.hours_of_operation
+
+                storeId = now_storedetail.storeId
+                store_like_state = now_storedetail.is_liked
+
                 storedetailAdapter.submitList(now_storedetail.store_dress_list?.toMutableList())
             } else {
                 Log.d("whatisthis", "store_detail_data, 데이터 없음")
@@ -56,11 +75,33 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
             adapter = storedetailAdapter
         }
 
+        binding.storeImageviewFavorite.setOnClickListener {
+            // 임시로 이미지만 변경 -> store_detail_data를 전부 다시 요청하면 너무 비효율적
+            if (store_like_state == true) {
+                Glide.with(this)
+                    .load(R.drawable.icon_favorite_line) //이미지
+                    .into(binding.storeImageviewFavorite)  //보여줄 위치
+                store_like_state = false
+            } else {
+                Glide.with(this)
+                    .load(R.drawable.icon_favorite_filledpink) //이미지
+                    .into(binding.storeImageviewFavorite)  //보여줄 위치
+
+                store_like_state = true
+            }
+
+            // 좋아요 정보 갱신
+            if (storeId != 0) {
+                storeViewModel.set_store_like_data(UpdateStoreLikeDto(storeId!!))
+            }
+        }
+
+
         // 앱바 설정
         initAppbar(R.menu.menu_appbar)
     }
 
-    private fun initAppbar(menuRes : Int){
+    private fun initAppbar(menuRes: Int) {
         toolbar = binding.toolbar.toolbarToolbar
 
         setSupportActionBar(toolbar)
@@ -92,7 +133,7 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
         })
     }
 
-    override fun onItemImageClick(id: Int, position: Int) {
+    override fun onItemClothImageClick(id: Int, position: Int) {
         val intent = Intent(this, ClothActivity::class.java)
         intent.putExtra("cloth_id", id)
         startActivity(intent)
@@ -101,9 +142,20 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
     override fun onItemStoreNameClick(id: Int, position: Int) {
     }
 
-    override fun onItemFavoriteClick(id: Int, position: Int) {
-        // 좋아요 정보 갱신
-
+    // 옷 좋아요 클릭 시
+    override fun onItemClothFavoriteClick(like: Boolean, id: Int, view : View, position: Int) {
+//        if (like) {
+//            Glide.with(this)
+//                .load(R.drawable.icon_favorite_line) //이미지
+//                .into(view as ImageView) //보여줄 위치
+//            // 좋아요 정보 갱신 요청
+//        }
+//        else {
+//            Glide.with(this)
+//                .load(R.drawable.icon_favorite_filledpink) //이미지
+//                .into(view as ImageView)  //보여줄 위치
+//            // 좋아요 정보 갱신 요청
+//        }
     }
 
 }

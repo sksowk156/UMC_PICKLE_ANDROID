@@ -34,7 +34,7 @@ class OrderstatusFragment : BaseFragment<FragmentOrderstatusBinding>(R.layout.fr
         with(binding) {
             // 1. 어댑터 생성 및 리사이클러뷰 연결
             val orderstatusAdapter = OrderstatusAdapter(clicklistener = (object : OrderstatusAdapter.OrderstatusClickListener{
-                override fun onItemImageClick(view: View, position: Int) {
+                override fun onItemClothImageClick(view: View, position: Int) {
                     // 주문한 페이지로 이동
                 }
 

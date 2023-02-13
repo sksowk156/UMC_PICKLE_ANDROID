@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemSearchhistoryRecyclerBinding
+import com.example.myapplication.db.remote.model.search.SearchHistroyData
 
 class SearchhistoryAdapter(val clicklistener: ItemClickListener) :
     RecyclerView.Adapter<SearchhistoryAdapter.ViewHolder>() {

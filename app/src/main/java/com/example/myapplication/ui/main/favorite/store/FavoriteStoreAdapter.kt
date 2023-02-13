@@ -1,7 +1,6 @@
 package com.example.myapplication.ui.main.favorite.store
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,23 +9,18 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemAroundRecyclerBinding
 import com.example.myapplication.db.remote.model.StoreLikeDto
+import com.example.myapplication.ui.ItemListClickInterface
+import kotlin.math.abs
 
-class FavoriteStoreAdapter(clicklistener: ClothesClickListener) :
+class FavoriteStoreAdapter(clicklistener: ItemListClickInterface) :
     ListAdapter<StoreLikeDto, FavoriteStoreAdapter.MyViewHolder>(FavoriteStoreDiffUtil) {
 
-    interface ClothesClickListener {
-        fun onItemMarketFavoriteClick(view: View, position: Int)
-        fun onItemMarketLayoutClick(view: View, position: Int)
-    }
-
-    var clicklistener: ClothesClickListener = clicklistener
+    var clicklistener: ItemListClickInterface = clicklistener
 
     inner class MyViewHolder(val binding: ItemAroundRecyclerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(user: StoreLikeDto) {
             with(binding) {
-
-                //화면에 보여주기
                 Glide.with(this@MyViewHolder.itemView)
                     .load(R.drawable.icon_favorite_filledpink) //이미지
                     .into(marketFavorite) //보여줄 위치
@@ -35,15 +29,16 @@ class FavoriteStoreAdapter(clicklistener: ClothesClickListener) :
                 Glide.with(this@MyViewHolder.itemView)
                     .load(user?.imageUrl) //이미지
                     .into(marketImage) //보여줄 위치
+
                 marketName.text = user?.name.toString()
                 marketAddress.text = user?.address.toString()
                 marketOperationhours.text = "${user?.store_open_day}, ${user?.open_time} ~ ${user?.close_time}"
 
                 marketLayout.setOnClickListener {
-                    clicklistener.onItemMarketLayoutClick(it, absoluteAdapterPosition)
+                    clicklistener.onItemMarketLayoutClick(user.store_id, absoluteAdapterPosition)
                 }
                 marketFavorite.setOnClickListener {
-                    clicklistener.onItemMarketFavoriteClick(it, absoluteAdapterPosition)
+                    clicklistener.onItemMarketFavoriteClick(true, user.store_id, it, absoluteAdapterPosition)
                 }
             }
         }

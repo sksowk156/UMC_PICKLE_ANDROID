@@ -23,16 +23,21 @@ import com.example.myapplication.ui.main.favorite.FavoriteBaseFragment
 import com.example.myapplication.ui.main.home.HomeBaseFragment
 import com.example.myapplication.ui.main.location.LocationFragment
 import com.example.myapplication.ui.main.profile.ProfileBlankFragment
+import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.HomeViewModel
 
-class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_second) {
+class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_second) {
 
-    private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    private val REQUIRED_PERMISSIONS = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
     private val PERMISSIONS_REQUEST_CODE = 100
-    private lateinit var locatioNManager : LocationManager
+    private lateinit var locatioNManager: LocationManager
     private lateinit var currentFragmenttag: String
 
-    lateinit var homeViewModel: HomeViewModel
+    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var dressViewModel: DressViewModel
 
     override fun savedatainit() {
         supportFragmentManager
@@ -44,7 +49,14 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("currentfragment",currentFragmenttag)
+        outState.putString("currentfragment", currentFragmenttag)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        dressViewModel.get_dress_like_data()
+        // 홈화면 데이터 갱신
+        homeViewModel.get_home_data(homeViewModel.home_latlng.value!!.first, homeViewModel.home_latlng.value!!.second)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -54,6 +66,8 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
 
     override fun init() {
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        dressViewModel = ViewModelProvider(this).get(DressViewModel::class.java)
+
         // 네비게이션 버튼의 테마색으로 변하는 것을 막기 위해서
         binding.secondBottomNavigationView.itemIconTintList = null
 
@@ -96,11 +110,11 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
             getLocation()
         }
 
-        homeViewModel.home_latlng.observe(this, Observer<Pair<Double,Double>>{
-            if(it != null){
-//                homeViewModel.get_home_data(37.5581, 126.9260)
+        // 홈화면 데이터 갱신
+        homeViewModel.home_latlng.observe(this, Observer<Pair<Double, Double>> {
+            if (it != null) {
                 homeViewModel.get_home_data(it!!.first, it!!.second)
-            }else{
+            } else {
                 Log.d("whatisthis", "home_latlng, 데이터 없음")
             }
         })
@@ -178,12 +192,12 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
         }
     }
 
-    private fun getLocation(){
+    private fun getLocation() {
         locatioNManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         var userLocation: Location = getLatLng()
 
-        if(userLocation != null){
-            homeViewModel.set_home_latlng(userLocation.latitude,userLocation.longitude)
+        if (userLocation != null) {
+            homeViewModel.set_home_latlng(userLocation.latitude, userLocation.longitude)
 
 //            latitude = userLocation.latitude
 //            longitude = userLocation.longitude
@@ -204,23 +218,40 @@ class SecondActivity :BaseActivity<ActivitySecondBinding>(R.layout.activity_seco
         }
     }
 
-    private fun getLatLng(): Location{
+    private fun getLatLng(): Location {
         var currentLatLng: Location? = null
-        var hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
-            Manifest.permission.ACCESS_FINE_LOCATION)
-        var hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
-            Manifest.permission.ACCESS_COARSE_LOCATION)
+        var hasFineLocationPermission = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        var hasCoarseLocationPermission = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
 
-        if(hasFineLocationPermission == PackageManager.PERMISSION_GRANTED ||
-            hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED){
+        if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED ||
+            hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED
+        ) {
             val locatioNProvider = LocationManager.GPS_PROVIDER
             currentLatLng = locatioNManager?.getLastKnownLocation(locatioNProvider)
-        }else{
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])){
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    REQUIRED_PERMISSIONS[0]
+                )
+            ) {
                 Toast.makeText(this, "앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
-                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
-            }else{
-                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
+                ActivityCompat.requestPermissions(
+                    this,
+                    REQUIRED_PERMISSIONS,
+                    PERMISSIONS_REQUEST_CODE
+                )
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    REQUIRED_PERMISSIONS,
+                    PERMISSIONS_REQUEST_CODE
+                )
             }
             currentLatLng = getLatLng()
         }

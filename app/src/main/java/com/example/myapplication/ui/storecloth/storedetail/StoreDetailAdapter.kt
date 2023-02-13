@@ -8,39 +8,40 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ItemCardRecyclerBinding
 import com.example.myapplication.db.remote.model.DressBriefInStoreDTO
-import com.example.myapplication.ui.main.ItemClickInterface
+import com.example.myapplication.ui.ItemCardClickInterface
 
-class StoreDetailAdapter(clicklistener: ItemClickInterface) :
+class StoreDetailAdapter(clicklistener: ItemCardClickInterface) :
     ListAdapter<DressBriefInStoreDTO, StoreDetailAdapter.MyViewHolder>(StoreDetailDiffUtil) {
 
-    var clicklistener: ItemClickInterface = clicklistener
+    var clicklistener: ItemCardClickInterface = clicklistener
 
     inner class MyViewHolder(val binding: ItemCardRecyclerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(dressBriefInStoreDTO: DressBriefInStoreDTO) {
-//            if (DressOverviewDtoe?.좋아요 == false) {
+//            if (dressBriefInStoreDTO?.좋아요 == false) {
 //                //화면에 보여주기
 //                Glide.with(this@MyViewHolder.itemView)
 //                    .load(R.drawable.icon_favorite_whiteline) //이미지
-//                    .into(binding.cardImagebuttonFavorite) //보여줄 위치
+//                    .into(binding.cardImageviewFavorite) //보여줄 위치
 //            } else {
 //                //화면에 보여주기
 //                Glide.with(this@MyViewHolder.itemView)
 //                    .load(R.drawable.icon_favorite_filledpink) //이미지
-//                    .into(binding.cardImagebuttonFavorite) //보여줄 위치
+//                    .into(binding.cardImageviewFavorite) //보여줄 위치
 //            }
-//
-            binding.cardImagebuttonFavorite.setOnClickListener{
-                clicklistener.onItemFavoriteClick(dressBriefInStoreDTO.dress_id,absoluteAdapterPosition)
-            }
+
+//            binding.cardImageviewFavorite.setOnClickListener{
+//                clicklistener.onItemClothFavoriteClick(dressBriefInStoreDTO.좋아요, dressBriefInStoreDTO.dress_id,it,absoulteAdapterPosition)
+//            }
 
             binding.cardCardviewFrame.setOnClickListener {
-                clicklistener.onItemImageClick(dressBriefInStoreDTO.dress_id, absoluteAdapterPosition)
+                clicklistener.onItemClothImageClick(dressBriefInStoreDTO.dress_id, absoluteAdapterPosition)
             }
 
-            binding.cardTextviewStorename.setOnClickListener {
-                clicklistener.onItemStoreNameClick(dressBriefInStoreDTO.dress_id, absoluteAdapterPosition)
-            }
+            // 매장 상세페이지에서 매장 이름이 들어갈 필요가 없음
+//            binding.cardTextviewStorename.setOnClickListener {
+//                clicklistener.onItemStoreNameClick(dressBriefInStoreDTO.dress_id, absoluteAdapterPosition)
+//            }
 
 
             Glide.with(this.itemView)

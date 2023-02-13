@@ -1,75 +1,36 @@
-package com.example.myapplication.ui.search
+package com.example.myapplication.ui.search.result
 
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSearchresultBinding
 import com.example.myapplication.ui.base.BaseFragment
-import com.example.myapplication.ui.main.home.*
+import com.example.myapplication.ui.main.home.recent.HomeRecommendAdapter
+import com.example.myapplication.viewmodel.DressViewModel
+import com.example.myapplication.viewmodel.SearchViewModel
 
 class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.fragment_searchresult) {
+    private lateinit var dressViewModel: DressViewModel
+    private lateinit var searchViewModel: SearchViewModel
+
+    private lateinit var fragmentadapter: HomeRecommendAdapter
+
+    private var selectedcategory : String ?= null
+    private var selectedsort : String ?= null
+
     override fun init() {
-//        rcView()
+//        dressViewModel = ViewModelProvider(requireActivity()).get(DressViewModel::class.java)
+//        searchViewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
+//
+//        binding.searchresultTextviewCategory
+//
+//        binding.searchresultTextviewSort
+//
+//        dressViewModel.get_dress_search_data(category,lat,lng,name,sort)
+//        initRecyclerView()
     }
 
-//    lateinit var fragmentadapter: CardViewAdapter
-
-    private fun addClothes(){
-        val clothes1= Clothes(
-            R.drawable.one,
-            "store1",
-            "옷1",
-            30000,
-            false
-        )
-        clothesList.add(clothes1)
-        newclothesList.add(clothes1)
-
-        val clothes2= Clothes(
-            R.drawable.two,
-            "store2",
-            "옷2",
-            30000,
-            false
-        )
-        clothesList.add(clothes2)
-        newclothesList.add(clothes1)
-
-        val clothes3= Clothes(
-            R.drawable.two,
-            "store1",
-            "옷3",
-            30000,
-            false
-        )
-        clothesList.add(clothes3)
-        newclothesList.add(clothes1)
-
-        val clothes4= Clothes(
-            R.drawable.one,
-            "store1",
-            "옷4",
-            30000,
-            false
-        )
-        clothesList.add(clothes4)
-        newclothesList.add(clothes1)
-
-        val clothes5= Clothes(
-            R.drawable.two,
-            "store1",
-            "옷5",
-            30000,
-            false
-        )
-        clothesList.add(clothes5)
-        newclothesList.add(clothes1)
-
-    }
-
-//    private fun rcView(){
-//        clothesList.clear()
-//        addClothes()
-//        fragmentadapter = CardViewAdapter(clicklistener = (object : ItemClickInterface {
-//            override fun onItemImageClick(view: View, position: Int) {
+//    private fun initRecyclerView(){
+//        fragmentadapter = HomeRecommendAdapter(clicklistener = (object : ItemCardClickInterface {
+//            override fun onItemClothImageClick(id:Int, position: Int) {
 //                val intent = Intent(context, ClothActivity::class.java)
 //                intent.putExtra("storeName","store1")
 //                intent.putExtra("clothName","옷1")
@@ -79,16 +40,12 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
 //                startActivity(intent)
 //            }
 //
-//            override fun onItemStoreNameClick(view: View, position: Int) {
+//            override fun onItemStoreNameClick(id:Int, position: Int) {
 //                val intent = Intent(getActivity(), StoreActivity::class.java)
 //                startActivity(intent)
 //            }
 //
-//            override fun onItemButtonClick(view: View, position: Int) {
-//                showToast("clicked")
-//            }
-//
-//            override fun onItemFavoriteClick(view: View, position: Int) {
+//            override fun onItemClothFavoriteClick(like:Boolean,id:Int, view : View, position: Int) {
 //                if (clothesList[position].like == false) {
 //                    //화면에 보여주기
 //                    Glide.with(this@SearchresultFragment)
@@ -109,6 +66,7 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
 //            layoutManager= GridLayoutManager(this.context,2)
 //            adapter= fragmentadapter
 //        }
+//
 //        binding.searchresultTextviewResultcount.text = String.format("검색 결과 %d개", clothesList.size)
 //    }
 }

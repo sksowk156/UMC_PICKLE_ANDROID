@@ -9,12 +9,16 @@ import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.ApplicationClass
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySearchBinding
+import com.example.myapplication.db.remote.model.search.SearchHistroyData
 import com.example.myapplication.ui.base.BaseActivity
+import com.example.myapplication.ui.search.result.SearchresultFragment
+import com.example.myapplication.viewmodel.DressViewModel
 import kotlinx.android.synthetic.main.toolbar_content.view.*
 
 class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search){
@@ -22,13 +26,17 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
     private var searchHistoryDataList = ArrayList<SearchHistroyData>()
     // 검색 기록 어댑터
     private lateinit var searchhistoryAdapter: SearchhistoryAdapter
-
+    // 툴바
     private lateinit var toolbar: Toolbar
     protected lateinit var toolbarinnerlayout: ConstraintLayout
     protected lateinit var toolbarlayout: ConstraintLayout
     protected lateinit var toolbarmenusearch: MenuItem
+    // 뷰모델
+    private lateinit var dressViewModel: DressViewModel
 
     override fun init() {
+        dressViewModel = ViewModelProvider(this).get(DressViewModel::class.java)
+
         toolbar = binding.searchToolbar.toolbarToolbar
         toolbarinnerlayout = binding.searchContent.contentInnerlayout
         toolbarlayout = binding.searchContent.contentLayout
@@ -67,7 +75,9 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                             // recycler 데이터 갱신 요청
                             searchhistoryAdapter.notifyDataSetChanged()
 
-                            // // 화면 전환 및 검색 결과 보여주기(API 요청)
+//                            // // 화면 전환 및 검색 결과 보여주기(API 요청)
+//                            dressViewModel.get_dress_search_data(category,lat,lng,name,sort)
+
                             // 검색 기록 보여주는 창 가리고
                             toolbarlayout.visibility = View.VISIBLE
                             toolbarinnerlayout.visibility = View.INVISIBLE

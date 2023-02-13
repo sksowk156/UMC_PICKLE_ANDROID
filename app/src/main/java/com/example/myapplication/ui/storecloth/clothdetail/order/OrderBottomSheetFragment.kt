@@ -104,7 +104,7 @@ class OrderBottomSheetFragment() :
                     buttonOnOff(false)
                 }
             } else {
-                Log.d("whatisthis", "11네트워크 오류가 발생했습니다.")
+                Log.d("whatisthis", "order_data, 데이터 없음")
             }
         })
 
