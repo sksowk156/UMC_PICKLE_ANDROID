@@ -1,5 +1,7 @@
 package com.example.myapplication.ui.search
 
+import android.content.Intent
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -15,6 +17,8 @@ import com.example.myapplication.ApplicationClass
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySearchBinding
 import com.example.myapplication.ui.base.BaseActivity
+import com.example.myapplication.ui.storecloth.clothdetail.order.OrderBottomSheetFragment
+import com.example.myapplication.ui.storecloth.storedetail.StoreActivity
 import kotlinx.android.synthetic.main.toolbar_content.view.*
 
 class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search){
