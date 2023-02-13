@@ -263,7 +263,32 @@
                         android:textColor="#1E1E1E"
                         android:textSize="16sp" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@color/white">
+
+                    <Button
+                        android:text="주문 취소"
+                        android:id="@+id/cancel_button"
+                        android:layout_width="205dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/permission_button2_background"/>
+
+                    <Button
+                        android:text="구매확정"
+                        android:id="@+id/confirm_button"
+                        android:layout_width="205dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/permission_button2_background"/>
+
+
+
+                </LinearLayout>
             </LinearLayout>
+
+
         </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

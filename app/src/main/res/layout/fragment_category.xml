@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/sort_layout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/category_layout"
     android:layout_width="match_parent"
     android:layout_height="362dp">
 
@@ -10,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="정렬"
+        android:text="전체"
         android:textColor="#1E1E1E"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -23,8 +24,9 @@
         android:id="@+id/permission_textview2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="거리순"
+        android:layout_marginTop="40dp"
+
+        android:text="아우터"
         android:textColor="#A4A4A4"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -37,8 +39,8 @@
         android:id="@+id/permission_textview3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:text="가격순"
+        android:layout_marginTop="70dp"
+        android:text="상의"
         android:textColor="#A4A4A4"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -51,8 +53,8 @@
         android:id="@+id/permission_textview4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="110dp"
-        android:text="최신순"
+        android:layout_marginTop="100dp"
+        android:text="하의"
         android:textColor="#A4A4A4"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -65,8 +67,8 @@
         android:id="@+id/permission_textview5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="140dp"
-        android:text="좋아요 많은순"
+        android:layout_marginTop="130dp"
+        android:text="원피스"
         android:textColor="#A4A4A4"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -74,5 +76,30 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/permission_textview6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:text="기타"
+        android:textColor="#A4A4A4"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="n개의 결과보기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.592" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
