@@ -4,10 +4,19 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSearchresultBinding
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.home.*
+import com.example.myapplication.ui.search.SortFragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import java.util.*
+
 
 class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.fragment_searchresult) {
     override fun init() {
 //        rcView()
+        hideBottomNavigation(true)
+        binding.searchresultTextviewSort.setOnClickListener {
+            val bottomSheetDialogFragment: BottomSheetDialogFragment = SortFragment()
+            bottomSheetDialogFragment.show(parentFragmentManager, null)
+        }
     }
 
 //    lateinit var fragmentadapter: CardViewAdapter
