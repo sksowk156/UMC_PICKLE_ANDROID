@@ -7,10 +7,13 @@ import androidx.lifecycle.ViewModel
 import com.example.myapplication.db.remote.DressService
 import com.example.myapplication.db.remote.model.DressDetailDto
 import com.example.myapplication.db.remote.model.DressLikeDto
+import com.example.myapplication.db.remote.model.DressOrderDto
 import com.example.myapplication.db.remote.model.UpdateDressLikeDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Path
 
 class DressViewModel : ViewModel() {
 
@@ -22,6 +25,12 @@ class DressViewModel : ViewModel() {
 
     private var _update_dress_like_data = MutableLiveData<UpdateDressLikeDto>()
     val update_dress_like_data: LiveData<UpdateDressLikeDto> get() = _update_dress_like_data
+
+    private var _get_dress_resevation_data=MutableLiveData<DressOrderDto>()
+    val get_dress_reservation_data:LiveData<DressOrderDto>get()=_get_dress_resevation_data
+
+    private var _dress_reservation_dress_data=MutableLiveData<DressOrderDto>()
+    val dress_reservation_dress_data:LiveData<DressOrderDto>get()=_dress_reservation_dress_data
 
 
     fun get_dress_detail_data(id: Int) {
@@ -77,6 +86,47 @@ class DressViewModel : ViewModel() {
                 Log.d("whatisthis","get_dress_like_data, 네트워크 오류가 발생했습니다."+ t.message.toString())
             }
         })
+    }
+
+//    @GET("dresses/orders/{dress_reservation_id}")
+//    fun get_dress_reservation_dress_data(
+//        @Path("dress_reservation_id")dress_reservation_id:Int
+//    ):Call<DressOrderDto>
+
+    //의상 주문 상세 내역 조회
+    fun get_dress_reservation_dress_data(dress_reservation_id: Int){
+    DressService.dressService.get_dress_reservation_dress_data(dress_reservation_id)
+        .enqueue(object :
+        Callback<DressOrderDto> {
+        override fun onResponse(call: Call<DressOrderDto>, response: Response<DressOrderDto>) {
+            if(response.isSuccessful) {
+                _dress_reservation_dress_data.value = response.body()
+            }else{
+                Log.d("whatisthis"," 실패")
+            }
+        }
+
+            override fun onFailure(call: Call<DressOrderDto>, t: Throwable) {
+                Log.d("whatisthis","get_dress_reservation_dress_data, 네트워크 오류가 발생했습니다."+ t.message.toString())
+            }
+        })
+    }
+    fun get_dress_resevation_data(status: String){
+        DressService.dressService.get_dress_resevation_data(status)
+            .enqueue(object :
+                Callback<DressOrderDto> {
+                override fun onResponse(call: Call<DressOrderDto>, response: Response<DressOrderDto>) {
+                    if(response.isSuccessful) {
+                        _get_dress_resevation_data.value = response.body()
+                    }else{
+                        Log.d("whatisthis"," 실패")
+                    }
+                }
+
+                override fun onFailure(call: Call<DressOrderDto>, t: Throwable) {
+                    Log.d("whatisthis","get_dress_reservation_dress_data, 네트워크 오류가 발생했습니다."+ t.message.toString())
+                }
+            })
     }
 
 }

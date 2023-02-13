@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.myapplication.ApplicationClass
 import com.example.myapplication.db.remote.model.DressDetailDto
 import com.example.myapplication.db.remote.model.DressReservationDto
+import com.example.myapplication.db.remote.model.ReservationCancelDto
 import com.example.myapplication.db.remote.model.UpdateDressLikeDto
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,6 +27,12 @@ object ReservationService {
         fun get_dresses_reservation(
             @Path("id") id: Int
         ): Call<DressDetailDto>
+
+        //의상예약상세보기에서 의상예약 취소하기
+        @POST("dresses/reservation/cancel/{reservation_id}")
+        fun set_dress_resevation_data(
+            @Path("reservation_id")reservation_id:Int
+        ): Call<ReservationCancelDto>
     }
 
     val reservationService = ApplicationClass.retrofit.create(ReservationService.ReservationInterface::class.java)

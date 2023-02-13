@@ -2,14 +2,21 @@ package com.example.myapplication.ui.main.profile.orderstatus
 
 import android.graphics.Color
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentOrderstatusBinding
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.profile.orderstatus.detail.OrderstatusDetailFragment
+import com.example.myapplication.viewmodel.DressViewModel
+import com.example.myapplication.viewmodel.ReservationViewModel
 
 class OrderstatusFragment : BaseFragment<FragmentOrderstatusBinding>(R.layout.fragment_orderstatus) {
+    lateinit var dressViewModel: DressViewModel
+    lateinit var reservationViewModel: ReservationViewModel
+
     override fun init() {
+        dressViewModel = ViewModelProvider(requireActivity()).get(DressViewModel::class.java)
         initAppbarName()
         hideBottomNavigation(true)
         initRecyclerView()
@@ -44,6 +51,9 @@ class OrderstatusFragment : BaseFragment<FragmentOrderstatusBinding>(R.layout.fr
                         .replace(R.id.profileblank_layout, OrderstatusDetailFragment() ,"orderstatusdetail")
                         .addToBackStack(null)
                         .commitAllowingStateLoss()
+                    // 선택한 아이템의 주문 번호를 받아서
+                    dressViewModel.get_dress_reservation_dress_data(3)
+
                 }
 
                 override fun onItemInnerlayoutClick(view: View, position: Int) {
@@ -52,6 +62,9 @@ class OrderstatusFragment : BaseFragment<FragmentOrderstatusBinding>(R.layout.fr
                         .replace(R.id.profileblank_layout, OrderstatusDetailFragment() ,"orderstatusdetail")
                         .addToBackStack(null)
                         .commitAllowingStateLoss()
+                    dressViewModel.get_dress_reservation_dress_data(3)
+                    //주문취소
+                    reservationViewModel.set_dress_resevation_data(3)
                 }
             }))
 
@@ -61,7 +74,9 @@ class OrderstatusFragment : BaseFragment<FragmentOrderstatusBinding>(R.layout.fr
             OrderedClotheDataList.add(OrderedClotheData("20200204",R.drawable.cardigan1,"ㄴㅁㅇ","옷","8700","검정","M"))
             OrderedClotheDataList.add(OrderedClotheData("20200204",R.drawable.cardigan1,"ㄴㅁㅇ","옷","8700","검정","M"))
             OrderedClotheDataList.add(OrderedClotheData("20200204",R.drawable.cardigan1,"ㄴㅁㅇ","옷","8700","검정","M"))
-
+//            dressViewModel.dfndslkklsf.observer{
+//                orderstatusAdapter.userList = it
+//            }
             orderstatusRecyclerview.adapter = orderstatusAdapter
             orderstatusRecyclerview.layoutManager = LinearLayoutManager(context)
             orderstatusRecyclerview.addItemDecoration(OrderListDivider(0f,0f,20f,20f, Color.TRANSPARENT))

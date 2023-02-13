@@ -41,11 +41,7 @@ object DressService {
             @Path("dress_reservation_id")dress_reservation_id:Int
         ):Call<DressOrderDto>
 
-        //의상 예약 취소하기
-        @POST("dresses/reservation/cancel/{reservation_id}")
-        fun set_dress_resevation_data(
-            @Path("reservation_id")reservation_id:Int
-        ): Call<ReservationCancelDto>
+
 
     }
 

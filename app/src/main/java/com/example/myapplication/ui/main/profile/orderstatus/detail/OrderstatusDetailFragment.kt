@@ -1,14 +1,30 @@
 package com.example.myapplication.ui.main.profile.orderstatus.detail
 
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentOrderstatusDetailBinding
+import com.example.myapplication.db.remote.model.DressOrderDto
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.profile.orderstatus.OrderedClotheData
+import com.example.myapplication.viewmodel.DressViewModel
 
 
 class OrderstatusDetailFragment : BaseFragment<FragmentOrderstatusDetailBinding>(R.layout.fragment_orderstatus_detail) {
+    lateinit var dressViewModel: DressViewModel
+
+
+
+
     override fun init() {
+
+        dressViewModel = ViewModelProvider(requireActivity()).get(DressViewModel::class.java)
+        dressViewModel.dress_reservation_dress_data.observe(viewLifecycleOwner, Observer {
+            binding.detailTextviewOrdernumber.text = it.reserved_dress_id.toString()
+
+        })
+
         initAppbar(binding.orderstatusToolbar, "주문 상세보기", true, false)
         hideBottomNavigation(true)
         initRecyclerView()
@@ -37,6 +53,7 @@ class OrderstatusDetailFragment : BaseFragment<FragmentOrderstatusDetailBinding>
             orderstatusAdapter.notifyDataSetChanged()
         }
     }
+
 
     private fun reviseRecyclerView(){
 
