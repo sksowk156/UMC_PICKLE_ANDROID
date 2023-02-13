@@ -39,6 +39,7 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
         storeViewModel.get_store_detail_data(intent.getIntExtra("store_id",0),"전체")
 
         storedetailAdapter = StoreDetailAdapter(this)
+
         // 매장 상세 정보 요청
         storeViewModel.store_detail_data.observe(this, Observer<StoreDetailDto> { now_storedetail ->
             if (now_storedetail != null) {
@@ -59,6 +60,12 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
         binding.storeRecyclerview.apply {
             layoutManager = GridLayoutManager(this.context, 2)
             adapter = storedetailAdapter
+        }
+
+        binding.storeRecyclerview.run {
+            val spanCount = 2
+            val space = 30
+            addItemDecoration(GridSpaceItemDecoration(spanCount, space))
         }
 
         // 앱바 설정
