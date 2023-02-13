@@ -30,6 +30,9 @@ class ClothBlankFragment : BaseFragment<FragmentClothBlankBinding>(R.layout.frag
                 "pickupdetail" -> {
                     initSubAppbar("픽업 주문하기", true, false)
                 }
+                "ordercomplete" -> {
+                    initSubAppbar("", false, false)
+                }
             }
         }
     }
