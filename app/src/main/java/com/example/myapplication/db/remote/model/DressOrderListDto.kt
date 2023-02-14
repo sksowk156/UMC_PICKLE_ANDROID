@@ -1,4 +1,4 @@
-package com.example.myapplication.db.remote
+package com.example.myapplication.db.remote.model
 
 data class DressOrderListDto(
     var dress_image_url: String,

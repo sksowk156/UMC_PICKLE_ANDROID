@@ -8,6 +8,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentClothDetailBinding
 import com.example.myapplication.db.remote.model.DressDetailDto
+import com.example.myapplication.db.remote.model.UpdateDressLikeDto
 import com.example.myapplication.db.remote.model.order.ClothOptionData
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.storecloth.clothdetail.order.OrderBottomSheetFragment
@@ -27,6 +28,7 @@ class ClothDetailFragment : BaseFragment<FragmentClothDetailBinding>(R.layout.fr
     private var optiondata : ClothOptionData ?= null
     // 매장 상페 페이지로 넘어갈 경우 매장 상세 페이지로 넘어가기 위한 store_id 저장
     private var store_id : Int = 0
+    private var update_islikedata_id : Int ?= 0
 
     override fun init() {
         initAppbar(binding.clothdetailToolbar, "", true, true)
@@ -45,6 +47,9 @@ class ClothDetailFragment : BaseFragment<FragmentClothDetailBinding>(R.layout.fr
                 store_id = now_dressdetail.store_id
                 // 픽업하기 버튼 눌렀을 경우 옷 옵션 선택을 위한 옷 정보(가격, 색상, 사이즈 종류 정보) 저장
                 optiondata = ClothOptionData(now_dressdetail.dress_price, now_dressdetail.dress_option1, now_dressdetail.dress_option2)
+                // 좋아요 버튼을 눌렀을 때 이벤트 처리를 위해
+                update_islikedata_id = now_dressdetail.dress_id
+
             } else {
                 Log.d("whatisthis", "dress_detail_data, 데이터 없음")
             }
@@ -66,7 +71,6 @@ class ClothDetailFragment : BaseFragment<FragmentClothDetailBinding>(R.layout.fr
     private fun initButton(){
         binding.apply {
             clothdetailTextviewOrder.setOnClickListener {
-                Log.d("whatisthis",optiondata.toString())
                 if(optiondata != null){
                     val bottomSheet = OrderBottomSheetFragment()
                     orderViewModel.set_option_data(optiondata!!)
@@ -76,10 +80,14 @@ class ClothDetailFragment : BaseFragment<FragmentClothDetailBinding>(R.layout.fr
 
             clothdetailTextviewStorename.setOnClickListener{
                 if(store_id!=0){
-                    val intent = Intent(requireActivity(), StoreActivity::class.java)
-                    intent.putExtra("store_id", id)
+                    val intent = Intent(getActivity(), StoreActivity::class.java)
+                    intent.putExtra("store_id", store_id)
                     startActivity(intent)
                 }
+            }
+
+            clothdetailImageviewFavorite.setOnClickListener{
+                dressViewModel.set_dress_like_data(UpdateDressLikeDto(update_islikedata_id!!))
             }
 
         }

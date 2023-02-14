@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ItemOrderstatusRecyclerBinding
-import com.example.myapplication.db.remote.DressOrderListDto
+import com.example.myapplication.db.remote.model.DressOrderListDto
 
 class OrderstatusAdapter(clicklistener: OrderstatusAdapter.OrderstatusClickListener) :
     RecyclerView.Adapter<OrderstatusAdapter.ViewHolder>() {
@@ -14,6 +14,7 @@ class OrderstatusAdapter(clicklistener: OrderstatusAdapter.OrderstatusClickListe
     var userList: ArrayList<DressOrderListDto>? = null
 
     interface OrderstatusClickListener {
+
         fun onItemImageClick(view: View, position: Int)
         fun onItemDetailClick(reservationid: Int, position: Int)
         fun onItemInnerlayoutClick(reservationid: Int, position: Int)

@@ -5,9 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ItemOrderstatusdetailRecyclerBinding
-import com.example.myapplication.db.remote.DressOrderListDto
 import com.example.myapplication.db.remote.model.DressOrderDto
-import com.example.myapplication.ui.main.profile.orderstatus.OrderedClotheData
 
 class OrderstatusDetailAdapter() : RecyclerView.Adapter<OrderstatusDetailAdapter.ViewHolder>() {
 //

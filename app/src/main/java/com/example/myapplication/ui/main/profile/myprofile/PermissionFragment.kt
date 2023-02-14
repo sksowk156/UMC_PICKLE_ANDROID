@@ -20,7 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
-import com.example.myapplication.viewmodel.ProfileViewModel
+import com.example.myapplication.viewmodel.UserViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_permission.*
 import java.text.SimpleDateFormat
@@ -28,7 +28,7 @@ import java.util.*
 
 class PermissionFragment() : BottomSheetDialogFragment() {
 
-    private lateinit var profileViewModel: ProfileViewModel
+    private lateinit var userViewModel: UserViewModel
     private var CAMERA_PERMISSION: Boolean = false
     private var WRITE_EXTERNAL_STORAGE_PERMISSION: Boolean = false
     private var READ_EXTERNAL_STORAGE_PERMISSION: Boolean = false
@@ -51,24 +51,22 @@ class PermissionFragment() : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        profileViewModel = ViewModelProvider(requireActivity()).get(ProfileViewModel::class.java)
+        userViewModel = ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
         var permissioncamera_photo = view.findViewById<Button>(R.id.permission_camera_photo)
         var permissiondeletephoto = view.findViewById<Button>(R.id.permission_deletephoto)
         var permissioncancel = view.findViewById<Button>(R.id.permission_cancel)
 
+        // 사진 촬영
         permission_taking_picture.setOnClickListener{
-            if (checkPermission(arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE))) { // 갤러리 실행
+            if (checkPermission(arrayOf(Manifest.permission.CAMERA))) { // 갤러리 실행
                     camera()
             }else{
-                requestMultiplePermission.launch(arrayOf(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE))
+                requestMultiplePermission.launch(arrayOf(Manifest.permission.CAMERA))
             }
         }
 
-
-
-        // 사진이나 앨범에서 선택
+        // 앨범에서 선택
         permissioncamera_photo.setOnClickListener {
-            // 갤러리 버튼 클릭 시
             if (checkPermission(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))) { // 갤러리 실행
                 gallery()
             } else { // 권한 요청
@@ -76,54 +74,18 @@ class PermissionFragment() : BottomSheetDialogFragment() {
             }
         }
 
-
-        // 이미지 지우기
+        // 프로필 삭제
         permissiondeletephoto.setOnClickListener {
-
-
-            profileViewModel.set_default_photo((R.drawable.img_1))
+            userViewModel.set_default_photo((R.drawable.icon_myprofile_profileimage))
             dismiss()
-
         }
 
-
-        // 그냥 취소
+        // 취소
         permissioncancel.setOnClickListener {
             dismiss()
         }
 
     }
-
-
-    var pictureUri: Uri? = null
-    private val getTakePicture = registerForActivityResult(ActivityResultContracts.TakePicture()) {
-        if (it) {
-            profileViewModel.set_profile_photo(pictureUri!!)
-        }
-        dismiss()
-    }
-
-
-
-    // 카메라를 실행한 후 찍은 사진을 프로필 사진으로 설정
-    private fun camera() {
-        pictureUri = createImageFile()
-        getTakePicture.launch(pictureUri)
-    }
-
-    private fun createImageFile(): Uri? {
-        val now = SimpleDateFormat("yyMMdd_HHmmss").format(Date())
-        val content = ContentValues().apply {
-            put(MediaStore.Images.Media.DISPLAY_NAME, "img_$now.jpg")
-            put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
-        }
-        return requireActivity().contentResolver.insert(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            content
-        )
-    }
-
-
 
     // 권한 체크
     fun checkPermission(permissions: Array<String>): Boolean {
@@ -160,27 +122,38 @@ class PermissionFragment() : BottomSheetDialogFragment() {
                 }
 
                 if (WRITE_EXTERNAL_STORAGE_PERMISSION && READ_EXTERNAL_STORAGE_PERMISSION) {
-                    gallery()  // 갤러리 실행
+                    gallery()  // 갤러리 권한 허용 후 바로 실행
+                }else if(CAMERA_PERMISSION){
+                    camera() // 카메라 권한 허용 후 바로 실행
                 }
-
             }
         }
 
+    // 카메라를 실행한 후 찍은 사진을 프로필 사진으로 설정
+    private fun camera() {
+        pictureUri = createImageFile()
+        getTakePicture.launch(pictureUri)
+    }
 
-
-    // 갤러리에서 받아온 이미지를 프로필 사진으로 설정
-    private val getContentImage =
-        super.registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            //결과 코드 OK , 결가값 null 아니면
-            if (it.resultCode == Activity.RESULT_OK && it.data != null) {
-                //값 담기
-                val uri = it.data!!.data
-                profileViewModel.set_profile_photo(uri!!)
-            }
-            dismiss()
+    private fun createImageFile(): Uri? {
+        val now = SimpleDateFormat("yyMMdd_HHmmss").format(Date())
+        val content = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, "img_$now.jpg")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
         }
+        return requireActivity().contentResolver.insert(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            content
+        )
+    }
+
+    var pictureUri: Uri? = null
+    private val getTakePicture = registerForActivityResult(ActivityResultContracts.TakePicture()) {
+        if (it) {
+            pictureUri.let { userViewModel.set_profile_photo(pictureUri!!) }
+        }
+        dismiss()
+    }
 
     // 갤러리 실행
     private fun gallery() {
@@ -192,5 +165,17 @@ class PermissionFragment() : BottomSheetDialogFragment() {
         getContentImage.launch(intent)
     }
 
-
+    // 갤러리에서 받아온 이미지를 프로필 사진으로 설정
+    private val getContentImage =
+        super.registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            //결과 코드 OK , 결가값 null 아니면
+            if (it.resultCode == Activity.RESULT_OK && it.data != null) {
+                //값 담기
+                val uri = it.data!!.data
+                userViewModel.set_profile_photo(uri!!)
+            }
+            dismiss()
+        }
 }

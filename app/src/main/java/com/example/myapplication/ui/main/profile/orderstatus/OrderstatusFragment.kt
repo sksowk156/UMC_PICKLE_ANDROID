@@ -7,11 +7,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentOrderstatusBinding
-import com.example.myapplication.db.remote.DressOrderListDto
+import com.example.myapplication.db.remote.model.DressOrderListDto
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.ui.main.profile.orderstatus.detail.OrderstatusDetailFragment
 import com.example.myapplication.viewmodel.DressViewModel
-import com.example.myapplication.viewmodel.ReservationViewModel
 
 class OrderstatusFragment : BaseFragment<FragmentOrderstatusBinding>(R.layout.fragment_orderstatus) {
     lateinit var dressViewModel: DressViewModel

@@ -11,28 +11,72 @@ import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.ApplicationClass
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySearchBinding
+import com.example.myapplication.db.remote.model.search.SearchHistroyData
 import com.example.myapplication.ui.base.BaseActivity
-import com.example.myapplication.ui.storecloth.clothdetail.order.OrderBottomSheetFragment
-import com.example.myapplication.ui.storecloth.storedetail.StoreActivity
-import kotlinx.android.synthetic.main.toolbar_content.view.*
+import com.example.myapplication.ui.search.result.SearchresultFragment
+import com.example.myapplication.viewmodel.CategorySortViewModel
+import com.example.myapplication.viewmodel.DressViewModel
+import com.naver.maps.geometry.LatLng
+import java.io.Serializable
 
-class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search){
+class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search) {
     // 검색 기록을 저장하는 배열
     private var searchHistoryDataList = ArrayList<SearchHistroyData>()
+
     // 검색 기록 어댑터
     private lateinit var searchhistoryAdapter: SearchhistoryAdapter
 
+    // 툴바
     private lateinit var toolbar: Toolbar
     protected lateinit var toolbarinnerlayout: ConstraintLayout
     protected lateinit var toolbarlayout: ConstraintLayout
     protected lateinit var toolbarmenusearch: MenuItem
 
+    // 뷰모델
+    private lateinit var dressViewModel: DressViewModel
+    private lateinit var categorySortViewModel: CategorySortViewModel
+
+    private var category: String = "전체"
+    private var sort: String = "좋아요많은순"
+    private var searchWord : String ?= null
+
     override fun init() {
+        var latlng = intent.getSerializableExtra("lat_lng") as Pair<Double, Double>
+        dressViewModel = ViewModelProvider(this).get(DressViewModel::class.java)
+        categorySortViewModel = ViewModelProvider(this).get(CategorySortViewModel::class.java)
+        categorySortViewModel.category_data.observe(this, Observer {
+            category = it
+            if(searchWord!=null){
+                // // 화면 전환 및 검색 결과 보여주기(API 요청)
+                dressViewModel.get_dress_search_data(
+                    category,
+                    latlng.first,
+                    latlng.second,
+                    searchWord!!,
+                    sort
+                )
+            }
+        })
+        categorySortViewModel.sort_data.observe(this, Observer {
+            sort = it
+            if(searchWord!=null){
+                // // 화면 전환 및 검색 결과 보여주기(API 요청)
+                dressViewModel.get_dress_search_data(
+                    category,
+                    latlng.first,
+                    latlng.second,
+                    searchWord!!,
+                    sort
+                )
+            }
+        })
         toolbar = binding.searchToolbar.toolbarToolbar
         toolbarinnerlayout = binding.searchContent.contentInnerlayout
         toolbarlayout = binding.searchContent.contentLayout
@@ -62,7 +106,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                         if (!query.isNullOrEmpty()) {
                             val newSearchData = SearchHistroyData(query)
                             // 검색 기록 추가하기(역순으로)
-                            searchHistoryDataList.add(0,newSearchData)
+                            searchHistoryDataList.add(0, newSearchData)
                             // 쉐어드에 저장하기
                             ApplicationClass.sharedPreferencesmanager.setsearchhistoryString(
                                 ApplicationClass.KEY_SEARCH_HISTORY,
@@ -72,6 +116,13 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                             searchhistoryAdapter.notifyDataSetChanged()
 
                             // // 화면 전환 및 검색 결과 보여주기(API 요청)
+                            dressViewModel.get_dress_search_data(
+                                category,
+                                latlng.first,
+                                latlng.second,
+                                query,
+                                sort
+                            )
                             // 검색 기록 보여주는 창 가리고
                             toolbarlayout.visibility = View.VISIBLE
                             toolbarinnerlayout.visibility = View.INVISIBLE
@@ -81,6 +132,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                                 .commitAllowingStateLoss()
                             // 엔터를 쳤기 때문에 커서를 없앤다.
                             searchView.clearFocus()
+                            searchWord = query
                         }
                         return true
                     }
@@ -117,11 +169,11 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                         true -> {// 검색창에 커서가 생김
                             // 검색 결과 fragment가 있다면 fragment를 지우지 않고 그대로 유지한다.
                             if (supportFragmentManager.findFragmentByTag("searchresult") == null) { // 없다면
-                                if(searchViewEditText.text.length > 0){ // 입력한 글자가 있는 경우, 추천 검색어를 보여준다.
+                                if (searchViewEditText.text.length > 0) { // 입력한 글자가 있는 경우, 추천 검색어를 보여준다.
                                     // 검색 content를 보여준다.( 검색기록이 기본적으로 보여진다. )
                                     toolbarlayout.visibility = View.VISIBLE
                                     toolbarinnerlayout.visibility = View.INVISIBLE
-                                }else{ // 입력한 글자가 없는 경우, 검색 기록을 보여준다.
+                                } else { // 입력한 글자가 없는 경우, 검색 기록을 보여준다.
                                     toolbarlayout.visibility = View.VISIBLE
                                     toolbarinnerlayout.visibility = View.VISIBLE
                                 }
@@ -133,7 +185,8 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                     }
                 }
 
-                toolbarmenusearch.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+                toolbarmenusearch.setOnActionExpandListener(object :
+                    MenuItem.OnActionExpandListener {
                     override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                         // 검색창이 펼쳐 졌을 때
                         initSearchHistory()
@@ -141,18 +194,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                     }
 
                     override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                        // 검색창이 닫혔 때
-                        // 검색창 초기화
-//                        searchViewEditText.text.clear()
-//                        if(supportFragmentManager.findFragmentByTag("searchresult")!=null){
-//                            supportFragmentManager.beginTransaction()
-//                                .remove(supportFragmentManager.findFragmentByTag("searchresult")!!)
-//                                .commitAllowingStateLoss()
-//                        }
-//                        toolbarinnerlayout.visibility = View.INVISIBLE
-//                        toolbarlayout.visibility = View.INVISIBLE
                         finish()
-
                         return true
                     }
                 })
@@ -200,16 +242,13 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                 }
             })
 
-        // recycler의 어댑터 연결
-        toolbarlayout.content_recycler.adapter = searchhistoryAdapter
-        // 그리드 레이아웃으로 설정
-        var layoutManager = GridLayoutManager(applicationContext, 3) as LinearLayoutManager
-        toolbarlayout.content_recycler.layoutManager = layoutManager
-        // 어댑터에 쉐어드 데이터 넣기
         searchhistoryAdapter.userList = searchHistoryDataList
-
-
         // 데이터 변경 알리기
         searchhistoryAdapter.notifyDataSetChanged()
+
+        binding.searchContent.contentRecycler.apply {
+            layoutManager= GridLayoutManager(this.context,3)
+            adapter= searchhistoryAdapter
+        }
     }
 }

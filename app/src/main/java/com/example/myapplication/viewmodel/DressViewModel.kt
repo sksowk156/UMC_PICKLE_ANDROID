@@ -4,17 +4,16 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.db.remote.DressOrderListDto
+import com.example.myapplication.db.remote.model.DressOrderListDto
 import com.example.myapplication.db.remote.DressService
 import com.example.myapplication.db.remote.model.DressDetailDto
 import com.example.myapplication.db.remote.model.DressLikeDto
+import com.example.myapplication.db.remote.model.DressSearchDto
 import com.example.myapplication.db.remote.model.DressOrderDto
 import com.example.myapplication.db.remote.model.UpdateDressLikeDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
 
 class DressViewModel : ViewModel() {
 
@@ -23,6 +22,9 @@ class DressViewModel : ViewModel() {
 
     private var _dress_like_data = MutableLiveData<List<DressLikeDto>>()
     val dress_like_data: LiveData<List<DressLikeDto>> get() = _dress_like_data
+
+    private var _dress_search_data = MutableLiveData<DressSearchDto>()
+    val dress_search_data: LiveData<DressSearchDto> get() = _dress_search_data
 
     private var _update_dress_like_data = MutableLiveData<UpdateDressLikeDto>()
     val update_dress_like_data: LiveData<UpdateDressLikeDto> get() = _update_dress_like_data
@@ -35,8 +37,7 @@ class DressViewModel : ViewModel() {
 
 
     fun get_dress_detail_data(id: Int) {
-        DressService.dressService.get_dress_detail_data(id)
-            .enqueue(object : Callback<DressDetailDto> {
+        DressService.dressService.get_dress_detail_data(id).enqueue(object : Callback<DressDetailDto> {
                 override fun onResponse(
                     call: Call<DressDetailDto>,
                     response: Response<DressDetailDto>
@@ -154,6 +155,26 @@ class DressViewModel : ViewModel() {
                     )
                 }
             })
+    }
+
+    fun get_dress_search_data(category: String,lat: Double,lng: Double,name: String,sort: String) {
+        DressService.dressService.get_dress_search_data(category,lat,lng,name,sort).enqueue(object : Callback<DressSearchDto> {
+            override fun onResponse(
+                call: Call<DressSearchDto>,
+                response: Response<DressSearchDto>
+            ) {
+                if (response.isSuccessful) {
+                    _dress_search_data.postValue(response.body())
+                } else {
+                    _dress_search_data.postValue(null)
+                    Log.d("whatisthis","_dress_search_data, response 못받음")
+                }
+            }
+
+            override fun onFailure(call: Call<DressSearchDto>, t: Throwable) {
+                Log.d("whatisthis", "get_dress_search_data, 네트워크 오류가 발생했습니다." + t.message.toString())
+            }
+        })
     }
 
 }
