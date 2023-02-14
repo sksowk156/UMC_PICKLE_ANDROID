@@ -19,11 +19,13 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityStoreBinding
 import com.example.myapplication.db.remote.model.StoreDetailDto
+import com.example.myapplication.db.remote.model.UpdateDressLikeDto
 import com.example.myapplication.db.remote.model.UpdateStoreLikeDto
 import com.example.myapplication.ui.base.BaseActivity
 import com.example.myapplication.ui.ItemCardClickInterface
 import com.example.myapplication.ui.search.SearchActivity
 import com.example.myapplication.ui.storecloth.clothdetail.ClothActivity
+import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.HomeViewModel
 import com.example.myapplication.viewmodel.StoreViewModel
 import java.nio.DoubleBuffer
@@ -34,11 +36,12 @@ import java.nio.DoubleBuffer
 //    ItemCardClickInterface {
 //=======
 class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store), ItemCardClickInterface {
-    var chipGroup = ArrayList<TextView>()
 
+    var chipGroup = ArrayList<TextView>()
 
     private lateinit var storeViewModel: StoreViewModel
     private lateinit var homeViewModel: HomeViewModel
+    private lateinit var dressViewModel: DressViewModel
 
     lateinit var storedetailAdapter: StoreDetailAdapter
     private lateinit var toolbar: Toolbar
@@ -49,6 +52,8 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
     override fun init() {
         // 뷰모델 선언
         storeViewModel = ViewModelProvider(this).get(StoreViewModel::class.java)
+        dressViewModel = ViewModelProvider(this).get(DressViewModel::class.java)
+
         storeViewModel.get_store_detail_data(intent.getIntExtra("store_id", 0), "전체")
 
         // lat, lng 정보를 얻기 위해서
@@ -166,18 +171,14 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
 
     // 옷 좋아요 클릭 시
     override fun onItemClothFavoriteClick(like: Boolean, id: Int, view : View, position: Int) {
-//        if (like) {
-//            Glide.with(this)
-//                .load(R.drawable.icon_favorite_line) //이미지
-//                .into(view as ImageView) //보여줄 위치
-//            // 좋아요 정보 갱신 요청
-//        }
-//        else {
-//            Glide.with(this)
-//                .load(R.drawable.icon_favorite_filledpink) //이미지
-//                .into(view as ImageView)  //보여줄 위치
-//            // 좋아요 정보 갱신 요청
-//        }
+        if (id != 0) {
+            dressViewModel.set_dress_like_data(UpdateDressLikeDto(id))
+            dressViewModel.get_dress_like_data()
+
+            homeViewModel.get_home_data(
+                homeViewModel.home_latlng.value!!.first,
+                homeViewModel.home_latlng.value!!.second)
+        }
     }
 
     @SuppressLint("ResourceAsColor")

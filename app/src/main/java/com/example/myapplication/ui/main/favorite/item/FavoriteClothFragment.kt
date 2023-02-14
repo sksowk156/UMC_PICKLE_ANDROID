@@ -65,10 +65,11 @@ class FavoriteClothFragment :
 
     override fun onItemClothFavoriteClick(like:Boolean, id: Int, view : View, position: Int) {
         dressViewModel.set_dress_like_data(UpdateDressLikeDto(id))
-
         homeViewModel.get_home_data(
             homeViewModel.home_latlng.value!!.first,
             homeViewModel.home_latlng.value!!.second)
+        dressViewModel.get_dress_like_data()
+
     }
 
 }

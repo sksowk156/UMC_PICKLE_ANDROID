@@ -35,6 +35,31 @@ class DressViewModel : ViewModel() {
     private var _dress_reservation_dress_data = MutableLiveData<List<DressOrderDto>>()
     val dress_reservation_dress_data: LiveData<List<DressOrderDto>> get() = _dress_reservation_dress_data
 
+    private var _completeorder = MutableLiveData<Int>()
+    val completeorder: LiveData<Int> get() = _completeorder
+    private var _pickup = MutableLiveData<Int>()
+    val pickup: LiveData<Int> get() = _pickup
+    private var _pickupconfirm = MutableLiveData<Int>()
+    val pickupconfirm: LiveData<Int> get() = _pickupconfirm
+    private var _purchaseconfirm = MutableLiveData<Int>()
+    val purchaseconfirm: LiveData<Int> get() = _purchaseconfirm
+
+    fun set_completeorder(size:Int){
+        _completeorder.value = size
+    }
+
+    fun set_pickup(size:Int){
+        _pickup.value = size
+    }
+
+    fun set_pickupconfirm(size:Int){
+        _pickupconfirm.value = size
+    }
+
+    fun set_purchaseconfirm(size:Int){
+        _purchaseconfirm.value = size
+    }
+
 
     fun get_dress_detail_data(id: Int) {
         DressService.dressService.get_dress_detail_data(id).enqueue(object : Callback<DressDetailDto> {

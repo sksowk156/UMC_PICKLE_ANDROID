@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.main.profile
 
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentProfileBinding
@@ -22,6 +23,22 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
         hideBottomNavigation(false)
         initAppbar(binding.profileToolbar, "마이페이지", false, true)
         initButton()
+
+        dressViewModel.completeorder.observe(viewLifecycleOwner, Observer {
+            binding.profileTextviewCompleteorder.text = it.toString()
+        })
+
+        dressViewModel.pickup.observe(viewLifecycleOwner,Observer{
+            binding.profileTextviewPickup.text = it.toString()
+        })
+
+        dressViewModel.pickupconfirm.observe(viewLifecycleOwner,Observer{
+            binding.profileTextviewPickupconfirm.text = it.toString()
+        })
+
+        dressViewModel.purchaseconfirm.observe(viewLifecycleOwner,Observer{
+            binding.profileTextviewPurchaseconfirm.text = it.toString()
+        })
     }
 //
     private fun initButton(){

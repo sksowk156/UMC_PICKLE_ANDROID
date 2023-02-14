@@ -57,7 +57,7 @@ class FavoriteStoreAdapter(clicklistener: ItemListClickInterface) :
 
 object FavoriteStoreDiffUtil : DiffUtil.ItemCallback<StoreLikeDto>() {
     override fun areItemsTheSame(oldItem: StoreLikeDto, newItem: StoreLikeDto): Boolean {
-        return oldItem.store_id  == newItem.store_id
+        return oldItem  === newItem
     }
 
     override fun areContentsTheSame(oldItem: StoreLikeDto, newItem: StoreLikeDto): Boolean {

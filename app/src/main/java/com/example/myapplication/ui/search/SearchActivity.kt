@@ -46,9 +46,11 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
     private var category: String = "전체"
     private var sort: String = "좋아요많은순"
     private var searchWord : String ?= null
+    private var latlng : Pair<Double, Double>?=null
+    private lateinit var searchView : SearchView
 
     override fun init() {
-        var latlng = intent.getSerializableExtra("lat_lng") as Pair<Double, Double>
+        latlng = intent.getSerializableExtra("lat_lng") as Pair<Double, Double>
         dressViewModel = ViewModelProvider(this).get(DressViewModel::class.java)
         categorySortViewModel = ViewModelProvider(this).get(CategorySortViewModel::class.java)
         categorySortViewModel.category_data.observe(this, Observer {
@@ -57,8 +59,8 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                 // // 화면 전환 및 검색 결과 보여주기(API 요청)
                 dressViewModel.get_dress_search_data(
                     category,
-                    latlng.first,
-                    latlng.second,
+                    latlng!!.first,
+                    latlng!!.second,
                     searchWord!!,
                     sort
                 )
@@ -70,8 +72,8 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                 // // 화면 전환 및 검색 결과 보여주기(API 요청)
                 dressViewModel.get_dress_search_data(
                     category,
-                    latlng.first,
-                    latlng.second,
+                    latlng!!.first,
+                    latlng!!.second,
                     searchWord!!,
                     sort
                 )
@@ -90,7 +92,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                 menuInflater.inflate(R.menu.menu_search_appbar, menu)
                 toolbarmenusearch = toolbar.menu.findItem(R.id.search)
 
-                val searchView = menu.findItem(R.id.search).actionView as SearchView
+                searchView = menu.findItem(R.id.search).actionView as SearchView
 
                 var searchViewEditText =
                     searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
@@ -118,8 +120,8 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                             // // 화면 전환 및 검색 결과 보여주기(API 요청)
                             dressViewModel.get_dress_search_data(
                                 category,
-                                latlng.first,
-                                latlng.second,
+                                latlng!!.first,
+                                latlng!!.second,
                                 query,
                                 sort
                             )
@@ -225,8 +227,24 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         searchhistoryAdapter =
             SearchhistoryAdapter(object : SearchhistoryAdapter.ItemClickListener {
                 // recycler 아이템 중 텍스트를 클릭했을 때 -> 해당 텍스트로 재검색
-                override fun onTextItemClick(view: View, position: Int) {
-
+                override fun onTextItemClick(searchhistory:String, position: Int) {
+// // 화면 전환 및 검색 결과 보여주기(API 요청)
+                    dressViewModel.get_dress_search_data(
+                        category,
+                        latlng!!.first,
+                        latlng!!.second,
+                        searchhistory,
+                        sort
+                    )
+                    // 검색 기록 보여주는 창 가리고
+                    toolbarlayout.visibility = View.VISIBLE
+                    toolbarinnerlayout.visibility = View.INVISIBLE
+                    // 검색 기록 보여주는 fragment 보여주기
+                    supportFragmentManager.beginTransaction()
+                        .replace(toolbarlayout.id, SearchresultFragment(), "searchresult")
+                        .commitAllowingStateLoss()
+                    // 엔터를 쳤기 때문에 커서를 없앤다.
+                    searchView.clearFocus()
                 }
 
                 // recycler 아이템 중 x 이미지를 클릭했을 때 -> 데이터 삭제

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentOrderstatusDetailBinding
 import com.example.myapplication.db.remote.model.DressOrderDto
+import com.example.myapplication.db.remote.model.ReservedDressDto
 import com.example.myapplication.ui.base.BaseFragment
 import com.example.myapplication.viewmodel.DressViewModel
 
@@ -34,9 +35,9 @@ class OrderstatusDetailFragment : BaseFragment<FragmentOrderstatusDetailBinding>
             detailRecyclerview.adapter = orderstatusAdapter
             detailRecyclerview.layoutManager = LinearLayoutManager(context)
             dressViewModel.dress_reservation_dress_data.observe(viewLifecycleOwner, Observer {
-                orderstatusAdapter.userList = it as ArrayList<DressOrderDto>
+                orderstatusAdapter.userList = it.last().reservedDressList as ArrayList<ReservedDressDto>
                 orderstatusAdapter.notifyDataSetChanged()
-                detailTextviewOrdernumber.text = it.last().reserved_dress_id.toString()
+                detailTextviewOrdernumber.text = it.last().dress_reservation_id.toString()
                 detailTextviewAddress.text = it.last().store_address
                 detailTextviewOperationhours.text = it.last().hours_of_operation.toString()
                 detailTextviewPickupdatetime.text = it.last().pickup_datetime
