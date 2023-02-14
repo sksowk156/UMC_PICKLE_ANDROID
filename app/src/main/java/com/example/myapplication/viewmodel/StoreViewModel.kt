@@ -13,6 +13,9 @@ import retrofit2.Response
 
 class StoreViewModel : ViewModel() {
 
+    private var _screen_latlng = MutableLiveData<Pair<Double,Double>>()
+    val screen_latlng: LiveData<Pair<Double,Double>> get() = _screen_latlng
+
     private var _store_near_data = MutableLiveData<StoreCoordDtoList>()
     val store_near_data: LiveData<StoreCoordDtoList> get() = _store_near_data
 
@@ -24,6 +27,14 @@ class StoreViewModel : ViewModel() {
 
     private var _update_store_like_data = MutableLiveData<UpdateStoreLikeDto>()
     val update_store_like_data: LiveData<UpdateStoreLikeDto> get() = _update_store_like_data
+
+    init {
+        _screen_latlng.value = Pair(0.0, 0.0)
+    }
+
+    fun set_screen_latlng(lat: Double, lng: Double) {
+        _screen_latlng.value = Pair(lat, lng)
+    }
 
     fun get_store_like_data() {
         StoreService.storeService.get_store_like_data().enqueue(object : Callback<List<StoreLikeDto>> {

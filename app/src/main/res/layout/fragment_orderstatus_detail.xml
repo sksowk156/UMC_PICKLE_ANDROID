@@ -12,7 +12,7 @@
             android:id="@+id/orderstatus_toolbar"
             layout="@layout/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -172,7 +172,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginHorizontal="17dp"
-                        android:layout_weight="1"
                         android:text="픽업 시간"
                         android:textColor="#1E1E1E"
                         android:textSize="16sp" />
@@ -182,10 +181,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:gravity="end"
                         android:text="2023.01.28"
                         android:textColor="#1E1E1E"
-                        android:layout_marginEnd="16dp"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -197,11 +199,10 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginHorizontal="17dp"
-                        android:layout_weight="1"
                         android:text="요청 사항"
                         android:textColor="#1E1E1E"
                         android:textSize="16sp" />
@@ -211,7 +212,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="40dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:gravity="end"
                         android:text="없음"
                         android:textColor="#5C5C5C"
                         android:textSize="14sp" />
@@ -219,7 +222,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="111dp"
+                    android:layout_height="80dp"
                     android:layout_marginTop="8dp"
                     android:background="@color/white"
                     android:orientation="horizontal">
@@ -229,7 +232,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="17dp"
                         android:layout_marginTop="16dp"
-                        android:layout_weight="1"
                         android:text="총 결제 금액"
                         android:textColor="#1E1E1E"
                         android:textSize="16sp" />
@@ -240,30 +242,45 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="15dp"
+                        android:layout_weight="1"
+                        android:gravity="end"
                         android:text="100,000원"
                         android:textColor="#1E1E1E"
                         android:textSize="16sp" />
+
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:orientation="horizontal"
-                    android:background="@color/white">
+                    android:paddingHorizontal="16dp"
+                    android:paddingBottom="31dp">
 
-                    <Button
-                        android:text="주문 취소"
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/cancel_button"
-                        android:layout_width="205dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/permission_button2_background"/>
+                        android:layout_width="156dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/inquiry_background"
+                        android:gravity="center"
+                        android:text="주문 취소"
+                        android:textColor="#1E1E1E"
+                        android:textSize="16sp" />
 
-                    <Button
-                        android:text="구매확정"
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/confirm_button"
-                        android:layout_width="205dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/permission_button2_background"/>
+                        android:layout_width="156dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/inquiry_background"
+                        android:gravity="center"
+                        android:text="구매확정"
+                        android:textColor="#1E1E1E"
 
+                        android:textSize="16sp" />
 
 
                 </LinearLayout>

@@ -86,7 +86,7 @@ abstract class BaseFragment<T : ViewDataBinding>(
         toolbar.setTitle(name)
         if (backbtn) {
             // 뒤로가기 버튼 추가
-            toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_new_24)
+            toolbar.setNavigationIcon(R.drawable.icon_appbar)
         } else {
             // 뒤로가기 버튼 지우기
             toolbar.setNavigationIcon(null)

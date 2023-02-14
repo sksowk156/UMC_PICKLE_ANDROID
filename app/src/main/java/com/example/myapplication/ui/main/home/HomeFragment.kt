@@ -54,41 +54,50 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
         initSlideView()
         initRecyclerView()
 
-        binding.button.setOnClickListener {
+        binding.homeTextviewRecentmore.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
                 .add(R.id.home_base_layout, RecentFragment(), "recent")
                 .addToBackStack(null)
                 .commitAllowingStateLoss()
+            homeViewModel.get_home_recent_data()
         }
 
-        binding.button2.setOnClickListener {
+        binding.homeTextviewNewmore.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
                 .replace(R.id.home_base_layout, NewFragment(), "new")
                 .addToBackStack(null)
                 .commitAllowingStateLoss()
+            homeViewModel.get_home_new_data(homeViewModel.home_latlng.value!!.first,homeViewModel.home_latlng.value!!.second)
         }
 
-        dressViewModel.dress_like_data.observe(viewLifecycleOwner, Observer<List<DressLikeDto>> {
-            if (update_list_position != null) {
-                if ((recentData.size >= update_list_position!! +1) &&recentData[update_list_position!!].dress_id == update_islikedata_id) {
-                    recentData[update_list_position!!].dress_like = !recentData[update_list_position!!].dress_like!!
-//                    recentAdapter.submitList(recentData.toMutableList())
-//                    recentAdapter.updateData(recentData)
-                    recentAdapter.notifyItemChanged(update_list_position!!)
-                } else if ((newData.size >= update_list_position!! +1) && newData[update_list_position!!].dress_id == update_islikedata_id) {
-                    newData[update_list_position!!].dress_like = !newData[update_list_position!!].dress_like!!
-//                    newAdapter.submitList(newData.toMutableList())
-                    newAdapter.notifyItemChanged(update_list_position!!)
-                } else if((recommendData.size >= update_list_position!! +1) && recommendData[update_list_position!!].dress_id == update_islikedata_id){
-                    recommendData[update_list_position!!].dress_like = !recommendData[update_list_position!!].dress_like!!
-//                    recommendAdapter.submitList(recommendData.toMutableList())
-                    recommendAdapter.notifyItemChanged(update_list_position!!)
-                }
-                update_list_position = null
-            }
-        })
+//        dressViewModel.dress_like_data.observe(viewLifecycleOwner, Observer<List<DressLikeDto>> {
+////            recentAdapter.notifyDataSetChanged()
+////
+////            newAdapter.notifyDataSetChanged()
+////
+////            recommendAdapter.notifyDataSetChanged()
+//
+////            if (update_list_position != null) {
+////
+////                if ((recentData.size >= update_list_position!! +1) &&recentData[update_list_position!!].dress_id == update_islikedata_id) {
+////                    recentData[update_list_position!!].dress_like = !recentData[update_list_position!!].dress_like!!
+//////                    recentAdapter.submitList(recentData.toMutableList())
+//////                    recentAdapter.updateData(recentData)
+////                    recentAdapter.notifyItemChanged(update_list_position!!)
+////                } else if ((newData.size >= update_list_position!! +1) && newData[update_list_position!!].dress_id == update_islikedata_id) {
+////                    newData[update_list_position!!].dress_like = !newData[update_list_position!!].dress_like!!
+//////                    newAdapter.submitList(newData.toMutableList())
+////                    newAdapter.notifyItemChanged(update_list_position!!)
+////                } else if((recommendData.size >= update_list_position!! +1) && recommendData[update_list_position!!].dress_id == update_islikedata_id){
+////                    recommendData[update_list_position!!].dress_like = !recommendData[update_list_position!!].dress_like!!
+//////                    recommendAdapter.submitList(recommendData.toMutableList())
+////                    recommendAdapter.notifyItemChanged(update_list_position!!)
+////                }
+////                update_list_position = null
+////            }
+//        })
     }
 
 
@@ -119,40 +128,42 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
             viewLifecycleOwner,
             Observer<DressHomeDto> { now_homeModel ->
                 if (now_homeModel != null) {
-//                    recentAdapter.submitList(null)
 //                    newAdapter.submitList(null)
 //                    recommendAdapter.submitList(null)
 
-//                    recentAdapter.submitList(now_homeModel.recentView!!.toMutableList())
-//                    newAdapter.submitList(now_homeModel.newDresses!!.toMutableList())
-//                    recommendAdapter.submitList(now_homeModel.recDresses!!.toMutableList())
+                    recentAdapter.submitList(now_homeModel.recentView!!.toMutableList())
+//                    recentAdapter.notifyDataSetChanged()
+                    newAdapter.submitList(now_homeModel.newDresses!!.toMutableList())
+//                    newAdapter.notifyDataSetChanged()
+                    recommendAdapter.submitList(now_homeModel.recDresses!!.toMutableList())
+//                    recommendAdapter.notifyDataSetChanged()
 
 
-                    recentData = now_homeModel.recentView as ArrayList<DressOverviewDto>
-                    newData = now_homeModel.newDresses as ArrayList<DressOverviewDto>
-                    recommendData = now_homeModel.recDresses as ArrayList<DressOverviewDto>
+//                    recentData = now_homeModel.recentView as ArrayList<DressOverviewDto>
+//                    newData = now_homeModel.newDresses as ArrayList<DressOverviewDto>
+//                    recommendData = now_homeModel.recDresses as ArrayList<DressOverviewDto>
 
-                    recentAdapter.deleteData()
-                    recentAdapter.updateData(now_homeModel.recentView as ArrayList<DressOverviewDto>)
-                    recentAdapter.notifyDataSetChanged()
+//                    recentAdapter.deleteData()
+//                    recentAdapter.updateData(now_homeModel.recentView as ArrayList<DressOverviewDto>)
+//                    recentAdapter.notifyDataSetChanged()
 
-                    newAdapter.deleteData()
-                    newAdapter.updateData(now_homeModel.newDresses as ArrayList<DressOverviewDto>)
-                    newAdapter.notifyDataSetChanged()
+//                    newAdapter.deleteData()
+//                    newAdapter.updateData(now_homeModel.newDresses as ArrayList<DressOverviewDto>)
+//                    newAdapter.notifyDataSetChanged()
 
-                    recommendAdapter.deleteData()
-                    recommendAdapter.updateData(now_homeModel.recDresses as ArrayList<DressOverviewDto>)
-                    recommendAdapter.notifyDataSetChanged()
+//                    recommendAdapter.deleteData()
+//                    recommendAdapter.updateData(now_homeModel.recDresses as ArrayList<DressOverviewDto>)
+//                    recommendAdapter.notifyDataSetChanged()
 
                 } else {
                     Log.d("whatisthis", "home_data, 없음")
-                    recentAdapter.deleteData()
-                    newAdapter.deleteData()
-                    recommendAdapter.deleteData()
+//                    recentAdapter.deleteData()
+//                    newAdapter.deleteData()
+//                    recommendAdapter.deleteData()
 
-//                    recentAdapter.submitList(null)
-//                    newAdapter.submitList(null)
-//                    recommendAdapter.submitList(null)
+                    recentAdapter.submitList(null)
+                    newAdapter.submitList(null)
+                    recommendAdapter.submitList(null)
                 }
             })
 
@@ -179,24 +190,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
         val intent = Intent(getActivity(), ClothActivity::class.java)
         intent.putExtra("cloth_id", id)
         startActivity(intent)
-//        update_islikedata_id = id
-//        update_list_position = position
     }
 
     override fun onItemStoreNameClick(id: Int, position: Int) {
         val intent = Intent(getActivity(), StoreActivity::class.java)
         intent.putExtra("store_id", id)
         startActivity(intent)
-//        update_islikedata_id = id
-//        update_list_position = position
     }
 
     override fun onItemClothFavoriteClick(like: Boolean, id: Int, view: View, position: Int) {
         if (id != 0) {
             dressViewModel.set_dress_like_data(UpdateDressLikeDto(id))
             dressViewModel.get_dress_like_data()
-            update_islikedata_id = id
-            update_list_position = position
+
+//            homeViewModel.get_home_data(
+//                homeViewModel.home_latlng.value!!.first,
+//                homeViewModel.home_latlng.value!!.second)
+//            update_islikedata_id = id
+//            update_list_position = position
         }
     }
 

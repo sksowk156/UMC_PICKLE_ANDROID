@@ -1,12 +1,13 @@
-package com.example.myapplication.ui.search
+package com.example.myapplication.ui.search.result
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentCategoryBinding
-import com.example.myapplication.databinding.FragmentSortBinding
 import com.example.myapplication.viewmodel.CategorySortViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -23,6 +24,12 @@ class CategoryFragment : BottomSheetDialogFragment() {
         // Inflate the layout for this fragment
         _binding = FragmentCategoryBinding.inflate(inflater, container, false)
         return _binding!!.root
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        setStyle(STYLE_NO_TITLE, R.style.AppBottomSheetDialogTheme2)
+
+        return super.onCreateDialog(savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

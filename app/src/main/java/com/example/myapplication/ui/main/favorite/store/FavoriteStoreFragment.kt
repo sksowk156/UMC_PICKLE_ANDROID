@@ -90,6 +90,8 @@ class FavoriteStoreFragment :
             homeViewModel.home_latlng.value!!.first,
             homeViewModel.home_latlng.value!!.second
         )
+
+        storeViewModel.get_store_like_data()
     }
 
         override fun onItemMarketLayoutClick(id: Int, position: Int) {
