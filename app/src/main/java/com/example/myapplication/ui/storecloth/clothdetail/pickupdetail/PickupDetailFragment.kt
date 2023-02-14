@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.graphics.Color
 import android.util.Log
+import android.widget.DatePicker
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +34,7 @@ class PickupDetailFragment : BaseFragment<FragmentPickupDetailBinding>(R.layout.
     private lateinit var storeViewModel: StoreViewModel
     private lateinit var orderViewModel: OrderViewModel
     private lateinit var dressViewModel: DressViewModel
-    private lateinit var date: String
+    private var date: String = ""
     private lateinit var time: String
     private lateinit var dateTime: String
     private var totalPrice: Int = 0
@@ -103,26 +105,24 @@ class PickupDetailFragment : BaseFragment<FragmentPickupDetailBinding>(R.layout.
     private fun initDate() {
         with(binding) {
             binding.tvDateDialog.setOnClickListener {
-                val cal = Calendar.getInstance()
-                val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
-                    binding.tvDateDialog.text = "${year}. ${month + 1}. ${day}"
-                    if(month + 1 < 10) {
+                val mcurrentTime = Calendar.getInstance()
+                val year = mcurrentTime.get(Calendar.YEAR)
+                val month = mcurrentTime.get(Calendar.MONTH)
+                val day = mcurrentTime.get(Calendar.DAY_OF_MONTH)
+
+                val datePicker = DatePickerDialog(requireContext(), R.style.DatePickerTheme, object : DatePickerDialog.OnDateSetListener {
+                    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+                        if(month + 1 < 10) {
                         date = "${year}-0${month + 1}-${day}"
                         binding.tvDateDialog.text = "${year}. 0${month + 1}. ${day}"
                     }
                     else {
                         date = "${year}-${month + 1}-${day}"
                         binding.tvDateDialog.text = "${year}. ${month + 1}. ${day}"
+                      }
                     }
-                }
-
-                DatePickerDialog(
-                    requireContext(),
-                    data,
-                    cal.get(Calendar.YEAR),
-                    cal.get(Calendar.MONTH),
-                    cal.get(Calendar.DAY_OF_MONTH)
-                ).show()
+                }, year, month, day);
+                datePicker.show()
             }
         }
     }
@@ -148,15 +148,18 @@ class PickupDetailFragment : BaseFragment<FragmentPickupDetailBinding>(R.layout.
 
         for (i in 0..chipGroup.size - 1) {
             chipGroup[i].setOnClickListener {
-                for (j in 0..chipGroup.size - 1) {
-                    if (chipGroup[j].background.constantState == resources.getDrawable(R.drawable.chip_background_selected).constantState) {
-                        chipGroup[j].setBackgroundResource(R.drawable.chip_background)
-                        chipGroup[j].setTextColor(Color.BLACK)
-                    }
-                    chipGroup[i].setBackgroundResource(R.drawable.chip_background_selected)
-                    chipGroup[i].setTextColor(Color.WHITE)
-                    time = chipGroup[i].text.toString()
-                    if(date != null) {
+                if(date == "")
+                    Toast.makeText(activity, "날짜를 먼저 선택해주세요.", Toast.LENGTH_SHORT).show()
+                else {
+                    for (j in 0..chipGroup.size - 1) {
+                        if (chipGroup[j].background.constantState == resources.getDrawable(R.drawable.chip_background_selected).constantState) {
+                            chipGroup[j].setBackgroundResource(R.drawable.chip_background)
+                            chipGroup[j].setTextColor(Color.BLACK)
+                        }
+                        chipGroup[i].setBackgroundResource(R.drawable.chip_background_selected)
+                        chipGroup[i].setTextColor(Color.WHITE)
+                        time = chipGroup[i].text.toString()
+
                         binding.ivOrder.setBackgroundResource(R.drawable.green_button_background)
                         binding.ivOrder.setTextColor(Color.WHITE)
                     }
@@ -178,27 +181,37 @@ class PickupDetailFragment : BaseFragment<FragmentPickupDetailBinding>(R.layout.
             }
 
             binding.ivOrder.setOnClickListener{
-                //예약 정보 보내기
-                val comment = binding.pickupdetailEdittextRequest.text.toString()
-                val dress_id = dress_detail_data?.dress_id
-                val pickup_datetime = date + " " + time + ":00"
-                val price = totalPrice
-                val reserved_dress_list = temp.toList()
-                val store_id = dress_detail_data?.store_id
+                if (binding.ivOrder.background.constantState != resources.getDrawable(R.drawable.green_button_background).constantState)
+                    null
+                else {
+                    //예약 정보 보내기
+                    val comment = binding.pickupdetailEdittextRequest.text.toString()
+                    val dress_id = dress_detail_data?.dress_id
+                    val pickup_datetime = date + " " + time + ":00"
+                    val price = totalPrice
+                    val reserved_dress_list = temp.toList()
+                    val store_id = dress_detail_data?.store_id
 
-                Log.d("dress_id", dress_id.toString())
-                Log.d("datetime", pickup_datetime.toString())
-                Log.d("price", price.toString())
-                Log.d("store_id", store_id.toString())
+                    Log.d("dress_id", dress_id.toString())
+                    Log.d("datetime", pickup_datetime.toString())
+                    Log.d("price", price.toString())
+                    Log.d("store_id", store_id.toString())
 
-                val dressReservationDto = DressReservationDto(comment, dress_id!!, pickup_datetime, price, reserved_dress_list, store_id!!)
-                reservationViewModel.set_dresses_reservation(dressReservationDto!!)
+                    val dressReservationDto = DressReservationDto(
+                        comment,
+                        dress_id!!,
+                        pickup_datetime,
+                        price,
+                        reserved_dress_list,
+                        store_id!!
+                    )
+                    reservationViewModel.set_dresses_reservation(dressReservationDto!!)
 
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.clothblank_layout, OrderCompleteFragment(), "ordercomplete")
-                    .addToBackStack(null)
-                    .commitAllowingStateLoss()
-
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.clothblank_layout, OrderCompleteFragment(), "ordercomplete")
+                        .addToBackStack(null)
+                        .commitAllowingStateLoss()
+                }
             }
         }
     }
