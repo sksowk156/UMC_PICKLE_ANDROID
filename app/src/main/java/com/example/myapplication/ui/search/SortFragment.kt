@@ -40,8 +40,4 @@ class SortFragment : BottomSheetDialogFragment() {
             categorySortViewModel.set_sort_data("좋아요많은순")
         }
     }
-
-    override fun setupDialog(dialog: Dialog, style: Int) {
-        super.setupDialog(dialog, style)
-    }
 }

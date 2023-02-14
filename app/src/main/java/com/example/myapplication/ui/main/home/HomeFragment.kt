@@ -72,16 +72,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
 
         dressViewModel.dress_like_data.observe(viewLifecycleOwner, Observer<List<DressLikeDto>> {
             if (update_list_position != null) {
-                if (recentData[update_list_position!!].dress_id == update_islikedata_id) {
+                if ((recentData.size >= update_list_position!! +1) &&recentData[update_list_position!!].dress_id == update_islikedata_id) {
                     recentData[update_list_position!!].dress_like = !recentData[update_list_position!!].dress_like!!
 //                    recentAdapter.submitList(recentData.toMutableList())
 //                    recentAdapter.updateData(recentData)
                     recentAdapter.notifyItemChanged(update_list_position!!)
-                } else if (newData[update_list_position!!].dress_id == update_islikedata_id) {
+                } else if ((newData.size >= update_list_position!! +1) && newData[update_list_position!!].dress_id == update_islikedata_id) {
                     newData[update_list_position!!].dress_like = !newData[update_list_position!!].dress_like!!
 //                    newAdapter.submitList(newData.toMutableList())
                     newAdapter.notifyItemChanged(update_list_position!!)
-                } else {
+                } else if((recommendData.size >= update_list_position!! +1) && recommendData[update_list_position!!].dress_id == update_islikedata_id){
                     recommendData[update_list_position!!].dress_like = !recommendData[update_list_position!!].dress_like!!
 //                    recommendAdapter.submitList(recommendData.toMutableList())
                     recommendAdapter.notifyItemChanged(update_list_position!!)
@@ -133,15 +133,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
                     recommendData = now_homeModel.recDresses as ArrayList<DressOverviewDto>
 
                     recentAdapter.deleteData()
-                    recentAdapter.updateData(recentData)
+                    recentAdapter.updateData(now_homeModel.recentView as ArrayList<DressOverviewDto>)
                     recentAdapter.notifyDataSetChanged()
 
                     newAdapter.deleteData()
-                    newAdapter.updateData(newData)
+                    newAdapter.updateData(now_homeModel.newDresses as ArrayList<DressOverviewDto>)
                     newAdapter.notifyDataSetChanged()
 
                     recommendAdapter.deleteData()
-                    recommendAdapter.updateData(recommendData)
+                    recommendAdapter.updateData(now_homeModel.recDresses as ArrayList<DressOverviewDto>)
                     recommendAdapter.notifyDataSetChanged()
 
                 } else {

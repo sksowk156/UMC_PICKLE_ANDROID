@@ -1,6 +1,6 @@
 package com.example.myapplication.db.remote.model
 
-data class ReservationSuccessDto(
+data class ResultOfSetDto(
     var data: String,
     var success: Boolean
 )

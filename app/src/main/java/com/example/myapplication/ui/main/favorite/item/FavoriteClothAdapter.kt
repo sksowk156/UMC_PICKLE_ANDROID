@@ -29,7 +29,7 @@ class FavoriteItemAdapter(clicklistener: ItemCardClickInterface) :
                 .into(binding.cardImageviewImage) //보여줄 위치
 
             binding.cardTextviewStorename.text = like_cloth.store_name
-            binding.cardTextviewClothename.text = like_cloth.name
+            binding.cardTextviewClothename.text = like_cloth.dress_name
             binding.cardTextviewClotheprice.text = like_cloth.price
 
             binding.cardCardviewFrame.setOnClickListener {

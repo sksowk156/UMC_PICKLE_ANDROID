@@ -1,11 +1,11 @@
 package com.example.myapplication.db.remote.model
 
 data class DressSearchDto(
-    var `data`: List<Data>? = null,
+    var data: List<DressSearchResultDto>? = null,
     var success: Boolean? = null
 )
 
-data class Data(
+data class DressSearchResultDto(
     var dress_id: Int,
     var dress_image_url: String? = null,
     var dress_name: String? = null,

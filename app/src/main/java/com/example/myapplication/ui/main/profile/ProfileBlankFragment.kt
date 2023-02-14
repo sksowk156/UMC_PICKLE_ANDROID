@@ -7,11 +7,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentProfileBlankBinding
 import com.example.myapplication.ui.base.BaseFragment
+import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.ProfileViewModel
+import com.example.myapplication.viewmodel.UserViewModel
 
 class ProfileBlankFragment :
     BaseFragment<FragmentProfileBlankBinding>(R.layout.fragment_profile_blank) {
-//
+    private lateinit var userViewModel: UserViewModel
+
+
     override fun savedatainit() {
         childFragmentManager
             .beginTransaction()
@@ -20,7 +24,8 @@ class ProfileBlankFragment :
     }
 
     override fun init() {
-
+        userViewModel = ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
+        userViewModel.get_user_profile_data()
 //        initAppbar(binding.profileblankToolbar, "마이페이지", false, true)
 //        changeAppbar()
     }
