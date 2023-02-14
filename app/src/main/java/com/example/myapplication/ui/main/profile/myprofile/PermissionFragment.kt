@@ -20,7 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
-import com.example.myapplication.viewmodel.ProfileViewModel
+import com.example.myapplication.viewmodel.UserViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_permission.*
 import java.text.SimpleDateFormat
@@ -28,7 +28,7 @@ import java.util.*
 
 class PermissionFragment() : BottomSheetDialogFragment() {
 
-    private lateinit var profileViewModel: ProfileViewModel
+    private lateinit var userViewModel: UserViewModel
     private var CAMERA_PERMISSION: Boolean = false
     private var WRITE_EXTERNAL_STORAGE_PERMISSION: Boolean = false
     private var READ_EXTERNAL_STORAGE_PERMISSION: Boolean = false
@@ -51,7 +51,7 @@ class PermissionFragment() : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        profileViewModel = ViewModelProvider(requireActivity()).get(ProfileViewModel::class.java)
+        userViewModel = ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
         var permissioncamera_photo = view.findViewById<Button>(R.id.permission_camera_photo)
         var permissiondeletephoto = view.findViewById<Button>(R.id.permission_deletephoto)
         var permissioncancel = view.findViewById<Button>(R.id.permission_cancel)
@@ -76,7 +76,7 @@ class PermissionFragment() : BottomSheetDialogFragment() {
 
         // 프로필 삭제
         permissiondeletephoto.setOnClickListener {
-            profileViewModel.set_default_photo((R.drawable.icon_myprofile_profileimage))
+            userViewModel.set_default_photo((R.drawable.icon_myprofile_profileimage))
             dismiss()
         }
 
@@ -150,7 +150,7 @@ class PermissionFragment() : BottomSheetDialogFragment() {
     var pictureUri: Uri? = null
     private val getTakePicture = registerForActivityResult(ActivityResultContracts.TakePicture()) {
         if (it) {
-            pictureUri.let { profileViewModel.set_profile_photo(pictureUri!!) }
+            pictureUri.let { userViewModel.set_profile_photo(pictureUri!!) }
         }
         dismiss()
     }
@@ -174,7 +174,7 @@ class PermissionFragment() : BottomSheetDialogFragment() {
             if (it.resultCode == Activity.RESULT_OK && it.data != null) {
                 //값 담기
                 val uri = it.data!!.data
-                profileViewModel.set_profile_photo(uri!!)
+                userViewModel.set_profile_photo(uri!!)
             }
             dismiss()
         }

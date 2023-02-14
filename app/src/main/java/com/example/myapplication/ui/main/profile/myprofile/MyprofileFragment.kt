@@ -1,53 +1,27 @@
 package com.example.myapplication.ui.main.profile.myprofile
 
-import android.Manifest.permission.*
-import android.app.Activity.RESULT_OK
-import android.app.AlertDialog
-import android.content.ContentValues
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
-import android.util.Log
-import android.widget.Button
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.widget.AppCompatButton
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMyprofileBinding
 import com.example.myapplication.db.remote.model.UserProfileEditDto
 import com.example.myapplication.ui.base.BaseFragment
-import com.example.myapplication.ui.main.profile.logout.LogoutFragment
-import com.example.myapplication.viewmodel.ProfileViewModel
 import com.example.myapplication.viewmodel.UserViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.kakao.sdk.user.model.User
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MyprofileFragment() : BaseFragment<FragmentMyprofileBinding>(R.layout.fragment_myprofile) {
-    private lateinit var profileViewModel: ProfileViewModel
+
     private lateinit var userViewModel: UserViewModel
-
-    private var CAMERA_PERMISSION: Boolean = false
-    private var WRITE_EXTERNAL_STORAGE_PERMISSION: Boolean = false
-    private var READ_EXTERNAL_STORAGE_PERMISSION: Boolean = false
-
     private var defaultImage = R.drawable.icon_myprofile_profileimage
     private var new_image_uri: Uri? = null
 
     override fun init() {
-        profileViewModel = ViewModelProvider(requireActivity()).get(ProfileViewModel::class.java)
         userViewModel = ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
 
         // 이미지를 넣을 경우
-        profileViewModel.profile_photo.observe(
+        userViewModel.profile_photo.observe(
             viewLifecycleOwner,
             androidx.lifecycle.Observer<Uri> {
                 Glide.with(this)
@@ -58,7 +32,7 @@ class MyprofileFragment() : BaseFragment<FragmentMyprofileBinding>(R.layout.frag
             })
 
         // 이미지를 삭제했을 경우
-        profileViewModel.default_profile_photo.observe(
+        userViewModel.default_profile_photo.observe(
             viewLifecycleOwner,
             androidx.lifecycle.Observer<Int> {
                 Glide.with(this)

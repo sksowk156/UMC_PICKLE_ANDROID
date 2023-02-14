@@ -1,5 +1,6 @@
 package com.example.myapplication.viewmodel
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,6 +21,19 @@ class UserViewModel : ViewModel(){
     private var _user_profile_edit_result_data = MutableLiveData<ResultOfSetDto>()
     val user_profile_edit_result_data: LiveData<ResultOfSetDto> get() = _user_profile_edit_result_data
 
+    private var _profile_photo = MutableLiveData<Uri>()
+    val profile_photo: LiveData<Uri> get() = _profile_photo
+
+    private var _default_profile_photo=MutableLiveData<Int>()
+    val default_profile_photo:LiveData<Int>get() = _default_profile_photo
+
+    fun set_profile_photo(photo: Uri){
+        _profile_photo.value = photo
+    }
+
+    fun set_default_photo(def:Int){
+        _default_profile_photo.value=def
+    }
     fun get_user_profile_data(){
         UserService.userService.get_user_profile_data().enqueue(object :
             Callback<UserProfileDto> {
