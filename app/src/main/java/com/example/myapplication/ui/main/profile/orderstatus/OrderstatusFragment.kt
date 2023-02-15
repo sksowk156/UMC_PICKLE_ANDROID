@@ -73,6 +73,7 @@ class OrderstatusFragment : BaseFragment<FragmentOrderstatusBinding>(R.layout.fr
             orderstatusRecyclerview.layoutManager = LinearLayoutManager(context)
             orderstatusRecyclerview.addItemDecoration(OrderListDivider(0f,0f,20f,20f, Color.TRANSPARENT))
             dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
+
                 orderstatusAdapter.userList = it as ArrayList<DressOrderListDto>
                 orderstatusAdapter.notifyDataSetChanged()
 

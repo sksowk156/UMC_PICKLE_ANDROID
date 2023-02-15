@@ -10,7 +10,7 @@ import com.example.myapplication.db.remote.model.ReservedDressDto
 
 class OrderstatusDetailAdapter() : RecyclerView.Adapter<OrderstatusDetailAdapter.ViewHolder>() {
 //
-    var userList: ArrayList<ReservedDressDto>? = null
+    var userList = ArrayList<ReservedDressDto>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =

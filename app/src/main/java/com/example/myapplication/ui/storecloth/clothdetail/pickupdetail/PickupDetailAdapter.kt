@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.storecloth.clothdetail.pickupdetail
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,7 +7,6 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ItemOrderstatusdetailRecyclerBinding
 import com.example.myapplication.db.remote.model.DressDetailDto
 import com.example.myapplication.db.remote.model.order.ClothOrderData
-import com.example.myapplication.ui.main.profile.orderstatus.OrderedClotheData
 
 class PickupDetailAdapter : RecyclerView.Adapter<PickupDetailAdapter.ViewHolder>() {
 

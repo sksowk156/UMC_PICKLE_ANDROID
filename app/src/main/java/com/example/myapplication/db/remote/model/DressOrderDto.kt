@@ -10,5 +10,5 @@ data class DressOrderDto(
     val reservedDressList: List<ReservedDressDto>,
     val store_address: String,
     val store_name: String,
-    val store_open_day: Int
+    val store_open_day: String
 )

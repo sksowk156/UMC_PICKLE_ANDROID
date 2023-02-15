@@ -11,7 +11,7 @@ import com.example.myapplication.db.remote.model.DressOrderListDto
 class OrderstatusAdapter(clicklistener: OrderstatusAdapter.OrderstatusClickListener) :
     RecyclerView.Adapter<OrderstatusAdapter.ViewHolder>() {
 
-    var userList: ArrayList<DressOrderListDto>? = null
+    var userList = ArrayList<DressOrderListDto>()
 
     interface OrderstatusClickListener {
 

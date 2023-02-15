@@ -6,6 +6,6 @@ data class DressOrderListDto(
     var dress_reservation_id: Int,
     var order_time: String,
     var price: String,
-    var reservation_status: Int,
+    var reservation_status: String,
     var store_name: String
 )

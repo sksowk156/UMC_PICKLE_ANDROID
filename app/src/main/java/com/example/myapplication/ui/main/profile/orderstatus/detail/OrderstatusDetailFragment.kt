@@ -35,15 +35,15 @@ class OrderstatusDetailFragment : BaseFragment<FragmentOrderstatusDetailBinding>
             detailRecyclerview.adapter = orderstatusAdapter
             detailRecyclerview.layoutManager = LinearLayoutManager(context)
             dressViewModel.dress_reservation_dress_data.observe(viewLifecycleOwner, Observer {
-                orderstatusAdapter.userList = it.last().reservedDressList as ArrayList<ReservedDressDto>
+                orderstatusAdapter.userList = it.get(0).reservedDressList as ArrayList<ReservedDressDto>
                 orderstatusAdapter.notifyDataSetChanged()
-                detailTextviewOrdernumber.text = it.last().dress_reservation_id.toString()
-                detailTextviewAddress.text = it.last().store_address
-                detailTextviewOperationhours.text = it.last().hours_of_operation.toString()
-                detailTextviewPickupdatetime.text = it.last().pickup_datetime
-                detailTextviewRequests.text = it.last().comment
-                detailTextviewTotalprice.text = it.last().price
-                detailTextviewStorename.text = it.last().store_name
+                detailTextviewOrdernumber.text = it.get(0).dress_reservation_id.toString()
+                detailTextviewAddress.text = it.get(0).store_address
+                detailTextviewOperationhours.text = it.get(0).hours_of_operation.toString()
+                detailTextviewPickupdatetime.text = it.get(0).pickup_datetime
+                detailTextviewRequests.text = it.get(0).comment
+                detailTextviewTotalprice.text = it.get(0).price
+                detailTextviewStorename.text = it.get(0).store_name
             })
 
         }
