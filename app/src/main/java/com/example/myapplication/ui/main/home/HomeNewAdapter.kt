@@ -188,10 +188,10 @@ class HomeNewAdapter(clicklistener: ItemCardClickInterface) :
 
 object HomeNewDiffUtil : DiffUtil.ItemCallback<DressOverviewDto>() {
     override fun areItemsTheSame(oldItem: DressOverviewDto, newItem: DressOverviewDto): Boolean {
-        return (oldItem === newItem)
+        return (oldItem == newItem)
     }
 
     override fun areContentsTheSame(oldItem: DressOverviewDto, newItem: DressOverviewDto): Boolean {
-        return oldItem == newItem
+        return oldItem.dress_id == newItem.dress_id && oldItem.dress_like == newItem.dress_like
     }
 }

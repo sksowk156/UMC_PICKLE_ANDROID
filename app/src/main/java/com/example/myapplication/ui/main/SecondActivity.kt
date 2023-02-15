@@ -55,6 +55,10 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
         storeViewModel.get_store_like_data()
         // 홈화면 데이터 갱신
         requestLocationData()
+        dressViewModel.get_dress_resevation_data("주문완료")
+        dressViewModel.dress_reservation_data.observe(this, Observer {
+            dressViewModel.set_completeorder(it.size)
+        })
     }
 
     override fun init() {

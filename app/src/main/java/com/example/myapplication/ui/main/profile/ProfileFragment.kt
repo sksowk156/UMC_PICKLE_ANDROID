@@ -24,9 +24,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
         initAppbar(binding.profileToolbar, "마이페이지", false, true)
         initButton()
 
-//        dressViewModel.completeorder.observe(viewLifecycleOwner, Observer {
-//            binding.profileTextviewCompleteorder.text = it.toString()
-//        })
+        dressViewModel.completeorder.observe(viewLifecycleOwner, Observer {
+            binding.profileTextviewCompleteorder.text = it.toString()
+        })
 //
 //        dressViewModel.pickup.observe(viewLifecycleOwner,Observer{
 //            binding.profileTextviewPickup.text = it.toString()

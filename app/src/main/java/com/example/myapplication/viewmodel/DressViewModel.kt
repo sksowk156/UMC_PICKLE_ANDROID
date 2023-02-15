@@ -45,18 +45,15 @@ class DressViewModel : ViewModel() {
     val purchaseconfirm: LiveData<Int> get() = _purchaseconfirm
 
     fun set_completeorder(size:Int){
-        Log.d("whatisthis",size.toString())
         _completeorder.value = size
     }
 
     fun set_pickup(size:Int){
-        Log.d("whatisthis",size.toString())
 
         _pickup.value = size
     }
 
     fun set_pickupconfirm(size:Int){
-        Log.d("whatisthis",size.toString())
 
         _pickupconfirm.value = size
     }

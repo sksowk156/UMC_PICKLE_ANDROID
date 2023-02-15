@@ -83,7 +83,11 @@ abstract class BaseFragment<T : ViewDataBinding>(
     }
 
     protected fun initSubAppbar(name: String, backbtn: Boolean, item: Boolean) {
-        toolbar.setTitle(name)
+        if(name == "홈"){
+            toolbar.setLogo(R.drawable.icon_logo8)
+        }else{
+            toolbar.setTitle(name)
+        }
         if (backbtn) {
             // 뒤로가기 버튼 추가
             toolbar.setNavigationIcon(R.drawable.icon_appbar)

@@ -60,10 +60,10 @@ class FavoriteItemAdapter(clicklistener: ItemCardClickInterface) :
 
 object FavoriteItemDiffUtil : DiffUtil.ItemCallback<DressLikeDto>() {
     override fun areItemsTheSame(oldItem: DressLikeDto, newItem: DressLikeDto): Boolean {
-        return oldItem.dress_id == newItem.dress_id
+        return oldItem == newItem
     }
 
     override fun areContentsTheSame(oldItem: DressLikeDto, newItem: DressLikeDto): Boolean {
-        return oldItem == newItem
+        return oldItem.dress_id == newItem.dress_id
     }
 }
