@@ -25,10 +25,10 @@ class ProfileBlankFragment :
         userViewModel = ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
         userViewModel.get_user_profile_data()
 
-//        dressViewModel.get_dress_resevation_data("주문완료")
-//        dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
-//            dressViewModel.set_completeorder(it.size)
-//        })
+        dressViewModel.get_dress_resevation_data("주문완료")
+        dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
+            dressViewModel.set_completeorder(it.size)
+        })
 //        dressViewModel.get_dress_resevation_data("픽업중")
 //        dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
 //            dressViewModel.set_pickup(it.size)
