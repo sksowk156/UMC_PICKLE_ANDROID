@@ -29,39 +29,39 @@ class ProfileBlankFragment :
         dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
             dressViewModel.set_completeorder(it.size)
         })
-//        dressViewModel.get_dress_resevation_data("픽업중")
-//        dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
-//            dressViewModel.set_pickup(it.size)
-//        })
-//        dressViewModel.get_dress_resevation_data("픽업완료")
-//        dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
-//            dressViewModel.set_pickupconfirm(it.size)
-//        })
-//        dressViewModel.get_dress_resevation_data("구매확정")
-//        dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
-//            dressViewModel.set_purchaseconfirm(it.size)
-//        })
+        dressViewModel.get_dress_resevation_data("픽업중")
+        dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
+            dressViewModel.set_pickup(it.size)
+        })
+        dressViewModel.get_dress_resevation_data("픽업완료")
+        dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
+            dressViewModel.set_pickupconfirm(it.size)
+        })
+        dressViewModel.get_dress_resevation_data("구매확정")
+        dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
+            dressViewModel.set_purchaseconfirm(it.size)
+        })
     }
 
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        if(!hidden){
-            dressViewModel.get_dress_resevation_data("주문완료")
-            dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
-                dressViewModel.set_completeorder(it.size.toInt())
-            })
-            dressViewModel.get_dress_resevation_data("픽업중")
-            dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
-                dressViewModel.set_pickup(it.size.toInt())
-            })
-            dressViewModel.get_dress_resevation_data("픽업완료")
-            dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
-                dressViewModel.set_pickupconfirm(it.size.toInt())
-            })
-            dressViewModel.get_dress_resevation_data("구매확정")
-            dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
-                dressViewModel.set_purchaseconfirm(it.size.toInt())
-            })
-        }
-    }
+//    override fun onHiddenChanged(hidden: Boolean) {
+//        super.onHiddenChanged(hidden)
+//        if(!hidden){
+//            dressViewModel.get_dress_resevation_data("주문완료")
+//            dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
+//                dressViewModel.set_completeorder(it.size.toInt())
+//            })
+//            dressViewModel.get_dress_resevation_data("픽업중")
+//            dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
+//                dressViewModel.set_pickup(it.size.toInt())
+//            })
+//            dressViewModel.get_dress_resevation_data("픽업완료")
+//            dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
+//                dressViewModel.set_pickupconfirm(it.size.toInt())
+//            })
+//            dressViewModel.get_dress_resevation_data("구매확정")
+//            dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
+//                dressViewModel.set_purchaseconfirm(it.size.toInt())
+//            })
+//        }
+//    }
 }

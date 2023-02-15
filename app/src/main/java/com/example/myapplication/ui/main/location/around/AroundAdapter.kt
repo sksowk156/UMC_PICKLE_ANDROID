@@ -157,10 +157,10 @@ class AroundAdapter(clicklistener: ItemListClickInterface) :
 
 object AroundDiffUtil : DiffUtil.ItemCallback<StoreCoordDto>() {
     override fun areItemsTheSame(oldItem: StoreCoordDto, newItem: StoreCoordDto): Boolean {
-        return oldItem  === newItem
+        return oldItem  == newItem
     }
 
     override fun areContentsTheSame(oldItem: StoreCoordDto, newItem: StoreCoordDto): Boolean {
-        return oldItem == newItem
+        return (oldItem.store_id == newItem.store_id && oldItem.store_like == newItem.store_like)
     }
 }
