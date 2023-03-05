@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:clickable="true"
-        tools:context=".ui.main.profile.inquiry.InquiryFragment">
+        tools:context=".view.main.profile.inquiry.InquiryFragment">
 
         <include
             android:id="@+id/inquiry_toolbar"

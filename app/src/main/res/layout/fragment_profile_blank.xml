@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:clickable="true"
-        tools:context=".ui.main.profile.ProfileBlankFragment">
+        tools:context=".view.main.profile.ProfileBlankFragment">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -4,9 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.db.remote.DressService
-import com.example.myapplication.db.remote.StoreService
-import com.example.myapplication.db.remote.model.*
+import com.example.myapplication.data.remote.StoreService
+import com.example.myapplication.data.remote.model.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

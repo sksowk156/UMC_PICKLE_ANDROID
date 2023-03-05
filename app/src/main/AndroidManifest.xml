@@ -24,7 +24,7 @@
 
         <!--        스플래쉬-->
         <activity
-            android:name=".ui.splash.SplashActivity"
+            android:name=".view.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +34,7 @@
         </activity>
 
         <!--        로그인-->
-        <activity android:name=".ui.login.MainActivity" />
+        <activity android:name=".view.login.MainActivity" />
 
         <!--        카카오 로그인-->
         <activity
@@ -56,7 +56,7 @@
 
         <!--        회원가입-->
         <activity
-            android:name=".ui.login.AgreementActivity"
+            android:name=".view.login.AgreementActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -65,20 +65,20 @@
 
         <!--        홈-->
         <activity
-            android:name=".ui.main.SecondActivity"
+            android:name=".view.main.SecondActivity"
             android:exported="true" />
 
         <!--        매장 상세-->
         <activity
-            android:name=".ui.storecloth.storedetail.StoreActivity"
+            android:name=".view.storecloth.storedetail.StoreActivity"
             android:exported="false" />
 
         <!--        옷 상세-->
-        <activity android:name=".ui.storecloth.clothdetail.ClothActivity" />
+        <activity android:name=".view.storecloth.clothdetail.ClothActivity" />
 
         <!--        검색-->
         <activity
-            android:name=".ui.search.SearchActivity"
+            android:name=".view.search.SearchActivity"
             android:exported="false" />
 
     </application>

@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.db.remote.HomeService
-import com.example.myapplication.db.remote.model.DressHomeDto
-import com.example.myapplication.db.remote.model.DressOverviewDto
+import com.example.myapplication.data.remote.HomeService
+import com.example.myapplication.data.remote.model.DressHomeDto
+import com.example.myapplication.data.remote.model.DressOverviewDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,7 +40,7 @@ class HomeViewModel : ViewModel() {
         HomeService.homeService.get_home_data(lat, lng).enqueue(object : Callback<DressHomeDto> {
             override fun onResponse(call: Call<DressHomeDto>, response: Response<DressHomeDto>) {
                 if (response.isSuccessful) {
-                    _home_data.postValue(response.body())
+                    _home_data.value = (response.body())
                 } else {
                     _home_data.postValue(null)
                     Log.d("whatisthis", "_home_data, response 못받음")

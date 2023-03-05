@@ -3,7 +3,6 @@ package com.example.myapplication.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.db.remote.model.DressDetailDto
 
 class CategorySortViewModel : ViewModel() {
     private var _category_data = MutableLiveData<String>()

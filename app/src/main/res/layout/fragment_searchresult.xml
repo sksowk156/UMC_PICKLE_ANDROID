@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:clickable="true"
-        tools:context=".ui.search.result.SearchresultFragment">
+        tools:context=".view.search.result.SearchresultFragment">
 
         <TextView
             android:id="@+id/searchresult_textview_resultcount"

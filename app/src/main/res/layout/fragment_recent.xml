@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:clickable="true"
-        tools:context=".ui.main.home.recent.RecentFragment">
+        tools:context=".view.main.home.recent.RecentFragment">
 
         <include
             android:id="@+id/recent_toolbar"

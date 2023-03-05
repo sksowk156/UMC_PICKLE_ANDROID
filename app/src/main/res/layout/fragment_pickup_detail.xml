@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.storecloth.clothdetail.pickupdetail.PickupDetailFragment">
+        tools:context=".view.storecloth.clothdetail.pickupdetail.PickupDetailFragment">
 
         <include
             android:id="@+id/pickupdetail_toolbar"
