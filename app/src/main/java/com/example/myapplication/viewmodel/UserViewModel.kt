@@ -5,10 +5,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.db.remote.UserService
-import com.example.myapplication.db.remote.model.ResultOfSetDto
-import com.example.myapplication.db.remote.model.UserProfileDto
-import com.example.myapplication.db.remote.model.UserProfileEditDto
+import com.example.myapplication.data.remote.UserService
+import com.example.myapplication.data.remote.model.ResultOfSetDto
+import com.example.myapplication.data.remote.model.UserProfileDto
+import com.example.myapplication.data.remote.model.UserProfileEditDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

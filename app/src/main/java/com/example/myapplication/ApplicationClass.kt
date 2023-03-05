@@ -1,8 +1,8 @@
 package com.example.myapplication
 
 import android.app.Application
-import com.example.myapplication.config.XAccessTokenInterceptor
-import com.example.myapplication.util.SharedPreferencesManager
+import com.example.myapplication.widget.config.XAccessTokenInterceptor
+import com.example.myapplication.widget.utils.SharedPreferencesManager
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.kakao.sdk.common.KakaoSdk

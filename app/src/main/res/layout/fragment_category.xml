@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/category_layout"
     android:layout_width="match_parent"
-    android:layout_height="374dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
@@ -75,6 +75,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:text="기타"
+        android:layout_marginBottom="64dp"
         android:textColor="#A4A4A4"
         android:textSize="16sp"
         android:textStyle="bold" />

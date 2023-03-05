@@ -3,8 +3,8 @@ package com.example.myapplication.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.db.remote.model.order.ClothOptionData
-import com.example.myapplication.db.remote.model.order.ClothOrderData
+import com.example.myapplication.data.remote.model.order.ClothOptionData
+import com.example.myapplication.data.remote.model.order.ClothOrderData
 
 class OrderViewModel : ViewModel() {
 

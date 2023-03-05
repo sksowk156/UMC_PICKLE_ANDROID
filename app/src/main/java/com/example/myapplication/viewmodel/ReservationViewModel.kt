@@ -4,10 +4,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.db.remote.ReservationService
-import com.example.myapplication.db.remote.model.DressDetailDto
-import com.example.myapplication.db.remote.model.DressReservationDto
-import com.example.myapplication.db.remote.model.ResultOfSetDto
+import com.example.myapplication.data.remote.ReservationService
+import com.example.myapplication.data.remote.model.DressDetailDto
+import com.example.myapplication.data.remote.model.DressReservationDto
+import com.example.myapplication.data.remote.model.ResultOfSetDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
