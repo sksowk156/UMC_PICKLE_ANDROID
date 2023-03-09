@@ -7,6 +7,7 @@ import com.example.myapplication.data.remote.model.DressSearchDto
 import com.example.myapplication.data.remote.model.UpdateDressLikeDto
 import retrofit2.Call
 import com.example.myapplication.data.remote.model.*
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -18,41 +19,59 @@ object DressService {
     interface DressInterface{
         // 의상에 대한 좋아요 정보 요청
         @GET("dresses/like-list")
-        fun get_dress_like_data(
-        ): Call<List<DressLikeDto>>
+        suspend fun get_dress_like_data(
+        ): Response<List<DressLikeDto>>
 
         // 한 의상에 대한 좋아요 정보 수정
         @POST("dresses/like")
-        fun set_dress_like_data(
+        suspend fun set_dress_like_data(
             @Body updateDressLikeDto: UpdateDressLikeDto
-        ): Call<UpdateDressLikeDto>
+        ): Response<UpdateDressLikeDto>
 
         // 한 의상에 대한 상세 정보 요청
         @GET("dresses/detail/{dress_id}")
-        fun get_dress_detail_data(
+        suspend fun get_dress_detail_data(
             @Path("dress_id") id : Int
-        ):Call<DressDetailDto>
+        ):Response<DressDetailDto>
 
         // 한 의상에 대한 상세 정보 요청
         @GET("dresses/search")
-        fun get_dress_search_data(
+        suspend fun get_dress_search_data(
             @Query("category") category: String,
             @Query("latitude") lat: Double,
             @Query("longitude") lng: Double,
             @Query("name") name: String,
             @Query("sort") sort: String
-            ):Call<DressSearchDto>
+            ):Response<DressSearchDto>
+
         //의상 예약 내역 조회
         @GET("dresses/order-list")
-        fun get_dress_resevation_data(
+        suspend fun get_dress_order_data(
             @Query("status") status: String
-        ):Call<List<DressOrderListDto>>
+        ):Response<List<DressOrderListDto>>
 
         //의상 예약 상세 내역 조회
         @GET("dresses/orders/{dress_reservation_id}")
-        fun get_dress_reservation_dress_data(
+        suspend fun get_dress_order_detail_data(
             @Path("dress_reservation_id")dress_reservation_id:Int
-        ):Call<List<DressOrderDto>>
+        ):Response<List<DressOrderDto>>
+
+        // 의상 예약
+        @POST("dresses/reservation")
+        suspend fun set_dress_reservation(
+            @Body dressReservationDto: DressReservationDto
+        ): Response<ResultOfSetDto>
+
+        // 의상 예약폼 받기
+        @GET("dresses/reservation/{store_id}")
+        suspend fun get_dress_reservation_store_data(
+            @Path("store_id") store_id: Int
+        ): Response<DressReservationFormDto>
+
+        @POST("dresses/reservation/cancel/{reservation_id}")
+        suspend fun set_dress_reservation_cancel(
+            @Path("reservation_id") reservation_id: Int
+        ): Response<ResultOfSetDto>
     }
 
     val dressService = ApplicationClass.retrofit.create(DressService.DressInterface::class.java)

@@ -20,26 +20,18 @@ import com.example.myapplication.viewmodel.HomeViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 abstract class BaseFragment<T : ViewDataBinding>(
-    @LayoutRes val layoutResId: Int
+    @LayoutRes private val layoutResId: Int
 ) : Fragment() {
     private var _binding: T? = null
     protected val binding get() = _binding!!
-
     // 뒤로가기 버튼을 눌렀을 때를 위한 callback 변수
     private lateinit var callback: OnBackPressedCallback
-    private lateinit var homeViewModel: HomeViewModel
-
     // 툴바 변수들
     protected lateinit var toolbar: Toolbar
     protected lateinit var toolbarmenusearch: MenuItem
     protected lateinit var toolbarmenunotification: MenuItem
 
-    // 검색시 필요한 위경도 데이터 Default 값(홍대)
-    protected var lat : Double = 37.5581
-    protected var lng : Double = 126.9260
-
-    protected open fun savedatainit(){
-    }
+    protected open fun savedatainit(){}
 
     protected abstract fun init()
 
@@ -124,7 +116,6 @@ abstract class BaseFragment<T : ViewDataBinding>(
 
         toolbarmenusearch.setOnMenuItemClickListener {
             val intent = Intent(requireContext(), SearchActivity::class.java)
-            intent.putExtra("lat_lng", Pair(lat,lng))
             startActivity(intent)
             true
         }
@@ -148,17 +139,8 @@ abstract class BaseFragment<T : ViewDataBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
-        homeViewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
         init()
         // 검색시 필요한 데이터
-        homeViewModel.home_latlng.observe(viewLifecycleOwner, Observer<Pair<Double, Double>> {
-            if (it != null) {
-                this.lat = it.first
-                this.lng = it.second
-            } else {
-                Log.d("whatisthis", "lat_lng, 데이터 없음")
-            }
-        })
 //        backpress() -> 백 버튼을 baseFragment에 넣으면 baseFragment를 상속하는 fragment들을 호출할 때마다 back callback이 초기화 된다.
         // 그래서 backbutton 이벤트 처리시 사용되는 toolbarmenusearch 변수가 초기화 되어 있지 않아 에러를 발생하게 된다.
         // parentFragment에서 한번만 초기화되면 되므로 backpress()메소드를 parentFragment에서 한번만 호출하는 initAppbar()메소드 안에 넣는다.

@@ -5,24 +5,46 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentProfileBinding
 import com.example.myapplication.base.BaseFragment
+import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.main.profile.inquiry.InquiryFragment
 import com.example.myapplication.view.main.profile.logout.LogoutFragment
 import com.example.myapplication.view.main.profile.myprofile.MyprofileFragment
 import com.example.myapplication.view.main.profile.notice.NoticeFragment
 import com.example.myapplication.view.main.profile.orderstatus.OrderstatusFragment
 import com.example.myapplication.view.main.profile.withdrawal.WithdrawalFragment
+import com.example.myapplication.view.search.SearchActivity
 import com.example.myapplication.viewmodel.DressViewModel
+import com.example.myapplication.viewmodel.UserViewModel
+import com.example.myapplication.widget.utils.NetworkResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_profile) {
-    lateinit var dressViewModel: DressViewModel
+    private lateinit var dressViewModel: DressViewModel
+    private lateinit var userViewModel: UserViewModel
 
     override fun init() {
-        dressViewModel = ViewModelProvider(requireActivity()).get(DressViewModel::class.java)
+        dressViewModel = (activity as SecondActivity).dressViewModel
+        userViewModel = (activity as SecondActivity).userViewModel
+        binding.uservm = userViewModel
 
         hideBottomNavigation(false)
         initAppbar(binding.profileToolbar, "마이페이지", false, true)
         initButton()
+
+        userViewModel.user_profile_data.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is NetworkResult.Loading -> {
+                }
+
+                is NetworkResult.Error -> {
+                    userViewModel.set_home_user_name_data("피클")
+                }
+
+                is NetworkResult.Success -> {
+                    userViewModel.set_home_user_name_data(it.data?.data!!.name)
+                }
+            }
+        })
 
         dressViewModel.completeorder.observe(viewLifecycleOwner, Observer {
             binding.profileTextviewCompleteorder.text = it.toString()
@@ -57,7 +79,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"completeorder")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
-                dressViewModel.get_dress_resevation_data("주문완료")
+                dressViewModel.get_dress_order_data("주문완료")
               //  dressViewmodel.method("주문완료")
             }
             profileInnerlayoutPickup.setOnClickListener {
@@ -65,7 +87,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"pickup")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
-                dressViewModel.get_dress_resevation_data("픽업중")
+                dressViewModel.get_dress_order_data("픽업중")
 
                 //   dressViewmodel.method("픽업중")
 
@@ -76,7 +98,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
 
-                dressViewModel.get_dress_resevation_data("픽업완료")
+                dressViewModel.get_dress_order_data("픽업완료")
 
                 //  dressViewmodel.method("픽업완료")
 
@@ -87,7 +109,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
 
-                dressViewModel.get_dress_resevation_data("구매확정")
+                dressViewModel.get_dress_order_data("구매확정")
 
                 // dressViewmodel.method("구매확정")
 

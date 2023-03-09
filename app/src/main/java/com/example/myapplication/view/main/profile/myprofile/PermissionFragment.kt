@@ -2,88 +2,64 @@ package com.example.myapplication.view.main.profile.myprofile
 
 import android.Manifest
 import android.app.Activity
-import android.app.Dialog
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
+import com.example.myapplication.base.BaseBottomSheetFragment
+import com.example.myapplication.databinding.FragmentPermissionBinding
 import com.example.myapplication.viewmodel.UserViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.fragment_permission.*
+import com.example.myapplication.widget.config.EventObserver
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PermissionFragment() : BottomSheetDialogFragment() {
+class PermissionFragment() : BaseBottomSheetFragment<FragmentPermissionBinding>(R.layout.fragment_permission) {
 
     private lateinit var userViewModel: UserViewModel
     private var CAMERA_PERMISSION: Boolean = false
     private var WRITE_EXTERNAL_STORAGE_PERMISSION: Boolean = false
     private var READ_EXTERNAL_STORAGE_PERMISSION: Boolean = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_permission, container, false)
-
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        setStyle(STYLE_NO_TITLE, R.style.AppBottomSheetDialogTheme3)
-
-        return super.onCreateDialog(savedInstanceState)
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun init() {
         userViewModel = ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
-        var permissioncamera_photo = view.findViewById<Button>(R.id.permission_camera_photo)
-        var permissiondeletephoto = view.findViewById<Button>(R.id.permission_deletephoto)
-        var permissioncancel = view.findViewById<Button>(R.id.permission_cancel)
+        binding.uservm = userViewModel
 
-        // 사진 촬영
-        permission_taking_picture.setOnClickListener{
-            if (checkPermission(arrayOf(Manifest.permission.CAMERA))) { // 갤러리 실행
-                    camera()
-            }else{
-                requestMultiplePermission.launch(arrayOf(Manifest.permission.CAMERA))
+        userViewModel.update_bt_event.observe(this@PermissionFragment, EventObserver {
+            it as TextView
+            when (it.text.length) {
+                5->{ // 사진 촬영
+                    if (checkPermission(arrayOf(Manifest.permission.CAMERA))) { // 갤러리 실행
+                        camera()
+                    }else{
+                        requestMultiplePermission.launch(arrayOf(Manifest.permission.CAMERA))
+                    }
+                    dismiss()
+                }
+                7->{ // 앨범에서 선택
+                    if (checkPermission(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))) { // 갤러리 실행
+                        gallery()
+                    } else { // 권한 요청
+                        requestMultiplePermission.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))
+                    }
+                    dismiss()
+                }
+                2->{ // 취소
+                    dismiss()
+                }
+                else->{ // 프로필 삭제
+                    userViewModel.set_default_photo((R.drawable.icon_myprofile_profileimage))
+                    dismiss()
+                }
             }
-        }
-
-        // 앨범에서 선택
-        permissioncamera_photo.setOnClickListener {
-            if (checkPermission(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))) { // 갤러리 실행
-                gallery()
-            } else { // 권한 요청
-                requestMultiplePermission.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))
-            }
-        }
-
-        // 프로필 삭제
-        permissiondeletephoto.setOnClickListener {
-            userViewModel.set_default_photo((R.drawable.icon_myprofile_profileimage))
-            dismiss()
-        }
-
-        // 취소
-        permissioncancel.setOnClickListener {
-            dismiss()
-        }
-
+        })
     }
 
     // 권한 체크
@@ -177,4 +153,5 @@ class PermissionFragment() : BottomSheetDialogFragment() {
             }
             dismiss()
         }
+
 }

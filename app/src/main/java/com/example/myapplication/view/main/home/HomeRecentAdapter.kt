@@ -1,5 +1,6 @@
 package com.example.myapplication.view.main.home
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,7 +11,6 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemHomecardRecyclerBinding
 import com.example.myapplication.data.remote.model.DressOverviewDto
 import com.example.myapplication.view.ItemCardClickInterface
-
 
 //class HomeRecentAdapter(clickInterface: ItemCardClickInterface): RecyclerView.Adapter<HomeRecentAdapter.MyViewHolder>(){
 //
@@ -151,7 +151,6 @@ class HomeRecentAdapter(clicklistener: ItemCardClickInterface) :
                     recent_clothes?.dress_like = true
                 }
                 clicklistener.onItemClothFavoriteClick(temp_favorite ,recent_clothes.dress_id, binding.homecardImageviewFavorite, absoluteAdapterPosition)
-//                temp_favorite = changeFavoriteImage(this@MyViewHolder.itemView, temp_favorite!!, binding.homecardImageviewFavorite)
             }
         }
     }
@@ -169,10 +168,10 @@ class HomeRecentAdapter(clicklistener: ItemCardClickInterface) :
 
 object HomeRecentDiffUtil : DiffUtil.ItemCallback<DressOverviewDto>() {
     override fun areItemsTheSame(oldItem: DressOverviewDto, newItem: DressOverviewDto): Boolean {
-        return (oldItem === newItem)
+        return (oldItem=== newItem)
     }
 
     override fun areContentsTheSame(oldItem: DressOverviewDto, newItem: DressOverviewDto): Boolean {
-        return (oldItem == newItem)
+        return oldItem.equals(newItem)
     }
 }

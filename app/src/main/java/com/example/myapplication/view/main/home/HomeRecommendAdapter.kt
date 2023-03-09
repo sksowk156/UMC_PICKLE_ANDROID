@@ -149,7 +149,6 @@ class HomeRecommendAdapter(clicklistener: ItemCardClickInterface) :
                     recommend_clothes?.dress_like = true
                 }
                 clicklistener.onItemClothFavoriteClick(recommend_clothes.dress_like!!, recommend_clothes.dress_id, binding.cardImageviewFavorite, absoluteAdapterPosition)
-//                changeFavoriteImage(this@MyViewHolder.itemView, recommend_clothes.dress_like!!, binding.cardImageviewFavorite)
             }
         }
     }
@@ -167,10 +166,10 @@ class HomeRecommendAdapter(clicklistener: ItemCardClickInterface) :
 
 object HomeRecommendDiffUtil : DiffUtil.ItemCallback<DressOverviewDto>() {
     override fun areItemsTheSame(oldItem: DressOverviewDto, newItem: DressOverviewDto): Boolean {
-        return (oldItem === newItem )
+        return (oldItem=== newItem)
     }
 
     override fun areContentsTheSame(oldItem: DressOverviewDto, newItem: DressOverviewDto): Boolean {
-        return  (oldItem == newItem )
+        return  (oldItem.equals(newItem))
     }
 }

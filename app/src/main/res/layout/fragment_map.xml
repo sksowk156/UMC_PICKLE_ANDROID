@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-
+        <variable
+            name="storevm"
+            type="com.example.myapplication.viewmodel.StoreViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -40,6 +41,7 @@
                 android:layout_width="44dp"
                 android:layout_height="44dp"
                 android:layout_marginTop="9dp"
+                android:onClick="@{()->storevm.onFloatingMapBTEvent()}"
                 android:src="@drawable/icon_maplist"
                 android:layout_gravity="center_horizontal"/>
 
@@ -63,6 +65,7 @@
                 android:layout_height="120dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:onClick="@{()->storevm.onStoreBTEvent()}"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/map_bottomsheet_round_background"
                 app:layout_constraintBottom_toBottomOf="@id/map_bottomsheetlayout"

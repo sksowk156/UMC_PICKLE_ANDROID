@@ -9,6 +9,14 @@ import com.example.myapplication.view.main.location.map.MapFragment
 class LocationFragment : BaseFragment<FragmentLocationBinding>(R.layout.fragment_location) {
 
     override fun init() {
+//        childFragmentManager
+//            .beginTransaction()
+//            .replace(R.id.location_layout, MapFragment())
+//            .commitAllowingStateLoss()
+//        initAppbar(binding.locationToolbar,"주변매장",false,true)
+    }
+
+    override fun savedatainit() {
         childFragmentManager
             .beginTransaction()
             .replace(R.id.location_layout, MapFragment())

@@ -8,21 +8,26 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySecondBinding
 import com.example.myapplication.base.BaseActivity
+import com.example.myapplication.repository.DressRepository
+import com.example.myapplication.repository.HomeRepository
+import com.example.myapplication.repository.StoreRepository
+import com.example.myapplication.repository.UserRepository
 import com.example.myapplication.view.main.chat.ChatFragment
 import com.example.myapplication.view.main.favorite.FavoriteBaseFragment
 import com.example.myapplication.view.main.home.HomeBaseFragment
 import com.example.myapplication.view.main.location.LocationFragment
 import com.example.myapplication.view.main.profile.ProfileBlankFragment
-import com.example.myapplication.viewmodel.DressViewModel
-import com.example.myapplication.viewmodel.HomeViewModel
-import com.example.myapplication.viewmodel.StoreViewModel
+import com.example.myapplication.viewmodel.*
+import com.example.myapplication.viewmodel.factory.HomeViewModelFactory
+import com.example.myapplication.viewmodel.factory.StoreViewModelFactory
 
 class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_second) {
-    private lateinit var currentFragmenttag: String
+    lateinit var homeViewModel: HomeViewModel
+    lateinit var dressViewModel: DressViewModel
+    lateinit var storeViewModel: StoreViewModel
+    lateinit var userViewModel: UserViewModel
 
-    private lateinit var homeViewModel: HomeViewModel
-    private lateinit var dressViewModel: DressViewModel
-    private lateinit var storeViewModel: StoreViewModel
+    private lateinit var currentFragmenttag: String
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
@@ -43,16 +48,25 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
         storeViewModel.get_store_like_data()
         // 홈화면 데이터 갱신
         requestLocationData()
-        dressViewModel.get_dress_resevation_data("주문완료")
-        dressViewModel.dress_reservation_data.observe(this, Observer {
-            dressViewModel.set_completeorder(it.size)
-        })
     }
 
     override fun init() {
-        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        dressViewModel = ViewModelProvider(this).get(DressViewModel::class.java)
-        storeViewModel = ViewModelProvider(this).get(StoreViewModel::class.java)
+        val dressRepository = DressRepository()
+        val homeRepository = HomeRepository()
+        val storeRepository = StoreRepository()
+        val userRepository = UserRepository()
+
+        val dressViewModelProviderFactory = DressViewModelFactory(dressRepository)
+        val homeViewModelProviderFactory = HomeViewModelFactory(homeRepository)
+        val storeViewModelProviderFactory = StoreViewModelFactory(storeRepository)
+        val userViewModelProviderFactory = UserViewModelFactory(userRepository)
+
+        dressViewModel = ViewModelProvider(this, dressViewModelProviderFactory).get(DressViewModel::class.java)
+        homeViewModel = ViewModelProvider(this, homeViewModelProviderFactory).get(HomeViewModel::class.java)
+        storeViewModel = ViewModelProvider(this, storeViewModelProviderFactory).get(StoreViewModel::class.java)
+        userViewModel = ViewModelProvider(this, userViewModelProviderFactory).get(UserViewModel::class.java)
+
+        userViewModel.get_user_profile_data()
 
         // 네비게이션 버튼의 테마색으로 변하는 것을 막기 위해서
         binding.secondBottomNavigationView.itemIconTintList = null
@@ -60,25 +74,26 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
         // 네비게이션 버튼 클릭시 프래그먼트 전환
         binding.secondBottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.menu_home -> { // 첫 번째 fragment
+                R.id.homeBaseFragment -> { // 첫 번째 fragment
                     changeFragment("homebase", HomeBaseFragment())
                 }
-                R.id.menu_favorite -> { // 두 번째 fragment
+                R.id.favoriteBaseFragment -> { // 두 번째 fragment
                     changeFragment("favorite", FavoriteBaseFragment())
                 }
-                R.id.menu_map -> { // 세 번째 fragment
+                R.id.locationFragment -> { // 세 번째 fragment
                     changeFragment("location", LocationFragment())
                 }
-                R.id.menu_chat -> { // 세 번째 fragment
+                R.id.chatFragment -> { // 세 번째 fragment
                     changeFragment("chat", ChatFragment())
                 }
-                R.id.menu_profileblank -> {
+                R.id.profileBlankFragment -> {
                     changeFragment("profileblank", ProfileBlankFragment())
                 }
             }
             true
         }
 
+        getLocation()
         // 홈화면 데이터 갱신
         homeViewModel.home_latlng.observe(this, Observer<Pair<Double, Double>> {
             if (it != null) {

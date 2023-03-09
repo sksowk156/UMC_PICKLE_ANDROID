@@ -8,13 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.ApplicationClass
 import com.example.myapplication.R
+import com.example.myapplication.repository.LoginRepository
 import com.example.myapplication.view.login.MainActivity
+import com.example.myapplication.viewmodel.LoginViewModel
+import com.example.myapplication.viewmodel.LoginViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kakao.sdk.user.UserApiClient
 
 class WithdrawalFragment : BottomSheetDialogFragment() {
+    lateinit var loginViewModel: LoginViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,7 +30,7 @@ class WithdrawalFragment : BottomSheetDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        setStyle(STYLE_NO_TITLE, R.style.AppBottomSheetDialogTheme2)
+        setStyle(STYLE_NO_TITLE, R.style.AppBottomSheetDialogTheme)
 
         return super.onCreateDialog(savedInstanceState)
     }
@@ -34,13 +39,16 @@ class WithdrawalFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         var withdrawalyes = view.findViewById<Button>(R.id.withdrawal_button_yes)
         var withdrawalno = view.findViewById<Button>(R.id.withdrawal_button_no)
+        val loginRepository = LoginRepository()
+        val loginViewModelFactory = LoginViewModelFactory(loginRepository)
+        loginViewModel = ViewModelProvider(this, loginViewModelFactory).get(LoginViewModel::class.java)
 
         withdrawalyes.setOnClickListener {
             UserApiClient.instance.unlink  { error ->
                 if(error != null){
                     Toast.makeText(requireContext(),"회원탈퇴 실패", Toast.LENGTH_SHORT).show()
                 }else{
-                    ApplicationClass.sharedPreferencesmanager.deleteJwt()
+                    loginViewModel.deleteJwt()
                     Toast.makeText(requireContext(),"회원탈퇴 성공", Toast.LENGTH_SHORT).show()
                     // 로그인 화면으로 넘어갈건가??
                     val intent = Intent(requireContext(), MainActivity::class.java)

@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="ordervm"
+            type="com.example.myapplication.viewmodel.OrderViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -192,13 +199,14 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/iv_date">
 
-                        <TextView
-                            android:id="@+id/tv_date_dialog"
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/pickupdetail_textview_date"
                             android:layout_width="132dp"
                             android:layout_height="36dp"
                             android:background="@drawable/favorite_background"
                             android:drawableEnd="@drawable/icon_down"
                             android:gravity="center"
+                            android:onClick="@{()->ordervm.onPickupDateBTEvent()}"
                             android:paddingHorizontal="11dp"
                             android:textAlignment="center"
                             android:textSize="14sp" />
@@ -218,113 +226,6 @@
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/framelayout" />
-
-                    <!--                    <com.google.android.material.chip.ChipGroup-->
-                    <!--                        android:id="@+id/chip_group"-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_margin="16dp"-->
-                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--                        app:layout_constraintStart_toStartOf="parent"-->
-                    <!--                        app:layout_constraintTop_toBottomOf="@+id/iv_time"-->
-                    <!--                        app:singleSelection="true">-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="11:00" />-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="11:30" />-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="12:00" />-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="12:30" />-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="14:00" />-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="14:30" />-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="15:00" />-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="15:30" />-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="16:00" />-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="16:30" />-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="17:00" />-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="17:30" />-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="18:00" />-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="18:30" />-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="19:00" />-->
-
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            style="@style/Widget.MaterialComponents.Chip.Filter"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:text="19:30" />-->
-                    <!--                    </com.google.android.material.chip.ChipGroup>-->
 
                     <GridLayout
                         android:layout_width="match_parent"
@@ -347,6 +248,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="11:00"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -360,6 +262,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="11:30"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -373,6 +276,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="12:00"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -386,6 +290,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="12:30"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -399,6 +304,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="13:00"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -412,6 +318,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="13:30"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -425,6 +332,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="14:00"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -438,6 +346,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="14:30"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -451,6 +360,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="15:00"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -464,6 +374,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="15:30"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -477,6 +388,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="16:00"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -490,6 +402,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="16:30"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -503,6 +416,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="17:00"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -516,6 +430,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="17:30"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -529,6 +444,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="18:00"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -542,6 +458,7 @@
                             android:layout_margin="4dp"
                             android:background="@drawable/chip_background"
                             android:gravity="center"
+                            android:onClick="@{(view)->ordervm.onPickupTimeBTEvent(view)}"
                             android:text="18:30"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
@@ -576,7 +493,8 @@
                         android:layout_height="56dp"
                         android:layout_marginHorizontal="14dp"
                         android:layout_marginVertical="16dp"
-                        android:hint="요청사항이 있으시면 적어주세요!" />
+                        android:hint="요청사항이 있으시면 적어주세요!"
+                        android:text="@={ordervm._order_request_data}" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -603,7 +521,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginHorizontal="16dp"
-                        android:text="100,000원"
+                        android:text="@{@string/price_won(ordervm.calculate_order_price.toString())}"
                         android:textColor="#D34E8E"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -618,13 +536,14 @@
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/iv_order"
+                        android:id="@+id/pickupdetail_textview_reservation"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="24dp"
                         android:background="@drawable/gray_button_background"
                         android:gravity="center"
+                        android:onClick="@{()->ordervm.onPickupReservationBTEvent()}"
                         android:text="픽업 예약"
                         android:textColor="#A4A4A4"
                         android:textSize="16sp" />

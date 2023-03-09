@@ -3,6 +3,7 @@ package com.example.myapplication.view.main.home
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -12,6 +13,7 @@ import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.data.remote.model.*
 import com.example.myapplication.base.BaseFragment
 import com.example.myapplication.view.ItemCardClickInterface
+import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.main.home.newclothe.NewFragment
 import com.example.myapplication.view.main.home.recent.HomeRecommendAdapter
 import com.example.myapplication.view.main.home.recent.RecentFragment
@@ -20,6 +22,9 @@ import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.HomeViewModel
 import com.example.myapplication.viewmodel.StoreViewModel
+import com.example.myapplication.viewmodel.UserViewModel
+import com.example.myapplication.widget.config.EventObserver
+import com.example.myapplication.widget.utils.NetworkResult
 import com.smarteist.autoimageslider.SliderView
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
@@ -27,43 +32,65 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var dressViewModel: DressViewModel
     private lateinit var storeViewModel: StoreViewModel
+    private lateinit var userViewModel: UserViewModel
 
     private lateinit var recentAdapter: HomeRecentAdapter
     private lateinit var newAdapter: HomeNewAdapter
     private lateinit var recommendAdapter: HomeRecommendAdapter
 
     private lateinit var imageList: ArrayList<Int>
-    private var recentData = ArrayList<DressOverviewDto>()
-    private var newData = ArrayList<DressOverviewDto>()
-    private var recommendData = ArrayList<DressOverviewDto>()
-    private var update_islikedata_id: Int? = null
-    private var update_list_position: Int? = null
 
     override fun init() {
-        homeViewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
-        dressViewModel = ViewModelProvider(requireActivity()).get(DressViewModel::class.java)
-        storeViewModel = ViewModelProvider(requireActivity()).get(StoreViewModel::class.java)
+        homeViewModel = (activity as SecondActivity).homeViewModel
+        dressViewModel = (activity as SecondActivity).dressViewModel
+        storeViewModel = (activity as SecondActivity).storeViewModel
+        userViewModel = (activity as SecondActivity).userViewModel
+
+        binding.homevm = homeViewModel
+        binding.uservm = userViewModel
 
         initAppbar(binding.homeToolbar, "홈", false, true)
         initSlideView()
         initRecyclerView()
 
-        binding.homeTextviewRecentmore.setOnClickListener {
-            parentFragmentManager
-                .beginTransaction()
-                .add(R.id.home_base_layout, RecentFragment(), "recent")
-                .addToBackStack(null)
-                .commitAllowingStateLoss()
-            homeViewModel.get_home_recent_data()
+        userViewModel.user_profile_data.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is NetworkResult.Loading -> {
+                }
+
+                is NetworkResult.Error -> {
+                    userViewModel.set_home_user_name_data("피클")
+                }
+
+                is NetworkResult.Success -> {
+                    userViewModel.set_home_user_name_data(it.data?.data!!.name)
+                }
+            }
+        })
+
+        homeViewModel.apply {
+            recent_bt_event.observe(this@HomeFragment, EventObserver {
+                parentFragmentManager
+                    .beginTransaction()
+                    .add(R.id.home_base_layout, RecentFragment(), "recent")
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss()
+                homeViewModel.get_home_recent_data()
+            })
         }
 
-        binding.homeTextviewNewmore.setOnClickListener {
-            parentFragmentManager
-                .beginTransaction()
-                .add(R.id.home_base_layout, NewFragment(), "new")
-                .addToBackStack(null)
-                .commitAllowingStateLoss()
-            homeViewModel.get_home_new_data(homeViewModel.home_latlng.value!!.first,homeViewModel.home_latlng.value!!.second)
+        homeViewModel.apply {
+            new_bt_event.observe(this@HomeFragment, EventObserver{
+                parentFragmentManager
+                    .beginTransaction()
+                    .add(R.id.home_base_layout, NewFragment(), "new")
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss()
+                homeViewModel.get_home_new_data(
+                    homeViewModel.home_latlng.value!!.first,
+                    homeViewModel.home_latlng.value!!.second
+                )
+            })
         }
 
 //        dressViewModel.dress_like_data.observe(viewLifecycleOwner, Observer<List<DressLikeDto>> {
@@ -94,72 +121,35 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
 //        })
     }
 
-
-    private fun initSlideView() {
-        imageList = ArrayList()
-        imageList.add(R.drawable.slider_home1)
-        imageList.add(R.drawable.slider_home2)
-        imageList.add(R.drawable.slider_home3)
-        imageList.add(R.drawable.slider_home4)
-        imageList.add(R.drawable.slider_home5)
-        lateinit var sliderView: SliderView
-        sliderView = binding.slider
-        lateinit var sliderAdapter: SliderAdapter
-        sliderAdapter = SliderAdapter(imageList)
-        sliderView.autoCycleDirection = SliderView.LAYOUT_DIRECTION_LTR
-        sliderView.setSliderAdapter(sliderAdapter)
-        sliderView.scrollTimeInSec = 3
-        sliderView.isAutoCycle = true
-        sliderView.startAutoCycle()
-    }
-
     private fun initRecyclerView() {
         recentAdapter = HomeRecentAdapter(this@HomeFragment)
         newAdapter = HomeNewAdapter(this@HomeFragment)
         recommendAdapter = HomeRecommendAdapter(this@HomeFragment)
 
-        homeViewModel.home_data.observe(
-            viewLifecycleOwner,
-            Observer<DressHomeDto> { now_homeModel ->
-                if (now_homeModel != null) {
-//                    newAdapter.submitList(null)
-//                    recommendAdapter.submitList(null)
+        homeViewModel.home_data.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is NetworkResult.Loading -> {
+                }
 
-                    recentAdapter.submitList(now_homeModel.recentView!!.toMutableList())
-//                    recentAdapter.notifyDataSetChanged()
-                    newAdapter.submitList(now_homeModel.newDresses!!.toMutableList())
-//                    newAdapter.notifyDataSetChanged()
-                    recommendAdapter.submitList(now_homeModel.recDresses!!.toMutableList())
-//                    recommendAdapter.notifyDataSetChanged()
-
-
-//                    recentData = now_homeModel.recentView as ArrayList<DressOverviewDto>
-//                    newData = now_homeModel.newDresses as ArrayList<DressOverviewDto>
-//                    recommendData = now_homeModel.recDresses as ArrayList<DressOverviewDto>
-
-//                    recentAdapter.deleteData()
-//                    recentAdapter.updateData(now_homeModel.recentView as ArrayList<DressOverviewDto>)
-//                    recentAdapter.notifyDataSetChanged()
-
-//                    newAdapter.deleteData()
-//                    newAdapter.updateData(now_homeModel.newDresses as ArrayList<DressOverviewDto>)
-//                    newAdapter.notifyDataSetChanged()
-
-//                    recommendAdapter.deleteData()
-//                    recommendAdapter.updateData(now_homeModel.recDresses as ArrayList<DressOverviewDto>)
-//                    recommendAdapter.notifyDataSetChanged()
-
-                } else {
-                    Log.d("whatisthis", "home_data, 없음")
-//                    recentAdapter.deleteData()
-//                    newAdapter.deleteData()
-//                    recommendAdapter.deleteData()
-
+                is NetworkResult.Error -> {
+                    Log.d("whatisthis", "HomeFragment : "+it.message.toString())
                     recentAdapter.submitList(null)
                     newAdapter.submitList(null)
                     recommendAdapter.submitList(null)
                 }
-            })
+
+                is NetworkResult.Success -> {
+//                    recentAdapter.submitList(null)
+//                    newAdapter.submitList(null)
+//                    recommendAdapter.submitList(null)
+
+                    recentAdapter.submitList(it.data!!.recentView!!.toMutableList())
+                    newAdapter.submitList(it.data!!.newDresses!!.toMutableList())
+                    recommendAdapter.submitList(it.data!!.recDresses!!.toMutableList())
+                }
+            }
+
+        })
 
         binding.homeRecyclerviewRecent.apply {
             layoutManager =
@@ -196,14 +186,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
         if (id != 0) {
             dressViewModel.set_dress_like_data(UpdateDressLikeDto(id))
             dressViewModel.get_dress_like_data()
-
-//            homeViewModel.get_home_data(
-//                homeViewModel.home_latlng.value!!.first,
-//                homeViewModel.home_latlng.value!!.second)
-//            update_islikedata_id = id
-//            update_list_position = position
         }
     }
 
+    private fun initSlideView() {
+        imageList = ArrayList()
+        imageList.add(R.drawable.slider_home1)
+        imageList.add(R.drawable.slider_home2)
+        imageList.add(R.drawable.slider_home3)
+        imageList.add(R.drawable.slider_home4)
+        imageList.add(R.drawable.slider_home5)
+        lateinit var sliderView: SliderView
+        sliderView = binding.slider
+        lateinit var sliderAdapter: SliderAdapter
+        sliderAdapter = SliderAdapter(imageList)
+        sliderView.autoCycleDirection = SliderView.LAYOUT_DIRECTION_LTR
+        sliderView.setSliderAdapter(sliderAdapter)
+        sliderView.scrollTimeInSec = 3
+        sliderView.isAutoCycle = true
+        sliderView.startAutoCycle()
+    }
 
 }

@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,9 +15,13 @@ import com.example.myapplication.databinding.FragmentMapBinding
 import com.example.myapplication.data.remote.model.StoreCoordDtoList
 import com.example.myapplication.data.remote.model.StoreCoordDto
 import com.example.myapplication.base.BaseFragment
+import com.example.myapplication.view.main.SecondActivity
+import com.example.myapplication.view.main.home.recent.RecentFragment
 import com.example.myapplication.view.main.location.around.AroundFragment
 import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.StoreViewModel
+import com.example.myapplication.widget.config.EventObserver
+import com.example.myapplication.widget.utils.NetworkResult
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
@@ -27,6 +32,8 @@ import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
 
 class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnMapReadyCallback {
+    lateinit var storeViewModel: StoreViewModel
+
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
 
@@ -39,23 +46,35 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
     // 카메라가 이동하기 전 화면의 위도 경도 값을 저장할 변수
     private lateinit var before_StoreCoordDtoList: StoreCoordDtoList
 
-    lateinit var storeViewModel: StoreViewModel
-
     private var clickedMarker: Marker? = null // 클릭된 마커 변수
 
     override fun init() {
-        storeViewModel = ViewModelProvider(requireActivity()).get(StoreViewModel::class.java)
+        storeViewModel = (activity as SecondActivity).storeViewModel
         // 지도 띄우기
         openMap()
 
+        binding.storevm = storeViewModel
+//        binding.lifecycleOwner = this@MapFragment
+
         // 플로팅 버튼 클릭시 이벤트 처리
-        binding.mapFab.setOnClickListener {
-            parentFragmentManager
-                .beginTransaction()
-                .add(R.id.location_layout, AroundFragment())
-                .addToBackStack(null)
-                .commitAllowingStateLoss()
+        storeViewModel.apply {
+            floatingmap_bt_event.observe(this@MapFragment, EventObserver {
+                parentFragmentManager
+                    .beginTransaction()
+                    .add(R.id.location_layout, AroundFragment())
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss()
+            })
         }
+
+//        // 플로팅 버튼 클릭시 이벤트 처리
+//        binding.mapFab.setOnClickListener {
+//            parentFragmentManager
+//                .beginTransaction()
+//                .add(R.id.location_layout, AroundFragment())
+//                .addToBackStack(null)
+//                .commitAllowingStateLoss()
+//        }
 
     }
 
@@ -150,14 +169,20 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
     // 주변 1km 매장 정보 얻어오기
     private fun updateStore(lat: Double, lng: Double) {
         storeViewModel.get_store_near_data(lat, lng)
-        storeViewModel.store_near_data.observe(
-            viewLifecycleOwner,
-            Observer<StoreCoordDtoList> { now_StoreCoordDtoList ->
-                if (now_StoreCoordDtoList != null) {
+        storeViewModel.store_near_data.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is NetworkResult.Loading -> {
+                }
+
+                is NetworkResult.Error -> {
+                    Log.d("whatisthis", "11네트워크 오류가 발생했습니다.")
+                }
+
+                is NetworkResult.Success -> {
                     if (::before_StoreCoordDtoList.isInitialized) { // 이전 데이터 기록이 있을 경우
                         // 이전 데이터와 겹치지 않는 현재 데이터만 추가하기
                         var new_data = StoreCoordDtoList()
-                        for (data in now_StoreCoordDtoList) {
+                        for (data in it.data!!) {
                             var flag: Boolean = false
 
                             for (old_data_temp in before_StoreCoordDtoList) {
@@ -179,7 +204,7 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                         // 현재 데이터와 겹치지 않는 이전 데이터만 지우기
                         for (data in before_StoreCoordDtoList) {
                             var flag: Boolean = false
-                            for (new_data_temp in now_StoreCoordDtoList) {
+                            for (new_data_temp in it.data!!) {
                                 if (new_data_temp.store_id == data.store_id) {
                                     flag = true
                                     break
@@ -190,12 +215,12 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                             }
                         }
                     } else { // 이전 데이터 기록이 없을 경우(최초)
-                        updateMarker(now_StoreCoordDtoList)
+                        updateMarker(it.data!!)
                     }
-                    before_StoreCoordDtoList = now_StoreCoordDtoList // 이전 데이터 기록 갱신
-                } else {
-                    Log.d("whatisthis", "11네트워크 오류가 발생했습니다.")
+                    before_StoreCoordDtoList = it.data!! // 이전 데이터 기록 갱신
                 }
+            }
+
             })
     }
 
@@ -277,11 +302,20 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                     i.hoursOfOperation
 
                 // 버튼 클릭시 상세 페이지로 이동
-                binding.mapInnerlayout.setOnClickListener {
-                    val intent = Intent(getActivity(), StoreActivity::class.java)
-                    intent.putExtra("store_id", i.store_id)
-                    startActivity(intent)
+                storeViewModel.apply {
+                    store_bt_event.observe(this@MapFragment, EventObserver {
+                        val intent = Intent(getActivity(), StoreActivity::class.java)
+                        intent.putExtra("store_id", i.store_id)
+                        startActivity(intent)
+                    })
                 }
+
+//                // 버튼 클릭시 상세 페이지로 이동
+//                binding.mapInnerlayout.setOnClickListener {
+//                    val intent = Intent(getActivity(), StoreActivity::class.java)
+//                    intent.putExtra("store_id", i.store_id)
+//                    startActivity(intent)
+//                }
                 break
             }
         }

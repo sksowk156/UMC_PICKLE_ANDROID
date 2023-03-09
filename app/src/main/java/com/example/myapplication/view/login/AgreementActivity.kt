@@ -4,24 +4,32 @@ import android.content.ContentValues
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityAgreementBinding
-import com.example.myapplication.data.remote.LoginService
 import com.example.myapplication.data.remote.remotedata.AuthRequest
 import com.example.myapplication.base.BaseActivity
+import com.example.myapplication.repository.LoginRepository
 import com.example.myapplication.view.main.SecondActivity
+import com.example.myapplication.viewmodel.LoginViewModel
+import com.example.myapplication.viewmodel.LoginViewModelFactory
 import com.kakao.sdk.user.UserApiClient
 
 class AgreementActivity : BaseActivity<ActivityAgreementBinding>(R.layout.activity_agreement) {
+    lateinit var loginViewModel: LoginViewModel
 
     override fun init() {
+        val loginRepository = LoginRepository()
+        val loginViewModelFactory = LoginViewModelFactory(loginRepository)
+        loginViewModel = ViewModelProvider(this, loginViewModelFactory).get(LoginViewModel::class.java)
+
         binding.postbutton.setOnClickListener {
 
             UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
                 if (token != null) {
                     val data = AuthRequest(token.accessToken)
 
-                    LoginService.create(data)
+                    loginViewModel.create(data)
 
                     Log.e(ContentValues.TAG, "토큰값 전송 ${token.accessToken}")
                     UserApiClient.instance.me { user, error ->

@@ -154,24 +154,7 @@ class HomeNewAdapter(clicklistener: ItemCardClickInterface) :
                     new_clothes?.dress_like = true
                 }
                 clicklistener.onItemClothFavoriteClick(new_clothes.dress_like!!, new_clothes.dress_id, binding.homecardImageviewFavorite, absoluteAdapterPosition)
-//                temp_favorite = changeFavoriteImage(this@MyViewHolder.itemView, temp_favorite!!, binding.homecardImageviewFavorite)
             }
-        }
-    }
-
-    private fun changeFavoriteImage(view: View, like:Boolean, imageview: ImageView) : Boolean{
-        if (like == true) {
-            //화면에 보여주기
-            Glide.with(view)
-                .load(R.drawable.icon_favorite_whiteline) //이미지
-                .into(imageview) //보여줄 위치
-            return false
-        } else {
-            //화면에 보여주기
-            Glide.with(view)
-                .load(R.drawable.icon_favorite_filledpink) //이미지
-                .into(imageview) //보여줄 위치
-            return true
         }
     }
 
@@ -188,10 +171,10 @@ class HomeNewAdapter(clicklistener: ItemCardClickInterface) :
 
 object HomeNewDiffUtil : DiffUtil.ItemCallback<DressOverviewDto>() {
     override fun areItemsTheSame(oldItem: DressOverviewDto, newItem: DressOverviewDto): Boolean {
-        return (oldItem === newItem)
+        return (oldItem=== newItem)
     }
 
     override fun areContentsTheSame(oldItem: DressOverviewDto, newItem: DressOverviewDto): Boolean {
-        return (oldItem == newItem )
+        return oldItem.equals(newItem)
     }
 }
