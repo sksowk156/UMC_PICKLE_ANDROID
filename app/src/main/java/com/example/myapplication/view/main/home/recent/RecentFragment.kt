@@ -34,18 +34,6 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
 
         initAppbar(binding.recentToolbar, "최근 본 상품", true, false)
         initRecyclerView()
-
-//        dressViewModel.dress_like_data.observe(viewLifecycleOwner, Observer<List<DressLikeDto>> {
-////            if (update_list_position != null) {
-////                recentData[update_list_position!!].dress_like =
-////                    !recentData[update_list_position!!].dress_like!!
-//////                    recentAdapter.submitList(recentData.toMutableList())
-//////                    recentAdapter.updateData(recentData)
-////                fragmentadapter.notifyItemChanged(update_list_position!!)
-////
-////                update_list_position = null
-////            }
-//        })
     }
 
     private fun initRecyclerView() {

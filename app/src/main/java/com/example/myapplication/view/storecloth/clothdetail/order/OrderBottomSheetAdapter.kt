@@ -13,32 +13,34 @@ class OrderBottomSheetAdapter (clicklistener: OrderClickListener) :
 
     interface OrderClickListener {
         fun onItemPlusClick(_clothorderdata: ClothOrderData, position: Int)
-        fun onItemMinusClick(_clothorderdatat: ClothOrderData, position: Int)
-        fun onItemCloseClick(_clothorderdatat: ClothOrderData, position: Int)
+        fun onItemMinusClick(_clothorderdata: ClothOrderData, position: Int)
+        fun onItemCloseClick(_clothorderdata: ClothOrderData, position: Int)
     }
 
     var clicklistener: OrderClickListener = clicklistener
 
     inner class MyViewHolder(val binding: ItemClothcountRecyclerBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(clothorderdatat: ClothOrderData) {
+        fun bind(clothorderdata: ClothOrderData) {
             binding.clothcountItemTextviewPlus.setOnClickListener {
-                clicklistener.onItemPlusClick(clothorderdatat, absoluteAdapterPosition)
-                binding.clothcountItemTextviewCount.text = clothorderdatat.count.toString()
+                clicklistener.onItemPlusClick(clothorderdata, absoluteAdapterPosition)
+                binding.clothcountItemTextviewCount.text = clothorderdata.count.toString()
+                binding.clothcountItemTextviewPrice.text = (clothorderdata.clothPrice * clothorderdata.count).toString()+"원"
             }
 
             binding.clothcountItemImageviewMinus.setOnClickListener {
-                clicklistener.onItemMinusClick(clothorderdatat, absoluteAdapterPosition)
-                binding.clothcountItemTextviewCount.text = clothorderdatat.count.toString()
+                clicklistener.onItemMinusClick(clothorderdata, absoluteAdapterPosition)
+                binding.clothcountItemTextviewCount.text = clothorderdata.count.toString()
+                binding.clothcountItemTextviewPrice.text = (clothorderdata.clothPrice * clothorderdata.count).toString()+"원"
             }
 
             binding.clothcountItemImageviewClose.setOnClickListener {
-                clicklistener.onItemCloseClick(clothorderdatat, absoluteAdapterPosition)
+                clicklistener.onItemCloseClick(clothorderdata, absoluteAdapterPosition)
             }
 
-            binding.clothcountItemTextviewColorsize.text = "${clothorderdatat.color} / ${clothorderdatat.size}"
-            binding.clothcountItemTextviewCount.text = clothorderdatat.count.toString()
-            binding.clothcountItemTextviewPrice.text = (clothorderdatat.clothPrice*clothorderdatat.count).toString()
+            binding.clothcountItemTextviewColorsize.text = "${clothorderdata.color} / ${clothorderdata.size}"
+            binding.clothcountItemTextviewCount.text = clothorderdata.count.toString()
+            binding.clothcountItemTextviewPrice.text = (clothorderdata.clothPrice*clothorderdata.count).toString()+"원"
         }
     }
 

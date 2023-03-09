@@ -80,7 +80,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
                 dressViewModel.get_dress_order_data("주문완료")
-              //  dressViewmodel.method("주문완료")
             }
             profileInnerlayoutPickup.setOnClickListener {
                 parentFragmentManager.beginTransaction()
@@ -88,9 +87,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
                 dressViewModel.get_dress_order_data("픽업중")
-
-                //   dressViewmodel.method("픽업중")
-
             }
             profileInnerlayoutPickupconfirm.setOnClickListener {
                 parentFragmentManager.beginTransaction()
@@ -99,9 +95,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                     .commitAllowingStateLoss()
 
                 dressViewModel.get_dress_order_data("픽업완료")
-
-                //  dressViewmodel.method("픽업완료")
-
             }
             profileInnerlayoutPurchaseconfirm.setOnClickListener {
                 parentFragmentManager.beginTransaction()
@@ -110,9 +103,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                     .commitAllowingStateLoss()
 
                 dressViewModel.get_dress_order_data("구매확정")
-
-                // dressViewmodel.method("구매확정")
-
             }
 
             // 공지사항

@@ -18,15 +18,20 @@ import com.example.myapplication.data.remote.model.order.ClothOptionData
 import com.example.myapplication.view.main.profile.orderstatus.OrderListDivider
 import com.example.myapplication.data.remote.model.order.ClothOrderData
 import com.example.myapplication.databinding.FragmentPermissionBinding
+import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
 import com.example.myapplication.view.storecloth.clothdetail.pickupdetail.PickupDetailFragment
+import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.OrderViewModel
+import com.example.myapplication.viewmodel.StoreViewModel
 import com.example.myapplication.widget.config.EventObserver
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class OrderBottomSheetFragment() :
     BaseBottomSheetFragment<FragmentOrderBinding>(R.layout.fragment_order),
     OrderBottomSheetAdapter.OrderClickListener {
+    private lateinit var storeViewModel: StoreViewModel
     private lateinit var orderViewModel: OrderViewModel
+    private lateinit var dressViewModel: DressViewModel
 
     // 색상, 개수 선택 유무
     private var checkedTwoButton = arrayListOf(false, false)
@@ -54,6 +59,8 @@ class OrderBottomSheetFragment() :
     private var selectedPrice: Int = 0
 
     override fun init() {
+        storeViewModel = (activity as ClothActivity).storeViewModel
+        dressViewModel = (activity as ClothActivity).dressViewModel
         orderViewModel = ViewModelProvider(requireParentFragment()).get(OrderViewModel::class.java)
         binding.ordervm = orderViewModel
 
@@ -185,6 +192,7 @@ class OrderBottomSheetFragment() :
         orderViewModel.pickup_bt_event.observe(this@OrderBottomSheetFragment, EventObserver {
             if (buttonOnOff) {
                 orderViewModel.get_calculate_order_price()
+                storeViewModel.get_store_detail_data(dressViewModel.dress_detail_data.value!!.data!!.store_id, "전체")
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.clothblank_layout, PickupDetailFragment(), "pickupdetail")
                     .addToBackStack(null)

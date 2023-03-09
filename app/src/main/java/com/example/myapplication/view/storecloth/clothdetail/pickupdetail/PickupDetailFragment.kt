@@ -70,7 +70,7 @@ class PickupDetailFragment :
         // 옷에 대한 상세 정보
         dress_detail_data = dressViewModel.dress_detail_data.value!!.data!!
         // 매장에 대한 상세 정보
-        storeViewModel.get_store_detail_data(dress_detail_data.store_id, "전체")
+//        storeViewModel.get_store_detail_data(dress_detail_data.store_id, "전체")
         storeViewModel.store_detail_data.observe(this, Observer {
             when (it) {
                 is NetworkResult.Loading -> {
