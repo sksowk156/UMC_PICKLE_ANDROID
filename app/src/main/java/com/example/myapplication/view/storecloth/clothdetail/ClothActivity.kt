@@ -4,20 +4,31 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityClothBinding
 import com.example.myapplication.base.BaseActivity
-import com.example.myapplication.viewmodel.DressViewModel
-import com.example.myapplication.viewmodel.HomeViewModel
+import com.example.myapplication.repository.DressRepository
+import com.example.myapplication.repository.HomeRepository
+import com.example.myapplication.repository.StoreRepository
+import com.example.myapplication.viewmodel.*
+import com.example.myapplication.viewmodel.factory.HomeViewModelFactory
+import com.example.myapplication.viewmodel.factory.StoreViewModelFactory
 
 class ClothActivity : BaseActivity<ActivityClothBinding>(R.layout.activity_cloth) {
-    private lateinit var dressViewModel: DressViewModel
-    private lateinit var homeViewModel: HomeViewModel
+    lateinit var homeViewModel: HomeViewModel
+    lateinit var storeViewModel: StoreViewModel
+    lateinit var dressViewModel: DressViewModel
 
     override fun savedatainit() {
-        dressViewModel = ViewModelProvider(this).get(DressViewModel::class.java)
-        dressViewModel.get_dress_detail_data(intent.getIntExtra("cloth_id",0))
+        val dressRepository = DressRepository()
+        val homeRepository = HomeRepository()
+        val storeRepository = StoreRepository()
+        val homeViewModelProviderFactory = HomeViewModelFactory(homeRepository)
+        val dressViewModelProviderFactory = DressViewModelFactory(dressRepository)
+        val storeViewModelProviderFactory = StoreViewModelFactory(storeRepository)
 
-        // lat, lng 정보를 얻기 위해서
-        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        requestLocationData()
+        dressViewModel = ViewModelProvider(this, dressViewModelProviderFactory).get(DressViewModel::class.java)
+        homeViewModel = ViewModelProvider(this,homeViewModelProviderFactory).get(HomeViewModel::class.java)
+        storeViewModel = ViewModelProvider(this, storeViewModelProviderFactory).get(StoreViewModel::class.java)
+
+        dressViewModel.get_dress_detail_data(intent.getIntExtra("cloth_id",0))
 
         supportFragmentManager
             .beginTransaction()

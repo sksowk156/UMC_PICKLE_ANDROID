@@ -3,6 +3,7 @@ package com.example.myapplication.view.main.home.newclothe
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -12,11 +13,13 @@ import com.example.myapplication.data.remote.model.DressOverviewDto
 import com.example.myapplication.data.remote.model.UpdateDressLikeDto
 import com.example.myapplication.base.BaseFragment
 import com.example.myapplication.view.ItemCardClickInterface
+import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.main.home.recent.HomeRecommendAdapter
 import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
 import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.HomeViewModel
+import com.example.myapplication.widget.utils.NetworkResult
 
 
 class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new),
@@ -25,13 +28,11 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new),
     private lateinit var dressViewModel: DressViewModel
     private lateinit var fragmentadapter: HomeRecommendAdapter
 
-    private var update_islikedata_id: Int? = null
-    private var update_list_position: Int? = null
     private var newData = ArrayList<DressOverviewDto>()
 
     override fun init() {
-        homeViewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
-        dressViewModel = ViewModelProvider(requireActivity()).get(DressViewModel::class.java)
+        homeViewModel = (activity as SecondActivity).homeViewModel
+        dressViewModel = (activity as SecondActivity).dressViewModel
 
         initAppbar(binding.newToolbar, "NEW", true, false)
         initRecyclerView()
@@ -51,21 +52,22 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new),
     private fun initRecyclerView() {
         fragmentadapter = HomeRecommendAdapter(this@NewFragment)
 
-        homeViewModel.home_new_data.observe(
-            viewLifecycleOwner,
-            Observer<List<DressOverviewDto>> { now_home_newdata ->
-                if (now_home_newdata != null) {
-                    newData = now_home_newdata as ArrayList<DressOverviewDto>
-                    fragmentadapter.submitList(now_home_newdata)
-//                    fragmentadapter.deleteData()
-//                    fragmentadapter.updateData(now_home_newdata as ArrayList<DressOverviewDto>)
-//                    fragmentadapter.notifyDataSetChanged()
-                } else {
-                    Log.d("whatisthis", "now_home_newdata, 없음")
-//                    fragmentadapter.deleteData()
+        homeViewModel.home_new_data.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is NetworkResult.Loading -> {
+
+                }
+                is NetworkResult.Error -> {
+                    Log.d("whatisthis", "NewFragment : " + it.message.toString())
                     fragmentadapter.submitList(null)
                 }
-            })
+                is NetworkResult.Success -> {
+                    newData = it.data!! as ArrayList<DressOverviewDto>
+                    fragmentadapter.submitList(it.data!!)
+                }
+            }
+
+        })
 
         binding.newRecyclerView.apply {
             layoutManager = GridLayoutManager(this.context, 2)
@@ -92,10 +94,8 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new),
 
             homeViewModel.get_home_data(
                 homeViewModel.home_latlng.value!!.first,
-                homeViewModel.home_latlng.value!!.second)
-
-//            update_islikedata_id = id
-//            update_list_position = position
+                homeViewModel.home_latlng.value!!.second
+            )
         }
     }
 }

@@ -18,9 +18,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
+import com.example.myapplication.repository.HomeRepository
 import com.example.myapplication.widget.utils.LocationPermissionUtils
 import com.example.myapplication.widget.utils.LocationPopupUtils
 import com.example.myapplication.viewmodel.HomeViewModel
+import com.example.myapplication.viewmodel.factory.HomeViewModelFactory
 
 abstract class BaseActivity<T : ViewDataBinding>(
     @LayoutRes private val layoutResId: Int
@@ -44,8 +46,10 @@ abstract class BaseActivity<T : ViewDataBinding>(
         super.onCreate(savedInstanceState)
         _binding = DataBindingUtil.setContentView(this, layoutResId)
         binding.lifecycleOwner = this
-
-        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        val homeRepository = HomeRepository()
+        val homeViewModelProviderFactory = HomeViewModelFactory(homeRepository)
+        homeViewModel =
+            ViewModelProvider(this, homeViewModelProviderFactory).get(HomeViewModel::class.java)
 
         if (savedInstanceState == null) {
             savedatainit()
@@ -169,7 +173,7 @@ abstract class BaseActivity<T : ViewDataBinding>(
                 locatioNManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
             currentLatLng = locatioNManager.getLastKnownLocation(locatioNProvider)  ?: locatioNManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-            Log.d("whatisthis",currentLatLng.toString())
+//            Log.d("whatisthis",currentLatLng.toString())
 
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(

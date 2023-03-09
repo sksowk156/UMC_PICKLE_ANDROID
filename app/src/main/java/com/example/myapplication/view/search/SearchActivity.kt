@@ -1,27 +1,46 @@
 package com.example.myapplication.view.search
 
+import android.content.Context
+import android.graphics.Color
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
+import androidx.annotation.ColorRes
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
+import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.ApplicationClass
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySearchBinding
 import com.example.myapplication.data.remote.model.search.SearchHistroyData
 import com.example.myapplication.base.BaseActivity
+import com.example.myapplication.repository.DressRepository
+import com.example.myapplication.repository.HomeRepository
 import com.example.myapplication.view.search.result.SearchresultFragment
-import com.example.myapplication.viewmodel.CategorySortViewModel
 import com.example.myapplication.viewmodel.DressViewModel
+import com.example.myapplication.viewmodel.DressViewModelFactory
+import com.example.myapplication.viewmodel.HomeViewModel
+import com.example.myapplication.viewmodel.OptionViewModel
+import com.example.myapplication.viewmodel.factory.HomeViewModelFactory
+import org.w3c.dom.Text
 
 class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search) {
+    // 뷰모델
+    lateinit var homeViewModel: HomeViewModel
+    lateinit var dressViewModel: DressViewModel
+    private lateinit var optionViewModel: OptionViewModel
+    
     // 검색 기록을 저장하는 배열
     private var searchHistoryDataList = ArrayList<SearchHistroyData>()
 
@@ -34,43 +53,51 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
     protected lateinit var toolbarlayout: ConstraintLayout
     protected lateinit var toolbarmenusearch: MenuItem
 
-    // 뷰모델
-    private lateinit var dressViewModel: DressViewModel
-    private lateinit var categorySortViewModel: CategorySortViewModel
+    private var lat_lng: Pair<Double, Double>? = null
 
-    private var category: String = "전체"
-    private var sort: String = "좋아요많은순"
-    private var searchWord : String ?= null
-    private var latlng : Pair<Double, Double>?=null
-    private lateinit var searchView : SearchView
+    private var searchWord: String? = null
+    private lateinit var searchView: SearchView
 
     override fun init() {
-        latlng = intent.getSerializableExtra("lat_lng") as Pair<Double, Double>
-        dressViewModel = ViewModelProvider(this).get(DressViewModel::class.java)
-        categorySortViewModel = ViewModelProvider(this).get(CategorySortViewModel::class.java)
-        categorySortViewModel.category_data.observe(this, Observer {
-            category = it
-            if(searchWord!=null){
+
+        val homeRepository = HomeRepository()
+        val homeviewModelProviderFactory = HomeViewModelFactory(homeRepository)
+        homeViewModel =
+            ViewModelProvider(this, homeviewModelProviderFactory).get(HomeViewModel::class.java)
+
+        val dressRepository = DressRepository()
+        val dressviewModelProviderFactory = DressViewModelFactory(dressRepository)
+        dressViewModel =
+            ViewModelProvider(this, dressviewModelProviderFactory).get(DressViewModel::class.java)
+
+        optionViewModel = ViewModelProvider(this).get(OptionViewModel::class.java)
+        getLocation()
+
+        homeViewModel.home_latlng.observe(this, Observer {
+            lat_lng = it
+        })
+
+        optionViewModel.category_data.observe(this, Observer {
+            if (searchWord != null) {
                 // // 화면 전환 및 검색 결과 보여주기(API 요청)
                 dressViewModel.get_dress_search_data(
-                    category,
-                    latlng!!.first,
-                    latlng!!.second,
+                    optionViewModel.category_data.toString(),
+                    lat_lng!!.first,
+                    lat_lng!!.second,
                     searchWord!!,
-                    sort
+                    optionViewModel.sort_data.toString()
                 )
             }
         })
-        categorySortViewModel.sort_data.observe(this, Observer {
-            sort = it
-            if(searchWord!=null){
+        optionViewModel.sort_data.observe(this, Observer {
+            if (searchWord != null) {
                 // // 화면 전환 및 검색 결과 보여주기(API 요청)
                 dressViewModel.get_dress_search_data(
-                    category,
-                    latlng!!.first,
-                    latlng!!.second,
+                    optionViewModel.category_data.toString(),
+                    lat_lng!!.first,
+                    lat_lng!!.second,
                     searchWord!!,
-                    sort
+                    optionViewModel.sort_data.toString()
                 )
             }
         })
@@ -101,6 +128,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                     override fun onQueryTextSubmit(query: String): Boolean {
                         // // 글자를 하나라도 쳤을 때
                         if (!query.isNullOrEmpty()) {
+                            searchWord = query
                             val newSearchData = SearchHistroyData(query)
                             // 검색 기록 추가하기(역순으로)
                             searchHistoryDataList.add(0, newSearchData)
@@ -114,11 +142,11 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
 
                             // // 화면 전환 및 검색 결과 보여주기(API 요청)
                             dressViewModel.get_dress_search_data(
-                                category,
-                                latlng!!.first,
-                                latlng!!.second,
-                                query,
-                                sort
+                                optionViewModel.category_data.toString(),
+                                lat_lng!!.first,
+                                lat_lng!!.second,
+                                searchWord!!,
+                                optionViewModel.sort_data.toString()
                             )
                             // 검색 기록 보여주는 창 가리고
                             toolbarlayout.visibility = View.VISIBLE
@@ -129,7 +157,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                                 .commitAllowingStateLoss()
                             // 엔터를 쳤기 때문에 커서를 없앤다.
                             searchView.clearFocus()
-                            searchWord = query
                         }
                         return true
                     }
@@ -222,14 +249,15 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         searchhistoryAdapter =
             SearchhistoryAdapter(object : SearchhistoryAdapter.ItemClickListener {
                 // recycler 아이템 중 텍스트를 클릭했을 때 -> 해당 텍스트로 재검색
-                override fun onTextItemClick(searchhistory:String, position: Int) {
-// // 화면 전환 및 검색 결과 보여주기(API 요청)
+                override fun onTextItemClick(searchhistory: String, position: Int) {
+                    searchWord = searchhistory
+                    // 화면 전환 및 검색 결과 보여주기(API 요청)
                     dressViewModel.get_dress_search_data(
-                        category,
-                        latlng!!.first,
-                        latlng!!.second,
-                        searchhistory,
-                        sort
+                        optionViewModel.category_data.toString(),
+                        lat_lng!!.first,
+                        lat_lng!!.second,
+                        searchWord!!,
+                        optionViewModel.sort_data.toString()
                     )
                     // 검색 기록 보여주는 창 가리고
                     toolbarlayout.visibility = View.VISIBLE
@@ -260,8 +288,10 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         searchhistoryAdapter.notifyDataSetChanged()
 
         binding.searchContent.contentRecycler.apply {
-            layoutManager= GridLayoutManager(this.context,3)
-            adapter= searchhistoryAdapter
+            layoutManager = GridLayoutManager(this.context, 3)
+            adapter = searchhistoryAdapter
         }
     }
+
+
 }

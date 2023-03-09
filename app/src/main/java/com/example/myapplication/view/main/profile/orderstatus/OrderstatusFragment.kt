@@ -1,7 +1,9 @@
 package com.example.myapplication.view.main.profile.orderstatus
 
 import android.graphics.Color
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,14 +11,16 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentOrderstatusBinding
 import com.example.myapplication.data.remote.model.DressOrderListDto
 import com.example.myapplication.base.BaseFragment
+import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.main.profile.orderstatus.detail.OrderstatusDetailFragment
 import com.example.myapplication.viewmodel.DressViewModel
+import com.example.myapplication.widget.utils.NetworkResult
 
 class OrderstatusFragment : BaseFragment<FragmentOrderstatusBinding>(R.layout.fragment_orderstatus) {
     lateinit var dressViewModel: DressViewModel
 
     override fun init() {
-        dressViewModel = ViewModelProvider(requireActivity()).get(DressViewModel::class.java)
+        dressViewModel = (activity as SecondActivity).dressViewModel
 
         initAppbarName()
         hideBottomNavigation(true)
@@ -53,7 +57,7 @@ class OrderstatusFragment : BaseFragment<FragmentOrderstatusBinding>(R.layout.fr
                         .addToBackStack(null)
                         .commitAllowingStateLoss()
                     // 선택한 아이템의 주문 번호를 받아서
-                    dressViewModel.get_dress_reservation_dress_data(reservationid)
+                    dressViewModel.get_dress_order_detail_data(reservationid)
 
                 }
 
@@ -63,7 +67,7 @@ class OrderstatusFragment : BaseFragment<FragmentOrderstatusBinding>(R.layout.fr
                         .replace(R.id.profileblank_layout, OrderstatusDetailFragment() ,"orderstatusdetail")
                         .addToBackStack(null)
                         .commitAllowingStateLoss()
-                    dressViewModel.get_dress_reservation_dress_data(reservationid)
+                    dressViewModel.get_dress_order_detail_data(reservationid)
                     //주문취소
                     //reservationViewModel.set_dress_resevation_data(3)
                 }
@@ -72,10 +76,20 @@ class OrderstatusFragment : BaseFragment<FragmentOrderstatusBinding>(R.layout.fr
             orderstatusRecyclerview.adapter = orderstatusAdapter
             orderstatusRecyclerview.layoutManager = LinearLayoutManager(context)
             orderstatusRecyclerview.addItemDecoration(OrderListDivider(0f,0f,20f,20f, Color.TRANSPARENT))
-            dressViewModel.dress_reservation_data.observe(viewLifecycleOwner, Observer {
+            dressViewModel.dress_order_data.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    is NetworkResult.Loading -> {
+                    }
 
-                orderstatusAdapter.userList = it as ArrayList<DressOrderListDto>
-                orderstatusAdapter.notifyDataSetChanged()
+                    is NetworkResult.Error -> {
+                        Log.d("whatisthis","OrderstatusFragment : 데이터없음")
+                    }
+
+                    is NetworkResult.Success -> {
+                        orderstatusAdapter.userList = it as ArrayList<DressOrderListDto>
+                        orderstatusAdapter.notifyDataSetChanged()
+                    }
+                }
 
             })
         }

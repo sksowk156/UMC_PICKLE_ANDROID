@@ -4,6 +4,7 @@ import com.example.myapplication.ApplicationClass
 import com.example.myapplication.data.remote.model.DressHomeDto
 import com.example.myapplication.data.remote.model.DressOverviewDto
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,26 +12,26 @@ object HomeService {
 
     interface HomeInterface {
         @GET("home")
-        fun get_home_data(
+        suspend fun get_home_data(
             @Query("lat") lat: Double,
             @Query("lng") lng: Double
-        ): Call<DressHomeDto>
+        ): Response<DressHomeDto>
 
         @GET("home/new")
-        fun get_home_new_data(
+        suspend fun get_home_new_data(
             @Query("lat") lat: Double,
             @Query("lng") lng: Double
-        ): Call<List<DressOverviewDto>>
+        ): Response<List<DressOverviewDto>>
 
         @GET("home/recent")
-        fun get_home_recent_data(
-        ): Call<List<DressOverviewDto>>
+        suspend fun get_home_recent_data(
+        ): Response<List<DressOverviewDto>>
 
         @GET("home/recommendation")
-        fun get_home_recommendation_data(
+        suspend fun get_home_recommendation_data(
             @Query("lat") lat: Double,
             @Query("lng") lng: Double
-        ): Call<List<DressOverviewDto>>
+        ): Response<List<DressOverviewDto>>
     }
 
     val homeService = ApplicationClass.retrofit.create(HomeService.HomeInterface::class.java)

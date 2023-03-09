@@ -1,84 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/category_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/category_textview_all"
+    <data>
+        <variable
+            name="categoryvm"
+            type="com.example.myapplication.viewmodel.OptionViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/category_layout"
         android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical"
-        android:text="전체"
-        android:textColor="#1E1E1E"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/category_textview_outer"
-        android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical"
-        android:text="아우터"
-        android:textColor="#A4A4A4"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/category_textview_all"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:onClick="@{(view)->categoryvm.onCategoryBTEvent(view)}"
+            android:text="전체"
+            app:searchOptionColor="@{categoryvm.category_data.toString()}"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/category_textview_top"
-        android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical"
-        android:text="상의"
-        android:textColor="#A4A4A4"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/category_textview_outer"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:onClick="@{(view)->categoryvm.onCategoryBTEvent(view)}"
+            android:text="아우터"
+            app:searchOptionColor="@{categoryvm.category_data.toString()}"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/category_textview_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical"
-        android:text="하의"
-        android:textColor="#A4A4A4"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/category_textview_top"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:onClick="@{(view)->categoryvm.onCategoryBTEvent(view)}"
+            android:text="상의"
+            app:searchOptionColor="@{categoryvm.category_data.toString()}"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/category_textview_onepiece"
-        android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical"
-        android:text="원피스"
-        android:textColor="#A4A4A4"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/category_textview_bottom"
 
-    <TextView
-        android:id="@+id/category_textview_other"
-        android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical"
-        android:text="기타"
-        android:layout_marginBottom="64dp"
-        android:textColor="#A4A4A4"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:onClick="@{(view)->categoryvm.onCategoryBTEvent(view)}"
+            android:text="하의"
+            app:searchOptionColor="@{categoryvm.category_data.toString()}"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/category_textview_onepiece"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:onClick="@{(view)->categoryvm.onCategoryBTEvent(view)}"
+            android:text="원피스"
+            app:searchOptionColor="@{categoryvm.category_data.toString()}"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/category_textview_other"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="64dp"
+            android:gravity="center_vertical"
+            android:onClick="@{(view)->categoryvm.onCategoryBTEvent(view)}"
+            android:text="기타"
+            app:searchOptionColor="@{categoryvm.category_data.toString()}"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</layout>

@@ -1,7 +1,9 @@
 package com.example.myapplication.view.main.favorite.item
 
 import android.content.Intent
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -11,10 +13,12 @@ import com.example.myapplication.data.remote.model.DressLikeDto
 import com.example.myapplication.data.remote.model.UpdateDressLikeDto
 import com.example.myapplication.base.BaseFragment
 import com.example.myapplication.view.ItemCardClickInterface
+import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
 import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.HomeViewModel
+import com.example.myapplication.widget.utils.NetworkResult
 
 
 class FavoriteClothFragment :
@@ -26,19 +30,27 @@ class FavoriteClothFragment :
     lateinit var fragmentadapter: FavoriteItemAdapter
 
     override fun init() {
-        homeViewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
-        dressViewModel = ViewModelProvider(requireActivity()).get(DressViewModel::class.java)
+        homeViewModel = (activity as SecondActivity).homeViewModel
+        dressViewModel = (activity as SecondActivity).dressViewModel
         initRecyclerView()
     }
 
     private fun initRecyclerView() {
         fragmentadapter = FavoriteItemAdapter(this)
 
-        dressViewModel.dress_like_data.observe(viewLifecycleOwner, Observer<List<DressLikeDto>> { dresslikedata ->
-            if(dresslikedata!=null){
-                fragmentadapter.submitList(dresslikedata.toMutableList())
-            }else{
-                fragmentadapter.submitList(null)
+        dressViewModel.dress_like_data.observe(viewLifecycleOwner, Observer {
+
+            when (it) {
+                is NetworkResult.Loading -> {
+                }
+
+                is NetworkResult.Error -> {
+                    Log.d("whatisthis","FavoriteClothFragment : 데이터없음")
+                }
+
+                is NetworkResult.Success -> {
+                    fragmentadapter.submitList(it.data!!.toMutableList())
+                }
             }
         })
 

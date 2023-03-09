@@ -3,6 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="homevm"
+            type="com.example.myapplication.viewmodel.HomeViewModel" />
+
+        <variable
+            name="uservm"
+            type="com.example.myapplication.viewmodel.UserViewModel" />
+    </data>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/home_layout"
         android:layout_width="match_parent"
@@ -60,6 +70,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/home_textview_recentmore"
+                        android:onClick="@{()->homevm.onRecentBTEvent()}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
@@ -108,6 +119,7 @@
                         android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
                         android:gravity="center_vertical"
                         android:layout_marginEnd="16dp"
+                        android:onClick="@{()->homevm.onNewBTEvent()}"
                         android:text="더보기"
                         android:textColor="#0FAA59"
                         android:textSize="12sp"
@@ -137,7 +149,7 @@
                         android:id="@+id/home_textview_recommend"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="피클 님을 위한 추천 아우터"
+                        android:text="@{@string/home_user_recommend(uservm.user_home_name_data)}"
                         android:textColor="#1E1E1E"
                         android:textSize="18sp"
                         android:textStyle="bold"

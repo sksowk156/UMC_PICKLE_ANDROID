@@ -1,6 +1,6 @@
 package com.example.myapplication.data.remote.model
 
-class DressReservationDto (
+data class DressReservationDto (
     var comment: String = "",
     var dress_id: Int,
     var pickup_datetime: String = "",

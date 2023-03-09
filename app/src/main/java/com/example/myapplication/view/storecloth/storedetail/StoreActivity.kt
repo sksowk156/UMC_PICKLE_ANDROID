@@ -1,8 +1,6 @@
 package com.example.myapplication.view.storecloth.storedetail
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,46 +16,56 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityStoreBinding
-import com.example.myapplication.data.remote.model.StoreDetailDto
 import com.example.myapplication.data.remote.model.UpdateDressLikeDto
 import com.example.myapplication.data.remote.model.UpdateStoreLikeDto
 import com.example.myapplication.base.BaseActivity
+import com.example.myapplication.repository.DressRepository
+import com.example.myapplication.repository.HomeRepository
+import com.example.myapplication.repository.StoreRepository
 import com.example.myapplication.view.ItemCardClickInterface
 import com.example.myapplication.view.search.SearchActivity
 import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
-import com.example.myapplication.viewmodel.DressViewModel
-import com.example.myapplication.viewmodel.HomeViewModel
-import com.example.myapplication.viewmodel.StoreViewModel
+import com.example.myapplication.viewmodel.*
+import com.example.myapplication.viewmodel.factory.HomeViewModelFactory
+import com.example.myapplication.viewmodel.factory.StoreViewModelFactory
+import com.example.myapplication.widget.config.EventObserver
+import com.example.myapplication.widget.utils.ColorBindingAdapter
+import com.example.myapplication.widget.utils.NetworkResult
 
-
-//<<<<<<< HEAD
-//class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store),
-//    ItemCardClickInterface {
-//=======
-class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store), ItemCardClickInterface {
-
-    var chipGroup = ArrayList<TextView>()
-
+class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store),
+    ItemCardClickInterface {
     private lateinit var storeViewModel: StoreViewModel
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var dressViewModel: DressViewModel
+    private lateinit var optionViewModel: OptionViewModel
 
     lateinit var storedetailAdapter: StoreDetailAdapter
+    private var store_id : Int ?=null
+
     private lateinit var toolbar: Toolbar
     private var store_like_state: Boolean? = false
     private var storeIdData: Int? = null
-    private var lat_lng : Pair<Double, Double> = Pair(37.5581, 126.9260)
+    private var lat_lng: Pair<Double, Double> = Pair(37.5581, 126.9260)
 
     override fun init() {
+        val dressRepository = DressRepository()
+        val storeRepository = StoreRepository()
+        val homeRepository = HomeRepository()
+        val dressViewModelProviderFactory = DressViewModelFactory(dressRepository)
+        val storeViewModelProviderFactory = StoreViewModelFactory(storeRepository)
+        val homeViewModelProviderFactory = HomeViewModelFactory(homeRepository)
         // 뷰모델 선언
-        storeViewModel = ViewModelProvider(this).get(StoreViewModel::class.java)
-        dressViewModel = ViewModelProvider(this).get(DressViewModel::class.java)
+        dressViewModel = ViewModelProvider(this, dressViewModelProviderFactory).get(DressViewModel::class.java)
+        storeViewModel = ViewModelProvider(this, storeViewModelProviderFactory).get(StoreViewModel::class.java)
+        homeViewModel = ViewModelProvider(this, homeViewModelProviderFactory).get(HomeViewModel::class.java)
+        optionViewModel = ViewModelProvider(this).get(OptionViewModel::class.java)
 
-        storeViewModel.get_store_detail_data(intent.getIntExtra("store_id", 0), "전체")
+        binding.clothkindvm = optionViewModel
+        store_id = intent.getIntExtra("store_id", 0)
+        storeViewModel.get_store_detail_data(store_id!!, binding.chip1.text.toString())
 
         // lat, lng 정보를 얻기 위해서
-        requestLocationData()
-        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        getLocation()
         homeViewModel.home_latlng.observe(this, Observer {
             lat_lng = it
         })
@@ -64,32 +73,37 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
         storedetailAdapter = StoreDetailAdapter(this)
 
         // 매장 상세 정보 요청
-        storeViewModel.store_detail_data.observe(this, Observer<StoreDetailDto> { now_storedetail ->
-            if (now_storedetail != null) {
-                Glide.with(this)
-                    .load(now_storedetail.store_image_url) //이미지
-                    .into(binding.storeImageviewImage) //보여줄 위치
-
-                if (now_storedetail.is_liked!!) {
-                    Glide.with(this)
-                        .load(R.drawable.icon_favorite_filledpink) //이미지
-                        .into(binding.storeImageviewFavorite) //보여줄 위치
-                } else {
-                    Glide.with(this)
-                        .load(R.drawable.icon_favorite_line) //이미지
-                        .into(binding.storeImageviewFavorite)  //보여줄 위치
+        storeViewModel.store_detail_data.observe(this, Observer {
+            when (it) {
+                is NetworkResult.Loading -> {
                 }
+                is NetworkResult.Error -> {
+                    Log.d("whatisthis", "StoreActivity : 데이터없음")
+                }
+                is NetworkResult.Success -> {
+                    Glide.with(this)
+                        .load(it.data!!.store_image_url) //이미지
+                        .into(binding.storeImageviewImage) //보여줄 위치
 
-                binding.storeTextviewStorename.text = now_storedetail.store_name
-                binding.storeTextviewAddress.text = now_storedetail.store_address
-                binding.storeTextviewOperationhours.text = now_storedetail.hours_of_operation
+                    if (it.data!!.is_liked!!) {
+                        Glide.with(this)
+                            .load(R.drawable.icon_favorite_filledpink) //이미지
+                            .into(binding.storeImageviewFavorite) //보여줄 위치
+                    } else {
+                        Glide.with(this)
+                            .load(R.drawable.icon_favorite_line) //이미지
+                            .into(binding.storeImageviewFavorite)  //보여줄 위치
+                    }
 
-                storeIdData = now_storedetail.storeId
-                store_like_state = now_storedetail.is_liked
+                    binding.storeTextviewStorename.text = it.data!!.store_name
+                    binding.storeTextviewAddress.text = it.data!!.store_address
+                    binding.storeTextviewOperationhours.text = it.data!!.hours_of_operation
 
-                storedetailAdapter.submitList(now_storedetail.store_dress_list?.toMutableList())
-            } else {
-                Log.d("whatisthis", "store_detail_data, 데이터 없음")
+                    storeIdData = it.data!!.storeId
+                    store_like_state = it.data!!.is_liked
+
+                    storedetailAdapter.submitList(it.data!!.store_dress_list?.toMutableList())
+                }
             }
         })
 
@@ -145,7 +159,6 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
                     }
                     R.id.search -> {
                         val intent = Intent(this@StoreActivity, SearchActivity::class.java)
-                        intent.putExtra("lat_lng", lat_lng)
                         startActivity(intent)
                         true
                     }
@@ -168,38 +181,30 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
     }
 
     // 옷 좋아요 클릭 시
-    override fun onItemClothFavoriteClick(like: Boolean, id: Int, view : View, position: Int) {
+    override fun onItemClothFavoriteClick(like: Boolean, id: Int, view: View, position: Int) {
         if (id != 0) {
             dressViewModel.set_dress_like_data(UpdateDressLikeDto(id))
-            dressViewModel.get_dress_like_data()
-
-            homeViewModel.get_home_data(
-                homeViewModel.home_latlng.value!!.first,
-                homeViewModel.home_latlng.value!!.second)
         }
     }
 
-    @SuppressLint("ResourceAsColor")
     private fun initChip() {
-        chipGroup.add(binding.chip1)
-        chipGroup.add(binding.chip2)
-        chipGroup.add(binding.chip3)
-        chipGroup.add(binding.chip4)
-        chipGroup.add(binding.chip5)
-        chipGroup.add(binding.chip6)
-
-        for (i in 0..chipGroup.size - 1) {
-            chipGroup[i].setOnClickListener {
-                for (j in 0..chipGroup.size - 1) {
-                    if (chipGroup[j].background.constantState == resources.getDrawable(R.drawable.chip_background_selected).constantState) {
-                        chipGroup[j].setBackgroundResource(R.drawable.chip_background)
-                        chipGroup[j].setTextColor(Color.BLACK)
-                    }
-                    chipGroup[i].setBackgroundResource(R.drawable.chip_background_selected)
-                    chipGroup[i].setTextColor(Color.WHITE)
+        optionViewModel.apply {
+            clothkind_bt_event.observe(this@StoreActivity, EventObserver {
+                if(clothkind_data.value==null){
+                    optionViewModel.set_clothkind_data(binding.chip1) // 초기값
                 }
-            }
+                it as TextView
+
+                if(it!=clothkind_data.value!!){
+                    clothkind_data.value!!.setTextColor(ContextCompat.getColor(it.context, R.color.unselected_storeoption_text))
+                    clothkind_data.value!!.setBackgroundResource(R.drawable.chip_background)
+                    it.setTextColor(ContextCompat.getColor(it.context, R.color.selected_storeoption_text))
+                    it.setBackgroundResource(R.drawable.chip_background_selected)
+                }
+                optionViewModel.set_clothkind_data(it)
+
+                storeViewModel.get_store_detail_data(store_id!!, it.text.toString())
+            })
         }
     }
-
 }

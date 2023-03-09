@@ -7,219 +7,258 @@ import android.util.Log
 import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentPickupDetailBinding
-import com.example.myapplication.data.remote.model.StoreDetailDto
 import com.example.myapplication.base.BaseFragment
 import com.example.myapplication.view.storecloth.clothdetail.ordercomplete.OrderCompleteFragment
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.OrderViewModel
-import com.example.myapplication.viewmodel.ReservationViewModel
 import com.example.myapplication.viewmodel.StoreViewModel
 import java.util.*
 import androidx.lifecycle.Observer
+import com.example.myapplication.data.remote.model.DressDetailDto
 import com.example.myapplication.data.remote.model.DressReservationDto
 import com.example.myapplication.data.remote.model.StockQuantityDto
+import com.example.myapplication.data.remote.model.StoreDetailDto
 import com.example.myapplication.data.remote.model.order.ClothOrderData
+import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
+import com.example.myapplication.widget.config.EventObserver
+import com.example.myapplication.widget.utils.ColorBindingAdapter
+import com.example.myapplication.widget.utils.NetworkResult
 
-class PickupDetailFragment : BaseFragment<FragmentPickupDetailBinding>(R.layout.fragment_pickup_detail) {
-    var chipGroup = ArrayList<TextView>()
-    private lateinit var reservationViewModel: ReservationViewModel
+class PickupDetailFragment :
+    BaseFragment<FragmentPickupDetailBinding>(R.layout.fragment_pickup_detail) {
     private lateinit var storeViewModel: StoreViewModel
-    private lateinit var orderViewModel: OrderViewModel
     private lateinit var dressViewModel: DressViewModel
-    private var date: String = ""
-    private lateinit var time: String
-    private lateinit var dateTime: String
+    private lateinit var orderViewModel: OrderViewModel
+
+    // 매장 정보
+    private lateinit var store_detail_data: StoreDetailDto
+
+    // 옷 정보
+    private lateinit var dress_detail_data: DressDetailDto
+
+    // 픽업할 옷 리스트 옵션 정보
+    private var order_data = ArrayList<ClothOrderData>()
+    private var order_cloth_data = ArrayList<StockQuantityDto>()
+
+    // 날짜 정보
+    private var date: String? = null
+
+    // 시간 정보
+    private var time: String? = null
+
+    // 전체 가격 정보
     private var totalPrice: Int = 0
 
+    // 날자 정보, 시간 정보를 설정 했을 경우
+    private var selected_data = arrayListOf<Boolean>(false, false)
+
+    private var orderBT: Boolean = false
+
     override fun init() {
-        orderViewModel = ViewModelProvider(requireParentFragment()).get(OrderViewModel::class.java)
-        dressViewModel = ViewModelProvider(requireActivity()).get(DressViewModel::class.java)
-        reservationViewModel = ViewModelProvider(requireActivity()).get(ReservationViewModel::class.java)
-
         initAppbar(binding.pickupdetailToolbar, "픽업 주문하기", true, false)
-        initStore()
-        initDate()
-        initChip()
-        initButton()
-        initRecyclerView()
-        initTotalPrice()
-    }
 
-    private fun initStore(){
-        with(binding){
-            val dress_detail_data = dressViewModel.dress_detail_data.value
-            val storeId = dress_detail_data?.store_id
+        storeViewModel = (activity as ClothActivity).storeViewModel
+        dressViewModel = (activity as ClothActivity).dressViewModel
+        orderViewModel = ViewModelProvider(requireParentFragment()).get(OrderViewModel::class.java)
+        binding.ordervm = orderViewModel
 
-            if (storeId != null) {
-                storeViewModel = ViewModelProvider(requireActivity()).get(StoreViewModel::class.java)
-                storeViewModel.get_store_detail_data(storeId,"전체")
-                storeViewModel.store_detail_data.observe(viewLifecycleOwner, Observer<StoreDetailDto> { now_storedetail ->
-                    if (now_storedetail != null) {
-                        binding.pickupdetailTextviewStorename.text = now_storedetail.store_name
-                        binding.pickupdetailTextviewAddress.text = now_storedetail.store_address
-                        binding.pickupdetailTextviewOperationhours.text = now_storedetail.hours_of_operation
-                    } else {
-                        Log.d("whatisthis", "store_detail_data, 데이터 없음")
-                    }
-                })
+        // 옷에 대한 상세 정보
+        dress_detail_data = dressViewModel.dress_detail_data.value!!.data!!
+        // 매장에 대한 상세 정보
+        storeViewModel.get_store_detail_data(dress_detail_data.store_id, "전체")
+        storeViewModel.store_detail_data.observe(this, Observer {
+            when (it) {
+                is NetworkResult.Loading -> {
+                }
+                is NetworkResult.Error -> {
+                    Log.d("whatisthis", "PickupDetailFragment store_detail_data 없음")
+                }
+                is NetworkResult.Success -> {
+                    store_detail_data = it.data!!
+                    initStore()
+                }
             }
+        })
 
-            storeViewModel = ViewModelProvider(requireActivity()).get(StoreViewModel::class.java)
-            val store_detail_data = storeViewModel.store_detail_data.value
-            binding.pickupdetailTextviewStorename.text = store_detail_data?.store_name
-            binding.pickupdetailTextviewAddress.text = store_detail_data?.store_address
-            binding.pickupdetailTextviewOperationhours.text = store_detail_data?.hours_of_operation
+        // 주문할 옷에 대한 상세 정보
+        order_data = orderViewModel.order_data.value!!
+
+        // 주문할 옷에 대한 목록 정보
+        for (i in order_data) {
+            order_cloth_data.add(StockQuantityDto(i.count, i.coloridx, i.sizeidx))
         }
 
+        // 주문할 옷의 전체가격
+        orderViewModel.get_calculate_order_price()
+
+        initDate()
+        initChip()
+        initRecyclerView()
+        initButton()
     }
 
-    private fun initRecyclerView(){
+    private fun initStore() {
+        with(binding) {
+            pickupdetailTextviewStorename.text = store_detail_data.store_name
+            pickupdetailTextviewAddress.text = store_detail_data.store_address
+            pickupdetailTextviewOperationhours.text = store_detail_data.hours_of_operation
+        }
+    }
+
+    private fun initRecyclerView() {
         with(binding) {
             // 1. 어댑터 생성 및 리사이클러뷰 연결
             val pickupDetailAdapter = PickupDetailAdapter()
-
-//            val pickupDetailDatalist: ArrayList<OrderedClotheData> = ArrayList()
-//            pickupDetailDatalist.add(OrderedClotheData("20200204",R.drawable.cardigan1,"ㄴㅁㅇ","옷","8700","검정","M"))
-//            pickupDetailDatalist.add(OrderedClotheData("20200204",R.drawable.cardigan1,"ㄴㅁㅇ","옷","8700","검정","M"))
-//            pickupDetailDatalist.add(OrderedClotheData("20200204",R.drawable.cardigan1,"ㄴㅁㅇ","옷","8700","검정","M"))
-            val order_data = orderViewModel.order_data.value
-            val dress_detail_data = dressViewModel.dress_detail_data.value
             pickupdetailRecyclerview.adapter = pickupDetailAdapter
             pickupdetailRecyclerview.layoutManager = LinearLayoutManager(context)
             pickupDetailAdapter.userList = order_data
             pickupDetailAdapter.dressDetail = dress_detail_data
             pickupDetailAdapter.notifyDataSetChanged()
-
-
         }
     }
 
     private fun initDate() {
         with(binding) {
-            binding.tvDateDialog.setOnClickListener {
+            orderViewModel.pickupdate_bt_event.observe(this@PickupDetailFragment, EventObserver {
                 val mcurrentTime = Calendar.getInstance()
                 val year = mcurrentTime.get(Calendar.YEAR)
                 val month = mcurrentTime.get(Calendar.MONTH)
                 val day = mcurrentTime.get(Calendar.DAY_OF_MONTH)
 
-                val datePicker = DatePickerDialog(requireContext(), R.style.DatePickerTheme, object : DatePickerDialog.OnDateSetListener {
-                    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-                        if(month + 1 < 10) {
-                        date = "${year}-0${month + 1}-${day}"
-                        binding.tvDateDialog.text = "${year}. 0${month + 1}. ${day}"
-                    }
-                    else {
-                        date = "${year}-${month + 1}-${day}"
-                        binding.tvDateDialog.text = "${year}. ${month + 1}. ${day}"
-                      }
-                    }
-                }, year, month, day);
+                val datePicker = DatePickerDialog(
+                    requireContext(),
+                    R.style.DatePickerTheme,
+                    object : DatePickerDialog.OnDateSetListener {
+                        override fun onDateSet(
+                            view: DatePicker?,
+                            year: Int,
+                            month: Int,
+                            dayOfMonth: Int
+                        ) {
+                            if (month + 1 < 10) { // 10월 이상(2자리수)
+                                date = "${year}-0${month + 1}-${day}"
+                            } else { // 10월 미만(1자리수)
+                                date = "${year}-${month + 1}-${day}"
+                            }
+                            pickupdetailTextviewDate.text = date
+                            activateButton(0, date)
+                        }
+                    },
+                    year,
+                    month,
+                    day
+                )
+
                 datePicker.show()
-            }
+            })
         }
     }
 
     @SuppressLint("ResourceAsColor")
     private fun initChip() {
-        chipGroup.add(binding.chip1)
-        chipGroup.add(binding.chip2)
-        chipGroup.add(binding.chip3)
-        chipGroup.add(binding.chip4)
-        chipGroup.add(binding.chip5)
-        chipGroup.add(binding.chip6)
-        chipGroup.add(binding.chip7)
-        chipGroup.add(binding.chip8)
-        chipGroup.add(binding.chip9)
-        chipGroup.add(binding.chip10)
-        chipGroup.add(binding.chip11)
-        chipGroup.add(binding.chip12)
-        chipGroup.add(binding.chip13)
-        chipGroup.add(binding.chip14)
-        chipGroup.add(binding.chip15)
-        chipGroup.add(binding.chip16)
-
-        for (i in 0..chipGroup.size - 1) {
-            chipGroup[i].setOnClickListener {
-                if(date == "")
-                    Toast.makeText(activity, "날짜를 먼저 선택해주세요.", Toast.LENGTH_SHORT).show()
-                else {
-                    for (j in 0..chipGroup.size - 1) {
-                        if (chipGroup[j].background.constantState == resources.getDrawable(R.drawable.chip_background_selected).constantState) {
-                            chipGroup[j].setBackgroundResource(R.drawable.chip_background)
-                            chipGroup[j].setTextColor(Color.BLACK)
-                        }
-                        chipGroup[i].setBackgroundResource(R.drawable.chip_background_selected)
-                        chipGroup[i].setTextColor(Color.WHITE)
-                        time = chipGroup[i].text.toString()
-
-                        binding.ivOrder.setBackgroundResource(R.drawable.green_button_background)
-                        binding.ivOrder.setTextColor(Color.WHITE)
+        orderViewModel.apply {
+            pickuptime_bt_event.observe(this@PickupDetailFragment, EventObserver {
+                it as TextView
+                if (pickuptime_data.value == null) { // 처음 버튼을 누를 때
+                    it.setTextColor(
+                        ContextCompat.getColor(
+                            it.context,
+                            R.color.selected_storeoption_text
+                        )
+                    )
+                    it.setBackgroundResource(R.drawable.chip_background_selected)
+                    set_pickuptime_data(it)
+                    time = pickuptime_data.value!!.text.toString()
+                } else { // 두 번째 누를 때부터
+                    if (pickuptime_data.value == it) { // 같은 버튼을 누를 때
+                        it.setTextColor(
+                            ContextCompat.getColor(
+                                it.context,
+                                R.color.unselected_storeoption_text
+                            )
+                        )
+                        it.setBackgroundResource(R.drawable.chip_background)
+                        set_pickuptime_data(null)
+                        time = null
+                    } else { // 다른 버튼을 누를 때
+                        pickuptime_data.value!!.setTextColor(
+                            ContextCompat.getColor(
+                                it.context,
+                                R.color.unselected_storeoption_text
+                            )
+                        )
+                        pickuptime_data.value!!.setBackgroundResource(R.drawable.chip_background)
+                        it.setTextColor(
+                            ContextCompat.getColor(
+                                it.context,
+                                R.color.selected_storeoption_text
+                            )
+                        )
+                        it.setBackgroundResource(R.drawable.chip_background_selected)
+                        set_pickuptime_data(it)
+                        time = pickuptime_data.value!!.text.toString()
                     }
                 }
-            }
+                activateButton(1, time)
+            })
         }
     }
 
-    private fun initButton(){
-        with(binding){
-            val dress_detail_data = dressViewModel.dress_detail_data.value
-            val order_data = orderViewModel.order_data.value as ArrayList<ClothOrderData>
-
-            var temp : ArrayList<StockQuantityDto> = ArrayList<StockQuantityDto>()
-            for( i in order_data){
-
-                temp.add(StockQuantityDto(i.count , i.coloridx, i.sizeidx))
-
-            }
-
-            binding.ivOrder.setOnClickListener{
-                if (binding.ivOrder.background.constantState != resources.getDrawable(R.drawable.green_button_background).constantState)
-                    null
-                else {
-                    //예약 정보 보내기
-                    val comment = binding.pickupdetailEdittextRequest.text.toString()
-                    val dress_id = dress_detail_data?.dress_id
-                    val pickup_datetime = date + " " + time + ":00"
-                    val price = totalPrice
-                    val reserved_dress_list = temp.toList()
-                    val store_id = dress_detail_data?.store_id
-
-                    Log.d("dress_id", dress_id.toString())
-                    Log.d("datetime", pickup_datetime.toString())
-                    Log.d("price", price.toString())
-                    Log.d("store_id", store_id.toString())
-
-                    val dressReservationDto = DressReservationDto(
-                        comment,
-                        dress_id!!,
-                        pickup_datetime,
-                        price,
-                        reserved_dress_list,
-                        store_id!!
-                    )
-                    reservationViewModel.set_dresses_reservation(dressReservationDto!!)
-
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.clothblank_layout, OrderCompleteFragment(), "ordercomplete")
-                        .addToBackStack(null)
-                        .commitAllowingStateLoss()
-                }
-            }
+    private fun activateButton(optionIdx: Int, optionName: String?) {
+        selected_data[optionIdx] = optionName != null
+        orderBT = selected_data[0] == true && selected_data[1] == true
+        if (orderBT) {
+            binding.pickupdetailTextviewReservation.setBackgroundResource(R.drawable.green_button_background)
+            binding.pickupdetailTextviewReservation.setTextColor(Color.WHITE)
+        } else {
+            binding.pickupdetailTextviewReservation.setBackgroundResource(R.drawable.gray_button_background)
+            binding.pickupdetailTextviewReservation.setTextColor(Color.parseColor("#A4A4A4"))
         }
     }
 
-    private fun initTotalPrice(){
+    private fun initButton() {
         with(binding) {
-            val order_data = orderViewModel.order_data.value
-            if (order_data != null) {
-                for (i in 0..order_data.size - 1)
-                    totalPrice += order_data.get(i).clothPrice * order_data.get(i).count
-            }
-            binding.pickupdetailTextviewTotalprice.text = totalPrice.toString() + "원"
+
+            orderViewModel.pickupreservation_bt_event.observe(
+                this@PickupDetailFragment,
+                EventObserver {
+                    if (orderBT) {
+                        //예약 정보 보내기
+                        var comment = ""
+                        if(orderViewModel._order_request_data.value!=null){
+                            comment = orderViewModel._order_request_data.value!!
+                        }
+                        val dress_id = dress_detail_data.dress_id
+                        val pickup_datetime = date + " " + time + ":00"
+                        val price = totalPrice
+                        val reserved_dress_list = order_cloth_data.toList()
+                        val store_id = dress_detail_data.store_id
+
+                        val dressReservationDto = DressReservationDto(
+                            comment,
+                            dress_id,
+                            pickup_datetime,
+                            price,
+                            reserved_dress_list,
+                            store_id
+                        )
+                        dressViewModel.set_dress_reservation(dressReservationDto)
+
+                        parentFragmentManager.beginTransaction()
+                            .replace(
+                                R.id.clothblank_layout,
+                                OrderCompleteFragment(),
+                                "ordercomplete"
+                            )
+                            .addToBackStack(null)
+                            .commitAllowingStateLoss()
+                    }
+                })
         }
     }
 }

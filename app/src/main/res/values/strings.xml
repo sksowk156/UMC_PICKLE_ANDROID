@@ -9,6 +9,9 @@
     <string name="store">store</string>
     <string name="cloth">cloth</string>
     <string name="price">price</string>
+    <string name="home_user_recommend">%1$s님을 위한 추천 아우터</string>
+    <string name="profile_user_detail">%1$s님, 안녕하세요!</string>
+    <string name="price_won">%1$s원</string>
 
     <string-array name="spinner_color">
         <item>선택하세요</item>

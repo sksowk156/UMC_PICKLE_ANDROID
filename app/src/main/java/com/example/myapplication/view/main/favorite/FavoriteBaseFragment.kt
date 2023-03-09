@@ -1,6 +1,7 @@
 package com.example.myapplication.view.main.favorite
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -9,41 +10,56 @@ import com.example.myapplication.databinding.FragmentFavoriteBaseBinding
 import com.example.myapplication.data.remote.model.UpdateDressLikeDto
 import com.example.myapplication.data.remote.model.UpdateStoreLikeDto
 import com.example.myapplication.base.BaseFragment
+import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.main.favorite.item.FavoriteClothFragment
 import com.example.myapplication.view.main.favorite.store.FavoriteStoreFragment
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.StoreViewModel
+import com.example.myapplication.widget.utils.NetworkResult
 import com.google.android.material.tabs.TabLayoutMediator
 
-class FavoriteBaseFragment : BaseFragment<FragmentFavoriteBaseBinding>(R.layout.fragment_favorite_base) {
+class FavoriteBaseFragment :
+    BaseFragment<FragmentFavoriteBaseBinding>(R.layout.fragment_favorite_base) {
     lateinit var dressViewModel: DressViewModel
     lateinit var storeViewModel: StoreViewModel
 
     override fun init() {
-        dressViewModel = ViewModelProvider(requireActivity()).get(DressViewModel::class.java)
+        dressViewModel = (activity as SecondActivity).dressViewModel
         storeViewModel = ViewModelProvider(requireActivity()).get(StoreViewModel::class.java)
         dressViewModel.get_dress_like_data()
         storeViewModel.get_store_like_data()
 
-        dressViewModel.update_dress_like_data.observe(viewLifecycleOwner, Observer<UpdateDressLikeDto> { update_dresslikedata ->
-            if(update_dresslikedata!=null){
-                dressViewModel.get_dress_like_data()
+        dressViewModel.update_dress_like_data.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is NetworkResult.Loading -> {
+                }
 
-            }else{
-                Log.d("whatisthis", "dress_like_data, 데이터 없음")
+                is NetworkResult.Error -> {
+                    Log.d("whatisthis","FavoriteBaseFragment : 데이터없음")
+                }
+
+                is NetworkResult.Success -> {
+                    dressViewModel.get_dress_like_data()
+                }
             }
         })
 
-        storeViewModel.update_store_like_data.observe(viewLifecycleOwner, Observer<UpdateStoreLikeDto> { update_storelikedata ->
-            if(update_storelikedata!=null){
-                storeViewModel.get_store_like_data()
+        storeViewModel.update_store_like_data.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is NetworkResult.Loading -> {
+                }
 
-            }else{
-                Log.d("whatisthis", "store_like_data, 데이터 없음")
+                is NetworkResult.Error -> {
+                    Log.d("whatisthis", "store_like_data, 데이터 없음")
+                }
+
+                is NetworkResult.Success -> {
+                    storeViewModel.get_store_like_data()
+                }
             }
         })
 
-        initAppbar(binding.favoritebaseToolbar,"찜 목록",false,true)
+        initAppbar(binding.favoritebaseToolbar, "찜 목록", false, true)
         initViewPager()
     }
 

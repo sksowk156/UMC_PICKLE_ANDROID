@@ -16,7 +16,7 @@ class SharedPreferencesManager(context: Context) {
         context.getSharedPreferences(SHARED_SEARCH_HISTORY, Context.MODE_PRIVATE)
 
     // jwt
-    private var jwtprefs: SharedPreferences =
+    var jwtprefs: SharedPreferences =
         context.getSharedPreferences(SERVER_TOKEN, Context.MODE_PRIVATE)
 
     // 검색 기록 데이터 출력

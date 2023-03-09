@@ -8,30 +8,28 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSearchresultBinding
-import com.example.myapplication.data.remote.model.DressLikeDto
-import com.example.myapplication.data.remote.model.DressSearchResultDto
 import com.example.myapplication.data.remote.model.UpdateDressLikeDto
 import com.example.myapplication.view.ItemCardClickInterface
 import com.example.myapplication.base.BaseFragment
+import com.example.myapplication.view.search.SearchActivity
 import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
 import com.example.myapplication.view.storecloth.storedetail.StoreActivity
+import com.example.myapplication.viewmodel.OptionViewModel
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.SearchViewModel
+import com.example.myapplication.widget.utils.NetworkResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.fragment_searchresult) {
     private lateinit var dressViewModel: DressViewModel
     private lateinit var searchViewModel: SearchViewModel
+    private lateinit var optionViewModel: OptionViewModel
 
     private lateinit var fragmentadapter: SearchresultAdapter
-
-    private var searchdata = ArrayList<DressSearchResultDto>()
-    private var update_islikedata_id: Int? = null
-    private var update_list_position: Int? = null
-
     override fun init() {
-        dressViewModel = ViewModelProvider(requireActivity()).get(DressViewModel::class.java)
+        dressViewModel = (activity as SearchActivity).dressViewModel
         searchViewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
+        optionViewModel = ViewModelProvider(requireActivity()).get(OptionViewModel::class.java)
 
         binding.searchresultTextviewSort.setOnClickListener {
             val bottomSheetDialogFragment: BottomSheetDialogFragment = SortFragment()
@@ -43,23 +41,19 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
             bottomSheetDialogFragment.show(parentFragmentManager, null)
         }
 
-        initRecyclerView()
-
-        dressViewModel.dress_like_data.observe(viewLifecycleOwner, Observer<List<DressLikeDto>> {
-            if (update_list_position != null) {
-                if (searchdata[update_list_position!!].dress_id == update_islikedata_id) {
-                    searchdata[update_list_position!!].is_liked = !searchdata[update_list_position!!].is_liked!!
-//                    recentAdapter.submitList(recentData.toMutableList())
-//                    recentAdapter.updateData(recentData)
-                    fragmentadapter.notifyItemChanged(update_list_position!!)
-                }
-                update_list_position = null
-            }
+        optionViewModel.category_data.observe(this, Observer {
+            binding.searchresultTextviewCategory.text = optionViewModel.category_data.value
         })
+
+        optionViewModel.sort_data.observe(this, Observer {
+            binding.searchresultTextviewSort.text = optionViewModel.sort_data.value
+        })
+
+        initRecyclerView()
     }
 
     private fun initRecyclerView(){
-        fragmentadapter = SearchresultAdapter(clickInterface = (object : ItemCardClickInterface {
+        fragmentadapter = SearchresultAdapter(clicklistener = (object : ItemCardClickInterface {
             override fun onItemClothImageClick(id: Int, position: Int) {
                 val intent = Intent(getActivity(), ClothActivity::class.java)
                 intent.putExtra("cloth_id", id)
@@ -75,22 +69,25 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
             override fun onItemClothFavoriteClick(like: Boolean, id: Int, view: View, position: Int) {
                 if (id != 0) {
                     dressViewModel.set_dress_like_data(UpdateDressLikeDto(id))
-                    dressViewModel.get_dress_like_data()
-                    update_islikedata_id = id
-                    update_list_position = position
                 }
             }
         }))
 
-        dressViewModel.dress_search_data.observe(viewLifecycleOwner, Observer { searchresultdata->
-            if(searchresultdata!=null){
-                searchdata = searchresultdata.data as ArrayList<DressSearchResultDto>
-                fragmentadapter.deleteData()
-                fragmentadapter.updateData(searchresultdata.data as ArrayList<DressSearchResultDto>)
-                fragmentadapter.notifyDataSetChanged()
-                binding.searchresultTextviewResultcount.text = String.format("검색 결과 %d개", (searchresultdata.data as ArrayList<DressSearchResultDto>).size)
-            }else{
-                Log.d("whatisthis", "search result data가 없습니다.")
+        dressViewModel.dress_search_data.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is NetworkResult.Loading -> {
+                }
+
+                is NetworkResult.Error -> {
+                    Log.d("whatisthis", "search result data가 없습니다.")
+                    fragmentadapter.submitList(null)
+                    binding.searchresultTextviewResultcount.text = String.format("검색 결과 0개")
+                }
+
+                is NetworkResult.Success -> {
+                    fragmentadapter.submitList(it.data!!.data)
+                    binding.searchresultTextviewResultcount.text = String.format("검색 결과 %d개", (it.data!!.data)!!.size)
+                }
             }
         })
 

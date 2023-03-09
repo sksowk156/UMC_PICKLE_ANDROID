@@ -8,17 +8,20 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMyprofileBinding
 import com.example.myapplication.data.remote.model.UserProfileEditDto
 import com.example.myapplication.base.BaseFragment
+import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.viewmodel.UserViewModel
+import com.example.myapplication.widget.utils.NetworkResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class MyprofileFragment() : BaseFragment<FragmentMyprofileBinding>(R.layout.fragment_myprofile) {
 
-    private lateinit var userViewModel: UserViewModel
+    lateinit var userViewModel: UserViewModel
+
     private var defaultImage = R.drawable.icon_myprofile_profileimage
     private var new_image_uri: Uri? = null
 
     override fun init() {
-        userViewModel = ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
+        userViewModel = (activity as SecondActivity).userViewModel
 
         // 이미지를 넣을 경우
         userViewModel.profile_photo.observe(
@@ -77,21 +80,28 @@ class MyprofileFragment() : BaseFragment<FragmentMyprofileBinding>(R.layout.frag
             })
 
         userViewModel.user_profile_data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it != null) {
-                binding.myprofileTextviewName.setText(it.data!!.name)
-                binding.myprofileTextviewEmail.setText(it.data!!.email)
-                Glide.with(this@MyprofileFragment)
-                    .load(it.data!!.image)
-                    .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
-                    .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
-                    .fallback(defaultImage) // 로드할 url 이 비어있을(null 등) 경우 표시할 이미지
-                    .into(binding.myprofileImagePhoto)
-            } else {
-                binding.myprofileTextviewName.setText("")
-                binding.myprofileTextviewEmail.setText("")
-                Glide.with(this)
-                    .load(defaultImage)
-                    .into(binding.myprofileImagePhoto)
+            when (it) {
+                is NetworkResult.Loading -> {
+                }
+
+                is NetworkResult.Error -> {
+                    binding.myprofileTextviewName.setText("")
+                    binding.myprofileTextviewEmail.setText("")
+                    Glide.with(this)
+                        .load(defaultImage)
+                        .into(binding.myprofileImagePhoto)
+                }
+
+                is NetworkResult.Success -> {
+                    binding.myprofileTextviewName.setText(it.data!!.data!!.name)
+                    binding.myprofileTextviewEmail.setText(it.data!!.data!!.email)
+                    Glide.with(this@MyprofileFragment)
+                        .load(it.data!!.data!!.image)
+                        .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
+                        .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
+                        .fallback(defaultImage) // 로드할 url 이 비어있을(null 등) 경우 표시할 이미지
+                        .into(binding.myprofileImagePhoto)
+                }
             }
         })
     }
