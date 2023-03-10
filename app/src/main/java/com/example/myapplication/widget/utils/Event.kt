@@ -1,4 +1,4 @@
-package com.example.myapplication.widget.config
+package com.example.myapplication.widget.utils
 
 import androidx.lifecycle.Observer
 

@@ -1,21 +1,14 @@
 package com.example.myapplication.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.ApplicationClass
-import com.example.myapplication.data.remote.StoreService
 import com.example.myapplication.data.remote.model.*
-import com.example.myapplication.data.remote.remotedata.AuthRequest
 import com.example.myapplication.repository.StoreRepository
-import com.example.myapplication.widget.config.Event
+import com.example.myapplication.widget.utils.Event
 import com.example.myapplication.widget.utils.NetworkResult
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class StoreViewModel(private val storeRepository: StoreRepository) : ViewModel() {
     private val _floatingmap_bt_event = MutableLiveData<Event<Boolean>>()

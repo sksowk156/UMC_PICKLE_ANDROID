@@ -5,10 +5,8 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMapBinding
@@ -16,11 +14,10 @@ import com.example.myapplication.data.remote.model.StoreCoordDtoList
 import com.example.myapplication.data.remote.model.StoreCoordDto
 import com.example.myapplication.base.BaseFragment
 import com.example.myapplication.view.main.SecondActivity
-import com.example.myapplication.view.main.home.recent.RecentFragment
 import com.example.myapplication.view.main.location.around.AroundFragment
 import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.StoreViewModel
-import com.example.myapplication.widget.config.EventObserver
+import com.example.myapplication.widget.utils.EventObserver
 import com.example.myapplication.widget.utils.NetworkResult
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.naver.maps.geometry.LatLng

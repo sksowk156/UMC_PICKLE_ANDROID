@@ -17,14 +17,12 @@ import com.example.myapplication.databinding.FragmentOrderBinding
 import com.example.myapplication.data.remote.model.order.ClothOptionData
 import com.example.myapplication.view.main.profile.orderstatus.OrderListDivider
 import com.example.myapplication.data.remote.model.order.ClothOrderData
-import com.example.myapplication.databinding.FragmentPermissionBinding
 import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
 import com.example.myapplication.view.storecloth.clothdetail.pickupdetail.PickupDetailFragment
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.OrderViewModel
 import com.example.myapplication.viewmodel.StoreViewModel
-import com.example.myapplication.widget.config.EventObserver
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.example.myapplication.widget.utils.EventObserver
 
 class OrderBottomSheetFragment() :
     BaseBottomSheetFragment<FragmentOrderBinding>(R.layout.fragment_order),

@@ -7,7 +7,7 @@ import com.example.myapplication.R
 import com.example.myapplication.base.BaseBottomSheetFragment
 import com.example.myapplication.databinding.FragmentCategoryBinding
 import com.example.myapplication.viewmodel.OptionViewModel
-import com.example.myapplication.widget.config.EventObserver
+import com.example.myapplication.widget.utils.EventObserver
 
 class CategoryFragment :
     BaseBottomSheetFragment<FragmentCategoryBinding>(R.layout.fragment_category) {

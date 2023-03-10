@@ -22,14 +22,13 @@ import com.example.myapplication.base.BaseActivity
 import com.example.myapplication.repository.DressRepository
 import com.example.myapplication.repository.HomeRepository
 import com.example.myapplication.repository.StoreRepository
-import com.example.myapplication.view.ItemCardClickInterface
 import com.example.myapplication.view.search.SearchActivity
 import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
 import com.example.myapplication.viewmodel.*
 import com.example.myapplication.viewmodel.factory.HomeViewModelFactory
 import com.example.myapplication.viewmodel.factory.StoreViewModelFactory
-import com.example.myapplication.widget.config.EventObserver
-import com.example.myapplication.widget.utils.ColorBindingAdapter
+import com.example.myapplication.widget.utils.EventObserver
+import com.example.myapplication.widget.utils.ItemCardClickInterface
 import com.example.myapplication.widget.utils.NetworkResult
 
 class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store),

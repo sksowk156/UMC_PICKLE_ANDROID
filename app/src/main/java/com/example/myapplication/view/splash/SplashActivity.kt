@@ -7,9 +7,9 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.ApplicationClass.Companion.username
 import com.example.myapplication.view.login.MainActivity
 import com.example.myapplication.view.main.SecondActivity
+import com.example.myapplication.widget.utils.Utils.username
 import com.kakao.sdk.user.UserApiClient
 
 class SplashActivity : AppCompatActivity() {

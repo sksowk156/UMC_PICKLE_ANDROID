@@ -7,12 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
-import com.example.myapplication.data.remote.model.DressOverviewDto
 import com.example.myapplication.databinding.ItemCardRecyclerBinding
 import com.example.myapplication.data.remote.model.DressSearchResultDto
-import com.example.myapplication.view.ItemCardClickInterface
-import com.example.myapplication.view.main.home.recent.HomeRecommendAdapter
-import com.example.myapplication.view.main.home.recent.HomeRecommendDiffUtil
+import com.example.myapplication.widget.utils.ItemCardClickInterface
 
 //class SearchresultAdapter(clickInterface: ItemCardClickInterface): RecyclerView.Adapter<SearchresultAdapter.MyViewHolder>(){
 //

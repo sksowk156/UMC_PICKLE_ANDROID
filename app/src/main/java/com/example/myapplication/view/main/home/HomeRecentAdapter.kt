@@ -1,6 +1,5 @@
 package com.example.myapplication.view.main.home
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemHomecardRecyclerBinding
 import com.example.myapplication.data.remote.model.DressOverviewDto
-import com.example.myapplication.view.ItemCardClickInterface
+import com.example.myapplication.widget.utils.ItemCardClickInterface
 
 //class HomeRecentAdapter(clickInterface: ItemCardClickInterface): RecyclerView.Adapter<HomeRecentAdapter.MyViewHolder>(){
 //

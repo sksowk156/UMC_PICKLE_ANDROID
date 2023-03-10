@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemAroundRecyclerBinding
 import com.example.myapplication.data.remote.model.StoreCoordDto
-import com.example.myapplication.view.ItemListClickInterface
+import com.example.myapplication.widget.utils.ItemListClickInterface
 
 //
 //class AroundAdapter(clicklistener: AroundAdapter.ClothesClickListener) :

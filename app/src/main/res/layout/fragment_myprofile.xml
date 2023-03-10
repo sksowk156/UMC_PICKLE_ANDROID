@@ -2,6 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="uservm"
+            type="com.example.myapplication.viewmodel.UserViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/myprofile_layout"
@@ -34,6 +39,7 @@
                 android:layout_height="112dp"
                 android:layout_marginTop="56dp"
                 android:clickable="true"
+                android:onClick="@{(view)->uservm.onFixBTEvent()}"
                 android:src="@drawable/icon_myprofile_profileimage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +86,7 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:padding="16dp"
-                android:text="이름"
+                android:text="@={uservm.user_name_data}"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.571"
@@ -110,7 +116,7 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:padding="16dp"
-                android:text="이메일"
+                android:text="@={uservm.user_email_data}"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -125,6 +131,7 @@
                 android:background="@drawable/logout_withdrawal_button_background2"
                 android:gravity="center"
                 android:text="저장"
+                android:onClick="@{()->uservm.onSaveBTEvent()}"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"

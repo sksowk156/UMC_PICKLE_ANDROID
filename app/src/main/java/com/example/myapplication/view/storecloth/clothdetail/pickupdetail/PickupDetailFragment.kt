@@ -25,8 +25,8 @@ import com.example.myapplication.data.remote.model.StockQuantityDto
 import com.example.myapplication.data.remote.model.StoreDetailDto
 import com.example.myapplication.data.remote.model.order.ClothOrderData
 import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
-import com.example.myapplication.widget.config.EventObserver
 import com.example.myapplication.widget.utils.ColorBindingAdapter
+import com.example.myapplication.widget.utils.EventObserver
 import com.example.myapplication.widget.utils.NetworkResult
 
 class PickupDetailFragment :
