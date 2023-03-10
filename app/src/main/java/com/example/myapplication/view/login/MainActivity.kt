@@ -1,13 +1,12 @@
 package com.example.myapplication.view.login
 
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.myapplication.ApplicationClass
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.data.remote.remotedata.AuthRequest
@@ -15,22 +14,23 @@ import com.example.myapplication.base.BaseActivity
 import com.example.myapplication.repository.LoginRepository
 import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.viewmodel.*
-import com.example.myapplication.widget.config.EventObserver
+import com.example.myapplication.widget.utils.EventObserver
 import com.example.myapplication.widget.utils.NetworkResult
+import com.example.myapplication.widget.utils.Utils.X_ACCESS_TOKEN
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
-    lateinit var loginViewModel: LoginViewModel
+    val loginViewModel: LoginViewModel by viewModels<LoginViewModel>()
 
     override fun init() {
         binding.lifecycleOwner = this@MainActivity
-        val loginRepository = LoginRepository()
-        val loginViewModelFactory = LoginViewModelFactory(loginRepository)
-        loginViewModel = ViewModelProvider(this, loginViewModelFactory).get(LoginViewModel::class.java)
         binding.loginvm = loginViewModel
 
         loginViewModel.apply {
@@ -68,7 +68,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                                     }
 
                                     is NetworkResult.Success -> {
-                                        loginViewModel.setJwt(ApplicationClass.X_ACCESS_TOKEN, it.data!!.appToken)
+                                        loginViewModel.setJwt(X_ACCESS_TOKEN, it.data!!.appToken)
                                         UserApiClient.instance.me { user, error ->
                                             var email = user?.kakaoAccount?.email
                                             var name = user?.kakaoAccount?.profile?.nickname
@@ -114,7 +114,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                                     }
 
                                     is NetworkResult.Success -> {
-                                        loginViewModel.setJwt(ApplicationClass.X_ACCESS_TOKEN, it.data!!.appToken)
+                                        loginViewModel.setJwt(X_ACCESS_TOKEN, it.data!!.appToken)
                                         Log.e("whatisthis", "로그인 성공! 토큰값 : ${token.accessToken}")
                                         UserApiClient.instance.me { user, error ->
                                             var email = user?.kakaoAccount?.email

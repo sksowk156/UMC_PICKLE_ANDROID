@@ -2,13 +2,13 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'kotlin-android-extensions'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
     compileSdk 32
 
-    configurations { implementation.exclude group: 'org.jetbrains', module: 'annotations' }
+//    configurations { implementation.exclude group: 'org.jetbrains', module: 'annotations' }
 
     defaultConfig {
         applicationId "com.example.myapplication"
@@ -43,6 +43,9 @@ android {
 }
 
 dependencies {
+    // fragment_ktx, viewmodels()를 사용하기 위해
+    implementation "androidx.fragment:fragment-ktx:1.5.5"
+
     // viewmodel_ktx
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
 
@@ -88,4 +91,12 @@ dependencies {
 
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'me.relex:circleindicator:2.1.6'
+
+    // dagger hilt
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
+}
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
 }

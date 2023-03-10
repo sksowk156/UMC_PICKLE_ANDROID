@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.data.remote.model.order.ClothOptionData
 import com.example.myapplication.data.remote.model.order.ClothOrderData
-import com.example.myapplication.widget.config.Event
+import com.example.myapplication.widget.utils.Event
 
 class OrderViewModel : ViewModel() {
 

@@ -1,4 +1,4 @@
-package com.example.myapplication.view
+package com.example.myapplication.widget.utils
 
 import android.view.View
 

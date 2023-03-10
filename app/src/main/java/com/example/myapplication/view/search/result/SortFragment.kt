@@ -6,7 +6,7 @@ import com.example.myapplication.R
 import com.example.myapplication.base.BaseBottomSheetFragment
 import com.example.myapplication.databinding.FragmentSortBinding
 import com.example.myapplication.viewmodel.OptionViewModel
-import com.example.myapplication.widget.config.EventObserver
+import com.example.myapplication.widget.utils.EventObserver
 
 class SortFragment : BaseBottomSheetFragment<FragmentSortBinding>(R.layout.fragment_sort) {
     private lateinit var optionViewModel: OptionViewModel

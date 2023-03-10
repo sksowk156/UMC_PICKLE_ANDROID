@@ -1,9 +1,8 @@
 package com.example.myapplication.data.remote
 
-import com.example.myapplication.ApplicationClass
 import com.example.myapplication.data.remote.model.DressHomeDto
 import com.example.myapplication.data.remote.model.DressOverviewDto
-import retrofit2.Call
+import com.example.myapplication.widget.utils.Utils.retrofit
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -34,6 +33,6 @@ object HomeService {
         ): Response<List<DressOverviewDto>>
     }
 
-    val homeService = ApplicationClass.retrofit.create(HomeService.HomeInterface::class.java)
+    val homeService = retrofit.create(HomeService.HomeInterface::class.java)
 
 }

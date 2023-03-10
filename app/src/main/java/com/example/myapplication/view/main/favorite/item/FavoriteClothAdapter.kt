@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemCardRecyclerBinding
 import com.example.myapplication.data.remote.model.DressLikeDto
-import com.example.myapplication.view.ItemCardClickInterface
+import com.example.myapplication.widget.utils.ItemCardClickInterface
 
 class FavoriteItemAdapter(clicklistener: ItemCardClickInterface) :
     ListAdapter<DressLikeDto, FavoriteItemAdapter.MyViewHolder>(FavoriteItemDiffUtil) {

@@ -4,22 +4,19 @@ import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentAroundBinding
-import com.example.myapplication.data.remote.model.StoreCoordDtoList
 import com.example.myapplication.data.remote.model.UpdateStoreLikeDto
-import com.example.myapplication.view.ItemListClickInterface
 import com.example.myapplication.base.BaseFragment
 import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.main.profile.orderstatus.OrderListDivider
 import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.HomeViewModel
 import com.example.myapplication.viewmodel.StoreViewModel
-import com.example.myapplication.widget.config.EventObserver
+import com.example.myapplication.widget.utils.EventObserver
+import com.example.myapplication.widget.utils.ItemListClickInterface
 import com.example.myapplication.widget.utils.NetworkResult
 
 

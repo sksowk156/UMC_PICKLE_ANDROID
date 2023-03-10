@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSearchresultBinding
 import com.example.myapplication.data.remote.model.UpdateDressLikeDto
-import com.example.myapplication.view.ItemCardClickInterface
 import com.example.myapplication.base.BaseFragment
 import com.example.myapplication.view.search.SearchActivity
 import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
@@ -17,6 +16,7 @@ import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.OptionViewModel
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.SearchViewModel
+import com.example.myapplication.widget.utils.ItemCardClickInterface
 import com.example.myapplication.widget.utils.NetworkResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 

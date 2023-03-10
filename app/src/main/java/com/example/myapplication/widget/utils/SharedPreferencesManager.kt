@@ -2,13 +2,15 @@ package com.example.myapplication.widget.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.myapplication.ApplicationClass.Companion.SERVER_TOKEN
 import com.example.myapplication.data.remote.model.search.SearchHistroyData
-import com.example.myapplication.ApplicationClass.Companion.SHARED_SEARCH_HISTORY
+import com.example.myapplication.widget.utils.Utils.SERVER_TOKEN
+import com.example.myapplication.widget.utils.Utils.SHARED_SEARCH_HISTORY
 import com.google.gson.Gson
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
 
-class SharedPreferencesManager(context: Context) {
+class SharedPreferencesManager @Inject constructor(@ApplicationContext context: Context) {
 
     // // 쉐어드 만들기
     // 검색 기록

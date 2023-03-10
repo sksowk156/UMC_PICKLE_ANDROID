@@ -3,16 +3,13 @@ package com.example.myapplication.view.main.home
 import android.content.Intent
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.data.remote.model.*
 import com.example.myapplication.base.BaseFragment
-import com.example.myapplication.view.ItemCardClickInterface
 import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.main.home.newclothe.NewFragment
 import com.example.myapplication.view.main.home.recent.HomeRecommendAdapter
@@ -23,7 +20,8 @@ import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.HomeViewModel
 import com.example.myapplication.viewmodel.StoreViewModel
 import com.example.myapplication.viewmodel.UserViewModel
-import com.example.myapplication.widget.config.EventObserver
+import com.example.myapplication.widget.utils.EventObserver
+import com.example.myapplication.widget.utils.ItemCardClickInterface
 import com.example.myapplication.widget.utils.NetworkResult
 import com.smarteist.autoimageslider.SliderView
 

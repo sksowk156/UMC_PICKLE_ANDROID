@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.remote.model.DressHomeDto
 import com.example.myapplication.data.remote.model.DressOverviewDto
 import com.example.myapplication.repository.HomeRepository
-import com.example.myapplication.widget.config.Event
+import com.example.myapplication.widget.utils.Event
 import com.example.myapplication.widget.utils.NetworkResult
 import kotlinx.coroutines.launch
 

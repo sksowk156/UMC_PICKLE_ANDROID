@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemCardRecyclerBinding
 import com.example.myapplication.data.remote.model.DressOverviewDto
-import com.example.myapplication.view.ItemCardClickInterface
+import com.example.myapplication.widget.utils.ItemCardClickInterface
 
 //class HomeRecommendAdapter(clickInterface: ItemCardClickInterface): RecyclerView.Adapter<HomeRecommendAdapter.MyViewHolder>(){
 //

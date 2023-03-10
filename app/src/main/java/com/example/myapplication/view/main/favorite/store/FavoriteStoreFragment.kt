@@ -5,15 +5,13 @@ import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFavoriteStoreBinding
 import com.example.myapplication.data.remote.model.StoreLikeDto
 import com.example.myapplication.data.remote.model.UpdateStoreLikeDto
-import com.example.myapplication.view.ItemListClickInterface
+import com.example.myapplication.widget.utils.ItemListClickInterface
 import com.example.myapplication.base.BaseFragment
 import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.main.profile.orderstatus.OrderListDivider
@@ -21,8 +19,6 @@ import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.HomeViewModel
 import com.example.myapplication.viewmodel.StoreViewModel
 import com.example.myapplication.widget.utils.NetworkResult
-import kotlinx.android.synthetic.main.fragment_favorite_store.*
-
 
 class FavoriteStoreFragment :
     BaseFragment<FragmentFavoriteStoreBinding>(R.layout.fragment_favorite_store),
@@ -80,9 +76,9 @@ class FavoriteStoreFragment :
                 }
             })
 
-            favorite_store_recyclerview.adapter = favoritestoredapter
-            favorite_store_recyclerview.layoutManager = LinearLayoutManager(context)
-            favorite_store_recyclerview.addItemDecoration(
+            binding.favoriteStoreRecyclerview.adapter = favoritestoredapter
+            binding.favoriteStoreRecyclerview.layoutManager = LinearLayoutManager(context)
+            binding.favoriteStoreRecyclerview.addItemDecoration(
                 OrderListDivider(
                     0f,
                     0f,

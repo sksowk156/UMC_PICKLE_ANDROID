@@ -1,12 +1,11 @@
 package com.example.myapplication.data.remote
 
-import com.example.myapplication.ApplicationClass
 import com.example.myapplication.data.remote.model.DressLikeDto
 import com.example.myapplication.data.remote.model.DressDetailDto
 import com.example.myapplication.data.remote.model.DressSearchDto
 import com.example.myapplication.data.remote.model.UpdateDressLikeDto
-import retrofit2.Call
 import com.example.myapplication.data.remote.model.*
+import com.example.myapplication.widget.utils.Utils.retrofit
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -74,5 +73,5 @@ object DressService {
         ): Response<ResultOfSetDto>
     }
 
-    val dressService = ApplicationClass.retrofit.create(DressService.DressInterface::class.java)
+    val dressService = retrofit.create(DressService.DressInterface::class.java)
 }

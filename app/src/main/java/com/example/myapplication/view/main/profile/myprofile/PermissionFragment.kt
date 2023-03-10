@@ -2,14 +2,18 @@ package com.example.myapplication.view.main.profile.myprofile
 
 import android.Manifest
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -17,7 +21,7 @@ import com.example.myapplication.R
 import com.example.myapplication.base.BaseBottomSheetFragment
 import com.example.myapplication.databinding.FragmentPermissionBinding
 import com.example.myapplication.viewmodel.UserViewModel
-import com.example.myapplication.widget.config.EventObserver
+import com.example.myapplication.widget.utils.EventObserver
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,7 +45,6 @@ class PermissionFragment() : BaseBottomSheetFragment<FragmentPermissionBinding>(
                     }else{
                         requestMultiplePermission.launch(arrayOf(Manifest.permission.CAMERA))
                     }
-                    dismiss()
                 }
                 7->{ // 앨범에서 선택
                     if (checkPermission(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))) { // 갤러리 실행
@@ -49,7 +52,6 @@ class PermissionFragment() : BaseBottomSheetFragment<FragmentPermissionBinding>(
                     } else { // 권한 요청
                         requestMultiplePermission.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))
                     }
-                    dismiss()
                 }
                 2->{ // 취소
                     dismiss()
@@ -94,12 +96,12 @@ class PermissionFragment() : BaseBottomSheetFragment<FragmentPermissionBinding>(
                     } else if (it.key == Manifest.permission.READ_EXTERNAL_STORAGE) {
                         READ_EXTERNAL_STORAGE_PERMISSION = true // 갤러리 읽기 허용
                     }
-                }
 
-                if (WRITE_EXTERNAL_STORAGE_PERMISSION && READ_EXTERNAL_STORAGE_PERMISSION) {
-                    gallery()  // 갤러리 권한 허용 후 바로 실행
-                }else if(CAMERA_PERMISSION){
-                    camera() // 카메라 권한 허용 후 바로 실행
+                    if (WRITE_EXTERNAL_STORAGE_PERMISSION && READ_EXTERNAL_STORAGE_PERMISSION) {
+                        gallery()  // 갤러리 권한 허용 후 바로 실행
+                    }else if(CAMERA_PERMISSION){
+                        camera() // 카메라 권한 허용 후 바로 실행
+                    }
                 }
             }
         }
@@ -146,7 +148,7 @@ class PermissionFragment() : BaseBottomSheetFragment<FragmentPermissionBinding>(
             ActivityResultContracts.StartActivityForResult()
         ) {
             //결과 코드 OK , 결가값 null 아니면
-            if (it.resultCode == Activity.RESULT_OK && it.data != null) {
+            if (it.resultCode ==RESULT_OK && it.data != null) {
                 //값 담기
                 val uri = it.data!!.data
                 userViewModel.set_profile_photo(uri!!)

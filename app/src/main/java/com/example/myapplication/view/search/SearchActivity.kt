@@ -1,26 +1,17 @@
 package com.example.myapplication.view.search
 
-import android.content.Context
-import android.graphics.Color
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
-import android.widget.TextView
-import androidx.annotation.ColorRes
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.ApplicationClass
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySearchBinding
 import com.example.myapplication.data.remote.model.search.SearchHistroyData
@@ -33,7 +24,8 @@ import com.example.myapplication.viewmodel.DressViewModelFactory
 import com.example.myapplication.viewmodel.HomeViewModel
 import com.example.myapplication.viewmodel.OptionViewModel
 import com.example.myapplication.viewmodel.factory.HomeViewModelFactory
-import org.w3c.dom.Text
+import com.example.myapplication.widget.utils.Utils.KEY_SEARCH_HISTORY
+import com.example.myapplication.widget.utils.Utils.sharedPreferencesmanager
 
 class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search) {
     // 뷰모델
@@ -133,8 +125,8 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                             // 검색 기록 추가하기(역순으로)
                             searchHistoryDataList.add(0, newSearchData)
                             // 쉐어드에 저장하기
-                            ApplicationClass.sharedPreferencesmanager.setsearchhistoryString(
-                                ApplicationClass.KEY_SEARCH_HISTORY,
+                            sharedPreferencesmanager.setsearchhistoryString(
+                                KEY_SEARCH_HISTORY,
                                 searchHistoryDataList
                             )
                             // recycler 데이터 갱신 요청
@@ -243,7 +235,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
     protected fun initSearchHistory() {
         // 쉐어드에서 데이터 가져오기
         searchHistoryDataList =
-            ApplicationClass.sharedPreferencesmanager.getsearchhistoryString(ApplicationClass.KEY_SEARCH_HISTORY) as ArrayList<SearchHistroyData>
+            sharedPreferencesmanager.getsearchhistoryString(KEY_SEARCH_HISTORY) as ArrayList<SearchHistroyData>
 
         // 기록을 보여줄 recycler의 어댑터, 어댑터 클릭 이벤트 처리
         searchhistoryAdapter =
@@ -274,8 +266,8 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                 override fun onImageItemClick(view: View, position: Int) {
                     searchHistoryDataList.removeAt(position)
                     // 쉐어드 데이터를 덮어씌우는 것
-                    ApplicationClass.sharedPreferencesmanager.setsearchhistoryString(
-                        ApplicationClass.KEY_SEARCH_HISTORY,
+                    sharedPreferencesmanager.setsearchhistoryString(
+                        KEY_SEARCH_HISTORY,
                         searchHistoryDataList
                     )
                     // 데이터 변경 알리기

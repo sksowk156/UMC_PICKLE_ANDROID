@@ -3,16 +3,14 @@ package com.example.myapplication.view.main.home.newclothe
 import android.content.Intent
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentNewBinding
 import com.example.myapplication.data.remote.model.DressOverviewDto
 import com.example.myapplication.data.remote.model.UpdateDressLikeDto
 import com.example.myapplication.base.BaseFragment
-import com.example.myapplication.view.ItemCardClickInterface
+import com.example.myapplication.widget.utils.ItemCardClickInterface
 import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.main.home.recent.HomeRecommendAdapter
 import com.example.myapplication.view.storecloth.clothdetail.ClothActivity

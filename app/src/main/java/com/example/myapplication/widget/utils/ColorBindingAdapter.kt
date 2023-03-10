@@ -1,7 +1,5 @@
 package com.example.myapplication.widget.utils
 
-import android.graphics.Color
-import android.util.Log
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
@@ -17,4 +15,5 @@ object ColorBindingAdapter {
             view.setTextColor(ContextCompat.getColor(view.context, R.color.unselected_searchoption_text))
         }
     }
+
 }

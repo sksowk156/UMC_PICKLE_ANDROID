@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.ApplicationClass
 import com.example.myapplication.R
@@ -17,9 +19,12 @@ import com.example.myapplication.viewmodel.LoginViewModel
 import com.example.myapplication.viewmodel.LoginViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kakao.sdk.user.UserApiClient
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class WithdrawalFragment : BottomSheetDialogFragment() {
-    lateinit var loginViewModel: LoginViewModel
+    val loginViewModel: LoginViewModel by viewModels<LoginViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,9 +44,6 @@ class WithdrawalFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         var withdrawalyes = view.findViewById<Button>(R.id.withdrawal_button_yes)
         var withdrawalno = view.findViewById<Button>(R.id.withdrawal_button_no)
-        val loginRepository = LoginRepository()
-        val loginViewModelFactory = LoginViewModelFactory(loginRepository)
-        loginViewModel = ViewModelProvider(this, loginViewModelFactory).get(LoginViewModel::class.java)
 
         withdrawalyes.setOnClickListener {
             UserApiClient.instance.unlink  { error ->
