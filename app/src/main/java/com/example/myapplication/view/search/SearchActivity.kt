@@ -18,6 +18,7 @@ import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.OptionViewModel
 import com.example.myapplication.widget.utils.EventObserver
 import com.example.myapplication.widget.utils.SharedPreferencesManager
+import com.example.myapplication.widget.utils.Utils.KEY_SEARCH_HISTORY
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -84,6 +85,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchNclear()
+
             }
             handled
         }
@@ -111,6 +113,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.searchEditQeury.windowToken, 0)
         binding.searchEditQeury.clearFocus()
+        optionViewModel.onSearchBTEvent()
     }
 
     // 오른쪽 아이콘 변경해주는 메소드(검색 or x)

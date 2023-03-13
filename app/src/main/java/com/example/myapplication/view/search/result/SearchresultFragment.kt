@@ -29,10 +29,8 @@ import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.OptionViewModel
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.SearchViewModel
-import com.example.myapplication.widget.utils.ItemCardClickInterface
-import com.example.myapplication.widget.utils.NetworkResult
-import com.example.myapplication.widget.utils.SharedPreferencesManager
-import com.example.myapplication.widget.utils.Utils
+import com.example.myapplication.widget.utils.*
+import com.example.myapplication.widget.utils.Utils.KEY_SEARCH_HISTORY
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -82,6 +80,15 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
                 resultlayout.visibility = View.INVISIBLE // 검색 결과 안보이게 하기
 
                 recordlayout.visibility = View.VISIBLE // 검색 기록 보여주기
+            }
+        })
+
+        optionViewModel.search_bt_event.observe(this, EventObserver{
+            if(!optionViewModel.searchword_data.value.isNullOrEmpty()){
+                Log.d("whatisthis","??!")
+                searchHistoryDataList.add(0, SearchHistroyData(optionViewModel.searchword_data.value.toString()))
+                sharedPreferencesmanager.setsearchhistoryString(KEY_SEARCH_HISTORY,searchHistoryDataList)
+                initRecyclerViewRecord() // 검색 기록 갱신한다.
             }
         })
 
@@ -161,7 +168,7 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
     private fun initRecyclerViewRecord() {
         // 쉐어드에서 데이터 가져오기
         searchHistoryDataList =
-            sharedPreferencesmanager.getsearchhistoryString(Utils.KEY_SEARCH_HISTORY) as ArrayList<SearchHistroyData>
+            sharedPreferencesmanager.getsearchhistoryString(KEY_SEARCH_HISTORY) as ArrayList<SearchHistroyData>
 
         // 기록을 보여줄 recycler의 어댑터, 어댑터 클릭 이벤트 처리
         searchhistoryAdapter =
@@ -178,6 +185,7 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
                         optionViewModel.searchword_data.value!!,
                         optionViewModel.sort_data.value.toString()
                     )
+                    optionViewModel.onSearchBTEvent()
                     // 검색 기록 보여주는 창 가리고
                     resultlayout.visibility = View.VISIBLE
                     recordlayout.visibility = View.INVISIBLE
@@ -189,7 +197,7 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
                     searchHistoryDataList.removeAt(position)
                     // 쉐어드 데이터를 덮어씌우는 것
                     sharedPreferencesmanager.setsearchhistoryString(
-                        Utils.KEY_SEARCH_HISTORY,
+                        KEY_SEARCH_HISTORY,
                         searchHistoryDataList
                     )
                     // 데이터 변경 알리기

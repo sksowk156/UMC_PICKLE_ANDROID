@@ -9,6 +9,10 @@ import com.example.myapplication.widget.utils.Event
 
 class OptionViewModel : ViewModel() {
 
+    private val _search_bt_event = MutableLiveData<Event<Boolean>>()
+    val search_bt_event : LiveData<Event<Boolean>>
+        get() = _search_bt_event
+
     private val _history_bt_event = MutableLiveData<Event<Boolean>>()
     val history_bt_event : LiveData<Event<Boolean>>
         get() = _history_bt_event
@@ -24,6 +28,10 @@ class OptionViewModel : ViewModel() {
     private val _clothkind_bt_event = MutableLiveData<Event<View>>()
     val clothkind_bt_event : LiveData<Event<View>>
         get() = _clothkind_bt_event
+
+    fun onSearchBTEvent() {
+        _search_bt_event.value = Event(true)  // Trigger the event by setting a new Event as a new value
+    }
 
     fun onHistoryBTEvent() {
         _history_bt_event.value = Event(true)  // Trigger the event by setting a new Event as a new value
