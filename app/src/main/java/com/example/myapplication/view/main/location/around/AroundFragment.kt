@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
@@ -18,17 +19,15 @@ import com.example.myapplication.viewmodel.StoreViewModel
 import com.example.myapplication.widget.utils.EventObserver
 import com.example.myapplication.widget.utils.ItemListClickInterface
 import com.example.myapplication.widget.utils.NetworkResult
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class AroundFragment : BaseFragment<FragmentAroundBinding>(R.layout.fragment_around) {
-    lateinit var storeViewModel: StoreViewModel
-    lateinit var homeViewModel: HomeViewModel
+    val homeViewModel: HomeViewModel by activityViewModels<HomeViewModel>()
+    val storeViewModel: StoreViewModel by activityViewModels<StoreViewModel>()
 
     override fun init() {
         // 플로팅 버튼 이벤트 처리
-        storeViewModel = (activity as SecondActivity).storeViewModel
-        homeViewModel = (activity as SecondActivity).homeViewModel
-
         binding.storevm = storeViewModel
 //        binding.lifecycleOwner = this@AroundFragment
 

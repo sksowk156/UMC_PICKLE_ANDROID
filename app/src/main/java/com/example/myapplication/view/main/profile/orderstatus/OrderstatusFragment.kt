@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,16 +16,16 @@ import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.main.profile.orderstatus.detail.OrderstatusDetailFragment
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.widget.utils.NetworkResult
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OrderstatusFragment :
     BaseFragment<FragmentOrderstatusBinding>(R.layout.fragment_orderstatus) {
-    lateinit var dressViewModel: DressViewModel
+    val dressViewModel: DressViewModel by activityViewModels<DressViewModel>()
 
     override fun init() {
-        dressViewModel = (activity as SecondActivity).dressViewModel
         initAppbarName()
         hideBottomNavigation(true)
-
         initRecyclerView()
     }
 
@@ -91,6 +92,7 @@ class OrderstatusFragment :
                     Color.TRANSPARENT
                 )
             )
+
             dressViewModel.dress_order_data.observe(viewLifecycleOwner, Observer {
                 when (it) {
                     is NetworkResult.Loading -> {

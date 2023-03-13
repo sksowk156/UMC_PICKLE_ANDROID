@@ -3,6 +3,8 @@ package com.example.myapplication.view.main.favorite.item
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
@@ -10,33 +12,36 @@ import com.example.myapplication.databinding.FragmentFavoriteItemBinding
 import com.example.myapplication.data.remote.model.UpdateDressLikeDto
 import com.example.myapplication.base.BaseFragment
 import com.example.myapplication.widget.utils.ItemCardClickInterface
-import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
 import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.HomeViewModel
 import com.example.myapplication.widget.utils.NetworkResult
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class FavoriteClothFragment :
     BaseFragment<FragmentFavoriteItemBinding>(R.layout.fragment_favorite_item),
     ItemCardClickInterface {
 
-    lateinit var homeViewModel:HomeViewModel
-    lateinit var dressViewModel: DressViewModel
+    val homeViewModel: HomeViewModel by activityViewModels<HomeViewModel>()
+    val dressViewModel: DressViewModel by activityViewModels<DressViewModel>()
+
     lateinit var fragmentadapter: FavoriteItemAdapter
 
     override fun init() {
-        homeViewModel = (activity as SecondActivity).homeViewModel
-        dressViewModel = (activity as SecondActivity).dressViewModel
         initRecyclerView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        dressViewModel.get_dress_like_data()
     }
 
     private fun initRecyclerView() {
         fragmentadapter = FavoriteItemAdapter(this)
 
         dressViewModel.dress_like_data.observe(viewLifecycleOwner, Observer {
-
             when (it) {
                 is NetworkResult.Loading -> {
                 }
@@ -72,11 +77,7 @@ class FavoriteClothFragment :
 
     override fun onItemClothFavoriteClick(like:Boolean, id: Int, view : View, position: Int) {
         dressViewModel.set_dress_like_data(UpdateDressLikeDto(id))
-        homeViewModel.get_home_data(
-            homeViewModel.home_latlng.value!!.first,
-            homeViewModel.home_latlng.value!!.second)
         dressViewModel.get_dress_like_data()
-
     }
 
 }

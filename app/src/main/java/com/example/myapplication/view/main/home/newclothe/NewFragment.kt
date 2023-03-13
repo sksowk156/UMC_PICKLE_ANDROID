@@ -3,6 +3,7 @@ package com.example.myapplication.view.main.home.newclothe
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
@@ -18,20 +19,20 @@ import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.HomeViewModel
 import com.example.myapplication.widget.utils.NetworkResult
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new),
     ItemCardClickInterface {
-    private lateinit var homeViewModel: HomeViewModel
-    private lateinit var dressViewModel: DressViewModel
+    val homeViewModel: HomeViewModel by activityViewModels<HomeViewModel>()
+    val dressViewModel: DressViewModel by activityViewModels<DressViewModel>()
+
     private lateinit var fragmentadapter: HomeRecommendAdapter
 
     private var newData = ArrayList<DressOverviewDto>()
+    private var buttonClick = false
 
     override fun init() {
-        homeViewModel = (activity as SecondActivity).homeViewModel
-        dressViewModel = (activity as SecondActivity).dressViewModel
-
         initAppbar(binding.newToolbar, "NEW", true, false)
         initRecyclerView()
 
@@ -49,6 +50,20 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new),
 
     private fun initRecyclerView() {
         fragmentadapter = HomeRecommendAdapter(this@NewFragment)
+
+        dressViewModel.dress_like_data.observe(this@NewFragment, Observer {
+            when(it){
+                is NetworkResult.Loading ->{
+
+                }
+                is NetworkResult.Error -> {
+
+                }
+                is NetworkResult.Success ->{
+                    homeViewModel.get_home_new_data(homeViewModel.home_latlng.value!!.first, homeViewModel.home_latlng.value!!.second)
+                }
+            }
+        })
 
         homeViewModel.home_new_data.observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -74,12 +89,14 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new),
     }
 
     override fun onItemClothImageClick(id: Int, position: Int) {
+        buttonClick = true
         val intent = Intent(getActivity(), ClothActivity::class.java)
         intent.putExtra("cloth_id", id)
         startActivity(intent)
     }
 
     override fun onItemStoreNameClick(id: Int, position: Int) {
+        buttonClick = true
         val intent = Intent(getActivity(), StoreActivity::class.java)
         intent.putExtra("store_id", id)
         startActivity(intent)
@@ -94,6 +111,14 @@ class NewFragment : BaseFragment<FragmentNewBinding>(R.layout.fragment_new),
                 homeViewModel.home_latlng.value!!.first,
                 homeViewModel.home_latlng.value!!.second
             )
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(buttonClick){
+            homeViewModel.get_home_new_data(homeViewModel.home_latlng.value!!.first, homeViewModel.home_latlng.value!!.second)
+            buttonClick = false
         }
     }
 }

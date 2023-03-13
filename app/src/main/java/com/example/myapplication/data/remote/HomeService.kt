@@ -2,37 +2,30 @@ package com.example.myapplication.data.remote
 
 import com.example.myapplication.data.remote.model.DressHomeDto
 import com.example.myapplication.data.remote.model.DressOverviewDto
-import com.example.myapplication.widget.utils.Utils.retrofit
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-object HomeService {
+interface HomeService {
+    @GET("home")
+    suspend fun get_home_data(
+        @Query("lat") lat: Double,
+        @Query("lng") lng: Double
+    ): Response<DressHomeDto>
 
-    interface HomeInterface {
-        @GET("home")
-        suspend fun get_home_data(
-            @Query("lat") lat: Double,
-            @Query("lng") lng: Double
-        ): Response<DressHomeDto>
+    @GET("home/new")
+    suspend fun get_home_new_data(
+        @Query("lat") lat: Double,
+        @Query("lng") lng: Double
+    ): Response<List<DressOverviewDto>>
 
-        @GET("home/new")
-        suspend fun get_home_new_data(
-            @Query("lat") lat: Double,
-            @Query("lng") lng: Double
-        ): Response<List<DressOverviewDto>>
+    @GET("home/recent")
+    suspend fun get_home_recent_data(
+    ): Response<List<DressOverviewDto>>
 
-        @GET("home/recent")
-        suspend fun get_home_recent_data(
-        ): Response<List<DressOverviewDto>>
-
-        @GET("home/recommendation")
-        suspend fun get_home_recommendation_data(
-            @Query("lat") lat: Double,
-            @Query("lng") lng: Double
-        ): Response<List<DressOverviewDto>>
-    }
-
-    val homeService = retrofit.create(HomeService.HomeInterface::class.java)
-
+    @GET("home/recommendation")
+    suspend fun get_home_recommendation_data(
+        @Query("lat") lat: Double,
+        @Query("lng") lng: Double
+    ): Response<List<DressOverviewDto>>
 }

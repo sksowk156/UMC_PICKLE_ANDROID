@@ -1,5 +1,6 @@
 package com.example.myapplication.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,9 +10,12 @@ import com.example.myapplication.data.remote.model.DressOverviewDto
 import com.example.myapplication.repository.HomeRepository
 import com.example.myapplication.widget.utils.Event
 import com.example.myapplication.widget.utils.NetworkResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
+@HiltViewModel
+class HomeViewModel@Inject constructor(private val homeRepository: HomeRepository) : ViewModel() {
 
     private val _recent_bt_event = MutableLiveData<Event<Boolean>>()
     val recent_bt_event : LiveData<Event<Boolean>>
@@ -48,8 +52,8 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         _home_latlng.value = Pair(37.5581, 126.9260)
     }
 
-    fun set_home_latlng(lat: Double, lng: Double) {
-        _home_latlng.value = Pair(lat, lng)
+    fun set_home_latlng(lat_lng:Pair<Double, Double>) {
+        _home_latlng.value = lat_lng
     }
 
 

@@ -3,6 +3,7 @@ package com.example.myapplication.view.main.home.recent
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
@@ -17,25 +18,41 @@ import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.HomeViewModel
 import com.example.myapplication.widget.utils.ItemCardClickInterface
 import com.example.myapplication.widget.utils.NetworkResult
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_recent),
     ItemCardClickInterface {
-    private lateinit var homeViewModel: HomeViewModel
-    private lateinit var dressViewModel: DressViewModel
+
+    val homeViewModel: HomeViewModel by activityViewModels<HomeViewModel>()
+    val dressViewModel: DressViewModel by activityViewModels<DressViewModel>()
+
     lateinit var fragmentadapter: HomeRecommendAdapter
 
     private var recentData = ArrayList<DressOverviewDto>()
+    private var buttonClick = false
 
     override fun init() {
-        dressViewModel = (activity as SecondActivity).dressViewModel
-        homeViewModel = (activity as SecondActivity).homeViewModel
-
         initAppbar(binding.recentToolbar, "최근 본 상품", true, false)
         initRecyclerView()
     }
 
     private fun initRecyclerView() {
         fragmentadapter = HomeRecommendAdapter(this@RecentFragment)
+
+        dressViewModel.dress_like_data.observe(this@RecentFragment, Observer {
+            when(it){
+                is NetworkResult.Loading ->{
+
+                }
+                is NetworkResult.Error -> {
+
+                }
+                is NetworkResult.Success ->{
+                    homeViewModel.get_home_recent_data()
+                }
+            }
+        })
 
         homeViewModel.home_recent_data.observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -60,17 +77,28 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>(R.layout.fragment_rec
     }
 
     override fun onItemClothImageClick(id: Int, position: Int) {
+        buttonClick = true
+
         val intent = Intent(getActivity(), ClothActivity::class.java)
         intent.putExtra("cloth_id", id)
         startActivity(intent)
     }
 
     override fun onItemStoreNameClick(id: Int, position: Int) {
+        buttonClick = true
+
         val intent = Intent(getActivity(), StoreActivity::class.java)
         intent.putExtra("store_id", id)
         startActivity(intent)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(buttonClick){
+            homeViewModel.get_home_recent_data()
+            buttonClick = false
+        }
+    }
 
     override fun onItemClothFavoriteClick(like: Boolean, id: Int, view: View, position: Int) {
         if (id != 0) {

@@ -6,6 +6,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
@@ -25,11 +26,13 @@ import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
 
+@AndroidEntryPoint
 class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnMapReadyCallback {
-    lateinit var storeViewModel: StoreViewModel
+    val storeViewModel: StoreViewModel by activityViewModels<StoreViewModel>()
 
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
@@ -46,7 +49,6 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
     private var clickedMarker: Marker? = null // 클릭된 마커 변수
 
     override fun init() {
-        storeViewModel = (activity as SecondActivity).storeViewModel
         // 지도 띄우기
         openMap()
 

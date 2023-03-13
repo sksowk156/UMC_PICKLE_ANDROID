@@ -16,24 +16,26 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.base.BaseBottomSheetFragment
 import com.example.myapplication.databinding.FragmentPermissionBinding
 import com.example.myapplication.viewmodel.UserViewModel
 import com.example.myapplication.widget.utils.EventObserver
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 
+@AndroidEntryPoint
 class PermissionFragment() : BaseBottomSheetFragment<FragmentPermissionBinding>(R.layout.fragment_permission) {
 
-    private lateinit var userViewModel: UserViewModel
+    val userViewModel: UserViewModel by activityViewModels<UserViewModel>()
     private var CAMERA_PERMISSION: Boolean = false
     private var WRITE_EXTERNAL_STORAGE_PERMISSION: Boolean = false
     private var READ_EXTERNAL_STORAGE_PERMISSION: Boolean = false
 
     override fun init() {
-        userViewModel = ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
         binding.uservm = userViewModel
 
         userViewModel.update_bt_event.observe(this@PermissionFragment, EventObserver {

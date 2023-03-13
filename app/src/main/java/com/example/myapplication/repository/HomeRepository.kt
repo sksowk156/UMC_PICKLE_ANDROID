@@ -9,13 +9,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.io.IOException
+import javax.inject.Inject
 
-class HomeRepository {
+class HomeRepository @Inject constructor(private val homeService: HomeService){
 
     suspend fun get_home_data(lat: Double, lng: Double): Flow<NetworkResult<DressHomeDto>> = flow {
         emit(NetworkResult.Loading())
         try {
-            val response = HomeService.homeService.get_home_data(lat, lng)
+            val response = homeService.get_home_data(lat, lng)
             if (response.isSuccessful) {
                 response.body()?.let {
                     emit(NetworkResult.Success(it))
@@ -35,7 +36,7 @@ class HomeRepository {
     suspend fun get_home_new_data(lat: Double, lng: Double) : Flow<NetworkResult<List<DressOverviewDto>>> = flow{
         emit(NetworkResult.Loading())
         try {
-            val response = HomeService.homeService.get_home_new_data(lat, lng)
+            val response = homeService.get_home_new_data(lat, lng)
             if (response.isSuccessful) {
                 response.body()?.let {
                     emit(NetworkResult.Success(it))
@@ -55,7 +56,7 @@ class HomeRepository {
     suspend fun get_home_recent_data(): Flow<NetworkResult<List<DressOverviewDto>>> = flow{
         emit(NetworkResult.Loading())
         try {
-            val response = HomeService.homeService.get_home_recent_data()
+            val response = homeService.get_home_recent_data()
             if (response.isSuccessful) {
                 response.body()?.let {
                     emit(NetworkResult.Success(it))

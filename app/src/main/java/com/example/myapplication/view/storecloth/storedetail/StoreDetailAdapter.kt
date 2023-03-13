@@ -74,7 +74,7 @@ class StoreDetailAdapter(clicklistener: ItemCardClickInterface) :
 
 object StoreDetailDiffUtil : DiffUtil.ItemCallback<DressBriefInStoreDTO>() {
     override fun areItemsTheSame(oldItem: DressBriefInStoreDTO, newItem: DressBriefInStoreDTO): Boolean {
-        return (oldItem === newItem )
+        return (oldItem.dress_id == newItem.dress_id )
     }
 
     override fun areContentsTheSame(oldItem: DressBriefInStoreDTO, newItem: DressBriefInStoreDTO): Boolean {

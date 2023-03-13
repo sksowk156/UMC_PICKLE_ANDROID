@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
@@ -15,10 +16,12 @@ import com.example.myapplication.viewmodel.UserViewModel
 import com.example.myapplication.widget.utils.EventObserver
 import com.example.myapplication.widget.utils.NetworkResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyprofileFragment : BaseFragment<FragmentMyprofileBinding>(R.layout.fragment_myprofile) {
 
-    private lateinit var userViewModel: UserViewModel
+    val userViewModel: UserViewModel by activityViewModels<UserViewModel>()
 
     private var defaultImage = R.drawable.icon_myprofile_profileimage
     private var user_name: String? = null
@@ -26,7 +29,6 @@ class MyprofileFragment : BaseFragment<FragmentMyprofileBinding>(R.layout.fragme
     private var user_image: String? = null
 
     override fun init() {
-        userViewModel = (activity as SecondActivity).userViewModel
         binding.uservm = userViewModel
 
         // 이미지를 넣을 경우
@@ -112,7 +114,6 @@ class MyprofileFragment : BaseFragment<FragmentMyprofileBinding>(R.layout.fragme
                     userViewModel.user_name_data.value = user_name
                     userViewModel.user_email_data.value = user_email
                     userViewModel.user_image_data.value = user_image
-                    Log.d("whatisthis",user_image.toString())
                     Glide.with(this@MyprofileFragment)
                         .load(user_image)
                         .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지

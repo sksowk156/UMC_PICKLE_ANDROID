@@ -9,19 +9,23 @@ import com.example.myapplication.data.remote.remotedata.AuthResponse
 import com.example.myapplication.repository.LoginRepository
 import com.example.myapplication.widget.utils.Event
 import com.example.myapplication.widget.utils.NetworkResult
-import com.example.myapplication.widget.utils.Utils.sharedPreferencesmanager
+import com.example.myapplication.widget.utils.SharedPreferencesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val loginRepository: LoginRepository) : ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val loginRepository: LoginRepository,
+    private val sharedPreferencesmanager: SharedPreferencesManager
+) : ViewModel() {
     private val _kakao_bt_event = MutableLiveData<Event<Boolean>>()
-    val kakao_bt_event : LiveData<Event<Boolean>>
+    val kakao_bt_event: LiveData<Event<Boolean>>
         get() = _kakao_bt_event
 
     fun onKakaoBTEvent() {
-        _kakao_bt_event.value = Event(true)  // Trigger the event by setting a new Event as a new value
+        _kakao_bt_event.value =
+            Event(true)  // Trigger the event by setting a new Event as a new value
     }
 
     private var _jwt_data = MutableLiveData<NetworkResult<AuthResponse>>()
@@ -35,8 +39,8 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
         }
     }
 
-    fun setJwt(key:String, value: String) {
-        sharedPreferencesmanager.setJwt(key,value)
+    fun setJwt(key: String, value: String) {
+        sharedPreferencesmanager.setJwt(key, value)
     }
 
     fun deleteJwt() = sharedPreferencesmanager.deleteJwt()

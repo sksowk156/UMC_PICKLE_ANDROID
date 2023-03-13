@@ -135,19 +135,6 @@ class HomeRecommendAdapter(clicklistener: ItemCardClickInterface) :
             }
 
             binding.cardImageviewFavorite.setOnClickListener {
-                if ( recommend_clothes?.dress_like!! == true) {
-                    //화면에 보여주기
-                    Glide.with(this@MyViewHolder.itemView)
-                        .load(R.drawable.icon_favorite_whiteline) //이미지
-                        .into(binding.cardImageviewFavorite) //보여줄 위치
-                    recommend_clothes?.dress_like = false
-                } else {
-                    //화면에 보여주기
-                    Glide.with(this@MyViewHolder.itemView)
-                        .load(R.drawable.icon_favorite_filledpink) //이미지
-                        .into(binding.cardImageviewFavorite) //보여줄 위치
-                    recommend_clothes?.dress_like = true
-                }
                 clicklistener.onItemClothFavoriteClick(recommend_clothes.dress_like!!, recommend_clothes.dress_id, binding.cardImageviewFavorite, absoluteAdapterPosition)
             }
         }
@@ -166,10 +153,10 @@ class HomeRecommendAdapter(clicklistener: ItemCardClickInterface) :
 
 object HomeRecommendDiffUtil : DiffUtil.ItemCallback<DressOverviewDto>() {
     override fun areItemsTheSame(oldItem: DressOverviewDto, newItem: DressOverviewDto): Boolean {
-        return (oldItem=== newItem)
+        return oldItem.dress_id == newItem.dress_id && oldItem.store_id == newItem.store_id
     }
 
     override fun areContentsTheSame(oldItem: DressOverviewDto, newItem: DressOverviewDto): Boolean {
-        return  (oldItem.equals(newItem))
+        return  (oldItem == newItem)
     }
 }

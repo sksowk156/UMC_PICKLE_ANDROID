@@ -6,8 +6,8 @@ import android.graphics.Color
 import android.util.Log
 import android.widget.DatePicker
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
@@ -24,15 +24,15 @@ import com.example.myapplication.data.remote.model.DressReservationDto
 import com.example.myapplication.data.remote.model.StockQuantityDto
 import com.example.myapplication.data.remote.model.StoreDetailDto
 import com.example.myapplication.data.remote.model.order.ClothOrderData
-import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
-import com.example.myapplication.widget.utils.ColorBindingAdapter
 import com.example.myapplication.widget.utils.EventObserver
 import com.example.myapplication.widget.utils.NetworkResult
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PickupDetailFragment :
     BaseFragment<FragmentPickupDetailBinding>(R.layout.fragment_pickup_detail) {
-    private lateinit var storeViewModel: StoreViewModel
-    private lateinit var dressViewModel: DressViewModel
+    val storeViewModel: StoreViewModel by activityViewModels<StoreViewModel>()
+    val dressViewModel: DressViewModel by activityViewModels<DressViewModel>()
     private lateinit var orderViewModel: OrderViewModel
 
     // 매장 정보
@@ -62,8 +62,6 @@ class PickupDetailFragment :
     override fun init() {
         initAppbar(binding.pickupdetailToolbar, "픽업 주문하기", true, false)
 
-        storeViewModel = (activity as ClothActivity).storeViewModel
-        dressViewModel = (activity as ClothActivity).dressViewModel
         orderViewModel = ViewModelProvider(requireParentFragment()).get(OrderViewModel::class.java)
         binding.ordervm = orderViewModel
 
