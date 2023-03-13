@@ -59,19 +59,22 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         binding.searchEditQeury.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) { // 커서가 있을 때
                 changeSearchButton(false)
-                if (optionViewModel.searchword_data.value.isNullOrEmpty()) { // editText에 글자가 없다면 -> 기록 보여주기
-
-                }
 
             } else { // 커서가 없을 때
                 if (!optionViewModel.searchword_data.value.isNullOrEmpty()) { // editText에 글자가 있다면
                     changeSearchButton(true)
+                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(binding.searchEditQeury.windowToken, 0)
 
-                } else { // editText에 글자가 입력되어 없다면
+                } else { // editText에 글자가 없다면
                     changeSearchButton(false)
                 }
             }
         }
+
+        optionViewModel.history_bt_event.observe(this, EventObserver{
+            binding.searchEditQeury.clearFocus()
+        })
 
         // 검색 기록 클릭 시
         optionViewModel.history_bt_event.observe(this, EventObserver {
