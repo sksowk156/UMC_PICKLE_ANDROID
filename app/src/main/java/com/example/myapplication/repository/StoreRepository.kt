@@ -11,12 +11,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.io.IOException
+import javax.inject.Inject
 
-class StoreRepository {
+class StoreRepository @Inject constructor(private val storeService: StoreService) {
     suspend fun get_store_like_data(): Flow<NetworkResult<List<StoreLikeDto>>> = flow {
         emit(NetworkResult.Loading())
         try {
-            val response = StoreService.storeService.get_store_like_data()
+            val response = storeService.get_store_like_data()
             if (response.isSuccessful) {
                 response.body()?.let {
                     emit(NetworkResult.Success(it))
@@ -37,7 +38,7 @@ class StoreRepository {
     fun get_store_near_data(lat: Double, lng: Double) : Flow<NetworkResult<StoreCoordDtoList>> = flow{
         emit(NetworkResult.Loading())
         try {
-            val response = StoreService.storeService.get_store_near_data(lat, lng)
+            val response = storeService.get_store_near_data(lat, lng)
             if (response.isSuccessful) {
                 response.body()?.let {
                     emit(NetworkResult.Success(it))
@@ -57,7 +58,7 @@ class StoreRepository {
     fun get_store_detail_data(id: Int, category: String) : Flow<NetworkResult<StoreDetailDto>> = flow{
         emit(NetworkResult.Loading())
         try {
-            val response =  StoreService.storeService.get_store_detail_data(id, category)
+            val response =  storeService.get_store_detail_data(id, category)
             if (response.isSuccessful) {
                 response.body()?.let {
                     emit(NetworkResult.Success(it))
@@ -77,7 +78,7 @@ class StoreRepository {
     fun set_store_like_data(updateStoreLikeDto: UpdateStoreLikeDto) : Flow<NetworkResult<UpdateStoreLikeDto>> = flow{
         emit(NetworkResult.Loading())
         try {
-            val response =  StoreService.storeService.set_store_like_data(updateStoreLikeDto)
+            val response =  storeService.set_store_like_data(updateStoreLikeDto)
             if (response.isSuccessful) {
                 response.body()?.let {
                     emit(NetworkResult.Success(it))

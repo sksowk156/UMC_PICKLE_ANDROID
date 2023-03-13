@@ -3,6 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="optionvm"
+            type="com.example.myapplication.viewmodel.OptionViewModel" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,26 +23,100 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_toolbar" />
+            app:layout_constraintTop_toBottomOf="@id/searh_layout_toolbar" />
 
-        <include
-            android:id="@+id/search_toolbar"
-            layout="@layout/toolbar"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/searh_layout_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <include
-            android:id="@+id/search_content"
-            layout="@layout/toolbar_content"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_toolbar" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/search_imageview_back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_baseline_arrow_back_ios_new_24" />
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/query_background">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:inputType="text"
+                    android:id="@+id/search_edit_qeury"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="22dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:maxLines="1"
+                    android:hint="검색어를 입력하세요."
+                    android:imeOptions="actionDone"
+                    android:text="@={optionvm._searchword_data}" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/search_imageview_searchordelete"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginEnd="17dp"
+                    android:src="@drawable/icon_search" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <!--        <androidx.appcompat.widget.Toolbar-->
+        <!--            android:id="@+id/search_toolbar"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="56dp"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:contentInsetStartWithNavigation="0dp">-->
+
+        <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent">-->
+
+
+        <!--                <androidx.appcompat.widget.SearchView-->
+        <!--                    android:id="@+id/search_searchview"-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginEnd="16dp"-->
+        <!--                    app:iconifiedByDefault="false"-->
+        <!--                    app:closeIcon="@drawable/icon_searchdelete"-->
+        <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                    app:layout_constraintStart_toStartOf="parent"-->
+        <!--                    app:layout_constraintTop_toTopOf="parent"-->
+        <!--                    app:queryBackground="@drawable/query_background"-->
+        <!--                    app:queryHint="검색어를 입력하세요."-->
+        <!--                    app:searchIcon="@drawable/icon_search" />-->
+
+        <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+        <!--        </androidx.appcompat.widget.Toolbar>-->
+
+        <!--        <include-->
+        <!--            android:id="@+id/search_toolbar"-->
+        <!--            layout="@layout/toolbar"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

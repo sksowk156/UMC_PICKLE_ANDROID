@@ -12,14 +12,17 @@ import com.example.myapplication.data.remote.model.UserProfileEditDto
 import com.example.myapplication.repository.UserRepository
 import com.example.myapplication.widget.utils.Event
 import com.example.myapplication.widget.utils.NetworkResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
+@HiltViewModel
+class UserViewModel @Inject constructor(private val userRepository: UserRepository) : ViewModel() {
     private val _update_bt_event = MutableLiveData<Event<View>>()
     val update_bt_event: LiveData<Event<View>>
         get() = _update_bt_event
 
-    fun onUpdateBTEvent(view:View) {
+    fun onUpdateBTEvent(view: View) {
         _update_bt_event.value =
             Event(view)  // Trigger the event by setting a new Event as a new value
     }
@@ -63,7 +66,7 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
     var user_data_change = MutableLiveData<Boolean>()
     var user_data_change_button = MutableLiveData<Boolean>()
 
-    init{
+    init {
         user_data_change.value = false
         user_data_change_button.value = false
     }

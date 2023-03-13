@@ -6,12 +6,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.data.remote.remotedata.AuthRequest
 import com.example.myapplication.base.BaseActivity
-import com.example.myapplication.repository.LoginRepository
 import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.viewmodel.*
 import com.example.myapplication.widget.utils.EventObserver

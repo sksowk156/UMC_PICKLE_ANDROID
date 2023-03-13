@@ -9,6 +9,7 @@ import com.example.myapplication.base.BaseFragment
 import com.example.myapplication.view.main.profile.notice.detail.NoticeDetailFragment
 import com.example.myapplication.view.main.profile.orderstatus.OrderListDivider
 
+
 class NoticeFragment : BaseFragment<FragmentNoticeBinding>(R.layout.fragment_notice) {
     override fun init() {
         hideBottomNavigation(true)

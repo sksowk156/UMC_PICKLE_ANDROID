@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,13 +24,15 @@ import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.OrderViewModel
 import com.example.myapplication.viewmodel.StoreViewModel
 import com.example.myapplication.widget.utils.EventObserver
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OrderBottomSheetFragment() :
     BaseBottomSheetFragment<FragmentOrderBinding>(R.layout.fragment_order),
     OrderBottomSheetAdapter.OrderClickListener {
-    private lateinit var storeViewModel: StoreViewModel
+    val storeViewModel: StoreViewModel by activityViewModels<StoreViewModel>()
+    val dressViewModel: DressViewModel by activityViewModels<DressViewModel>()
     private lateinit var orderViewModel: OrderViewModel
-    private lateinit var dressViewModel: DressViewModel
 
     // 색상, 개수 선택 유무
     private var checkedTwoButton = arrayListOf(false, false)
@@ -57,8 +60,6 @@ class OrderBottomSheetFragment() :
     private var selectedPrice: Int = 0
 
     override fun init() {
-        storeViewModel = (activity as ClothActivity).storeViewModel
-        dressViewModel = (activity as ClothActivity).dressViewModel
         orderViewModel = ViewModelProvider(requireParentFragment()).get(OrderViewModel::class.java)
         binding.ordervm = orderViewModel
 

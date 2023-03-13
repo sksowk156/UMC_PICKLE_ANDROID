@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
@@ -20,43 +21,35 @@ import com.example.myapplication.data.remote.model.UpdateDressLikeDto
 import com.example.myapplication.data.remote.model.UpdateStoreLikeDto
 import com.example.myapplication.base.BaseActivity
 import com.example.myapplication.repository.DressRepository
-import com.example.myapplication.repository.HomeRepository
 import com.example.myapplication.repository.StoreRepository
 import com.example.myapplication.view.search.SearchActivity
 import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
 import com.example.myapplication.viewmodel.*
-import com.example.myapplication.viewmodel.factory.HomeViewModelFactory
 import com.example.myapplication.viewmodel.factory.StoreViewModelFactory
 import com.example.myapplication.widget.utils.EventObserver
 import com.example.myapplication.widget.utils.ItemCardClickInterface
 import com.example.myapplication.widget.utils.NetworkResult
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store),
     ItemCardClickInterface {
-    private lateinit var storeViewModel: StoreViewModel
-    private lateinit var homeViewModel: HomeViewModel
-    private lateinit var dressViewModel: DressViewModel
+    val homeViewModel: HomeViewModel by viewModels<HomeViewModel>()
+    val storeViewModel: StoreViewModel by viewModels<StoreViewModel>()
+    val dressViewModel: DressViewModel by viewModels<DressViewModel>()
     private lateinit var optionViewModel: OptionViewModel
 
-    lateinit var storedetailAdapter: StoreDetailAdapter
+    private lateinit var storedetailAdapter: StoreDetailAdapter
     private var store_id : Int ?=null
 
     private lateinit var toolbar: Toolbar
     private var store_like_state: Boolean? = false
     private var storeIdData: Int? = null
-    private var lat_lng: Pair<Double, Double> = Pair(37.5581, 126.9260)
+    private var latlng: Pair<Double, Double> = Pair(37.5581, 126.9260)
+    private var buttonClick : Boolean = false
 
     override fun init() {
-        val dressRepository = DressRepository()
-        val storeRepository = StoreRepository()
-        val homeRepository = HomeRepository()
-        val dressViewModelProviderFactory = DressViewModelFactory(dressRepository)
-        val storeViewModelProviderFactory = StoreViewModelFactory(storeRepository)
-        val homeViewModelProviderFactory = HomeViewModelFactory(homeRepository)
         // 뷰모델 선언
-        dressViewModel = ViewModelProvider(this, dressViewModelProviderFactory).get(DressViewModel::class.java)
-        storeViewModel = ViewModelProvider(this, storeViewModelProviderFactory).get(StoreViewModel::class.java)
-        homeViewModel = ViewModelProvider(this, homeViewModelProviderFactory).get(HomeViewModel::class.java)
         optionViewModel = ViewModelProvider(this).get(OptionViewModel::class.java)
 
         binding.clothkindvm = optionViewModel
@@ -65,8 +58,9 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
 
         // lat, lng 정보를 얻기 위해서
         getLocation()
+        homeViewModel.set_home_latlng(lat_lng!!)
         homeViewModel.home_latlng.observe(this, Observer {
-            lat_lng = it
+            latlng = it
         })
 
         storedetailAdapter = StoreDetailAdapter(this)
@@ -136,6 +130,15 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
         // 앱바 설정
         initAppbar(R.menu.menu_appbar)
         initChip()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(buttonClick){
+            storeViewModel.get_store_detail_data(store_id!!, binding.chip1.text.toString())
+            buttonClick = false
+        }
     }
 
     private fun initAppbar(menuRes: Int) {
@@ -171,6 +174,7 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
     }
 
     override fun onItemClothImageClick(id: Int, position: Int) {
+        buttonClick = true
         val intent = Intent(this, ClothActivity::class.java)
         intent.putExtra("cloth_id", id)
         startActivity(intent)

@@ -9,10 +9,5 @@
         android:title="search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always|collapseActionView" />
-    <item
-        android:id="@+id/notification"
-        android:enabled="true"
-        android:icon="@drawable/icon_notification"
-        android:title="글 쓰기"
-        app:showAsAction="always" />
+
 </menu>

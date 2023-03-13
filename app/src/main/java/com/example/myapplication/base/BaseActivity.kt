@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -23,6 +24,7 @@ import com.example.myapplication.widget.utils.LocationPermissionUtils
 import com.example.myapplication.widget.utils.LocationPopupUtils
 import com.example.myapplication.viewmodel.HomeViewModel
 import com.example.myapplication.viewmodel.factory.HomeViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
 abstract class BaseActivity<T : ViewDataBinding>(
     @LayoutRes private val layoutResId: Int
@@ -34,10 +36,11 @@ abstract class BaseActivity<T : ViewDataBinding>(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
+
     private val PERMISSIONS_REQUEST_CODE = 100
     private lateinit var locatioNManager: LocationManager
-    private var lat_lng: Pair<Double, Double>? = null
-    private lateinit var homeViewModel: HomeViewModel
+    var lat_lng:Pair<Double, Double> ?= null
+
 
     protected open fun savedatainit() {}
     protected abstract fun init()
@@ -46,10 +49,6 @@ abstract class BaseActivity<T : ViewDataBinding>(
         super.onCreate(savedInstanceState)
         _binding = DataBindingUtil.setContentView(this, layoutResId)
         binding.lifecycleOwner = this
-        val homeRepository = HomeRepository()
-        val homeViewModelProviderFactory = HomeViewModelFactory(homeRepository)
-        homeViewModel =
-            ViewModelProvider(this, homeViewModelProviderFactory).get(HomeViewModel::class.java)
 
         if (savedInstanceState == null) {
             savedatainit()
@@ -126,13 +125,9 @@ abstract class BaseActivity<T : ViewDataBinding>(
         }
 
     protected fun getLocation() {
-
         locatioNManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         var userLocation: Location = getLatLng()
-
-        if (userLocation != null) {
-            homeViewModel.set_home_latlng(userLocation.latitude, userLocation.longitude)
-
+        lat_lng = Pair(userLocation.latitude, userLocation.longitude)
 //            latitude = userLocation.latitude
 //            longitude = userLocation.longitude
 //            Log.d("CheckCurrentLocation", "현재 내 위치 값: ${latitude}, ${longitude}")
@@ -149,7 +144,7 @@ abstract class BaseActivity<T : ViewDataBinding>(
 //            if(mResultList != null){
 //                Log.d("CheckCurrentLocation", mResultList[0].getAddressLine(0))
 //            }
-        }
+
     }
 
     private fun getLatLng(): Location {
@@ -172,8 +167,8 @@ abstract class BaseActivity<T : ViewDataBinding>(
             val isNetworkEnabled =
                 locatioNManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
-            currentLatLng = locatioNManager.getLastKnownLocation(locatioNProvider)  ?: locatioNManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-//            Log.d("whatisthis",currentLatLng.toString())
+            currentLatLng = locatioNManager.getLastKnownLocation(locatioNProvider)
+                ?: locatioNManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
 
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(

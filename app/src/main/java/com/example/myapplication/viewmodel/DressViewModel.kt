@@ -7,9 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.remote.model.*
 import com.example.myapplication.repository.DressRepository
 import com.example.myapplication.widget.utils.NetworkResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DressViewModel(private val dressRepository: DressRepository) : ViewModel() {
+@HiltViewModel
+class DressViewModel @Inject constructor(private val dressRepository: DressRepository) :
+    ViewModel() {
 
     private var _dress_detail_data = MutableLiveData<NetworkResult<DressDetailDto>>()
     val dress_detail_data: LiveData<NetworkResult<DressDetailDto>> get() = _dress_detail_data
@@ -32,7 +36,8 @@ class DressViewModel(private val dressRepository: DressRepository) : ViewModel()
     private var _update_dress_reservation_data = MutableLiveData<NetworkResult<ResultOfSetDto>>()
     val update_dress_reservation_data: LiveData<NetworkResult<ResultOfSetDto>> get() = _update_dress_reservation_data
 
-    private var _dress_reservation_store_data = MutableLiveData<NetworkResult<DressReservationFormDto>>()
+    private var _dress_reservation_store_data =
+        MutableLiveData<NetworkResult<DressReservationFormDto>>()
     val dress_reservation_store_data: LiveData<NetworkResult<DressReservationFormDto>> get() = _dress_reservation_store_data
 
     private var _dress_reservation_cancel = MutableLiveData<NetworkResult<ResultOfSetDto>>()
@@ -47,25 +52,25 @@ class DressViewModel(private val dressRepository: DressRepository) : ViewModel()
     private var _purchaseconfirm = MutableLiveData<Int>()
     val purchaseconfirm: LiveData<Int> get() = _purchaseconfirm
 
-    fun set_completeorder(size:Int){
+    fun set_completeorder(size: Int) {
         _completeorder.value = size
     }
 
-    fun set_pickup(size:Int){
+    fun set_pickup(size: Int) {
 
         _pickup.value = size
     }
 
-    fun set_pickupconfirm(size:Int){
+    fun set_pickupconfirm(size: Int) {
 
         _pickupconfirm.value = size
     }
 
-    fun set_purchaseconfirm(size:Int){
+    fun set_purchaseconfirm(size: Int) {
         _purchaseconfirm.value = size
     }
 
-     fun get_dress_detail_data(id: Int) {
+    fun get_dress_detail_data(id: Int) {
         viewModelScope.launch {
             dressRepository.get_dress_detail_data(id).collect {
                 _dress_detail_data.postValue(it)
@@ -73,7 +78,7 @@ class DressViewModel(private val dressRepository: DressRepository) : ViewModel()
         }
     }
 
-     fun set_dress_like_data(updateDressLikeDto: UpdateDressLikeDto) {
+    fun set_dress_like_data(updateDressLikeDto: UpdateDressLikeDto) {
         viewModelScope.launch {
             dressRepository.set_dress_like_data(updateDressLikeDto).collect {
                 _update_dress_like_data.postValue(it)
@@ -81,7 +86,7 @@ class DressViewModel(private val dressRepository: DressRepository) : ViewModel()
         }
     }
 
-     fun get_dress_like_data() {
+    fun get_dress_like_data() {
         viewModelScope.launch {
             dressRepository.get_dress_like_data().collect {
                 _dress_like_data.postValue(it)
@@ -89,15 +94,15 @@ class DressViewModel(private val dressRepository: DressRepository) : ViewModel()
         }
     }
 
-     fun get_dress_order_detail_data(dress_reservation_id: Int)  {
+    fun get_dress_order_detail_data(dress_reservation_id: Int) {
         viewModelScope.launch {
             dressRepository.get_dress_order_detail_data(dress_reservation_id).collect {
-                _dress_order_detail_data.postValue(it)
+                _dress_order_detail_data.value = it
             }
         }
     }
 
-     fun get_dress_order_data(status: String) {
+    fun get_dress_order_data(status: String) {
         viewModelScope.launch {
             dressRepository.get_dress_order_data(status).collect {
                 _dress_order_data.postValue(it)
@@ -105,9 +110,15 @@ class DressViewModel(private val dressRepository: DressRepository) : ViewModel()
         }
     }
 
-     fun get_dress_search_data(category: String,lat: Double,lng: Double,name: String,sort: String) {
+    fun get_dress_search_data(
+        category: String,
+        lat: Double,
+        lng: Double,
+        name: String,
+        sort: String
+    ) {
         viewModelScope.launch {
-            dressRepository.get_dress_search_data(category,lat,lng,name,sort).collect {
+            dressRepository.get_dress_search_data(category, lat, lng, name, sort).collect {
                 _dress_search_data.postValue(it)
             }
         }

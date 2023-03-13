@@ -3,19 +3,15 @@ package com.example.myapplication.data.remote
 import com.example.myapplication.data.remote.model.ResultOfSetDto
 import com.example.myapplication.data.remote.model.UserProfileDto
 import com.example.myapplication.data.remote.model.UserProfileEditDto
-import com.example.myapplication.widget.utils.Utils.retrofit
 import retrofit2.Response
 import retrofit2.http.*
 
-object UserService {
+interface UserService {
 
-    interface UserInterface {
-        @GET("users/my-profile")
-        suspend fun get_user_profile_data(): Response<UserProfileDto>
+    @GET("users/my-profile")
+    suspend fun get_user_profile_data(): Response<UserProfileDto>
 
-        @PUT("user/profile")
-        suspend fun set_user_profile_data(@Body userUpdateDtoDto: UserProfileEditDto): Response<ResultOfSetDto>
-    }
+    @PUT("user/profile")
+    suspend fun set_user_profile_data(@Body userUpdateDtoDto: UserProfileEditDto): Response<ResultOfSetDto>
 
-    val userService = retrofit.create(UserInterface::class.java)
 }

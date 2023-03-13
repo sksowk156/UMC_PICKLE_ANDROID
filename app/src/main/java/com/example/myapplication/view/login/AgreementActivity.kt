@@ -5,15 +5,12 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityAgreementBinding
 import com.example.myapplication.data.remote.remotedata.AuthRequest
 import com.example.myapplication.base.BaseActivity
-import com.example.myapplication.repository.LoginRepository
 import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.viewmodel.LoginViewModel
-import com.example.myapplication.viewmodel.LoginViewModelFactory
 import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.AndroidEntryPoint
 

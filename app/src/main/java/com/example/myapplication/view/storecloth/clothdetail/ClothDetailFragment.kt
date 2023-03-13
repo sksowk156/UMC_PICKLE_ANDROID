@@ -3,6 +3,9 @@ package com.example.myapplication.view.storecloth.clothdetail
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -19,10 +22,11 @@ import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.OrderViewModel
 import com.example.myapplication.widget.utils.NetworkResult
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class ClothDetailFragment : BaseFragment<FragmentClothDetailBinding>(R.layout.fragment_cloth_detail) {
-    private lateinit var dressViewModel: DressViewModel
+    val dressViewModel: DressViewModel by activityViewModels<DressViewModel>()
     private lateinit var orderViewModel: OrderViewModel
 
     lateinit var dressdetailAdapter : ClothDetailAdapter
@@ -38,7 +42,6 @@ class ClothDetailFragment : BaseFragment<FragmentClothDetailBinding>(R.layout.fr
     override fun init() {
         initAppbar(binding.clothdetailToolbar, "", true, true)
 
-        dressViewModel = (activity as ClothActivity).dressViewModel
         dressdetailAdapter = ClothDetailAdapter()
 
         dressViewModel.dress_detail_data.observe(viewLifecycleOwner, Observer{

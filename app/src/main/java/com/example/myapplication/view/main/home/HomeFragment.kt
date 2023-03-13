@@ -1,8 +1,10 @@
 package com.example.myapplication.view.main.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,34 +18,32 @@ import com.example.myapplication.view.main.home.recent.HomeRecommendAdapter
 import com.example.myapplication.view.main.home.recent.RecentFragment
 import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
 import com.example.myapplication.view.storecloth.storedetail.StoreActivity
-import com.example.myapplication.viewmodel.DressViewModel
-import com.example.myapplication.viewmodel.HomeViewModel
-import com.example.myapplication.viewmodel.StoreViewModel
-import com.example.myapplication.viewmodel.UserViewModel
+import com.example.myapplication.viewmodel.*
 import com.example.myapplication.widget.utils.EventObserver
 import com.example.myapplication.widget.utils.ItemCardClickInterface
 import com.example.myapplication.widget.utils.NetworkResult
 import com.smarteist.autoimageslider.SliderView
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
     ItemCardClickInterface {
-    private lateinit var homeViewModel: HomeViewModel
-    private lateinit var dressViewModel: DressViewModel
-    private lateinit var storeViewModel: StoreViewModel
-    private lateinit var userViewModel: UserViewModel
+    val homeViewModel: HomeViewModel by activityViewModels<HomeViewModel>()
+    val dressViewModel: DressViewModel by activityViewModels<DressViewModel>()
+    val userViewModel: UserViewModel by activityViewModels<UserViewModel>()
 
     private lateinit var recentAdapter: HomeRecentAdapter
     private lateinit var newAdapter: HomeNewAdapter
     private lateinit var recommendAdapter: HomeRecommendAdapter
 
     private lateinit var imageList: ArrayList<Int>
+    private var recentData = ArrayList<DressOverviewDto>()
+    private var newData = ArrayList<DressOverviewDto>()
+    private var recommendData = ArrayList<DressOverviewDto>()
+    private var buttonClick : Boolean = false
 
     override fun init() {
-        homeViewModel = (activity as SecondActivity).homeViewModel
-        dressViewModel = (activity as SecondActivity).dressViewModel
-        storeViewModel = (activity as SecondActivity).storeViewModel
-        userViewModel = (activity as SecondActivity).userViewModel
-
         binding.homevm = homeViewModel
         binding.uservm = userViewModel
 
@@ -91,32 +91,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
             })
         }
 
-//        dressViewModel.dress_like_data.observe(viewLifecycleOwner, Observer<List<DressLikeDto>> {
-////            recentAdapter.notifyDataSetChanged()
-////
-////            newAdapter.notifyDataSetChanged()
-////
-////            recommendAdapter.notifyDataSetChanged()
-//
-////            if (update_list_position != null) {
-////
-////                if ((recentData.size >= update_list_position!! +1) &&recentData[update_list_position!!].dress_id == update_islikedata_id) {
-////                    recentData[update_list_position!!].dress_like = !recentData[update_list_position!!].dress_like!!
-//////                    recentAdapter.submitList(recentData.toMutableList())
-//////                    recentAdapter.updateData(recentData)
-////                    recentAdapter.notifyItemChanged(update_list_position!!)
-////                } else if ((newData.size >= update_list_position!! +1) && newData[update_list_position!!].dress_id == update_islikedata_id) {
-////                    newData[update_list_position!!].dress_like = !newData[update_list_position!!].dress_like!!
-//////                    newAdapter.submitList(newData.toMutableList())
-////                    newAdapter.notifyItemChanged(update_list_position!!)
-////                } else if((recommendData.size >= update_list_position!! +1) && recommendData[update_list_position!!].dress_id == update_islikedata_id){
-////                    recommendData[update_list_position!!].dress_like = !recommendData[update_list_position!!].dress_like!!
-//////                    recommendAdapter.submitList(recommendData.toMutableList())
-////                    recommendAdapter.notifyItemChanged(update_list_position!!)
-////                }
-////                update_list_position = null
-////            }
-//        })
+        // 좋아요 갱신
+        dressViewModel.dress_like_data.observe(this@HomeFragment, Observer {
+            when(it){
+                is NetworkResult.Loading ->{
+
+                }
+                is NetworkResult.Error -> {
+
+                }
+                is NetworkResult.Success ->{
+                    homeViewModel.get_home_data(
+                        homeViewModel.home_latlng.value!!.first,
+                        homeViewModel.home_latlng.value!!.second)
+                }
+            }
+        })
+    }
+
+    // 의상 상세 정보(activity)에서 돌아왔을 때 작동
+    override fun onResume() {
+        super.onResume()
+        if(buttonClick){
+            homeViewModel.get_home_data(homeViewModel.home_latlng.value!!.first, homeViewModel.home_latlng.value!!.second)
+            buttonClick = false
+        }
     }
 
     private fun initRecyclerView() {
@@ -142,8 +141,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
 //                    recommendAdapter.submitList(null)
 
                     recentAdapter.submitList(it.data!!.recentView!!.toMutableList())
-                    newAdapter.submitList(it.data!!.newDresses!!.toMutableList())
-                    recommendAdapter.submitList(it.data!!.recDresses!!.toMutableList())
+//                    recommendAdapter.notifyDataSetChanged()
+                    newAdapter.submitList(it.data.newDresses!!.toMutableList())
+//                    newAdapter.notifyDataSetChanged()
+                    recommendAdapter.submitList(it.data.recDresses!!.toMutableList())
+//                    recommendAdapter.notifyDataSetChanged()
                 }
             }
 
@@ -169,12 +171,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
     }
 
     override fun onItemClothImageClick(id: Int, position: Int) {
+        buttonClick = true
         val intent = Intent(getActivity(), ClothActivity::class.java)
         intent.putExtra("cloth_id", id)
         startActivity(intent)
     }
 
     override fun onItemStoreNameClick(id: Int, position: Int) {
+        buttonClick = true
         val intent = Intent(getActivity(), StoreActivity::class.java)
         intent.putExtra("store_id", id)
         startActivity(intent)
@@ -204,5 +208,4 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
         sliderView.isAutoCycle = true
         sliderView.startAutoCycle()
     }
-
 }

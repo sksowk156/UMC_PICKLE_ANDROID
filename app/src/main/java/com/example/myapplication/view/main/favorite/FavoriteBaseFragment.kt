@@ -2,6 +2,7 @@ package com.example.myapplication.view.main.favorite
 
 import android.util.Log
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -17,15 +18,15 @@ import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.StoreViewModel
 import com.example.myapplication.widget.utils.NetworkResult
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoriteBaseFragment :
     BaseFragment<FragmentFavoriteBaseBinding>(R.layout.fragment_favorite_base) {
-    lateinit var dressViewModel: DressViewModel
-    lateinit var storeViewModel: StoreViewModel
+    val dressViewModel: DressViewModel by activityViewModels<DressViewModel>()
+    val storeViewModel: StoreViewModel by activityViewModels<StoreViewModel>()
 
     override fun init() {
-        dressViewModel = (activity as SecondActivity).dressViewModel
-        storeViewModel = ViewModelProvider(requireActivity()).get(StoreViewModel::class.java)
         dressViewModel.get_dress_like_data()
         storeViewModel.get_store_like_data()
 

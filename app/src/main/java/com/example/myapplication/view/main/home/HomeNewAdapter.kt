@@ -101,7 +101,7 @@ import com.example.myapplication.widget.utils.ItemCardClickInterface
 //}
 
 class HomeNewAdapter(clicklistener: ItemCardClickInterface) :
-    ListAdapter<DressOverviewDto, HomeNewAdapter.MyViewHolder>(HomeNewDiffUtil) {
+    ListAdapter<DressOverviewDto, HomeNewAdapter.MyViewHolder>(HomeNewDiffUtil){
 
     var clicklistener: ItemCardClickInterface = clicklistener
 
@@ -138,19 +138,6 @@ class HomeNewAdapter(clicklistener: ItemCardClickInterface) :
             }
 
             binding.homecardImageviewFavorite.setOnClickListener {
-                if ( new_clothes?.dress_like!! == true) {
-                    //화면에 보여주기
-                    Glide.with(this@MyViewHolder.itemView)
-                        .load(R.drawable.icon_favorite_whiteline) //이미지
-                        .into(binding.homecardImageviewFavorite) //보여줄 위치
-                    new_clothes?.dress_like = false
-                } else {
-                    //화면에 보여주기
-                    Glide.with(this@MyViewHolder.itemView)
-                        .load(R.drawable.icon_favorite_filledpink) //이미지
-                        .into(binding.homecardImageviewFavorite) //보여줄 위치
-                    new_clothes?.dress_like = true
-                }
                 clicklistener.onItemClothFavoriteClick(new_clothes.dress_like!!, new_clothes.dress_id, binding.homecardImageviewFavorite, absoluteAdapterPosition)
             }
         }
@@ -169,10 +156,10 @@ class HomeNewAdapter(clicklistener: ItemCardClickInterface) :
 
 object HomeNewDiffUtil : DiffUtil.ItemCallback<DressOverviewDto>() {
     override fun areItemsTheSame(oldItem: DressOverviewDto, newItem: DressOverviewDto): Boolean {
-        return (oldItem=== newItem)
+        return oldItem.dress_id == newItem.dress_id && oldItem.store_id == newItem.store_id
     }
 
     override fun areContentsTheSame(oldItem: DressOverviewDto, newItem: DressOverviewDto): Boolean {
-        return oldItem.equals(newItem)
+        return oldItem == newItem
     }
 }

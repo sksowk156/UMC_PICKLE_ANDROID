@@ -1,30 +1,28 @@
 package com.example.myapplication.view.main.profile
 
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentProfileBinding
 import com.example.myapplication.base.BaseFragment
-import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.main.profile.inquiry.InquiryFragment
 import com.example.myapplication.view.main.profile.logout.LogoutFragment
 import com.example.myapplication.view.main.profile.myprofile.MyprofileFragment
 import com.example.myapplication.view.main.profile.notice.NoticeFragment
 import com.example.myapplication.view.main.profile.orderstatus.OrderstatusFragment
 import com.example.myapplication.view.main.profile.withdrawal.WithdrawalFragment
-import com.example.myapplication.view.search.SearchActivity
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.UserViewModel
 import com.example.myapplication.widget.utils.NetworkResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_profile) {
-    private lateinit var dressViewModel: DressViewModel
-    private lateinit var userViewModel: UserViewModel
+    val dressViewModel: DressViewModel by activityViewModels<DressViewModel>()
+    val userViewModel: UserViewModel by activityViewModels<UserViewModel>()
 
     override fun init() {
-        dressViewModel = (activity as SecondActivity).dressViewModel
-        userViewModel = (activity as SecondActivity).userViewModel
         binding.uservm = userViewModel
 
         hideBottomNavigation(false)
