@@ -10,6 +10,7 @@ class ApplicationClass : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
         // 카카오 로그인에 필요한 것
         KakaoSdk.init(this, KAKAO_APP_KEY)
     }
