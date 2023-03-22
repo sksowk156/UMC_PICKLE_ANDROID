@@ -28,7 +28,6 @@ import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
 import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.OptionViewModel
 import com.example.myapplication.viewmodel.DressViewModel
-import com.example.myapplication.viewmodel.SearchViewModel
 import com.example.myapplication.widget.utils.*
 import com.example.myapplication.widget.utils.Utils.KEY_SEARCH_HISTORY
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
