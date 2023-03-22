@@ -119,7 +119,4 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
         outState.putString("currentfragment", currentFragmenttag)
     }
 
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-    }
 }

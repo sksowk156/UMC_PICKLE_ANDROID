@@ -189,7 +189,7 @@ abstract class BaseActivity<T : ViewDataBinding>(
                     PERMISSIONS_REQUEST_CODE
                 )
             }
-            currentLatLng = getLatLng()
+
         }
         return currentLatLng!!
     }
