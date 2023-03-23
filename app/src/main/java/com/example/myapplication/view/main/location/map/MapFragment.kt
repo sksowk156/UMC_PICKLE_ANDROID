@@ -48,7 +48,8 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
     private lateinit var before_StoreCoordDtoList: StoreCoordDtoList
 
     private var clickedMarker: Marker? = null // 클릭된 마커 변수
-    private var like_data : Boolean = false
+    private var like_data: Boolean = false
+    private var marker_store_id: Int? = null
 
     override fun init() {
         // 지도 띄우기
@@ -97,7 +98,10 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
             // 지금 바운더리에서 새롭게 보여지는 Marker들은 추가한다.
             // 지금 바운더리로 새롭게 데이터 요청 *************
             // Retrofit 주변 매장 전체 데이터 가져와서 NowMarker 갱신
-            storeViewModel.set_screen_latlng(naverMap.cameraPosition.target.latitude,naverMap.cameraPosition.target.longitude)
+            storeViewModel.set_screen_latlng(
+                naverMap.cameraPosition.target.latitude,
+                naverMap.cameraPosition.target.longitude
+            )
             updateStore(
                 naverMap.cameraPosition.target.latitude,
                 naverMap.cameraPosition.target.longitude
@@ -170,21 +174,29 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                 }
 
                 is NetworkResult.Success -> {
-                    if(clickedMarker!=null){
-                        clickMarker(clickedMarker as Marker, before_StoreCoordDtoList)
-                    }
-                    else if (::before_StoreCoordDtoList.isInitialized) { // 이전 데이터 기록이 있을 경우
+                    if (::before_StoreCoordDtoList.isInitialized) { // 이전 데이터 기록이 있을 경우
                         // 이전 데이터와 겹치지 않는 현재 데이터만 추가하기
                         var new_data = StoreCoordDtoList()
                         for (data in it.data!!) {
                             var flag: Boolean = false
 
-                            for (old_data_temp in before_StoreCoordDtoList) {
-                                if (old_data_temp.store_id == data.store_id) {
-                                    flag = true
-                                    break
+                            // 좋아요 갱신된 정보를 보여주기 위해서
+                            if (clickedMarker != null) {
+                                for (old_data_temp in before_StoreCoordDtoList) {
+                                    if (old_data_temp.store_id == data.store_id && old_data_temp.store_like == data.store_like) {
+                                        flag = true
+                                        break
+                                    }
+                                }
+                            } else { // 그냥 마커를 그릴 때
+                                for (old_data_temp in before_StoreCoordDtoList) {
+                                    if (old_data_temp.store_id == data.store_id) {
+                                        flag = true
+                                        break
+                                    }
                                 }
                             }
+
                             if (flag == false) { // 이전 데이터와 겹치지 않는 현재 데이터가 발견
                                 new_data.add(data) // 따로 저장
                             }
@@ -198,12 +210,24 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                         // 현재 데이터와 겹치지 않는 이전 데이터만 지우기
                         for (data in before_StoreCoordDtoList) {
                             var flag: Boolean = false
-                            for (new_data_temp in it.data!!) {
-                                if (new_data_temp.store_id == data.store_id) {
-                                    flag = true
-                                    break
+
+                            // 좋아요 갱신된 정보를 보여주기 위해서
+                            if (clickedMarker != null) {
+                                for (new_data_temp in it.data!!) {
+                                    if (new_data_temp.store_id == data.store_id && new_data_temp.store_like == data.store_like) {
+                                        flag = true
+                                        break
+                                    }
+                                }
+                            } else { // 그냥 마커를 그릴 때
+                                for (new_data_temp in it.data!!) {
+                                    if (new_data_temp.store_id == data.store_id) {
+                                        flag = true
+                                        break
+                                    }
                                 }
                             }
+
                             if (flag == false) { // 이전 데이터와 겹치지 않는 현재 데이터가 발견
                                 freeMarker(data) // 그 마커만 지우기
                             }
@@ -215,15 +239,15 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                 }
             }
 
-            })
+        })
     }
 
     // 마커 그리기
     private fun updateMarker(storelist: StoreCoordDtoList) {
         val executor = Executors.newSingleThreadExecutor()
         val handler = Handler(Looper.getMainLooper())
+        // 백그라운드 쓰레드
         executor.execute {
-            // 백그라운드 쓰레드
             for (storeData in storelist) { // List 중 하나 선택
                 val marker = Marker() // 마커 생성
                 marker.position = LatLng(storeData.latitude, storeData.longitude) // 마커 위치 설정
@@ -237,6 +261,12 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                 //marker.setHideCollidedMarkers(false);
                 marker.tag = storeData.store_id
                 NowMarkers?.add(marker)
+
+                // 좋아요 갱신된 정보를 보여주기 위해서
+                if (clickedMarker != null) {
+                    clickedMarker = marker
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                }
 
                 // Marker 클릭시
                 marker.setOnClickListener { overlay ->
@@ -258,10 +288,15 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                     true
                 }
             }
+            // 메인 스레드
             handler.post {
-                // 메인 스레드
                 for (marker in NowMarkers!!) {
                     marker.map = naverMap
+                }
+
+                // 좋아요 갱신된 정보를 보여주기 위해서
+                if (clickedMarker != null) {
+                    clickMarker(clickedMarker!!, before_StoreCoordDtoList)
                 }
             }
         }
@@ -269,7 +304,7 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
 
     override fun onResume() {
         super.onResume()
-        if(clickedMarker!=null){
+        if (clickedMarker != null) {
             updateStore(
                 naverMap.cameraPosition.target.latitude,
                 naverMap.cameraPosition.target.longitude
@@ -307,11 +342,14 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                 binding.mapTextviewOperationhours.text =
                     i.hoursOfOperation
 
+                marker_store_id = i.store_id
+                Log.d("whatisthis", marker_store_id.toString())
+
                 // 버튼 클릭시 상세 페이지로 이동
                 storeViewModel.apply {
                     store_bt_event.observe(this@MapFragment, EventObserver {
                         val intent = Intent(getActivity(), StoreActivity::class.java)
-                        intent.putExtra("store_id", i.store_id)
+                        intent.putExtra("store_id", marker_store_id)
                         startActivity(intent)
                     })
                 }
