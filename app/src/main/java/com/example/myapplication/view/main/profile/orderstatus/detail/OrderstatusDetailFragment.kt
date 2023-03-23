@@ -42,7 +42,7 @@ class OrderstatusDetailFragment : BaseFragment<FragmentOrderstatusDetailBinding>
                         detailTextviewAddress.text = "매장 위치"
                         detailTextviewOperationhours.text = "운영시간"
                         detailTextviewPickupdatetime.text = "0000.00.00"
-                        detailTextviewRequests.text = ""
+                        detailTextviewRequests.text = "없음"
                         detailTextviewTotalprice.text = "원"
                         detailTextviewStorename.text = "매장명"
                     }
@@ -58,7 +58,11 @@ class OrderstatusDetailFragment : BaseFragment<FragmentOrderstatusDetailBinding>
                         detailTextviewAddress.text = it.data!!.get(0).store_address
                         detailTextviewOperationhours.text = it.data!!.get(0).hours_of_operation.toString()
                         detailTextviewPickupdatetime.text = it.data!!.get(0).pickup_datetime
-                        detailTextviewRequests.text = it.data!!.get(0).comment
+                        if(it.data!!.get(0).comment.isEmpty()){
+                            detailTextviewRequests.text = "없음"
+                        }else{
+                            detailTextviewRequests.text = it.data!!.get(0).comment
+                        }
                         detailTextviewTotalprice.text = it.data!!.get(0).price
                         detailTextviewStorename.text = it.data!!.get(0).store_name
                     }

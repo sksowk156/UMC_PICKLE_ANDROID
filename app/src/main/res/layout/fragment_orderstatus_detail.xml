@@ -218,7 +218,7 @@
                         android:layout_marginEnd="16dp"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:text=""
+                        android:text="없음"
                         android:textColor="#5C5C5C"
                         android:textSize="14sp" />
                 </LinearLayout>
