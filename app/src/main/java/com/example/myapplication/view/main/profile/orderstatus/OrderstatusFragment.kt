@@ -55,8 +55,7 @@ class OrderstatusFragment :
                     parentFragmentManager.beginTransaction()
                         .replace(
                             R.id.profileblank_layout,
-                            OrderstatusDetailFragment(),
-                            "orderstatusdetail"
+                            OrderstatusDetailFragment()
                         )
                         .addToBackStack(null)
                         .commitAllowingStateLoss()
@@ -70,8 +69,7 @@ class OrderstatusFragment :
                     parentFragmentManager.beginTransaction()
                         .replace(
                             R.id.profileblank_layout,
-                            OrderstatusDetailFragment(),
-                            "orderstatusdetail"
+                            OrderstatusDetailFragment()
                         )
                         .addToBackStack(null)
                         .commitAllowingStateLoss()

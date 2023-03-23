@@ -14,6 +14,7 @@ import com.example.myapplication.databinding.FragmentMapBinding
 import com.example.myapplication.data.remote.model.StoreCoordDtoList
 import com.example.myapplication.data.remote.model.StoreCoordDto
 import com.example.myapplication.base.BaseFragment
+import com.example.myapplication.data.remote.model.UpdateStoreLikeDto
 import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.main.location.around.AroundFragment
 import com.example.myapplication.view.storecloth.storedetail.StoreActivity
@@ -47,13 +48,13 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
     private lateinit var before_StoreCoordDtoList: StoreCoordDtoList
 
     private var clickedMarker: Marker? = null // 클릭된 마커 변수
+    private var like_data : Boolean = false
 
     override fun init() {
         // 지도 띄우기
         openMap()
 
         binding.storevm = storeViewModel
-//        binding.lifecycleOwner = this@MapFragment
 
         // 플로팅 버튼 클릭시 이벤트 처리
         storeViewModel.apply {
@@ -65,15 +66,6 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                     .commitAllowingStateLoss()
             })
         }
-
-//        // 플로팅 버튼 클릭시 이벤트 처리
-//        binding.mapFab.setOnClickListener {
-//            parentFragmentManager
-//                .beginTransaction()
-//                .add(R.id.location_layout, AroundFragment())
-//                .addToBackStack(null)
-//                .commitAllowingStateLoss()
-//        }
 
     }
 
@@ -178,7 +170,10 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                 }
 
                 is NetworkResult.Success -> {
-                    if (::before_StoreCoordDtoList.isInitialized) { // 이전 데이터 기록이 있을 경우
+                    if(clickedMarker!=null){
+                        clickMarker(clickedMarker as Marker, before_StoreCoordDtoList)
+                    }
+                    else if (::before_StoreCoordDtoList.isInitialized) { // 이전 데이터 기록이 있을 경우
                         // 이전 데이터와 겹치지 않는 현재 데이터만 추가하기
                         var new_data = StoreCoordDtoList()
                         for (data in it.data!!) {
@@ -272,6 +267,16 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(clickedMarker!=null){
+            updateStore(
+                naverMap.cameraPosition.target.latitude,
+                naverMap.cameraPosition.target.longitude
+            )
+        }
+    }
+
     // 마커 클릭 시
     private fun clickMarker(overlay: Marker, storelist: StoreCoordDtoList) {
         clickedMarker = overlay  // 클릭된 마커 갱신
@@ -294,6 +299,8 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                         .into(binding.mapImageFavorite) //보여줄 위치
                 }
 
+                like_data = i.store_like
+
                 binding.mapTextviewName.text = i.store_name
                 binding.mapTextviewAddress.text =
                     i.address
@@ -309,12 +316,22 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                     })
                 }
 
-//                // 버튼 클릭시 상세 페이지로 이동
-//                binding.mapInnerlayout.setOnClickListener {
-//                    val intent = Intent(getActivity(), StoreActivity::class.java)
-//                    intent.putExtra("store_id", i.store_id)
-//                    startActivity(intent)
-//                }
+                binding.mapImageFavorite.setOnClickListener {
+                    // 임시로 이미지만 변경 -> store_detail_data를 전부 다시 요청하면 너무 비효율적
+                    if (like_data == true) {
+                        Glide.with(this)
+                            .load(R.drawable.icon_favorite_line) //이미지
+                            .into(binding.mapImageFavorite)  //보여줄 위치
+                        like_data = false
+                    } else {
+                        Glide.with(this)
+                            .load(R.drawable.icon_favorite_filledpink) //이미지
+                            .into(binding.mapImageFavorite)  //보여줄 위치
+                        like_data = true
+                    }
+                    storeViewModel.set_store_like_data(UpdateStoreLikeDto(false, i.store_id))
+                }
+
                 break
             }
         }

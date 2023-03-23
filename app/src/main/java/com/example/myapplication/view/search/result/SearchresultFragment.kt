@@ -74,7 +74,10 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
 
         optionViewModel.search_bt_event.observe(this, EventObserver{
             if(!optionViewModel.searchword_data.value.isNullOrEmpty()){
-                Log.d("whatisthis","??!")
+                // 중복되는 단어는 추가하지 않고 제일 앞으로 위치만 갱신한다.
+                if(searchHistoryDataList.contains(SearchHistroyData(optionViewModel.searchword_data.value.toString()))){
+                    searchHistoryDataList.remove(SearchHistroyData(optionViewModel.searchword_data.value.toString()))
+                }
                 searchHistoryDataList.add(0, SearchHistroyData(optionViewModel.searchword_data.value.toString()))
                 sharedPreferencesmanager.setsearchhistoryString(KEY_SEARCH_HISTORY,searchHistoryDataList)
                 initRecyclerViewRecord() // 검색 기록 갱신한다.

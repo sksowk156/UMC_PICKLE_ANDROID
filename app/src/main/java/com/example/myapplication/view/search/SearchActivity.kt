@@ -18,7 +18,6 @@ import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.OptionViewModel
 import com.example.myapplication.widget.utils.EventObserver
 import com.example.myapplication.widget.utils.SharedPreferencesManager
-import com.example.myapplication.widget.utils.Utils.KEY_SEARCH_HISTORY
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
