@@ -7,24 +7,17 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
-import com.example.myapplication.repository.HomeRepository
 import com.example.myapplication.widget.utils.LocationPermissionUtils
 import com.example.myapplication.widget.utils.LocationPopupUtils
-import com.example.myapplication.viewmodel.HomeViewModel
-import com.example.myapplication.viewmodel.factory.HomeViewModelFactory
-import dagger.hilt.android.AndroidEntryPoint
 
 abstract class BaseActivity<T : ViewDataBinding>(
     @LayoutRes private val layoutResId: Int

@@ -93,6 +93,7 @@ class PickupDetailFragment :
 
         // 주문할 옷의 전체가격
         orderViewModel.get_calculate_order_price()
+        totalPrice = orderViewModel.calculate_order_price.value!!.toInt()
 
         initDate()
         initChip()
@@ -139,9 +140,9 @@ class PickupDetailFragment :
                             dayOfMonth: Int
                         ) {
                             if (month + 1 < 10) { // 10월 이상(2자리수)
-                                date = "${year}-0${month + 1}-${day}"
+                                date = "${year}-0${month + 1}-${dayOfMonth}"
                             } else { // 10월 미만(1자리수)
-                                date = "${year}-${month + 1}-${day}"
+                                date = "${year}-${month + 1}-${dayOfMonth}"
                             }
                             pickupdetailTextviewDate.text = date
                             activateButton(0, date)

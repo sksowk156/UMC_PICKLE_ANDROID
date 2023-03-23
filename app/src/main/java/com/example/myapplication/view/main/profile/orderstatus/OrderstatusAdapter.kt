@@ -1,5 +1,6 @@
 package com.example.myapplication.view.main.profile.orderstatus
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,6 @@ class OrderstatusAdapter(clicklistener: OrderstatusAdapter.OrderstatusClickListe
     var userList = ArrayList<DressOrderListDto>()
 
     interface OrderstatusClickListener {
-
         fun onItemImageClick(view: View, position: Int)
         fun onItemDetailClick(reservationid: Int, position: Int)
         fun onItemInnerlayoutClick(reservationid: Int, position: Int)

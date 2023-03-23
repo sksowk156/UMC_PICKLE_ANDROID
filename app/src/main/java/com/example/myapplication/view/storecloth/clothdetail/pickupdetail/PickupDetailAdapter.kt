@@ -45,7 +45,7 @@ class PickupDetailAdapter : RecyclerView.Adapter<PickupDetailAdapter.ViewHolder>
                 orderstatusdetailTextviewClothename.text = dressDetail?.dress_name
                 orderstatusdetailTextviewClothecolorsize.text =
                     "${user?.color} / ${user?.size} / ${user?.count}개"
-                orderstatusdetailTextviewClotheprice.text = user?.clothPrice.toString()
+                orderstatusdetailTextviewClotheprice.text = (user?.clothPrice!! * user?.count!!).toString()
             }
         }
     }
