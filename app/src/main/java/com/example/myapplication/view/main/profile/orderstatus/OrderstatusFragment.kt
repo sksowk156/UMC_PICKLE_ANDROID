@@ -107,8 +107,8 @@ class OrderstatusFragment :
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         dressViewModel.set_dress_order_data()
     }
 }

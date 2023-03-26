@@ -73,10 +73,9 @@ class OrderstatusDetailFragment : BaseFragment<FragmentOrderstatusDetailBinding>
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         dressViewModel.set_dress_order_detail_data()
-
     }
 
     private fun reviseRecyclerView(){
