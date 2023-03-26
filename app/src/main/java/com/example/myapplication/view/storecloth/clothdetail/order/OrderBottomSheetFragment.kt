@@ -1,24 +1,21 @@
 package com.example.myapplication.view.storecloth.clothdetail.order
 
 import android.graphics.Color
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
-import androidx.databinding.DataBindingUtil
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.base.BaseBottomSheetFragment
-import com.example.myapplication.databinding.FragmentOrderBinding
 import com.example.myapplication.data.remote.model.order.ClothOptionData
-import com.example.myapplication.view.main.profile.orderstatus.OrderListDivider
 import com.example.myapplication.data.remote.model.order.ClothOrderData
-import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
+import com.example.myapplication.databinding.FragmentOrderBinding
+import com.example.myapplication.view.main.profile.inquiry.ToggleAnimation
+import com.example.myapplication.view.main.profile.orderstatus.OrderListDivider
 import com.example.myapplication.view.storecloth.clothdetail.pickupdetail.PickupDetailFragment
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.OrderViewModel
@@ -26,10 +23,11 @@ import com.example.myapplication.viewmodel.StoreViewModel
 import com.example.myapplication.widget.utils.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class OrderBottomSheetFragment() :
     BaseBottomSheetFragment<FragmentOrderBinding>(R.layout.fragment_order),
-    OrderBottomSheetAdapter.OrderClickListener {
+    OrderBottomSheetListAdapter.OrderClickListener {
     val storeViewModel: StoreViewModel by activityViewModels<StoreViewModel>()
     val dressViewModel: DressViewModel by activityViewModels<DressViewModel>()
     private lateinit var orderViewModel: OrderViewModel
@@ -47,17 +45,16 @@ class OrderBottomSheetFragment() :
 
     private var optiondata: ClothOptionData? = null
 
-    private lateinit var spinnerColor: Spinner
-    private lateinit var spinnerSize: Spinner
     // 버튼 활성화 유무
     private var buttonOnOff = false
-    // 스피너 목록을 만들 어댑터(색상, 사이즈) 리스트
-    private var optionArrayList = ArrayList<ArrayAdapter<String>>()
 
-    // 스피너 목록에서 제일 첫번째 값
-    private var spinnercolorlist = arrayListOf("색상")
-    private var spinnersizelist = arrayListOf("사이즈")
     private var selectedPrice: Int = 0
+
+    private lateinit var colorAdapter: OrderBottomSheetOptionAdapter
+    private lateinit var sizeAdapter: OrderBottomSheetOptionAdapter
+
+    private lateinit var colorOptionLayout: LinearLayout
+    private lateinit var sizeOptionLayout: LinearLayout
 
     override fun init() {
         orderViewModel = ViewModelProvider(requireParentFragment()).get(OrderViewModel::class.java)
@@ -66,21 +63,50 @@ class OrderBottomSheetFragment() :
         optiondata = orderViewModel.option_data.value
         selectedPrice = optiondata?.clothPrice!!
 
-        //spinnerColor
-        spinnerColor = binding.orderSpinnerColor
-        spinnerSize = binding.orderSpinnerSize
+        spinnerAdapterSetting()
 
-        // 스피너 색상 목록 불러오기
-        if (optiondata != null) {
-            for (i in optiondata?.dress_option1?.dress_option_detail_list!!) {
-                spinnercolorlist.add(i.dress_option_detail_name)
+        colorOptionLayout = binding.orderInnerlayoutColor2
+        binding.orderInnerlayout1.setOnClickListener {
+            binding.orderTextviewColor.text = "색상"
+            binding.orderTextviewColor.setTextColor(Color.parseColor("#A4A4A4"))
+            if(checkedTwoButton[0]==true){
+                checkedTwoButton[0] = false
             }
-            for (i in optiondata?.dress_option2?.dress_option_detail_list!!) {
-                spinnersizelist.add(i.dress_option_detail_name)
+
+            colorOptionLayout.isVisible = toggleLayout(
+                it.findViewById(binding.orderImageviewArrow1.id),
+                colorOptionLayout
+            )
+            if(sizeOptionLayout.isVisible){
+                sizeOptionLayout.isVisible = toggleLayout(
+                    binding.orderInnerlayout2.findViewById(binding.orderImageviewArrow2.id),
+                    sizeOptionLayout
+                )
             }
         }
 
-        val orderBottomSheetAdapter = OrderBottomSheetAdapter(this)
+        sizeOptionLayout = binding.orderInnerlayoutSize2
+        binding.orderInnerlayout2.setOnClickListener {
+            binding.orderTextviewSize.text = "사이즈"
+            binding.orderTextviewSize.setTextColor(Color.parseColor("#A4A4A4"))
+            if(checkedTwoButton[1]==true){
+                checkedTwoButton[1] = false
+            }
+
+            if(colorOptionLayout.isVisible){
+                colorOptionLayout.isVisible = toggleLayout(
+                    binding.orderInnerlayout1.findViewById(binding.orderImageviewArrow1.id),
+                    colorOptionLayout
+                )
+            }
+            sizeOptionLayout.isVisible = toggleLayout(
+                it.findViewById(binding.orderImageviewArrow2.id),
+                sizeOptionLayout
+            )
+
+        }
+
+        val orderBottomSheetAdapter = OrderBottomSheetListAdapter(this)
         binding.orderRecyclerview.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = orderBottomSheetAdapter
@@ -91,10 +117,18 @@ class OrderBottomSheetFragment() :
         orderViewModel.order_data.observe(viewLifecycleOwner, Observer<ArrayList<ClothOrderData>> {
             if (it != null) { // 옵션 선택을 했다는 것이므로
                 orderBottomSheetAdapter.submitList(it.toMutableList())
-                spinnerColor.setSelection(0)  // 색상 스피너 목록 초기화
-                spinnerSize.setSelection(0) // 사이즈 스피너 목록 초기화
-                checkedTwoButton[0] = false // 색상 체크 기록 초기화
-                checkedTwoButton[1] = false // 사이즈 체크 기록 초기화
+
+                if(checkedTwoButton[0] && checkedTwoButton[1]){
+                    binding.orderTextviewColor.text = "색상"
+                    binding.orderTextviewSize.text = "사이즈"
+
+                    binding.orderTextviewColor.setTextColor(Color.parseColor("#A4A4A4"))
+                    binding.orderTextviewSize.setTextColor(Color.parseColor("#A4A4A4"))
+
+                    checkedTwoButton[0] = false // 색상 체크 기록 초기화
+                    checkedTwoButton[1] = false // 사이즈 체크 기록 초기화
+                }
+
                 if (it.size > 0) { // 선택한 상품이 있다면 버튼 활성화
                     binding.orderTextviewPickupbutton.setBackgroundResource(R.drawable.green_button_background)
                     binding.orderTextviewPickupbutton.setTextColor(Color.WHITE)
@@ -110,88 +144,17 @@ class OrderBottomSheetFragment() :
         })
 
         orderbtClickEvent()
-
-        spinnerAdapterSetting()
-        spinnerColor.adapter = optionArrayList[0]
-        spinnerSize.adapter = optionArrayList[1]
-
-        spinnerColor.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view2: View?,
-                position: Int,
-                id: Long
-            ) {
-                if (position == 0) { // 목록 중 '색상'을 클릭 했을 경우
-                    checkedTwoButton[0] = false
-                    selectedcolor = ""
-                } else {
-                    checkedTwoButton[0] = true
-                    selectedcolor = spinnercolorlist[position]
-                    selectedcolornum = position
-                    if (checkedTwoButton[0] == true && checkedTwoButton[1] == true) {
-                        orderdatalist.add(
-                            ClothOrderData(
-                                selectedcolor,
-                                selectedsize,
-                                1,
-                                selectedPrice,
-                                selectedcolornum,
-                                selectedsizenum
-                            )
-                        )
-                        orderViewModel.set_order_data(orderdatalist)
-                    }
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                checkedTwoButton[0] = false
-            }
-        })
-
-        spinnerSize.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected( // 목록 중 '사이즈'를 클릭 했을 경우
-                parent: AdapterView<*>?,
-                view2: View?,
-                position: Int,
-                id: Long
-            ) {
-                if (position == 0) {
-                    checkedTwoButton[1] = false
-                    selectedsize = ""
-                } else {
-                    checkedTwoButton[1] = true
-                    selectedsize = spinnersizelist[position]
-                    selectedsizenum = position
-                    if (checkedTwoButton[0] == true && checkedTwoButton[1] == true) {
-                        orderdatalist.add(
-                            ClothOrderData(
-                                selectedcolor,
-                                selectedsize,
-                                1,
-                                selectedPrice,
-                                selectedcolornum,
-                                selectedsizenum
-                            )
-                        )
-                        orderViewModel.set_order_data(orderdatalist)
-                    }
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                checkedTwoButton[1] = false
-            }
-        }
     }
 
     // 주문 버튼 눌렀을 때 클릭 이벤트
-    private fun orderbtClickEvent(){
+    private fun orderbtClickEvent() {
         orderViewModel.pickup_bt_event.observe(this@OrderBottomSheetFragment, EventObserver {
             if (buttonOnOff) {
                 orderViewModel.get_calculate_order_price()
-                storeViewModel.get_store_detail_data(dressViewModel.dress_detail_data.value!!.data!!.store_id, "전체")
+                storeViewModel.get_store_detail_data(
+                    dressViewModel.dress_detail_data.value!!.data!!.store_id,
+                    "전체"
+                )
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.clothblank_layout, PickupDetailFragment(), "pickupdetail")
                     .addToBackStack(null)
@@ -204,15 +167,100 @@ class OrderBottomSheetFragment() :
 
     // 스피너 목록을 보여줄 어댑터 초기화
     private fun spinnerAdapterSetting() {
-        val adapterColor =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, spinnercolorlist)
-        adapterColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        optionArrayList.add(adapterColor)
+        colorAdapter = OrderBottomSheetOptionAdapter(object :
+            OrderBottomSheetOptionAdapter.OptionClickListener {
+            override fun onItemBackgroundClick(view: View, position: Int) {
+                checkedTwoButton[0] = true
+                selectedcolor = view.findViewById<TextView>(R.id.orderbottomsheetoption_textview_option).text.toString()
+                selectedcolornum = position
 
-        val adapterSize =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, spinnersizelist)
-        adapterSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        optionArrayList.add(adapterSize)
+                binding.orderTextviewColor.text = selectedcolor
+                binding.orderTextviewColor.setTextColor(Color.parseColor("#1E1E1E"))
+
+                colorOptionLayout.isVisible = toggleLayout(
+                    binding.orderInnerlayout1.findViewById(binding.orderImageviewArrow1.id),
+                    colorOptionLayout
+                )
+
+                if (checkedTwoButton[0] == true && checkedTwoButton[1] == true) {
+                    orderdatalist.add(
+                        ClothOrderData(
+                            selectedcolor,
+                            selectedsize,
+                            1,
+                            selectedPrice,
+                            selectedcolornum,
+                            selectedsizenum
+                        )
+                    )
+                    orderViewModel.set_order_data(orderdatalist)
+                }
+            }
+        })
+
+        binding.orderRecyclerviewColor.adapter = colorAdapter
+        binding.orderRecyclerviewColor.layoutManager = LinearLayoutManager(requireContext())
+        colorAdapter.userList =
+            optiondata?.dress_option1?.dress_option_detail_list!!.toMutableList()
+        binding.orderRecyclerviewColor.addItemDecoration(
+            OrderListDivider(
+                0f,
+                0f,
+                4f,
+                0f,
+                Color.parseColor("#E1E1E1")
+            )
+        )
+
+        colorAdapter.notifyDataSetChanged()
+
+        sizeAdapter = OrderBottomSheetOptionAdapter(object :
+            OrderBottomSheetOptionAdapter.OptionClickListener {
+            override fun onItemBackgroundClick(view: View, position: Int) {
+                checkedTwoButton[1] = true
+                selectedsize =
+                    view.findViewById<TextView>(R.id.orderbottomsheetoption_textview_option).text.toString()
+                selectedsizenum = position
+
+                binding.orderTextviewSize.text = selectedsize
+                binding.orderTextviewSize.setTextColor(Color.parseColor("#1E1E1E"))
+
+                sizeOptionLayout.isVisible = toggleLayout(
+                    binding.orderInnerlayout2.findViewById(binding.orderImageviewArrow2.id),
+                    sizeOptionLayout
+                )
+
+                if (checkedTwoButton[0] == true && checkedTwoButton[1] == true) {
+                    orderdatalist.add(
+                        ClothOrderData(
+                            selectedcolor,
+                            selectedsize,
+                            1,
+                            selectedPrice,
+                            selectedcolornum,
+                            selectedsizenum
+                        )
+                    )
+                    orderViewModel.set_order_data(orderdatalist)
+                }
+            }
+        })
+
+        binding.orderRecyclerviewSize.adapter = sizeAdapter
+        binding.orderRecyclerviewSize.layoutManager = LinearLayoutManager(requireContext())
+        sizeAdapter.userList = optiondata?.dress_option2?.dress_option_detail_list!!.toMutableList()
+        binding.orderRecyclerviewSize.addItemDecoration(
+            OrderListDivider(
+                0f,
+                0f,
+                4f,
+                0f,
+                Color.parseColor("#E1E1E1")
+            )
+        )
+
+        sizeAdapter.notifyDataSetChanged()
+
     }
 
     override fun onItemPlusClick(_clothorderdata: ClothOrderData, position: Int) {
@@ -231,6 +279,20 @@ class OrderBottomSheetFragment() :
     override fun onItemCloseClick(_clothorderdata: ClothOrderData, position: Int) {
         orderdatalist.remove(_clothorderdata)
         orderViewModel.set_order_data(orderdatalist)
+    }
+
+    private fun toggleLayout(
+        view: View,
+        layoutExpand: LinearLayout
+    ): Boolean {
+        // 2
+        ToggleAnimation.toggleArrow(view, layoutExpand.isVisible)
+        if (!layoutExpand.isVisible) {
+            ToggleAnimation.expand(layoutExpand)
+        } else {
+            ToggleAnimation.collapse(layoutExpand)
+        }
+        return layoutExpand.isVisible
     }
 
 }

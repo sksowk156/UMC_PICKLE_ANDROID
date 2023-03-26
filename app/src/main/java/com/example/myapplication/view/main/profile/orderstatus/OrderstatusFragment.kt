@@ -3,16 +3,13 @@ package com.example.myapplication.view.main.profile.orderstatus
 import android.graphics.Color
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentOrderstatusBinding
 import com.example.myapplication.data.remote.model.DressOrderListDto
 import com.example.myapplication.base.BaseFragment
-import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.main.profile.orderstatus.detail.OrderstatusDetailFragment
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.widget.utils.NetworkResult
@@ -51,20 +48,9 @@ class OrderstatusFragment :
                 }
 
                 override fun onItemDetailClick(reservationid: Int, position: Int) {
-                    // 주문 상세 페이지로 이동
-                    parentFragmentManager.beginTransaction()
-                        .replace(
-                            R.id.profileblank_layout,
-                            OrderstatusDetailFragment()
-                        )
-                        .addToBackStack(null)
-                        .commitAllowingStateLoss()
                     // 선택한 아이템의 주문 번호를 받아서
                     dressViewModel.get_dress_order_detail_data(reservationid)
 
-                }
-
-                override fun onItemInnerlayoutClick(reservationid: Int, position: Int) {
                     // 주문 상세 페이지로 이동
                     parentFragmentManager.beginTransaction()
                         .replace(
@@ -73,7 +59,18 @@ class OrderstatusFragment :
                         )
                         .addToBackStack(null)
                         .commitAllowingStateLoss()
+                }
+
+                override fun onItemInnerlayoutClick(reservationid: Int, position: Int) {
                     dressViewModel.get_dress_order_detail_data(reservationid)
+                    // 주문 상세 페이지로 이동
+                    parentFragmentManager.beginTransaction()
+                        .replace(
+                            R.id.profileblank_layout,
+                            OrderstatusDetailFragment()
+                        )
+                        .addToBackStack(null) // 현재의 fragment가(OrderstatusFragment) 저장되는 것이다.
+                        .commitAllowingStateLoss()
                     //주문취소
                     //reservationViewModel.set_dress_resevation_data(3)
                 }
@@ -108,5 +105,10 @@ class OrderstatusFragment :
 
             })
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dressViewModel.set_dress_order_data()
     }
 }

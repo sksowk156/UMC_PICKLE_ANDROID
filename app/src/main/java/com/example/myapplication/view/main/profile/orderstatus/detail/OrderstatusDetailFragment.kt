@@ -1,16 +1,16 @@
 package com.example.myapplication.view.main.profile.orderstatus.detail
 
+import android.annotation.SuppressLint
 import android.util.Log
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentOrderstatusDetailBinding
 import com.example.myapplication.data.remote.model.ReservedDressDto
 import com.example.myapplication.base.BaseFragment
-import com.example.myapplication.view.main.SecondActivity
+import com.example.myapplication.data.remote.model.DressOrderDto
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.widget.utils.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +29,7 @@ class OrderstatusDetailFragment : BaseFragment<FragmentOrderstatusDetailBinding>
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initRecyclerView(){
         with(binding) {
             // 1. 어댑터 생성 및 리사이클러뷰 연결
@@ -52,19 +53,19 @@ class OrderstatusDetailFragment : BaseFragment<FragmentOrderstatusDetailBinding>
 
                     }
                     is NetworkResult.Success -> {
-                        orderstatusAdapter.userList = it.data!!.get(0).reservedDressList as ArrayList<ReservedDressDto>
-                        orderstatusAdapter.notifyDataSetChanged()
-                        detailTextviewOrdernumber.text = it.data!!.get(0).dress_reservation_id.toString()
-                        detailTextviewAddress.text = it.data!!.get(0).store_address
-                        detailTextviewOperationhours.text = it.data!!.get(0).hours_of_operation.toString()
-                        detailTextviewPickupdatetime.text = it.data!!.get(0).pickup_datetime
-                        if(it.data!!.get(0).comment.isEmpty()){
+                        detailTextviewOrdernumber.text = it.data!![0].dress_reservation_id.toString()
+                        detailTextviewAddress.text = it.data[0].store_address
+                        detailTextviewOperationhours.text = it.data[0].hours_of_operation.toString()
+                        detailTextviewPickupdatetime.text = it.data[0].pickup_datetime
+                        if(it.data[0].comment.isEmpty()){
                             detailTextviewRequests.text = "없음"
                         }else{
-                            detailTextviewRequests.text = it.data!!.get(0).comment
+                            detailTextviewRequests.text = it.data[0].comment
                         }
-                        detailTextviewTotalprice.text = it.data!!.get(0).price
-                        detailTextviewStorename.text = it.data!!.get(0).store_name
+                        detailTextviewTotalprice.text = it.data[0].price
+                        detailTextviewStorename.text = it.data[0].store_name
+                        orderstatusAdapter.userList = it.data[0].reservedDressList as ArrayList<ReservedDressDto>
+                        orderstatusAdapter.notifyDataSetChanged()
                     }
                 }
             })
@@ -72,6 +73,11 @@ class OrderstatusDetailFragment : BaseFragment<FragmentOrderstatusDetailBinding>
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dressViewModel.set_dress_order_detail_data()
+
+    }
 
     private fun reviseRecyclerView(){
 

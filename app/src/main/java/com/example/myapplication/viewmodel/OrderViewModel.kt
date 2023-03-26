@@ -62,12 +62,20 @@ class OrderViewModel : ViewModel() {
     val pickuptime_data: LiveData<TextView> get() = _pickuptime_data
 
 
-    fun set_order_data(clothorderdatalist: ArrayList<ClothOrderData>?) {
+    fun set_order_data(clothorderdatalist: ArrayList<ClothOrderData>) {
         _order_data.value = clothorderdatalist
     }
 
-    fun set_pickuptime_data(time: TextView?) {
+    fun set_order_data_reset() {
+        _order_data  = MutableLiveData<ArrayList<ClothOrderData>>()
+    }
+
+    fun set_pickuptime_data(time: TextView) {
         _pickuptime_data.value = time
+    }
+
+    fun set_pickuptime_data_reset() {
+        _pickuptime_data = MutableLiveData<TextView>()
     }
 
     fun get_calculate_order_price() {

@@ -60,6 +60,11 @@ abstract class BaseFragment<T : ViewDataBinding>(
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (parentFragmentManager.backStackEntryCount != 0) {
+//                    parentFragmentManager
+//                        .beginTransaction()
+//                        .remove(this@BaseFragment)
+//                        .commitAllowingStateLoss()
+
                     parentFragmentManager
                         .popBackStackImmediate(null, 0)
                 } else if (toolbarmenusearch.isActionViewExpanded) { // 검색창을 눌렀을 경우

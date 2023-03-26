@@ -100,7 +100,7 @@ class ClothDetailFragment : BaseFragment<FragmentClothDetailBinding>(R.layout.fr
                     orderViewModel.set_option_data(optiondata!!)
                     bottomSheet.show(parentFragmentManager, bottomSheet.tag)
                 }
-                orderViewModel.set_order_data(null)
+                orderViewModel.set_order_data_reset()
             }
 
             clothdetailTextviewStorename.setOnClickListener{

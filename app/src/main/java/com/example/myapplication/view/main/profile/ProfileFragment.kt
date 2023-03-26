@@ -73,34 +73,32 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
 
             // 주문현황
             profileInnerlayoutCompleteorder.setOnClickListener {
+                dressViewModel.get_dress_order_data("주문완료")
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"completeorder")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
-                dressViewModel.get_dress_order_data("주문완료")
             }
             profileInnerlayoutPickup.setOnClickListener {
+                dressViewModel.get_dress_order_data("픽업중")
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"pickup")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
-                dressViewModel.get_dress_order_data("픽업중")
             }
             profileInnerlayoutPickupconfirm.setOnClickListener {
+                dressViewModel.get_dress_order_data("픽업완료")
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"pickupconfirm")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
-
-                dressViewModel.get_dress_order_data("픽업완료")
             }
             profileInnerlayoutPurchaseconfirm.setOnClickListener {
+                dressViewModel.get_dress_order_data("구매확정")
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"purchaseconfirm")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
-
-                dressViewModel.get_dress_order_data("구매확정")
             }
 
             // 공지사항
