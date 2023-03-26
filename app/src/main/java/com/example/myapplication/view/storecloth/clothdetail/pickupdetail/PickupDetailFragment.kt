@@ -182,7 +182,7 @@ class PickupDetailFragment :
                             )
                         )
                         it.setBackgroundResource(R.drawable.chip_background)
-                        set_pickuptime_data(null)
+                        set_pickuptime_data_reset()
                         time = null
                     } else { // 다른 버튼을 누를 때
                         pickuptime_data.value!!.setTextColor(

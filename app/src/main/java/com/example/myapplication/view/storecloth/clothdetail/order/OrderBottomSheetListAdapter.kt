@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemClothcountRecyclerBinding
 import com.example.myapplication.data.remote.model.order.ClothOrderData
 
-class OrderBottomSheetAdapter (clicklistener: OrderClickListener) :
-    ListAdapter<ClothOrderData, OrderBottomSheetAdapter.MyViewHolder>(OrderDiffUtil) {
+class OrderBottomSheetListAdapter (clicklistener: OrderClickListener) :
+    ListAdapter<ClothOrderData, OrderBottomSheetListAdapter.MyViewHolder>(OrderDiffUtil) {
 
     interface OrderClickListener {
         fun onItemPlusClick(_clothorderdata: ClothOrderData, position: Int)

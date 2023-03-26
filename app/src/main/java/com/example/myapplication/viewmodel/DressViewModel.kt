@@ -97,9 +97,13 @@ class DressViewModel @Inject constructor(private val dressRepository: DressRepos
     fun get_dress_order_detail_data(dress_reservation_id: Int) {
         viewModelScope.launch {
             dressRepository.get_dress_order_detail_data(dress_reservation_id).collect {
-                _dress_order_detail_data.value = it
+                _dress_order_detail_data.postValue(it)
             }
         }
+    }
+
+    fun set_dress_order_detail_data(){
+        _dress_order_detail_data = MutableLiveData<NetworkResult<List<DressOrderDto>>>()
     }
 
     fun get_dress_order_data(status: String) {
@@ -108,6 +112,10 @@ class DressViewModel @Inject constructor(private val dressRepository: DressRepos
                 _dress_order_data.postValue(it)
             }
         }
+    }
+
+    fun set_dress_order_data(){
+        _dress_order_data =  MutableLiveData<NetworkResult<List<DressOrderListDto>>>()
     }
 
     fun get_dress_search_data(
