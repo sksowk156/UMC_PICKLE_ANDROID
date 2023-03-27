@@ -57,7 +57,7 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
         storeViewModel.get_store_detail_data(store_id!!, binding.chip1.text.toString())
 
         // lat, lng 정보를 얻기 위해서
-        getLocation()
+        requestLocationPermission()
         homeViewModel.set_home_latlng(lat_lng!!)
         homeViewModel.home_latlng.observe(this, Observer {
             latlng = it
@@ -173,8 +173,12 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
         })
     }
 
-    override fun onItemClothImageClick(id: Int, position: Int) {
+    override fun onStop() {
+        super.onStop()
         buttonClick = true
+    }
+
+    override fun onItemClothImageClick(id: Int, position: Int) {
         val intent = Intent(this, ClothActivity::class.java)
         intent.putExtra("cloth_id", id)
         startActivity(intent)

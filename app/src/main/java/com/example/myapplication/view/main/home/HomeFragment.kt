@@ -38,9 +38,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
     private lateinit var recommendAdapter: HomeRecommendAdapter
 
     private lateinit var imageList: ArrayList<Int>
-    private var recentData = ArrayList<DressOverviewDto>()
-    private var newData = ArrayList<DressOverviewDto>()
-    private var recommendData = ArrayList<DressOverviewDto>()
     private var buttonClick : Boolean = false
 
     override fun init() {

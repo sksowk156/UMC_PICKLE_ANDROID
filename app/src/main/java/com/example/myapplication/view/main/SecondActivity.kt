@@ -30,6 +30,7 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
     val userViewModel: UserViewModel by viewModels<UserViewModel>()
 
     private lateinit var currentFragmenttag: String
+//    private var buttonClick = false
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
@@ -44,15 +45,20 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
         currentFragmenttag = HOMEBASE // 현재 보고 있는 fragmet의 Tag
     }
 
-    override fun onResume() {
-        super.onResume()
-        dressViewModel.get_dress_like_data()
-        storeViewModel.get_store_like_data()
-        // 홈화면 데이터 갱신
-        requestLocationData()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        dressViewModel.get_dress_like_data()
+//        storeViewModel.get_store_like_data()
+//
+//        // 홈화면 데이터 갱신
+//        if(buttonClick){
+//            requestLocationPermission()
+//            buttonClick = false
+//        }
+//    }
 
     override fun init() {
+        requestLocationData()
         userViewModel.get_user_profile_data()
 
         // 네비게이션 버튼의 테마색으로 변하는 것을 막기 위해서
@@ -80,14 +86,17 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
             true
         }
 
-        getLocation()
-        homeViewModel.set_home_latlng(lat_lng!!)
+
+//        requestLocationData()
+        if(lat_lng!=null){
+            homeViewModel.set_home_latlng(lat_lng!!)
+        }
+
         // 홈화면 데이터 갱신
         homeViewModel.home_latlng.observe(this, Observer<Pair<Double, Double>> {
             if (it != null) {
                 homeViewModel.get_home_data(it!!.first, it!!.second)
             } else {
-                Log.d("whatisthis", "home_latlng, 데이터 없음")
             }
         })
     }
@@ -119,4 +128,8 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
         outState.putString("currentfragment", currentFragmenttag)
     }
 
+//    override fun onStop() {
+//        super.onStop()
+//        buttonClick = true
+//    }
 }
