@@ -46,7 +46,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         binding.optionvm = optionViewModel
 
         // 위치 정보 갱신하기
-        getLocation()
+        requestLocationData()
         optionViewModel.set_latlng_data(lat_lng!!)
 
         // 뒤로가기 버튼 이벤트 처리
