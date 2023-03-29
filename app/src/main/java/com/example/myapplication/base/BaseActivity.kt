@@ -58,7 +58,7 @@ abstract class BaseActivity<T : ViewDataBinding>(
         }
     }
 
-    private fun permissionAskDialog(){
+    private fun permissionAskDialog() {
         LocationPopupUtils.dialogLocationDisclosures(this,
             title = getString(R.string.title_location_disclosures),
             message = getString(R.string.msg_explanation_location_permission),
@@ -87,7 +87,8 @@ abstract class BaseActivity<T : ViewDataBinding>(
                 permission.value -> {
                 }
                 shouldShowRequestPermissionRationale(permission.key) -> {
-                    Toast.makeText(this, "내 주변 매장 옷들을 추천받을려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "내 주변 매장 옷들을 추천받을려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_SHORT)
+                        .show()
                     // 권한이 필요한 이유 설명 후, 한번 더 권한 물어보기
                     isGranted = false
                     return@registerForActivityResult
