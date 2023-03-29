@@ -34,7 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store),
     ItemCardClickInterface {
-    val homeViewModel: HomeViewModel by viewModels<HomeViewModel>()
     val storeViewModel: StoreViewModel by viewModels<StoreViewModel>()
     val dressViewModel: DressViewModel by viewModels<DressViewModel>()
     private lateinit var optionViewModel: OptionViewModel
@@ -45,7 +44,6 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
     private lateinit var toolbar: Toolbar
     private var store_like_state: Boolean? = false
     private var storeIdData: Int? = null
-    private var latlng: Pair<Double, Double> = Pair(37.5581, 126.9260)
     private var buttonClick : Boolean = false
 
     override fun init() {
@@ -55,13 +53,6 @@ class StoreActivity : BaseActivity<ActivityStoreBinding>(R.layout.activity_store
         binding.clothkindvm = optionViewModel
         store_id = intent.getIntExtra("store_id", 0)
         storeViewModel.get_store_detail_data(store_id!!, binding.chip1.text.toString())
-
-        // lat, lng 정보를 얻기 위해서
-        requestLocationPermission()
-        homeViewModel.set_home_latlng(lat_lng!!)
-        homeViewModel.home_latlng.observe(this, Observer {
-            latlng = it
-        })
 
         storedetailAdapter = StoreDetailAdapter(this)
 

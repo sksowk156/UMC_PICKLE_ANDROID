@@ -178,64 +178,31 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                         // 이전 데이터와 겹치지 않는 현재 데이터만 추가하기
                         var new_data = StoreCoordDtoList()
                         for (data in it.data!!) {
-                            var flag: Boolean = false
-
-                            // 좋아요 갱신된 정보를 보여주기 위해서
-                            if (clickedMarker != null) {
-                                for (old_data_temp in before_StoreCoordDtoList) {
-                                    if (old_data_temp.store_id == data.store_id && old_data_temp.store_like == data.store_like) {
-                                        flag = true
-                                        break
-                                    }
-                                }
-                            } else { // 그냥 마커를 그릴 때
-                                for (old_data_temp in before_StoreCoordDtoList) {
-                                    if (old_data_temp.store_id == data.store_id) {
-                                        flag = true
-                                        break
-                                    }
-                                }
+                            if (!before_StoreCoordDtoList.contains(data)) {
+                                new_data.add(data)
                             }
-
-                            if (flag == false) { // 이전 데이터와 겹치지 않는 현재 데이터가 발견
-                                new_data.add(data) // 따로 저장
-                            }
-                        }
-
-                        if (new_data.size > 0) {
-                            updateMarker(new_data) // 그 마커만 update
-                        } else {
                         }
 
                         // 현재 데이터와 겹치지 않는 이전 데이터만 지우기
                         for (data in before_StoreCoordDtoList) {
-                            var flag: Boolean = false
-
-                            // 좋아요 갱신된 정보를 보여주기 위해서
-                            if (clickedMarker != null) {
-                                for (new_data_temp in it.data!!) {
-                                    if (new_data_temp.store_id == data.store_id && new_data_temp.store_like == data.store_like) {
-                                        flag = true
-                                        break
-                                    }
-                                }
-                            } else { // 그냥 마커를 그릴 때
-                                for (new_data_temp in it.data!!) {
-                                    if (new_data_temp.store_id == data.store_id) {
-                                        flag = true
-                                        break
-                                    }
-                                }
-                            }
-
-                            if (flag == false) { // 이전 데이터와 겹치지 않는 현재 데이터가 발견
-                                freeMarker(data) // 그 마커만 지우기
+                            if (!it.data.contains(data)) { // binarySearch보다 빠름 -> 정렬이 필요하기 때문에 contain이 빨랐다.
+                                freeMarker(data)
                             }
                         }
+                        // 이전 데이터 기록 갱신(이걸 먼저하는 이유는 밑에서 updateMarker할때 마지막에 클릭된 마커가 있을 경우
+                        // 새로운 데이터에서 해당 마커를 찾아서 클릭된 마커로 설정해줘야하는데, 그때 필요한게 before_StoreCoordDtoList이다.
+                        // 그래서 과거의 데이터를 쓸 수 없기 때문에 먼저 갱신을 해둔다.)
+                        before_StoreCoordDtoList = it.data
+
+                        if (new_data.size > 0) {
+                            updateMarker(new_data) // 그 마커만 update
+                        }
+
                     } else { // 이전 데이터 기록이 없을 경우(최초)
-                        updateMarker(it.data!!)
+                        before_StoreCoordDtoList = it.data!! // 이전 데이터 기록 갱신
+
+                        updateMarker(it.data)
                     }
-                    before_StoreCoordDtoList = it.data!! // 이전 데이터 기록 갱신
                 }
             }
 
@@ -260,10 +227,10 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                 marker.isHideCollidedSymbols = true //  마커와 겹치는 지도 심벌을 자동으로 숨기도록 지정
                 //marker.setHideCollidedMarkers(false);
                 marker.tag = storeData.store_id
-                NowMarkers?.add(marker)
+                NowMarkers.add(marker)
 
-                // 좋아요 갱신된 정보를 보여주기 위해서
-                if (clickedMarker != null) {
+                // 좋아요 갱신된 정보를 보여주기 위해서 새로운 데이터들 중에서 클릭된 마커와 store_id가 같으면 방금 새로 만든 마커를 클릭된 마커로 설정해준다.
+                if (clickedMarker != null && marker_store_id == storeData.store_id) {
                     clickedMarker = marker
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 }
@@ -290,12 +257,12 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
             }
             // 메인 스레드
             handler.post {
-                for (marker in NowMarkers!!) {
+                for (marker in NowMarkers) {
                     marker.map = naverMap
                 }
 
                 // 좋아요 갱신된 정보를 보여주기 위해서
-                if (clickedMarker != null) {
+                if (clickedMarker != null) { // 새롭게 바뀐 클릭된 마커의 bottomsheet을 띄어준다.
                     clickMarker(clickedMarker!!, before_StoreCoordDtoList)
                 }
             }
@@ -343,7 +310,6 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                     i.hoursOfOperation
 
                 marker_store_id = i.store_id
-                Log.d("whatisthis", marker_store_id.toString())
 
                 // 버튼 클릭시 상세 페이지로 이동
                 storeViewModel.apply {
