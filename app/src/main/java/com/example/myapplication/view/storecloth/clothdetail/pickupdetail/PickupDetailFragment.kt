@@ -230,15 +230,15 @@ class PickupDetailFragment :
                         //예약 정보 보내기
                         var comment = ""
                         if(orderViewModel._order_request_data.value!=null){
-                            comment = orderViewModel._order_request_data.value!!
+                            comment = orderViewModel._order_request_data.value!!.toString()
                         }
-                        val dress_id = dress_detail_data.dress_id
-                        val pickup_datetime = date + " " + time + ":00"
-                        val price = totalPrice
+                        val dress_id = dress_detail_data.dress_id.toInt()
+                        val pickup_datetime = (date + " " + time + ":00").toString()
+                        val price = totalPrice.toInt()
                         val reserved_dress_list = order_cloth_data.toList()
-                        val store_id = dress_detail_data.store_id
+                        val store_id = dress_detail_data.store_id.toInt()
 
-                        val dressReservationDto = DressReservationDto(
+                        var dressReservationDto = DressReservationDto(
                             comment,
                             dress_id,
                             pickup_datetime,
@@ -246,6 +246,7 @@ class PickupDetailFragment :
                             reserved_dress_list,
                             store_id
                         )
+                        Log.d("whatisthis",dressReservationDto.toString())
                         dressViewModel.set_dress_reservation(dressReservationDto)
 
                         parentFragmentManager.beginTransaction()

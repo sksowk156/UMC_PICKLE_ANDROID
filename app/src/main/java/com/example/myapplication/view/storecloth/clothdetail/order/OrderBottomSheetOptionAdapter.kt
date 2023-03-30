@@ -7,18 +7,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.data.remote.model.DressOptionDetailDto
 import com.example.myapplication.databinding.ItemOrderbottomsheetOptionBinding
 
-class OrderBottomSheetOptionAdapter(clickListener: OptionClickListener) : RecyclerView.Adapter<OrderBottomSheetOptionAdapter.ViewHolder>() {
+class OrderBottomSheetOptionAdapter(clickListener: OptionClickListener) :
+    RecyclerView.Adapter<OrderBottomSheetOptionAdapter.ViewHolder>() {
 
-    var userList: MutableList<DressOptionDetailDto>?= null
+    var userList: MutableList<DressOptionDetailDto>? = null
 
     interface OptionClickListener {
-        fun onItemBackgroundClick(view: View, position: Int)
+        fun onItemBackgroundClick(view: View, position: Int, id: Int)
     }
+
     var clicklistener: OptionClickListener = clickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            ItemOrderbottomsheetOptionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemOrderbottomsheetOptionBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         return ViewHolder(binding)
     }
 
@@ -31,14 +37,18 @@ class OrderBottomSheetOptionAdapter(clickListener: OptionClickListener) : Recycl
         return userList?.size ?: 0
     }
 
-    inner class ViewHolder(val binding: ItemOrderbottomsheetOptionBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: ItemOrderbottomsheetOptionBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun setUser(user: DressOptionDetailDto?) {
             with(binding) {
                 orderbottomsheetoptionTextviewOption.text = user?.dress_option_detail_name
 
-                binding.orderbottomsheetoptionLayout.setOnClickListener{
-                    clicklistener.onItemBackgroundClick(it,absoluteAdapterPosition)
+                binding.orderbottomsheetoptionLayout.setOnClickListener {
+                    clicklistener.onItemBackgroundClick(
+                        it, absoluteAdapterPosition,
+                        user?.dress_option_detail_id!!
+                    )
                 }
             }
         }
