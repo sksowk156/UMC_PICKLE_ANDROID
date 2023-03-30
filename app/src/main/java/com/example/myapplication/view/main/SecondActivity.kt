@@ -86,8 +86,6 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
             true
         }
 
-
-//        requestLocationData()
         if(lat_lng!=null){
             homeViewModel.set_home_latlng(lat_lng!!)
         }

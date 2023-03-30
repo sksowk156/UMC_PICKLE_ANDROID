@@ -77,7 +77,7 @@ class StoreViewModel @Inject constructor(private val storeRepository: StoreRepos
     fun get_store_near_data(lat: Double, lng: Double) {
         viewModelScope.launch {
             storeRepository.get_store_near_data(lat, lng).collect {
-                _store_near_data.postValue(it)
+                _store_near_data.value = (it)
             }
         }
     }
@@ -93,7 +93,7 @@ class StoreViewModel @Inject constructor(private val storeRepository: StoreRepos
     fun set_store_like_data(updateStoreLikeDto: UpdateStoreLikeDto) {
         viewModelScope.launch {
             storeRepository.set_store_like_data(updateStoreLikeDto).collect {
-                _update_store_like_data.postValue(it)
+                _update_store_like_data.value = (it)
             }
         }
     }
