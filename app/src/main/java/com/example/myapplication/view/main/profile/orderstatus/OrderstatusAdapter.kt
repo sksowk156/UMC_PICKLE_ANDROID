@@ -48,7 +48,7 @@ class OrderstatusAdapter(clicklistener: OrderstatusAdapter.OrderstatusClickListe
         fun setUser(user: DressOrderListDto?) {
             with(binding) {
                 orderstatusInnerlayout.setOnClickListener {
-                    clicklistener.onItemInnerlayoutClick(user!!.dress_reservation_id, absoluteAdapterPosition)
+                    clicklistener.onItemInnerlayoutClick(user!!.dress_reservation_id.toInt(), absoluteAdapterPosition)
                 }
 
                 orderstatusImageProduct.setOnClickListener {
@@ -56,7 +56,7 @@ class OrderstatusAdapter(clicklistener: OrderstatusAdapter.OrderstatusClickListe
                 }
 
                 orderstatusTextviewDetail.setOnClickListener {
-                    clicklistener.onItemDetailClick(user!!.dress_reservation_id, absoluteAdapterPosition)
+                    clicklistener.onItemDetailClick(user!!.dress_reservation_id.toInt(), absoluteAdapterPosition)
                 }
                 Glide.with(this@ViewHolder.itemView)
                     .load(user?.dress_image_url)

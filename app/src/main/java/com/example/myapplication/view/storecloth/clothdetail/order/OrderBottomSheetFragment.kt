@@ -169,10 +169,10 @@ class OrderBottomSheetFragment() :
     private fun spinnerAdapterSetting() {
         colorAdapter = OrderBottomSheetOptionAdapter(object :
             OrderBottomSheetOptionAdapter.OptionClickListener {
-            override fun onItemBackgroundClick(view: View, position: Int) {
+            override fun onItemBackgroundClick(view: View, position: Int,id : Int) {
                 checkedTwoButton[0] = true
                 selectedcolor = view.findViewById<TextView>(R.id.orderbottomsheetoption_textview_option).text.toString()
-                selectedcolornum = position
+                selectedcolornum = id
 
                 binding.orderTextviewColor.text = selectedcolor
                 binding.orderTextviewColor.setTextColor(Color.parseColor("#1E1E1E"))
@@ -216,11 +216,11 @@ class OrderBottomSheetFragment() :
 
         sizeAdapter = OrderBottomSheetOptionAdapter(object :
             OrderBottomSheetOptionAdapter.OptionClickListener {
-            override fun onItemBackgroundClick(view: View, position: Int) {
+            override fun onItemBackgroundClick(view: View, position: Int,id : Int) {
                 checkedTwoButton[1] = true
                 selectedsize =
                     view.findViewById<TextView>(R.id.orderbottomsheetoption_textview_option).text.toString()
-                selectedsizenum = position
+                selectedsizenum = id
 
                 binding.orderTextviewSize.text = selectedsize
                 binding.orderTextviewSize.setTextColor(Color.parseColor("#1E1E1E"))

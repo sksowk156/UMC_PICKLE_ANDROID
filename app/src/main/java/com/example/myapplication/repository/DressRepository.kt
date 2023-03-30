@@ -1,5 +1,6 @@
 package com.example.myapplication.repository
 
+import android.util.Log
 import com.example.myapplication.data.remote.DressService
 import com.example.myapplication.data.remote.model.*
 import com.example.myapplication.widget.utils.NetworkResult
@@ -96,6 +97,7 @@ class DressRepository @Inject constructor(private val dressService: DressService
     suspend fun get_dress_order_data(status: String) : Flow<NetworkResult<List<DressOrderListDto>>> = flow{
         try {
             val response = dressService.get_dress_order_data(status)
+            Log.d("whatisthis",response.toString())
             if (response.isSuccessful) {
                 response.body()?.let {
                     emit(NetworkResult.Success(it))
@@ -135,6 +137,7 @@ class DressRepository @Inject constructor(private val dressService: DressService
     suspend fun set_dress_reservation(dressReservationDto: DressReservationDto) : Flow<NetworkResult<ResultOfSetDto>> = flow{
         try {
             val response = dressService.set_dress_reservation(dressReservationDto)
+            Log.d("whatisthis",response.toString())
             if (response.isSuccessful) {
                 response.body()?.let {
                     emit(NetworkResult.Success(it))
