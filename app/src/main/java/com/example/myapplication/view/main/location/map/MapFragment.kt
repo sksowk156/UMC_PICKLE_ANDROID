@@ -68,6 +68,23 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
             })
         }
 
+        storeViewModel.update_store_like_data.observe(this, Observer {
+            when (it) {
+                is NetworkResult.Loading -> {
+
+                }
+                is NetworkResult.Error -> {
+
+                }
+                is NetworkResult.Success -> {
+                    updateStore(
+                        naverMap.cameraPosition.target.latitude,
+                        naverMap.cameraPosition.target.longitude
+                    )
+                }
+            }
+        })
+
     }
 
     private fun openMap() {
@@ -184,9 +201,11 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                         }
 
                         // 현재 데이터와 겹치지 않는 이전 데이터만 지우기
+                        var old_data = StoreCoordDtoList()
                         for (data in before_StoreCoordDtoList) {
                             if (!it.data.contains(data)) { // binarySearch보다 빠름 -> 정렬이 필요하기 때문에 contain이 빨랐다.
-                                freeMarker(data)
+//                                freeMarker(data)
+                                old_data.add(data)
                             }
                         }
                         // 이전 데이터 기록 갱신(이걸 먼저하는 이유는 밑에서 updateMarker할때 마지막에 클릭된 마커가 있을 경우
@@ -197,10 +216,13 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                         if (new_data.size > 0) {
                             updateMarker(new_data) // 그 마커만 update
                         }
-
+                        if (old_data.size > 0) {
+                            for (i in old_data) {
+                                freeMarker(i)
+                            }
+                        }
                     } else { // 이전 데이터 기록이 없을 경우(최초)
                         before_StoreCoordDtoList = it.data!! // 이전 데이터 기록 갱신
-
                         updateMarker(it.data)
                     }
                 }
@@ -213,12 +235,12 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
     private fun updateMarker(storelist: StoreCoordDtoList) {
         val executor = Executors.newSingleThreadExecutor()
         val handler = Handler(Looper.getMainLooper())
+        val markerlistTemp = CopyOnWriteArrayList<Marker>()
         // 백그라운드 쓰레드
         executor.execute {
             for (storeData in storelist) { // List 중 하나 선택
                 val marker = Marker() // 마커 생성
                 marker.position = LatLng(storeData.latitude, storeData.longitude) // 마커 위치 설정
-                marker.icon = OverlayImage.fromResource(R.drawable.icon_map_small_pin) // 마커 아이콘 설정
                 marker.width = Marker.SIZE_AUTO
                 marker.height = Marker.SIZE_AUTO
                 marker.minZoom = 13.3 // Marker가 보이는 최대 줌 정하기
@@ -227,13 +249,6 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                 marker.isHideCollidedSymbols = true //  마커와 겹치는 지도 심벌을 자동으로 숨기도록 지정
                 //marker.setHideCollidedMarkers(false);
                 marker.tag = storeData.store_id
-                NowMarkers.add(marker)
-
-                // 좋아요 갱신된 정보를 보여주기 위해서 새로운 데이터들 중에서 클릭된 마커와 store_id가 같으면 방금 새로 만든 마커를 클릭된 마커로 설정해준다.
-                if (clickedMarker != null && marker_store_id == storeData.store_id) {
-                    clickedMarker = marker
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                }
 
                 // Marker 클릭시
                 marker.setOnClickListener { overlay ->
@@ -254,13 +269,22 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                     }
                     true
                 }
+
+                if (clickedMarker != null && marker_store_id == storeData.store_id) {
+                    clickedMarker = marker
+                } else {
+                    marker.icon =
+                        OverlayImage.fromResource(R.drawable.icon_map_small_pin) // 마커 아이콘 설정
+                }
+                markerlistTemp.add(marker)
+                NowMarkers.add(marker)
+
             }
             // 메인 스레드
             handler.post {
-                for (marker in NowMarkers) {
+                for (marker in markerlistTemp) {
                     marker.map = naverMap
                 }
-
                 // 좋아요 갱신된 정보를 보여주기 위해서
                 if (clickedMarker != null) { // 새롭게 바뀐 클릭된 마커의 bottomsheet을 띄어준다.
                     clickMarker(clickedMarker!!, before_StoreCoordDtoList)
@@ -321,18 +345,6 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                 }
 
                 binding.mapImageFavorite.setOnClickListener {
-                    // 임시로 이미지만 변경 -> store_detail_data를 전부 다시 요청하면 너무 비효율적
-                    if (like_data == true) {
-                        Glide.with(this)
-                            .load(R.drawable.icon_favorite_line) //이미지
-                            .into(binding.mapImageFavorite)  //보여줄 위치
-                        like_data = false
-                    } else {
-                        Glide.with(this)
-                            .load(R.drawable.icon_favorite_filledpink) //이미지
-                            .into(binding.mapImageFavorite)  //보여줄 위치
-                        like_data = true
-                    }
                     storeViewModel.set_store_like_data(UpdateStoreLikeDto(false, i.store_id))
                 }
 

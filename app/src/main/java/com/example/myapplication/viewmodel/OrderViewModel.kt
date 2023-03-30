@@ -61,7 +61,6 @@ class OrderViewModel : ViewModel() {
     private var _pickuptime_data = MutableLiveData<TextView>()
     val pickuptime_data: LiveData<TextView> get() = _pickuptime_data
 
-
     fun set_order_data(clothorderdatalist: ArrayList<ClothOrderData>) {
         _order_data.value = clothorderdatalist
     }
@@ -79,13 +78,11 @@ class OrderViewModel : ViewModel() {
     }
 
     fun get_calculate_order_price() {
-
         var total = 0
         for (i in 0.._order_data.value!!.size - 1) {
             total += order_data.value!!.get(i).clothPrice * order_data.value!!.get(i).count
         }
         _calculate_order_price.value = total
-
     }
 
     fun set_option_data(clothOptionData: ClothOptionData) {

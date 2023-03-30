@@ -97,7 +97,6 @@ class DressRepository @Inject constructor(private val dressService: DressService
     suspend fun get_dress_order_data(status: String) : Flow<NetworkResult<List<DressOrderListDto>>> = flow{
         try {
             val response = dressService.get_dress_order_data(status)
-            Log.d("whatisthis",response.toString())
             if (response.isSuccessful) {
                 response.body()?.let {
                     emit(NetworkResult.Success(it))
@@ -137,7 +136,6 @@ class DressRepository @Inject constructor(private val dressService: DressService
     suspend fun set_dress_reservation(dressReservationDto: DressReservationDto) : Flow<NetworkResult<ResultOfSetDto>> = flow{
         try {
             val response = dressService.set_dress_reservation(dressReservationDto)
-            Log.d("whatisthis",response.toString())
             if (response.isSuccessful) {
                 response.body()?.let {
                     emit(NetworkResult.Success(it))
