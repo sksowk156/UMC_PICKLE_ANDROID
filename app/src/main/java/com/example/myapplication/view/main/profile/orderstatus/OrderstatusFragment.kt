@@ -48,9 +48,6 @@ class OrderstatusFragment :
                 }
 
                 override fun onItemDetailClick(reservationid: Int, position: Int) {
-                    // 선택한 아이템의 주문 번호를 받아서
-                    dressViewModel.get_dress_order_detail_data(reservationid)
-
                     // 주문 상세 페이지로 이동
                     parentFragmentManager.beginTransaction()
                         .replace(
@@ -59,10 +56,12 @@ class OrderstatusFragment :
                         )
                         .addToBackStack(null)
                         .commitAllowingStateLoss()
+
+                    // 선택한 아이템의 주문 번호를 받아서
+                    dressViewModel.get_dress_order_detail_data(reservationid)
                 }
 
                 override fun onItemInnerlayoutClick(reservationid: Int, position: Int) {
-                    dressViewModel.get_dress_order_detail_data(reservationid)
                     // 주문 상세 페이지로 이동
                     parentFragmentManager.beginTransaction()
                         .replace(
@@ -71,6 +70,8 @@ class OrderstatusFragment :
                         )
                         .addToBackStack(null) // 현재의 fragment가(OrderstatusFragment) 저장되는 것이다.
                         .commitAllowingStateLoss()
+
+                    dressViewModel.get_dress_order_detail_data(reservationid)
                     //주문취소
                     //reservationViewModel.set_dress_resevation_data(3)
                 }

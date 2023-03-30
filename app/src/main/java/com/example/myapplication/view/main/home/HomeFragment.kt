@@ -133,16 +133,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
                 }
 
                 is NetworkResult.Success -> {
-//                    recentAdapter.submitList(null)
-//                    newAdapter.submitList(null)
-//                    recommendAdapter.submitList(null)
-
                     recentAdapter.submitList(it.data!!.recentView!!.toMutableList())
-//                    recommendAdapter.notifyDataSetChanged()
                     newAdapter.submitList(it.data.newDresses!!.toMutableList())
-//                    newAdapter.notifyDataSetChanged()
                     recommendAdapter.submitList(it.data.recDresses!!.toMutableList())
-//                    recommendAdapter.notifyDataSetChanged()
                 }
             }
 
