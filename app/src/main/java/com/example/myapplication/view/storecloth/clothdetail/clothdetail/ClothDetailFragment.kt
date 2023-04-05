@@ -1,22 +1,17 @@
-package com.example.myapplication.view.storecloth.clothdetail
+package com.example.myapplication.view.storecloth.clothdetail.clothdetail
 
 import android.content.Intent
 import android.util.Log
-import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentClothDetailBinding
-import com.example.myapplication.data.remote.model.DressDetailDto
 import com.example.myapplication.data.remote.model.UpdateDressLikeDto
 import com.example.myapplication.data.remote.model.order.ClothOptionData
 import com.example.myapplication.base.BaseFragment
-import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.storecloth.clothdetail.order.OrderBottomSheetFragment
 import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.DressViewModel

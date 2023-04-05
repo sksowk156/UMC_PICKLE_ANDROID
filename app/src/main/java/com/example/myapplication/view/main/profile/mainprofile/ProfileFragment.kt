@@ -1,4 +1,4 @@
-package com.example.myapplication.view.main.profile
+package com.example.myapplication.view.main.profile.mainprofile
 
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -61,28 +61,28 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
 
             // 주문현황
             profileInnerlayoutCompleteorder.setOnClickListener {
-                dressViewModel.get_dress_order_data(("주문완료").toString())
+//                dressViewModel.get_dress_order_data(("주문완료").toString())
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"completeorder")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
             }
             profileInnerlayoutPickup.setOnClickListener {
-                dressViewModel.get_dress_order_data("픽업중")
+//                dressViewModel.get_dress_order_data("픽업중")
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"pickup")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
             }
             profileInnerlayoutPickupconfirm.setOnClickListener {
-                dressViewModel.get_dress_order_data("픽업완료")
+//                dressViewModel.get_dress_order_data("픽업완료")
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"pickupconfirm")
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
             }
             profileInnerlayoutPurchaseconfirm.setOnClickListener {
-                dressViewModel.get_dress_order_data("구매확정")
+//                dressViewModel.get_dress_order_data("구매확정")
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.profileblank_layout, OrderstatusFragment(),"purchaseconfirm")
                     .addToBackStack(null)

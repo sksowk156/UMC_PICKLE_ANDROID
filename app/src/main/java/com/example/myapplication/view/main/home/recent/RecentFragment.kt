@@ -11,7 +11,7 @@ import com.example.myapplication.databinding.FragmentRecentBinding
 import com.example.myapplication.data.remote.model.DressOverviewDto
 import com.example.myapplication.data.remote.model.UpdateDressLikeDto
 import com.example.myapplication.base.BaseFragment
-import com.example.myapplication.view.main.SecondActivity
+import com.example.myapplication.view.main.home.mainhome.HomeRecommendAdapter
 import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
 import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.DressViewModel

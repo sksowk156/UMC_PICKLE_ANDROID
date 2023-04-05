@@ -146,6 +146,7 @@ class SearchresultFragment : BaseFragment<FragmentSearchresultBinding>(R.layout.
     override fun onResume() {
         super.onResume()
         if(buttonClick){
+
             dressViewModel.get_dress_search_data(
                 optionViewModel.category_data.value.toString(),
                 optionViewModel.latlng_data.value!!.first,

@@ -1,6 +1,5 @@
 package com.example.myapplication.view.login
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
@@ -39,7 +38,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                     UserApiClient.instance.loginWithKakaoTalk(this@MainActivity) { token, error ->
                         // 로그인 실패 부분
                         if (error != null) {
-                            Log.e(TAG, "로그인 실패 $error")
+                            Log.e("whatisthis", "로그인 실패 $error")
                             // 사용자가 취소
                             if (error is ClientError && error.reason == ClientErrorCause.Cancelled ) {
                                 return@loginWithKakaoTalk
@@ -52,8 +51,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                         // 로그인 성공 부분
                         else if (token != null) {
                             val data = AuthRequest(token.accessToken)
-                            Log.e(TAG, "로그인 성공! 토큰값 : ${data.accessToken}")
-
+//                            Log.d("whatisthis",token.accessToken)
                             // API service 카카오 로그인 후 발급받은 appToken, isNewMember 값
                             loginViewModel.create(data)
                             loginViewModel.jwt_data.observe(this@MainActivity, Observer {
@@ -66,12 +64,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                                     }
 
                                     is NetworkResult.Success -> {
+//                                        Log.d("whatisthis","kakao "+it.data!!.appToken)
                                         loginViewModel.setJwt(X_ACCESS_TOKEN, it.data!!.appToken)
                                         UserApiClient.instance.me { user, error ->
                                             var email = user?.kakaoAccount?.email
                                             var name = user?.kakaoAccount?.profile?.nickname
-                                            Log.e(TAG, "닉네임 ${user?.kakaoAccount?.profile?.nickname}")
-                                            Log.e(TAG, "이메일 ${user?.kakaoAccount?.email}" )
+                                            Log.e("whattisthis", "닉네임 ${user?.kakaoAccount?.profile?.nickname}")
+                                            Log.e("whattisthis", "이메일 ${user?.kakaoAccount?.email}" )
                                             // 카카오 로그인 후 받은 카카오 데이터(email, name)를 서버에 보내서 토큰 받아오기
                                             Toast.makeText(this@MainActivity, "${user?.kakaoAccount?.profile?.nickname}님 환영합니다.", Toast.LENGTH_SHORT).show()
                                         }
@@ -117,8 +116,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                                         UserApiClient.instance.me { user, error ->
                                             var email = user?.kakaoAccount?.email
                                             var name = user?.kakaoAccount?.profile?.nickname
-                                            Log.e(TAG, "닉네임 ${user?.kakaoAccount?.profile?.nickname}")
-                                            Log.e(TAG, "이메일 ${user?.kakaoAccount?.email}" )
+                                            Log.e("whattisthis", "닉네임 ${user?.kakaoAccount?.profile?.nickname}")
+                                            Log.e("whattisthis", "이메일 ${user?.kakaoAccount?.email}" )
                                             // 카카오 로그인 후 받은 카카오 데이터(email, name)를 서버에 보내서 토큰 받아오기
                                             Toast.makeText(this@MainActivity, "${user?.kakaoAccount?.profile?.nickname}님 환영합니다.", Toast.LENGTH_SHORT).show()
                                         }
