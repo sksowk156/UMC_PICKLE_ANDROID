@@ -1,4 +1,4 @@
-package com.example.myapplication.view.main.home.recent
+package com.example.myapplication.view.main.home.mainhome
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

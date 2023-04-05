@@ -3,6 +3,7 @@ package com.example.myapplication.view.main.home
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBaseBinding
 import com.example.myapplication.base.BaseFragment
+import com.example.myapplication.view.main.home.mainhome.HomeFragment
 
 class HomeBaseFragment : BaseFragment<FragmentHomeBaseBinding>(R.layout.fragment_home_base) {
 

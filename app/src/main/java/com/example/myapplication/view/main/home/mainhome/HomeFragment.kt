@@ -1,6 +1,5 @@
-package com.example.myapplication.view.main.home
+package com.example.myapplication.view.main.home.mainhome
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.util.Log
 import android.view.View
@@ -12,9 +11,7 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.data.remote.model.*
 import com.example.myapplication.base.BaseFragment
-import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.main.home.newclothe.NewFragment
-import com.example.myapplication.view.main.home.recent.HomeRecommendAdapter
 import com.example.myapplication.view.main.home.recent.RecentFragment
 import com.example.myapplication.view.storecloth.clothdetail.ClothActivity
 import com.example.myapplication.view.storecloth.storedetail.StoreActivity

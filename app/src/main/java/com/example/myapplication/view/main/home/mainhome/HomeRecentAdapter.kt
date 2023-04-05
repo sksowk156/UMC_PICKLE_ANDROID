@@ -1,4 +1,4 @@
-package com.example.myapplication.view.main.home
+package com.example.myapplication.view.main.home.mainhome
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,8 +11,7 @@ import com.example.myapplication.databinding.ItemHomecardRecyclerBinding
 import com.example.myapplication.data.remote.model.DressOverviewDto
 import com.example.myapplication.widget.utils.ItemCardClickInterface
 
-
-//class HomeNewAdapter(clickInterface: ItemCardClickInterface): RecyclerView.Adapter<HomeNewAdapter.MyViewHolder>(){
+//class HomeRecentAdapter(clickInterface: ItemCardClickInterface): RecyclerView.Adapter<HomeRecentAdapter.MyViewHolder>(){
 //
 //    private var itemList = ArrayList<DressOverviewDto>()
 //
@@ -27,7 +26,7 @@ import com.example.myapplication.widget.utils.ItemCardClickInterface
 //
 //    inner class MyViewHolder(val binding: ItemHomecardRecyclerBinding): RecyclerView.ViewHolder(binding.root) {
 //        fun bind(recent_clothes: DressOverviewDto) {
-//            if (recent_clothes?.dress_like!! == false) {
+//            if (recent_clothes?.dress_like == false) {
 //                //화면에 보여주기
 //                Glide.with(this@MyViewHolder.itemView)
 //                    .load(R.drawable.icon_favorite_whiteline) //이미지
@@ -80,7 +79,6 @@ import com.example.myapplication.widget.utils.ItemCardClickInterface
 //                    binding.homecardImageviewFavorite,
 //                    absoluteAdapterPosition
 //                )
-////                temp_favorite = changeFavoriteImage(this@MyViewHolder.itemView, temp_favorite!!, binding.homecardImageviewFavorite)
 //            }
 //        }
 //    }
@@ -100,16 +98,16 @@ import com.example.myapplication.widget.utils.ItemCardClickInterface
 //    }
 //}
 
-class HomeNewAdapter(clicklistener: ItemCardClickInterface) :
-    ListAdapter<DressOverviewDto, HomeNewAdapter.MyViewHolder>(HomeNewDiffUtil){
+class HomeRecentAdapter(clicklistener: ItemCardClickInterface) :
+   ListAdapter<DressOverviewDto, HomeRecentAdapter.MyViewHolder>(HomeRecentDiffUtil) {
 
-    var clicklistener: ItemCardClickInterface = clicklistener
+    private var clicklistener: ItemCardClickInterface = clicklistener
 
     inner class MyViewHolder(val binding: ItemHomecardRecyclerBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(new_clothes: DressOverviewDto) {
-
-            if (new_clothes.dress_like == false) {
+        fun bind(recent_clothes: DressOverviewDto) {
+            var temp_favorite : Boolean = recent_clothes?.dress_like!!
+            if (temp_favorite== false) {
                 //화면에 보여주기
                 Glide.with(this@MyViewHolder.itemView)
                     .load(R.drawable.icon_favorite_whiteline) //이미지
@@ -122,23 +120,23 @@ class HomeNewAdapter(clicklistener: ItemCardClickInterface) :
             }
 
             Glide.with(this.itemView)
-                .load(new_clothes.dress_default_img) //이미지
+                .load(recent_clothes.dress_default_img) //이미지
                 .into(binding.homecardImageviewImage) //보여줄 위치
 
-            binding.homecardTextviewStorename.text = new_clothes.store_name
-            binding.homecardTextviewClothename.text = new_clothes.dress_name
-            binding.homecardTextviewClotheprice.text = new_clothes.dress_price
+            binding.homecardTextviewStorename.text = recent_clothes.store_name
+            binding.homecardTextviewClothename.text = recent_clothes.dress_name
+            binding.homecardTextviewClotheprice.text = recent_clothes.dress_price
 
             binding.homecardCardviewFrame.setOnClickListener {
-                clicklistener.onItemClothImageClick(new_clothes.dress_id, absoluteAdapterPosition)
+                clicklistener.onItemClothImageClick(recent_clothes.dress_id , absoluteAdapterPosition)
             }
 
             binding.homecardTextviewStorename.setOnClickListener {
-                clicklistener.onItemStoreNameClick(new_clothes.store_id, absoluteAdapterPosition)
+                clicklistener.onItemStoreNameClick(recent_clothes.store_id, absoluteAdapterPosition)
             }
 
-            binding.homecardImageviewFavorite.setOnClickListener {
-                clicklistener.onItemClothFavoriteClick(new_clothes.dress_like!!, new_clothes.dress_id, binding.homecardImageviewFavorite, absoluteAdapterPosition)
+            binding.homecardImageviewFavorite.setOnClickListener{
+                clicklistener.onItemClothFavoriteClick(temp_favorite ,recent_clothes.dress_id, binding.homecardImageviewFavorite, absoluteAdapterPosition)
             }
         }
     }
@@ -154,7 +152,7 @@ class HomeNewAdapter(clicklistener: ItemCardClickInterface) :
     }
 }
 
-object HomeNewDiffUtil : DiffUtil.ItemCallback<DressOverviewDto>() {
+object HomeRecentDiffUtil : DiffUtil.ItemCallback<DressOverviewDto>() {
     override fun areItemsTheSame(oldItem: DressOverviewDto, newItem: DressOverviewDto): Boolean {
         return oldItem.dress_id == newItem.dress_id && oldItem.store_id == newItem.store_id
     }

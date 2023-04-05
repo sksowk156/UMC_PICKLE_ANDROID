@@ -62,8 +62,12 @@ dependencies {
     //okHttp3
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
 
+    // naverMap
     implementation 'com.naver.maps:map-sdk:3.15.0'
+
+    // Kakao
     implementation "com.kakao.sdk:v2-user:2.11.2"
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'

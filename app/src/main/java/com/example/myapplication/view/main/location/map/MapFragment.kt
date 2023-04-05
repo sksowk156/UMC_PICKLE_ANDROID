@@ -15,7 +15,6 @@ import com.example.myapplication.data.remote.model.StoreCoordDtoList
 import com.example.myapplication.data.remote.model.StoreCoordDto
 import com.example.myapplication.base.BaseFragment
 import com.example.myapplication.data.remote.model.UpdateStoreLikeDto
-import com.example.myapplication.view.main.SecondActivity
 import com.example.myapplication.view.main.location.around.AroundFragment
 import com.example.myapplication.view.storecloth.storedetail.StoreActivity
 import com.example.myapplication.viewmodel.StoreViewModel
@@ -67,24 +66,6 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                     .commitAllowingStateLoss()
             })
         }
-
-        storeViewModel.update_store_like_data.observe(this, Observer {
-            when (it) {
-                is NetworkResult.Loading -> {
-
-                }
-                is NetworkResult.Error -> {
-
-                }
-                is NetworkResult.Success -> {
-                    updateStore(
-                        naverMap.cameraPosition.target.latitude,
-                        naverMap.cameraPosition.target.longitude
-                    )
-                }
-            }
-        })
-
     }
 
     private fun openMap() {
@@ -203,8 +184,7 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                         // 현재 데이터와 겹치지 않는 이전 데이터만 지우기
                         var old_data = StoreCoordDtoList()
                         for (data in before_StoreCoordDtoList) {
-                            if (!it.data.contains(data)) { // binarySearch보다 빠름 -> 정렬이 필요하기 때문에 contain이 빨랐다.
-//                                freeMarker(data)
+                            if (!it.data.contains(data)) { // binarySearch보다 contain이 빨랐다.
                                 old_data.add(data)
                             }
                         }
@@ -247,7 +227,6 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                 marker.captionText = storeData.store_name
                 marker.isHideCollidedCaptions = true // 겹치는 캡션 자동 숨김 처리
                 marker.isHideCollidedSymbols = true //  마커와 겹치는 지도 심벌을 자동으로 숨기도록 지정
-                //marker.setHideCollidedMarkers(false);
                 marker.tag = storeData.store_id
 
                 // Marker 클릭시
@@ -270,13 +249,14 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                     true
                 }
 
+                // 새로 만드는 마커가 클릭된 마커일 경우( 클릭한 마커의 데이터가 변경되었을 때 )
                 if (clickedMarker != null && marker_store_id == storeData.store_id) {
-                    clickedMarker = marker
+                    clickedMarker = marker // 클릭된 마커를 변경시켜준다.
                 } else {
                     marker.icon =
                         OverlayImage.fromResource(R.drawable.icon_map_small_pin) // 마커 아이콘 설정
                 }
-                markerlistTemp.add(marker)
+                markerlistTemp.add(marker) // 추가된 마커만 그리기 위해서
                 NowMarkers.add(marker)
 
             }
@@ -290,16 +270,6 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                     clickMarker(clickedMarker!!, before_StoreCoordDtoList)
                 }
             }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (clickedMarker != null) {
-            updateStore(
-                naverMap.cameraPosition.target.latitude,
-                naverMap.cameraPosition.target.longitude
-            )
         }
     }
 
@@ -345,6 +315,24 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                 }
 
                 binding.mapImageFavorite.setOnClickListener {
+                    if (i.store_like == false) {
+                        //화면에 보여주기
+                        Glide.with(this@MapFragment)
+                            .load(R.drawable.icon_favorite_filledpink) //이미지
+                            .into(binding.mapImageFavorite) //보여줄 위치
+                        if(clickedMarker!=null){
+                            // 클릭된 마커의 정보도 변경해준다. ( 매장 상세 페이지에서 다시 바뀔 수 있으므로, 매장 상세페이지에서 다시 바뀌면 지도의 데이터와 동일해지기 때문, 그러면 차이를 식별못함)
+                            before_StoreCoordDtoList.find { it.store_id == clickedMarker?.tag }?.store_like = true
+                        }
+                    } else {
+                        //화면에 보여주기
+                        Glide.with(this@MapFragment)
+                            .load(R.drawable.icon_favorite_line) //이미지
+                            .into(binding.mapImageFavorite) //보여줄 위치
+                        if(clickedMarker!=null){
+                            before_StoreCoordDtoList.find { it.store_id == clickedMarker?.tag }?.store_like = false
+                        }
+                    }
                     storeViewModel.set_store_like_data(UpdateStoreLikeDto(false, i.store_id))
                 }
 
@@ -362,6 +350,17 @@ class MapFragment : BaseFragment<FragmentMapBinding>(R.layout.fragment_map), OnM
                 NowMarkers.remove(marker) // 목록에서 제거
                 break
             }
+        }
+    }
+
+    // 매장 상세정보기에서 돌아왔을 때, 데이터 갱신 요청
+    override fun onResume() {
+        super.onResume()
+        if (clickedMarker != null) {
+            updateStore(
+                naverMap.cameraPosition.target.latitude,
+                naverMap.cameraPosition.target.longitude
+            )
         }
     }
 
