@@ -52,7 +52,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                         // 로그인 성공 부분
                         else if (token != null) {
                             val data = AuthRequest(token.accessToken)
-                            Log.e(TAG, "로그인 성공! 토큰값 : ${data.accessToken}")
 
                             // API service 카카오 로그인 후 발급받은 appToken, isNewMember 값
                             loginViewModel.create(data)
@@ -70,8 +69,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                                         UserApiClient.instance.me { user, error ->
                                             var email = user?.kakaoAccount?.email
                                             var name = user?.kakaoAccount?.profile?.nickname
-                                            Log.e(TAG, "닉네임 ${user?.kakaoAccount?.profile?.nickname}")
-                                            Log.e(TAG, "이메일 ${user?.kakaoAccount?.email}" )
+                                            Log.e("whattisthis", "닉네임 ${user?.kakaoAccount?.profile?.nickname}")
+                                            Log.e("whattisthis", "이메일 ${user?.kakaoAccount?.email}" )
                                             // 카카오 로그인 후 받은 카카오 데이터(email, name)를 서버에 보내서 토큰 받아오기
                                             Toast.makeText(this@MainActivity, "${user?.kakaoAccount?.profile?.nickname}님 환영합니다.", Toast.LENGTH_SHORT).show()
                                         }
@@ -117,8 +116,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                                         UserApiClient.instance.me { user, error ->
                                             var email = user?.kakaoAccount?.email
                                             var name = user?.kakaoAccount?.profile?.nickname
-                                            Log.e(TAG, "닉네임 ${user?.kakaoAccount?.profile?.nickname}")
-                                            Log.e(TAG, "이메일 ${user?.kakaoAccount?.email}" )
+                                            Log.e("whattisthis", "닉네임 ${user?.kakaoAccount?.profile?.nickname}")
+                                            Log.e("whattisthis", "이메일 ${user?.kakaoAccount?.email}" )
                                             // 카카오 로그인 후 받은 카카오 데이터(email, name)를 서버에 보내서 토큰 받아오기
                                             Toast.makeText(this@MainActivity, "${user?.kakaoAccount?.profile?.nickname}님 환영합니다.", Toast.LENGTH_SHORT).show()
                                         }

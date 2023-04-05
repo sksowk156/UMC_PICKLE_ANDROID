@@ -1,5 +1,6 @@
 package com.example.myapplication.view.search
 
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -7,16 +8,19 @@ import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySearchBinding
 import com.example.myapplication.data.remote.model.search.SearchHistroyData
 import com.example.myapplication.base.BaseActivity
+import com.example.myapplication.data.remote.model.DressOrderListDto
 import com.example.myapplication.view.search.result.SearchresultFragment
 import com.example.myapplication.viewmodel.DressViewModel
 import com.example.myapplication.viewmodel.OptionViewModel
 import com.example.myapplication.widget.utils.EventObserver
+import com.example.myapplication.widget.utils.NetworkResult
 import com.example.myapplication.widget.utils.SharedPreferencesManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
