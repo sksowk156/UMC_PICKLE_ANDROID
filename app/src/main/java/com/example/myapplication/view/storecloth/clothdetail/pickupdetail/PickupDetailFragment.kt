@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentPickupDetailBinding
 import com.example.myapplication.base.BaseFragment
 import com.example.myapplication.view.storecloth.clothdetail.ordercomplete.OrderCompleteFragment
@@ -19,6 +18,7 @@ import com.example.myapplication.viewmodel.OrderViewModel
 import com.example.myapplication.viewmodel.StoreViewModel
 import java.util.*
 import androidx.lifecycle.Observer
+import com.example.myapplication.R
 import com.example.myapplication.data.remote.model.DressDetailDto
 import com.example.myapplication.data.remote.model.DressReservationDto
 import com.example.myapplication.data.remote.model.StockQuantityDto
@@ -29,8 +29,7 @@ import com.example.myapplication.widget.utils.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PickupDetailFragment :
-    BaseFragment<FragmentPickupDetailBinding>(R.layout.fragment_pickup_detail) {
+class PickupDetailFragment : BaseFragment<FragmentPickupDetailBinding>(R.layout.fragment_pickup_detail) {
     val storeViewModel: StoreViewModel by activityViewModels<StoreViewModel>()
     val dressViewModel: DressViewModel by activityViewModels<DressViewModel>()
     private lateinit var orderViewModel: OrderViewModel
@@ -246,7 +245,6 @@ class PickupDetailFragment :
                             reserved_dress_list,
                             store_id
                         )
-                        Log.d("whatisthis",dressReservationDto.toString())
                         dressViewModel.set_dress_reservation(dressReservationDto)
 
                         parentFragmentManager.beginTransaction()
