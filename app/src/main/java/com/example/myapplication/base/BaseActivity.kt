@@ -48,9 +48,11 @@ abstract class BaseActivity<T : ViewDataBinding>(
         }
         init()
 
-        locationManager.latlng.observe(this, Observer {
-            lat_lng.value = Pair(it.latitude, it.longitude)
-        })
+        if(::locationManager.isInitialized){
+            locationManager.latlng.observe(this, Observer {
+                lat_lng.value = Pair(it.latitude, it.longitude)
+            })
+        }
     }
 
     protected fun requestLocationData() {
