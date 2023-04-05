@@ -34,9 +34,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
     private lateinit var optionViewModel: OptionViewModel
     private var deleteButton = false
 
-    // 검색 기록을 저장하는 배열
-    private var searchHistoryDataList = ArrayList<SearchHistroyData>()
-
     override fun savedatainit() {
         super.savedatainit()
         supportFragmentManager
@@ -51,7 +48,10 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
 
         // 위치 정보 갱신하기
         requestLocationData()
-        optionViewModel.set_latlng_data(lat_lng!!)
+
+        lat_lng.observe(this, Observer {
+            optionViewModel.set_latlng_data(it)
+        })
 
         // 뒤로가기 버튼 이벤트 처리
         binding.searchImageviewBack.setOnClickListener {

@@ -102,6 +102,9 @@ dependencies {
     // dagger hilt
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-compiler:2.44"
+
+    // location service
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
 }
 // Allow references to generated code
 kapt {

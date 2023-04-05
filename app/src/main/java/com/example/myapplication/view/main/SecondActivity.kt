@@ -30,7 +30,6 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
     val userViewModel: UserViewModel by viewModels<UserViewModel>()
 
     private lateinit var currentFragmenttag: String
-//    private var buttonClick = false
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
@@ -44,18 +43,6 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
             .commitAllowingStateLoss()
         currentFragmenttag = HOMEBASE // 현재 보고 있는 fragmet의 Tag
     }
-
-//    override fun onResume() {
-//        super.onResume()
-//        dressViewModel.get_dress_like_data()
-//        storeViewModel.get_store_like_data()
-//
-//        // 홈화면 데이터 갱신
-//        if(buttonClick){
-//            requestLocationPermission()
-//            buttonClick = false
-//        }
-//    }
 
     override fun init() {
         requestLocationData()
@@ -86,15 +73,14 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
             true
         }
 
-        if(lat_lng!=null){
-            homeViewModel.set_home_latlng(lat_lng!!)
-        }
+        lat_lng.observe(this, Observer {
+            homeViewModel.set_home_latlng(it)
+        })
 
         // 홈화면 데이터 갱신
         homeViewModel.home_latlng.observe(this, Observer<Pair<Double, Double>> {
             if (it != null) {
-                homeViewModel.get_home_data(it!!.first, it!!.second)
-            } else {
+                homeViewModel.get_home_data(it.first, it.second)
             }
         })
     }
@@ -126,8 +112,4 @@ class SecondActivity : BaseActivity<ActivitySecondBinding>(R.layout.activity_sec
         outState.putString("currentfragment", currentFragmenttag)
     }
 
-//    override fun onStop() {
-//        super.onStop()
-//        buttonClick = true
-//    }
 }
