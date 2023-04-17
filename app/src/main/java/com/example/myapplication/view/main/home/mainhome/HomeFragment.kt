@@ -35,7 +35,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
     private lateinit var recommendAdapter: HomeRecommendAdapter
 
     private lateinit var imageList: ArrayList<Int>
-    private var buttonClick : Boolean = false
+    private var buttonClick: Boolean = false
 
     override fun init() {
         binding.homevm = homeViewModel
@@ -72,7 +72,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
         }
 
         homeViewModel.apply {
-            new_bt_event.observe(this@HomeFragment, EventObserver{
+            new_bt_event.observe(this@HomeFragment, EventObserver {
                 parentFragmentManager
                     .beginTransaction()
                     .add(R.id.home_base_layout, NewFragment(), "new")
@@ -87,17 +87,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
 
         // 좋아요 갱신
         dressViewModel.dress_like_data.observe(this@HomeFragment, Observer {
-            when(it){
-                is NetworkResult.Loading ->{
+            when (it) {
+                is NetworkResult.Loading -> {
 
                 }
                 is NetworkResult.Error -> {
 
                 }
-                is NetworkResult.Success ->{
+                is NetworkResult.Success -> {
                     homeViewModel.get_home_data(
                         homeViewModel.home_latlng.value!!.first,
-                        homeViewModel.home_latlng.value!!.second)
+                        homeViewModel.home_latlng.value!!.second
+                    )
                 }
             }
         })
@@ -106,8 +107,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
     // 의상 상세 정보(activity)에서 돌아왔을 때 작동
     override fun onResume() {
         super.onResume()
-        if(buttonClick){
-            homeViewModel.get_home_data(homeViewModel.home_latlng.value!!.first, homeViewModel.home_latlng.value!!.second)
+        if (buttonClick) {
+            homeViewModel.get_home_data(
+                homeViewModel.home_latlng.value!!.first,
+                homeViewModel.home_latlng.value!!.second
+            )
             buttonClick = false
         }
     }
@@ -123,7 +127,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
                 }
 
                 is NetworkResult.Error -> {
-                    Log.d("whatisthis", "HomeFragment : "+it.message.toString())
+                    Log.d("whatisthis", "HomeFragment : " + it.message.toString())
                     recentAdapter.submitList(null)
                     newAdapter.submitList(null)
                     recommendAdapter.submitList(null)

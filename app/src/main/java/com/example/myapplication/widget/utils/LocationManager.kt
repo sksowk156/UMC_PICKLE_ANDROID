@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import com.naver.maps.geometry.LatLng
 
 class LocationManager(
     Context: Context, private var timeInterval: Long,
@@ -19,7 +20,7 @@ class LocationManager(
     private val context = Context
     private lateinit var requestInApp: LocationRequest
     private var locationClient: FusedLocationProviderClient
-    var latlng = MutableLiveData<Location>()
+    var latlng = MutableLiveData<Pair<Double, Double>>()
 
     init {
         // getting the location client
@@ -29,12 +30,19 @@ class LocationManager(
 
     @SuppressLint("MissingPermission")
     private fun initLocationClientInApp() {
-        requestInApp =
-            LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, timeInterval).apply {
-                setMinUpdateDistanceMeters(minimalDistance) // 위치를 업데이트할 때 요구되는 최소한의 거리 변화를 설정함
-                setGranularity(Granularity.GRANULARITY_PERMISSION_LEVEL) // 위치 세분성 : 권한 수준과 일치함
-                setWaitForAccurateLocation(true) // PRIORITY_HIGH_ACCURACY일 경우 정확한 위치가 올 때까지 지연될 수 있음
-            }.build()
+        // 'com.google.android.gms:play-services-location:21.0.1'
+//        requestInApp =
+//            LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, timeInterval).apply {
+//                setMinUpdateDistanceMeters(minimalDistance) // 위치를 업데이트할 때 요구되는 최소한의 거리 변화를 설정함
+//                setGranularity(Granularity.GRANULARITY_PERMISSION_LEVEL) // 위치 세분성 : 권한 수준과 일치함
+//                setWaitForAccurateLocation(true) // PRIORITY_HIGH_ACCURACY일 경우 정확한 위치가 올 때까지 지연될 수 있음
+//            }.build()
+
+        // 'com.google.android.gms:play-services-location:20.0.0'
+        requestInApp = LocationRequest.create().apply {
+            this.interval = timeInterval
+            this.priority = Priority.PRIORITY_HIGH_ACCURACY
+        }
 
         taskbuild(requestInApp)
     }
@@ -45,7 +53,6 @@ class LocationManager(
         val client = LocationServices.getSettingsClient(context)
         val task = client.checkLocationSettings(builder.build())
         task.addOnSuccessListener { locationSettingsResponse ->
-            Log.d("whatisthis", "location client setting success")
         }
         task.addOnFailureListener { exception ->
             if (exception is ResolvableApiException) {
@@ -82,6 +89,8 @@ class LocationManager(
 
     override fun onLocationResult(result: LocationResult) { // 위치 정보 반환 받았을 경우
         super.onLocationResult(result)
-        latlng.value = result.lastLocation
+        val location = result.lastLocation
+        if (location != null) latlng.value = Pair(location.latitude, location.longitude)
+        Log.d("whatisthis", result.lastLocation.toString())
     }
 }

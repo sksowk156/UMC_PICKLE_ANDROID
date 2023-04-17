@@ -29,6 +29,7 @@
             android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/pickupdetail_toolbar">
 
             <LinearLayout
@@ -491,6 +492,7 @@
                         android:id="@+id/pickupdetail_edittext_request"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
+                        android:maxLines="1"
                         android:layout_marginHorizontal="14dp"
                         android:layout_marginVertical="16dp"
                         android:hint="요청사항이 있으시면 적어주세요!"

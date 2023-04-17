@@ -28,16 +28,12 @@ class OrderstatusFragment :
 
     private fun initAppbarName() {
         if (parentFragmentManager.findFragmentByTag("completeorder") != null) { // 주문완료
-            dressViewModel.get_dress_order_data("주문완료")
             initAppbar(binding.orderstatusToolbar, "주문완료", true, false)
         } else if (parentFragmentManager.findFragmentByTag("pickup") != null) { // 픽업 중
-            dressViewModel.get_dress_order_data("픽업중")
             initAppbar(binding.orderstatusToolbar, "픽업 중", true, false)
         } else if (parentFragmentManager.findFragmentByTag("pickupconfirm") != null) { // 픽업 완료
-            dressViewModel.get_dress_order_data("픽업완료")
             initAppbar(binding.orderstatusToolbar, "픽업완료", true, false)
         } else { // 구매 확정
-            dressViewModel.get_dress_order_data("구매확정")
             initAppbar(binding.orderstatusToolbar, "구매확정", true, false)
         }
     }

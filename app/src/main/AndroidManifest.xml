@@ -74,7 +74,8 @@
             android:exported="false" />
 
         <!--        옷 상세-->
-        <activity android:name=".view.storecloth.clothdetail.ClothActivity" />
+        <activity android:name=".view.storecloth.clothdetail.ClothActivity"
+            android:windowSoftInputMode="adjustResize"/>
 
         <!--        검색-->
         <activity
